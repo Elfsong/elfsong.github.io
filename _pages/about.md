@@ -9,7 +9,7 @@ profile:
   image: mingzhe.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <img src="logos.png" alt="Logos" width="100%">
+    <img src="/assets/img/logos.png" alt="Logos" width="100%">
 
 
 news: true  # includes a list of news items
