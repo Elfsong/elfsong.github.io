@@ -7,8 +7,8 @@ first_name: Mingzhe
 last_name: Du
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   The Personal Website of Du Mingzhe (杜明哲).
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.
+# footer_text: >
+#   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.
 
 keywords: Du Mingzhe, Mingzhe Du, academic-website, NUS, NTU, IDS, CCDS, NLP, AI, Research, PhD, Machine Learning, Artificial Intelligence, Computer Science, Data Science, Singapore, Australia
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
