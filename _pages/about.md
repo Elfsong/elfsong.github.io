@@ -9,7 +9,7 @@ profile:
   image: mingzhe.jpg
   image_circular: false # crops the image to make it circular
   address: >
-    <img src="assets/img/logos.png" alt="NUS_NTU_LOGOS" width="100%">
+    NUS / NTU
 
 
 news: true  # includes a list of news items
