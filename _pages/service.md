@@ -9,8 +9,10 @@ horizontal: false
 ---
 
 # Conference Reviewers
-- Reviewer, ICLR 2024
+- Reviewer, ICLR 2025
+- Reviewer, NAACL 2025
 - Reviewer, ICML 2025
+- Reviewer, ICLR 2024
 - Reviewer, NeurIPS 2024
 - Reviewer, AISTATS 2024
 
