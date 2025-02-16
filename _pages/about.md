@@ -1,34 +1,26 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: <strong>PhD Student @ <a href='https://www.ntu.edu.sg/computing'>NTU CCDS</a> / Research Associate @ <a href='https://ids.nus.edu.sg/'>NUS IDS</a> / Research Engineer @ <a href='https://cisco-nus.nus.edu.sg/'>CISCO NUS</a></strong>
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: mingzhe.jpg
   image_circular: false # crops the image to make it circular
-  more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+  address: >
+    <img src="assets/img/logos.png" alt="NTU" width="100%">
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
 
-announcements:
-  enabled: true # includes a list of news items
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
-
-latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
+news: true  # includes a list of news items
+selected_papers: false # includes a list of papers marked as "selected={true}"
+social: false  # includes social icons at the bottom of the page
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+Du Mingzhe is a third-year PhD Candidate at the *College of Computing and Data Science (CCDS)*, *Nanyang Technological University (NTU)*, supervised by [Prof. Luu Anh Tuan](https://tuanluu.github.io/). He is also a Research Associate at the *Institute of Data Science (IDS)*, *National University of Singapore (NUS)*, working closely with [Prof. See-Kiong Ng](https://www.comp.nus.edu.sg/~ngsk/). Mingzhe got his master's degree at the *University of Melbourne*, under the guidance of [Prof. Richard Sinnott](https://findanexpert.unimelb.edu.au/profile/342078-richard-sinnott). Before his PhD journey, Mingzhe developed [Tiktok](https://www.tiktok.com/) search engine at *ByteDance*.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+Currently, Mingzhe's research interests lie in *Natural Language Processing (NLP)* and its downstream tasks [[Google Scholar](https://scholar.google.com/citations?user=CJHW1IgAAAAJ)]. By the way, his favorite drink is Iced Americano [☕️](https://www.buymeacoffee.com/mingzhe).
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+<!-- **Contact Info:** -->
+- 📮: 3 Research Link, Singapore 117602
+- 📧: mingzhe [at] nus.edu.sg / mingzhe001 [at] ntu.edu.sg / mz [at] alumni.unimelb.edu.au
