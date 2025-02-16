@@ -4,12 +4,19 @@ const ninja = document.querySelector('ninja-keys');
 // add the home and posts menu items
 ninja.data = [{
     id: "nav-about",
-    title: "about",
+    title: "About",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-blog",
+  },{id: "nav-service",
+          title: "Service",
+          description: "大风扬积雪击面 亭东自足下皆云漫 稍见云中白若摴蒱数十立者 山也",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/service/";
+          },
+        },{id: "nav-blog",
           title: "blog",
           description: "",
           section: "Navigation",
@@ -90,6 +97,17 @@ ninja.data = [{
           window.location.href = "/blog/2024/photo-gallery/";
         
       },
+    },{id: "post-how-to-execute-llvm-ir-generated-from-codon",
+      
+        title: "How to execute LLVM IR generated from Codon?",
+      
+      description: "Python with native machine speed",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2024/Codon/";
+        
+      },
     },{id: "post-google-gemini-updates-flash-1-5-gemma-2-and-project-astra",
       
         title: 'Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
@@ -143,6 +161,28 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2024/pseudocode/";
+        
+      },
+    },{id: "post-hwg703",
+      
+        title: "HWG703",
+      
+      description: "HWG703 Slides",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/assets/pdf/HWG703.pdf";
+        
+      },
+    },{id: "post-the-bitter-lesson",
+      
+        title: "The Bitter Lesson",
+      
+      description: "Rich Sutton (March 13, 2019)",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2024/abitterlesson/";
         
       },
     },{id: "post-a-post-with-code-diff",
@@ -431,16 +471,101 @@ ninja.data = [{
           window.location.href = "/blog/2015/formatting-and-links/";
         
       },
-    },{id: "news-a-simple-inline-announcement",
-          title: 'A simple inline announcement.',
+    },{id: "news-i-was-invited-to-serve-on-a-pc-member-of-clef-22",
+          title: 'I was invited to serve on a PC member of CLEF’22.',
           description: "",
-          section: "News",},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
+          section: "News",},{id: "news-i-was-invited-to-present-our-work-on-sdsc-data-science-for-industry-amp-amp-demo-day",
+          title: 'I was invited to present our work on SDSC Data Science for Industry...',
           description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
-            },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
-          title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
+          section: "News",},{id: "news-our-paper-nus-ids-at-checkthat-2022-identifying-check-worthiness-of-tweets-using-checkthat5-has-been-accepted-to-ceur-ws-22",
+          title: 'Our paper “NUS-IDS at CheckThat!2022: Identifying Check-worthiness of Tweets using CheckthaT5” has been...',
+          description: "",
+          section: "News",},{id: "news-i-was-invited-to-present-our-work-at-university-of-bologna-italy",
+          title: 'I was invited to present Our Work at University of Bologna, Italy.',
+          description: "",
+          section: "News",},{id: "news-i-gave-a-talk-on-the-the-2nd-international-research-workshop-in-computer-science-and-information-systems-oct-14-16-in-phuket-thailand-co-organized-by-psu-and-nus",
+          title: 'I gave a talk on the “The 2nd International Research Workshop in Computer...',
+          description: "",
+          section: "News",},{id: "news-our-paper-generating-reflective-questions-for-engaging-gallery-visitors-in-artmuse-has-been-accepted-to-the-aaai-23-demonstrations-program",
+          title: 'Our paper “Generating Reflective Questions for Engaging Gallery Visitors in ArtMuse” has been...',
+          description: "",
+          section: "News",},{id: "news-our-team-risk-prediction-modelling-for-central-line-associated-blood-stream-infections-clabsi-won-the-first-runner-up-in-sg-healthcare-al-datathon-amp-amp-expo-2022",
+          title: 'Our team “Risk prediction modelling for central line associated blood stream infections (CLABSI)”...',
+          description: "",
+          section: "News",},{id: "news-our-paper-constituency-informed-and-constituency-constrained-extractive-question-answering-with-heterogeneous-graph-transformer-has-been-accepted-to-tldks-2023",
+          title: 'Our paper “Constituency-informed and Constituency-constrained Extractive Question Answering with Heterogeneous Graph Transformer” has...',
+          description: "",
+          section: "News",},{id: "news-our-paper-identifying-checkworthy-cure-claims-on-twitter-has-been-accepted-to-the-thewebconf2023-www",
+          title: 'Our paper “Identifying Checkworthy CURE Claims on Twitter” has been accepted to the...',
+          description: "",
+          section: "News",},{id: "news-i-attended-aaai23-in-washington-dc",
+          title: 'I attended AAAI23 in Washington, DC.',
+          description: "",
+          section: "News",},{id: "news-i-attended-emnlp-24-at-resorts-world-convention-centre-singapore",
+          title: 'I attended EMNLP’24 at Resorts World Convention Centre, Singapore.',
+          description: "",
+          section: "News",},{id: "news-our-paper-from-static-to-dynamic-knowledge-metabolism-for-large-language-models-has-been-accepted-to-aaai-24",
+          title: 'Our paper ‘From Static to Dynamic: Knowledge Metabolism for Large Language Models’ has...',
+          description: "",
+          section: "News",},{id: "news-our-paper-chain-of-thought-improves-text-generation-with-cititations-has-been-accepted-to-aaai-24",
+          title: 'Our paper ‘Chain-of-Thought Improves Text Generation with Cititations’ has been accepted to AAAI’24...',
+          description: "",
+          section: "News",},{id: "news-we-finished-our-new-paper-mercury-an-efficiency-benchmark-for-llm-code-synthesis",
+          title: 'We finished our new paper ‘Mercury: An Efficiency Benchmark for LLM Code Synthesis’....',
+          description: "",
+          section: "News",},{id: "news-i-attended-aaai-24-in-vancouver-canada",
+          title: 'I attended AAAI’24 in Vancouver, Canada.',
+          description: "",
+          section: "News",},{id: "news-i-gave-an-oral-presentation-on-aaai-24",
+          title: 'I gave an oral presentation on AAAI’24.',
+          description: "",
+          section: "News",},{id: "news-i-attended-the-webconf-24-in-sentosa-singapore",
+          title: 'I attended The WebConf’24 in Sentosa, Singapore.',
+          description: "",
+          section: "News",},{id: "news-i-was-nominated-as-a-neurips-24-reviewer",
+          title: 'I was nominated as a NeurIPS’24 reviewer.',
+          description: "",
+          section: "News",},{id: "news-we-completed-our-new-paper-committee-mitigating-llm-bias-through-multi-agent-proposal-and-vote",
+          title: 'We completed our new paper ‘Committee: Mitigating LLM Bias through Multi-agent Proposal and...',
+          description: "",
+          section: "News",},{id: "news-i-was-nominated-as-an-iclr-25-reviewer",
+          title: 'I was nominated as an ICLR’25 reviewer.',
+          description: "",
+          section: "News",},{id: "news-our-paper-counseling-responses-for-mental-health-forum-questions-with-early-maladaptive-schema-prediction-has-been-accepted-to-eaci-24",
+          title: 'Our paper “Counseling Responses for Mental Health Forum Questions with Early Maladaptive Schema...',
+          description: "",
+          section: "News",},{id: "news-our-paper-mercury-a-code-efficiency-benchmark-for-code-large-language-models-has-been-accepted-to-neurips-24-track-datasets-and-benchmarks",
+          title: 'Our paper “Mercury: A Code Efficiency Benchmark for Code Large Language Models” has...',
+          description: "",
+          section: "News",},{id: "news-i-was-nominated-as-an-aistats-25-reviewer",
+          title: 'I was nominated as an AISTATS’25 reviewer.',
+          description: "",
+          section: "News",},{id: "news-our-team-black-mesa-participated-in-the-singapore-ai-ctf-and-achieved-an-23rd-place-out-of-more-than-500-teams",
+          title: 'Our team, Black Mesa participated in the Singapore AI CTF and achieved an...',
+          description: "",
+          section: "News",},{id: "news-we-released-the-venus-code-generation-dataset",
+          title: 'We released the Venus code generation dataset.',
+          description: "",
+          section: "News",},{id: "news-i-passed-the-phd-qualification-examination-qe-at-ntu",
+          title: 'I passed the PhD Qualification Examination (QE) at NTU 🎉.',
+          description: "",
+          section: "News",},{id: "news-i-completed-the-10km-run-at-scsm-with-a-time-of-58-58",
+          title: 'I completed the 10KM run at SCSM with a time of 58:58 🏃!...',
+          description: "",
+          section: "News",},{id: "news-our-paper-curriculum-demonstration-selection-for-in-context-learning-has-been-accepted-into-sac-25",
+          title: 'Our paper “Curriculum Demonstration Selection for In-Context Learning” has been accepted into SAC’25....',
+          description: "",
+          section: "News",},{id: "news-i-was-nominated-as-an-icml-25-reviewer",
+          title: 'I was nominated as an ICML’25 reviewer.',
+          description: "",
+          section: "News",},{id: "news-our-paper-towards-verifiable-text-generation-with-generative-agent-has-been-accepted-into-aaai-25",
+          title: 'Our paper “Towards Verifiable Text Generation with Generative Agent” has been accepted into...',
+          description: "",
+          section: "News",},{id: "news-our-paper-unraveling-online-mental-health-through-the-lens-of-early-maladaptive-schemas-an-ai-enabled-study-of-online-mental-health-communities-has-been-accepted-into-journal-of-medical-internet-research-jmir",
+          title: 'Our paper “Unraveling Online Mental Health Through the Lens of Early Maladaptive Schemas:...',
+          description: "",
+          section: "News",},{id: "news-i-developed-a-multiple-language-remote-runtime-monolith-please-feel-free-to-have-a-try",
+          title: 'I developed a multiple language remote runtime Monolith. Please feel free to have...',
           description: "",
           section: "News",},{id: "projects-project-1",
           title: 'project 1',
