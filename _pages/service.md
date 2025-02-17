@@ -9,6 +9,7 @@ horizontal: false
 ---
 
 # Conference Reviewers
+- Reviewer, NeurIPS 2025
 - Reviewer, ICLR 2025
 - Reviewer, NAACL 2025
 - Reviewer, ICML 2025
