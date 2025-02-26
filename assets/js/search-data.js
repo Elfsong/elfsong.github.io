@@ -9,14 +9,7 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-service",
-          title: "Service",
-          description: "大风扬积雪击面 亭东自足下皆云漫 稍见云中白若摴蒱数十立者 山也",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/service/";
-          },
-        },{id: "nav-blog",
+  },{id: "nav-blog",
           title: "Blog",
           description: "",
           section: "Navigation",
@@ -36,6 +29,20 @@ ninja.data = [{
           section: "Navigation",
           handler: () => {
             window.location.href = "/projects/";
+          },
+        },{id: "nav-service",
+          title: "Service",
+          description: "大风扬积雪击面 亭东自足下皆云漫 稍见云中白若摴蒱数十立者 山也",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/service/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Mingzhe Du&#39;s Resume",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
           },
         },{id: "post-a-post-with-image-galleries",
       
