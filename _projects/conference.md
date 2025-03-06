@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Conference
-description: Conference Trip
+title: NTU x NUS
+description: NTU and NUS Information Exchange
 img: assets/img/vancouver.jpg
 importance: 2
 category: work
