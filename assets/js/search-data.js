@@ -522,9 +522,9 @@ ninja.data = [{
           description: "Where The Trail Ends",
           section: "Projects",handler: () => {
               window.location.href = "/projects/bike/";
-            },},{id: "projects-conference",
-          title: 'Conference',
-          description: "Conference Trip",
+            },},{id: "projects-ntu-x-nus",
+          title: 'NTU x NUS',
+          description: "NTU and NUS Information Exchange",
           section: "Projects",handler: () => {
               window.location.href = "/projects/conference/";
             },},{id: "projects-food",
