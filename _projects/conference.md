@@ -1,18 +1,10 @@
 ---
 layout: page
-title: Conference
-description: Conference Trip
+title: NTU x NUS
+description: NTU and NUS Information Exchange
 img: assets/img/vancouver.jpg
 importance: 2
 category: work
 ---
 
-AAAI‘23 @ Washington, DC
-
-EMNLP’23 @ Resorts World, Singapore
-
-AAAI‘24 @ Vancouver, Canada
-
-WebConf’24 @ Resorts World, Singapore
-
-NeurIPS’24 @ Vancouver, Canada
+[NTU x NUS](https://lucky-reactor.notion.site/1ae33f409b0480a19ec4c6fafc585cbf?v=1ae33f409b0480cc906d000ce69bba13)
