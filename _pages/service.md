@@ -8,7 +8,8 @@ nav_order: 4
 horizontal: false
 ---
 
-# Conference Reviewers
+## Conference Reviewers
+
 - Reviewer, NeurIPS 2025
 - Reviewer, ICLR 2025
 - Reviewer, NAACL 2025
@@ -17,10 +18,12 @@ horizontal: false
 - Reviewer, NeurIPS 2024
 - Reviewer, AISTATS 2024
 
-# Consultation
+## Consultation
+
 - STEM Mentor, University of Melbourne, 2020 - Present
 
-# Volunteer
+## Volunteer
+
 - Volunteer, WWW 2024
 - Volunteer, EMNLP 2024
 - Volunteer, AAAI 2023
