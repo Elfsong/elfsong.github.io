@@ -526,7 +526,7 @@ ninja.data = [{
           title: 'NTU x NUS',
           description: "NTU and NUS Information Exchange",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/conference/";
+              window.location.href = "/projects/exchange/";
             },},{id: "projects-food",
           title: 'Food',
           description: "Gastronomic Delight",
