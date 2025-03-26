@@ -17,4 +17,4 @@ CLIP with ODE diffusion process
 
 Collective Bias Mitigation
 
-Coding like a master (learning from tutorial or seminar videos or posts)
+Coding like a guru (learning from tutorial or seminar videos or posts)

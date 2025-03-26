@@ -8,4 +8,4 @@ category: fun
 redirect: https://elfsong-mingzhe.hf.space
 ---
 
-AI Forever
+AI Forever...
