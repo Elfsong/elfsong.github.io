@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-a-post-with-image-galleries",
+        },{id: "post-ntu-nus-exchange",
+      
+        title: "NTU × NUS Exchange",
+      
+      description: "Submit new event to NTU × NUS Exchange",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/event/";
+        
+      },
+    },{id: "post-a-post-with-image-galleries",
       
         title: "a post with image galleries",
       
@@ -394,17 +405,6 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2015/code/";
-        
-      },
-    },{id: "post-a-post-with-images",
-      
-        title: "a post with images",
-      
-      description: "this is what included images could look like",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2015/images/";
         
       },
     },{id: "post-a-post-with-formatting-and-links",
