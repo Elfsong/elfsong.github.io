@@ -509,7 +509,7 @@ ninja.data = [{
           section: "News",},{id: "news-i-built-a-bus-scheduling-monitor-ids-commute-it-helps-to-figure-out-the-best-time-to-head-to-work-or-return-home",
           title: 'I built a bus scheduling monitor IDS Commute 🚌. It helps to figure...',
           description: "",
-          section: "News",},{id: "news-i-ve-launched-an-information-exchange-platform-between-ntu-and-nus-to-share-upcoming-events-opportunities-and-resources",
+          section: "News",},{id: "news-i-ve-launched-an-information-exchange-platform-between-ntu-and-nus-to-share-upcoming-events-and-opportunities",
           title: 'I’ve launched an Information Exchange Platform between NTU and NUS to share upcoming...',
           description: "",
           section: "News",},{id: "projects-bikes",
