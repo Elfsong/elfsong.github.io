@@ -513,7 +513,7 @@ ninja.data = [{
           title: 'I’ve launched an Information Exchange Platform between NTU and NUS to share upcoming...',
           description: "",
           section: "News",},{id: "news-our-paper-position-current-model-licensing-practices-are-dragging-us-into-a-quagmire-of-legal-noncompliance-has-been-accepted-into-icml-25",
-          title: 'Our paper ‘Position: Current Model Licensing Practices are Dragging Us into a Quagmire...',
+          title: 'Our paper “Position: Current Model Licensing Practices are Dragging Us into a Quagmire...',
           description: "",
           section: "News",},{id: "projects-bikes",
           title: 'Bikes',
