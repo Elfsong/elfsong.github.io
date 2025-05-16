@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-ntu-nus-exchange",
+        },{id: "post-latex-color",
+      
+        title: "LaTeX Color",
+      
+      description: "Latex Color",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/Xcolor/";
+        
+      },
+    },{id: "post-ntu-nus-exchange",
       
         title: "NTU × NUS Exchange",
       
