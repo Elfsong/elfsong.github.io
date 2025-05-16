@@ -1,9 +1,9 @@
 ---
 layout: post
-title: a post with math
-date: 2015-10-20 11:12:00-0400
-description: an example of a blog post with some math
-tags: formatting math
+title: Latex Color
+date: 2025-05-01 11:12:00-0400
+description: Latex Color
+tags: SOP
 categories: sample-posts
 related_posts: false
 ---
