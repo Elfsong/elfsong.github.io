@@ -31,7 +31,6 @@ Du Mingzhe (杜明哲) is a third-year PhD Candidate at the *College of Computin
 
 Mingzhe's research focuses on *Code Generation* and *Preference Alignment*. **If you are interested in collaborating, please feel free to connect!**
 
-
 <!-- **Contact Info:** -->
 - 📮: 3 Research Link, Singapore 117602
 - 📧: mingzhe [at] nus.edu.sg / mingzhe001 [at] ntu.edu.sg / mz [at] alumni.unimelb.edu.au
