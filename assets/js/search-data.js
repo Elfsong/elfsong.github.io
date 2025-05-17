@@ -44,9 +44,9 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-latex-color",
+        },{id: "post-latex-color-palette",
       
-        title: "LaTeX Color",
+        title: "LaTeX Color Palette",
       
       description: "Latex Color",
       section: "Posts",
