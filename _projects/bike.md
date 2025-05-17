@@ -7,4 +7,6 @@ importance: 2
 category: fun
 ---
 
+![First Bike](assets/img/bikes/bike_0_0.jpg)
+
 # Where the trail ends, wheels are rolling!
