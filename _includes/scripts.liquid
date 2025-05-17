@@ -225,13 +225,13 @@
 
     gtag('config', '{{ site.google_analytics }}');
   </script>
-  <script defer src="{{ '/assets/js/google-analytics-setup.js' | relative_url | bust_file_cache }}"></script>
+  <script defer src="{{ '/assets/js/google-analytics-setup.js' | relative_url }}"></script>
 {% endif %}
 
 {% if site.enable_cronitor_analytics %}
   <!-- Cronitor RUM -->
   <script async src="https://rum.cronitor.io/script.js"></script>
-  <script defer src="{{ '/assets/js/cronitor-analytics-setup.js' | relative_url | bust_file_cache }}"></script>
+  <script defer src="{{ '/assets/js/cronitor-analytics-setup.js' | relative_url }}"></script>
 {% endif %}
 {% if site.enable_pirsch_analytics %}
   <script
@@ -242,13 +242,13 @@
   ></script>
 {% endif %}
 {% if site.enable_openpanel_analytics %}
-  <script defer src="{{ '/assets/js/open-panel-analytics-setup.js' | relative_url | bust_file_cache }}"></script>
+  <script defer src="{{ '/assets/js/open-panel-analytics-setup.js' | relative_url }}"></script>
   <script async defer src="https://openpanel.dev/op1.js"></script>
 {% endif %}
 
 {% if site.enable_progressbar %}
   <!-- Scrolling Progress Bar -->
-  <script defer src="{{ '/assets/js/progress-bar.js' | relative_url | bust_file_cache }}" type="text/javascript"></script>
+  <script defer src="{{ '/assets/js/progress-bar.js' | relative_url }}" type="text/javascript"></script>
 {% endif %}
 
 {% if page.images %}
