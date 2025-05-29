@@ -15,7 +15,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 ```echarts
 {
     "title": {
-        "text": "Model Performance Over Iterations"
+        "text": "Pass@1 Over Iterations"
     },
     "responsive": true,
     "tooltip": {
@@ -70,52 +70,60 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 }
 ```
 
-```pseudocode
-% This quicksort algorithm is extracted from Chapter 7, Introduction to Algorithms (3rd edition)
-\begin{algorithm}
-\caption{Quicksort}
-\begin{algorithmic}
-\PROCEDURE{Initialization}{}
-    \If{not $\mathcal{C}_{0}^{in}$}
-        \State $\mathcal{C}_{0}^{in} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \textit{None}, \textit{None})$
-        \Comment{Initial code generation.}
-    \EndIf
-
-    \State $\mathcal{M}_{0}^{in} \gets \texttt{Monolith}(\mathcal{C}_{0}^{in}, T_{cases})$
-    \Comment{Initial code evaluation.}
-\ENDPROCEDURE
-
-\PROCEDURE{Partition}{$$A, p, r$$}
-    \STATE $$x = A[r]$$
-    \STATE $$i = p - 1$$
-    \FOR{$$j = p$$ \TO $$r - 1$$}
-        \IF{$$A[j] < x$$}
-            \STATE $$i = i + 1$$
-            \STATE exchange
-            $$A[i]$$ with $$A[j]$$
-        \ENDIF
-        \STATE exchange $$A[i]$$ with $$A[r]$$
-    \ENDFOR
-\ENDPROCEDURE
-\For{$i \gets 1$ \textbf{to} $N_{iter}$}
-    \State $\mathcal{C}_{i}^{out} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
-    \Comment{Code optimization.}
-
-    \State $\mathcal{M}_{i}^{out} \gets \texttt{Monolith}(\mathcal{C}_{i}^{out}, T_{cases})$
-    \Comment{Code evaluate.}
-
-    \If{$\mathcal{M}_{i}^{out} \succ \mathcal{M}_{i}^{in})$}
-        \Comment{Compare the performance concerning $I$.}
-        \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{out}, \mathcal{M}_{i}^{out})$
-        \Comment{Update with the better performing candidate.}
-    \Else
-        \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
-        \Comment{Otherwise, retain the current best.}
-    \EndIf
-\EndFor
-
-\State \textbf{return} $(\mathcal{C}_{N_{iter}}^{in}, \mathcal{M}_{N_{iter}}^{in})$
-\Comment{Return the best code found after $N_{iter}$ iterations and its metrics}
-\end{algorithmic}
-\end{algorithm}
+```echarts
+{
+    "title": {
+        "text": "Beyond-I Over Iterations"
+    },
+    "responsive": true,
+    "tooltip": {
+        "trigger": "axis"
+    },
+    "legend": {
+        "top": "50px",
+        "data": ["Base Model", "Afterburner 3B-SFT", "Afterburner 3B-DPO", "Afterburner 3B-GRPO"]
+    },
+    "grid": {
+        "left": "3%",
+        "right": "4%",
+        "bottom": "3%",
+        "containLabel": true
+    },
+    "toolbox": {
+        "feature": {
+        "saveAsImage": {}
+        }
+    },
+    "xAxis": {
+        "type": "category",
+        "boundaryGap": false,
+        "data": ["Iter 0", "Iter 1", "Iter 2", "Iter 3", "Iter 4", "Iter 5", "Iter 6", "Iter 7", "Iter 8", "Iter 9", "Iter 10"]
+    },
+    "yAxis": {
+        "type": "value",
+        "name": "Beyond-I"
+    },
+    "series": [
+        {
+        "name": "Base Model",
+        "type": "line",
+        "data": [10.29, 10.77, 11.25, 11.49, 11.72, 11.83, 11.96, 12.07, 12.07, 12.07, 12.07]
+        },
+        {
+        "name": "Afterburner 3B-SFT",
+        "type": "line",
+        "data": [21.01, 21.09, 21.50, 21.88, 22.25, 22.31, 22.38, 22.44, 22.50, 22.50, 22.50]
+        },
+        {
+        "name": "Afterburner 3B-DPO",
+        "type": "line",
+        "data": [19.13, 26.25, 27.05, 27.42, 27.95, 28.11, 28.51, 29.51, 29.51, 29.51, 29.51]
+        },
+        {
+        "name": "Afterburner 3B-GRPO",
+        "type": "line",
+        "data": [18.24, 24.81, 29.44, 30.85, 33.56, 35.48, 37.09, 38.01, 38.62, 38.95, 38.95]
+        }
+    ]
+}
 ```
