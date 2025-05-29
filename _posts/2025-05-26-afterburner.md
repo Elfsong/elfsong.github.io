@@ -4,7 +4,7 @@ title: Afterburner
 date: 2024-01-26 16:03:00
 description: By Humans, Beyond Humans.
 tags: math
-categories: sample-posts
+categories: academia
 chart:
   echarts: true
 ---
