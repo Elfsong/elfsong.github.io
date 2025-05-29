@@ -69,7 +69,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 }
 ```
 
-```echarts
+<!-- ```echarts
 {
     "title": {
         "text": "Model Beyond-I Performance Over Iterations",
@@ -125,4 +125,4 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
         }
     ]
 }
-```
+``` -->
