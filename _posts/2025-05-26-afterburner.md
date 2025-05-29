@@ -5,10 +5,18 @@ date: 2025-05-26 00:00:00
 description: By Humans, Beyond Humans.
 tags: math code
 categories: academia
+featured: false
+mermaid:
+  enabled: true
+  zoomable: true
+code_diff: true
+map: true
 chart:
+  chartjs: true
   echarts: true
-pseudocode: true
----
+  vega_lite: true
+tikzjax: true
+typograms: true
 
 authors:
   - name: Mingzhe Du
@@ -40,6 +48,8 @@ authors:
       name: National University of Singapore
 
 bibliography: afterburner.bib
+
+---
 
 Large Language Models (LLMs) generate functionally correct solutions but often fall short in code efficiency, a critical bottleneck for real-world deployment. In this paper, we introduce a novel test-time iterative optimization framework to address this, employing a closed-loop system where LLMs iteratively refine code based on empirical performance feedback from an execution sandbox. We explore three training strategies: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization~(GRPO). Experiments on our Venus dataset and the APPS benchmark show that SFT and DPO rapidly saturate in efficiency gains. In contrast, GRPO, using reinforcement learning (RL) with execution feedback, continuously optimizes code performance, significantly boosting both pass@1 (from 47% to 62%) and the likelihood of outperforming human submissions in efficiency (from 31% to 45%). Our work demonstrates effective test-time code efficiency improvement and critically reveals the power of RL in teaching LLMs to truly self-improve code efficiency.
 
