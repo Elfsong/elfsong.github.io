@@ -38,9 +38,8 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
   },
   "xAxis": {
     "type": "category",
-    "name": "Iteration",
     "boundaryGap": false,
-    "data": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    "data": ['Iter 0', 'Iter 1', 'Iter 2', 'Iter 3', 'Iter 4', 'Iter 5', 'Iter 6', 'Iter 7', 'Iter 8', 'Iter 9', 'Iter 10']
   },
   "yAxis": {
     "type": "value",
