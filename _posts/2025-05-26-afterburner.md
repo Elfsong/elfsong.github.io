@@ -7,6 +7,7 @@ tags: math code
 categories: academia
 chart:
   echarts: true
+pseudocode: true
 ---
 
 Large Language Models (LLMs) generate functionally correct solutions but often fall short in code efficiency, a critical bottleneck for real-world deployment. In this paper, we introduce a novel test-time iterative optimization framework to address this, employing a closed-loop system where LLMs iteratively refine code based on empirical performance feedback from an execution sandbox. We explore three training strategies: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization~(GRPO). Experiments on our Venus dataset and the APPS benchmark show that SFT and DPO rapidly saturate in efficiency gains. In contrast, GRPO, using reinforcement learning (RL) with execution feedback, continuously optimizes code performance, significantly boosting both pass@1 (from 47% to 62%) and the likelihood of outperforming human submissions in efficiency (from 31% to 45%). Our work demonstrates effective test-time code efficiency improvement and critically reveals the power of RL in teaching LLMs to truly self-improve code efficiency.
@@ -68,4 +69,41 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
     }
   ]
 }
+```
+
+```pseudocode
+\begin{algorithmic}
+    \Require Problem description~$\mathcal{P}$, Efficiency instruction~$\mathcal{I} \in \{\textit{time, memory, integral}\}$, Set of test cases~$T_{cases}$, Original code~$\mathcal{C}_{0}^{in}$ (optional), Number of iterations~$N_{iter}$ 
+    \Ensure  Improved code~$\mathcal{C}_{0}^{out}$, Improved code performance~$\mathcal{M}_{0}^{out}$
+    \algrule
+    
+    \If{not $\mathcal{C}_{0}^{in}$}
+        \State $\mathcal{C}_{0}^{in} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \textit{None}, \textit{None})$
+        \Comment{Initial code generation.}
+    \EndIf
+    
+    \State $\mathcal{M}_{0}^{in} \gets \texttt{Monolith}(\mathcal{C}_{0}^{in}, T_{cases})$
+    \Comment{Initial code evaluation.}
+
+    \For{$i \gets 1$ \textbf{to} $N_{iter}$}
+        \State $\mathcal{C}_{i}^{out} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
+        \Comment{Code optimization.}
+    
+        \State $\mathcal{M}_{i}^{out} \gets \texttt{Monolith}(\mathcal{C}_{i}^{out}, T_{cases})$
+        \Comment{Code evaluate.}
+    
+        \If{$\mathcal{M}_{i}^{out} \succ \mathcal{M}_{i}^{in})$}
+            \Comment{Compare the performance concerning $I$.}
+            \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{out}, \mathcal{M}_{i}^{out})$
+            \Comment{Update with the better performing candidate.}
+        \Else
+            \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
+            \Comment{Otherwise, retain the current best.}
+        \EndIf
+    \EndFor
+    
+    \State \textbf{return} $(\mathcal{C}_{N_{iter}}^{in}, \mathcal{M}_{N_{iter}}^{in})$
+    \Comment{Return the best code found after $N_{iter}$ iterations and its metrics}
+\end{algorithmic}
+\end{algorithm}
 ```
