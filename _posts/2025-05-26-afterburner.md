@@ -14,59 +14,59 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 
 ```echarts
 {
-  "title": {
-    "text": "Model Performance Over Iterations"
-  },
-  "responsive": true,
-  "tooltip": {
-    "trigger": "axis"
-  },
-  "legend": {
-    "top": "50px",
-    "data": ["Base Model", "Afterburner 3B-SFT", "Afterburner 3B-DPO", "Afterburner 3B-GRPO"]
-  },
-  "grid": {
-    "left": "3%",
-    "right": "4%",
-    "bottom": "3%",
-    "containLabel": true
-  },
-  "toolbox": {
-    "feature": {
-      "saveAsImage": {}
-    }
-  },
-  "xAxis": {
-    "type": "category",
-    "boundaryGap": false,
-    "data": ["Iter 0", "Iter 1", "Iter 2", "Iter 3", "Iter 4", "Iter 5", "Iter 6", "Iter 7", "Iter 8", "Iter 9", "Iter 10"]
-  },
-  "yAxis": {
-    "type": "value",
-    "name": "Pass@1"
-  },
-  "series": [
-    {
-      "name": "Base Model",
-      "type": "line",
-      "data": [27.99, 28.33, 28.67, 28.67, 29.00, 29.08, 29.17, 29.24, 29.33, 29.33, 29.33]
+    "title": {
+        "text": "Model Performance Over Iterations"
     },
-    {
-      "name": "Afterburner 3B-SFT",
-      "type": "line",
-      "data": [46.00, 46.00, 46.33, 47.00, 48.33, 48.33, 48.67, 48.67, 48.67, 48.67, 48.67]
+    "responsive": true,
+    "tooltip": {
+        "trigger": "axis"
     },
-    {
-      "name": "Afterburner 3B-DPO",
-      "type": "line",
-      "data": [43.00, 50.00, 51.33, 51.50, 51.67, 51.67, 51.67, 51.67, 51.67, 51.67, 51.67]
+    "legend": {
+        "top": "50px",
+        "data": ["Base Model", "Afterburner 3B-SFT", "Afterburner 3B-DPO", "Afterburner 3B-GRPO"]
     },
-    {
-      "name": "Afterburner 3B-GRPO",
-      "type": "line",
-      "data": [47.33, 50.33, 52.00, 54.50, 57.00, 58.17, 59.34, 60.50, 61.18, 61.67, 61.67]
-    }
-  ]
+    "grid": {
+        "left": "3%",
+        "right": "4%",
+        "bottom": "3%",
+        "containLabel": true
+    },
+    "toolbox": {
+        "feature": {
+        "saveAsImage": {}
+        }
+    },
+    "xAxis": {
+        "type": "category",
+        "boundaryGap": false,
+        "data": ["Iter 0", "Iter 1", "Iter 2", "Iter 3", "Iter 4", "Iter 5", "Iter 6", "Iter 7", "Iter 8", "Iter 9", "Iter 10"]
+    },
+    "yAxis": {
+        "type": "value",
+        "name": "Pass@1"
+    },
+    "series": [
+        {
+        "name": "Base Model",
+        "type": "line",
+        "data": [27.99, 28.33, 28.67, 28.67, 29.00, 29.08, 29.17, 29.24, 29.33, 29.33, 29.33]
+        },
+        {
+        "name": "Afterburner 3B-SFT",
+        "type": "line",
+        "data": [46.00, 46.00, 46.33, 47.00, 48.33, 48.33, 48.67, 48.67, 48.67, 48.67, 48.67]
+        },
+        {
+        "name": "Afterburner 3B-DPO",
+        "type": "line",
+        "data": [43.00, 50.00, 51.33, 51.50, 51.67, 51.67, 51.67, 51.67, 51.67, 51.67, 51.67]
+        },
+        {
+        "name": "Afterburner 3B-GRPO",
+        "type": "line",
+        "data": [47.33, 50.33, 52.00, 54.50, 57.00, 58.17, 59.34, 60.50, 61.18, 61.67, 61.67]
+        }
+    ]
 }
 ```
 
@@ -75,13 +75,16 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 \begin{algorithm}
 \caption{Quicksort}
 \begin{algorithmic}
-\PROCEDURE{Quicksort}{$$A, p, r$$}
-    \IF{$$p < r$$}
-        \STATE $$q = $$ \CALL{Partition}{$$A, p, r$$}
-        \STATE \CALL{Quicksort}{$$A, p, q - 1$$}
-        \STATE \CALL{Quicksort}{$$A, q + 1, r$$}
-    \ENDIF
+\PROCEDURE{Initialization}{}
+    \If{not $\mathcal{C}_{0}^{in}$}
+        \State $\mathcal{C}_{0}^{in} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \textit{None}, \textit{None})$
+        \Comment{Initial code generation.}
+    \EndIf
+    
+    \State $\mathcal{M}_{0}^{in} \gets \texttt{Monolith}(\mathcal{C}_{0}^{in}, T_{cases})$
+    \Comment{Initial code evaluation.}
 \ENDPROCEDURE
+
 \PROCEDURE{Partition}{$$A, p, r$$}
     \STATE $$x = A[r]$$
     \STATE $$i = p - 1$$
