@@ -14,7 +14,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 ```echarts
 {
   "title": {
-    "text": "Pass@1 Over Iterations"
+    "text": "Model Performance Over Iterations"
   },
   "responsive": true,
   "tooltip": {
@@ -37,7 +37,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
   },
   "xAxis": {
     "type": "category",
-    "name": "Iteration"
+    "name": "Iteration",
     "boundaryGap": false,
     "data": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   },
