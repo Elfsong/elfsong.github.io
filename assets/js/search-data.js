@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-latex-color-palette",
+        },{id: "post-afterburner",
+      
+        title: "Afterburner",
+      
+      description: "By Humans, Beyond Humans.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/afterburner/";
+        
+      },
+    },{id: "post-latex-color-palette",
       
         title: "LaTeX Color Palette",
       
@@ -185,17 +196,6 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2024/geojson-map/";
-        
-      },
-    },{id: "post-afterburner",
-      
-        title: "Afterburner",
-      
-      description: "By Humans, Beyond Humans.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2024/afterburner/";
         
       },
     },{id: "post-a-post-with-echarts",
