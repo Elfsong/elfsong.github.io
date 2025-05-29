@@ -80,7 +80,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
         \State $\mathcal{C}_{0}^{in} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \textit{None}, \textit{None})$
         \Comment{Initial code generation.}
     \EndIf
-    
+
     \State $\mathcal{M}_{0}^{in} \gets \texttt{Monolith}(\mathcal{C}_{0}^{in}, T_{cases})$
     \Comment{Initial code evaluation.}
 \ENDPROCEDURE
@@ -97,6 +97,25 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
         \STATE exchange $$A[i]$$ with $$A[r]$$
     \ENDFOR
 \ENDPROCEDURE
+\For{$i \gets 1$ \textbf{to} $N_{iter}$}
+    \State $\mathcal{C}_{i}^{out} \gets \texttt{Afterburner}(\mathcal{P}, \mathcal{I}, \mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
+    \Comment{Code optimization.}
+
+    \State $\mathcal{M}_{i}^{out} \gets \texttt{Monolith}(\mathcal{C}_{i}^{out}, T_{cases})$
+    \Comment{Code evaluate.}
+
+    \If{$\mathcal{M}_{i}^{out} \succ \mathcal{M}_{i}^{in})$}
+        \Comment{Compare the performance concerning $I$.}
+        \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{out}, \mathcal{M}_{i}^{out})$
+        \Comment{Update with the better performing candidate.}
+    \Else
+        \State $(\mathcal{C}_{i+1}^{in}, \mathcal{M}_{i+1}^{in}) \gets (\mathcal{C}_{i}^{in}, \mathcal{M}_{i}^{in})$
+        \Comment{Otherwise, retain the current best.}
+    \EndIf
+\EndFor
+
+\State \textbf{return} $(\mathcal{C}_{N_{iter}}^{in}, \mathcal{M}_{N_{iter}}^{in})$
+\Comment{Return the best code found after $N_{iter}$ iterations and its metrics}
 \end{algorithmic}
 \end{algorithm}
 ```
