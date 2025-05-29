@@ -3,7 +3,7 @@ layout: post
 title: Afterburner
 date: 2025-05-26 00:00:00
 description: By Humans, Beyond Humans.
-tags: math
+tags: math code
 categories: academia
 chart:
   echarts: true
