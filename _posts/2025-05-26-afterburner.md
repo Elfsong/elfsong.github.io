@@ -14,8 +14,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
 ```echarts
 {
     "title": {
-        "text": "Model Performance Over Iterations",
-        "subtext": "Venus - Subset Pass@1"
+        "text": "Model Pass@1 Performance Over Iterations",
     },
     "responsive": true,
     "tooltip": {
@@ -33,7 +32,7 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
     },
     "toolbox": {
         "feature": {
-        "saveAsImage": {}
+            "saveAsImage": {}
         }
     },
     "xAxis": {
@@ -65,6 +64,64 @@ Large Language Models (LLMs) generate functionally correct solutions but often f
             "name": "Afterburner 3B-GRPO",
             "type": "line",
             "data": [47.33, 50.33, 52.00, 54.50, 57.00, 58.17, 59.34, 60.50, 61.18, 61.67, 61.67]
+        }
+    ]
+}
+```
+
+```echarts
+{
+    "title": {
+        "text": "Model Beyond-I Performance Over Iterations",
+    },
+    "responsive": true,
+    "tooltip": {
+        "trigger": "axis"
+    },
+    "legend": {
+        "top": "50px",
+        "data": ["Base Model", "Afterburner 3B-SFT", "Afterburner 3B-DPO", "Afterburner 3B-GRPO"]
+    },
+    "grid": {
+        "left": "3%",
+        "right": "4%",
+        "bottom": "3%",
+        "containLabel": true
+    },
+    "toolbox": {
+        "feature": {
+            "saveAsImage": {}
+        }
+    },
+    "xAxis": {
+        "type": "category",
+        "boundaryGap": false,
+        "data": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    },
+    "yAxis": {
+        "type": "value",
+        "name": "Pass@1"
+    },
+    "series": [
+        {
+            "name": "Base Model",
+            "type": "line",
+            "data": [10.29, 10.77, 11.25, 11.49, 11.72, 11.83, 11.96, 12.07, 12.07, 12.07, 12.07]
+        },
+        {
+            "name": "Afterburner 3B-SFT",
+            "type": "line",
+            "data": [21.01, 21.09, 21.50, 21.88, 22.25, 22.31, 22.38, 22.44, 22.50, 22.50, 22.50]
+        },
+        {
+            "name": "Afterburner 3B-DPO",
+            "type": "line",
+            "data": [19.13, 26.25, 27.05, 27.42, 27.95, 28.11, 28.51, 29.51, 29.51, 29.51, 29.51]
+        },
+        {
+            "name": "Afterburner 3B-GRPO",
+            "type": "line",
+            "data": [18.24, 24.81, 29.44, 30.85, 33.56, 35.48, 37.09, 38.01, 38.62, 38.95, 38.95]
         }
     ]
 }
