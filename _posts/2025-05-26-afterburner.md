@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: distill
 title: Afterburner
 date: 2025-05-26 00:00:00
 description: By Humans, Beyond Humans.
@@ -9,6 +9,83 @@ chart:
   echarts: true
 pseudocode: true
 ---
+
+\author[ ]{ 
+    \textbf{
+        Mingzhe Du\textsuperscript{1,2} \quad 
+        Luu Tuan Tuan\textsuperscript{1} \quad 
+        Yue Liu\textsuperscript{1} \quad 
+        Yuhao Qing\textsuperscript{3} \quad 
+        Dong Huang\textsuperscript{2,3\textsuperscript{$\dagger$}} \quad \\ 
+    }
+    \textbf{
+        Xinyi He\textsuperscript{4} \quad 
+        Qian Liu\textsuperscript{5} \quad 
+        Zejun Ma\textsuperscript{5} \quad 
+        See-kiong Ng\textsuperscript{2}
+    }
+}
+
+\affil[ ]{
+    \textsuperscript{1}Nanyang Technological University \quad 
+    \textsuperscript{2}National University of Singapore
+}
+\affil[ ]{
+    \textsuperscript{3}The University of Hong Kong \quad
+    \textsuperscript{4}Xi'an Jiaotong University \quad 
+    \textsuperscript{5}ByteDance \quad 
+    \vspace{0.3em}
+}
+
+\affil[ ]{
+    \text {\texttt{\{mingzhe001, anhtuan\}}@ntu.edu.sg}, 
+    \text {\texttt{\{yliu, dhuang, seekiong\}}@nus.edu.sg},
+}
+\affil[ ]{
+    \text {\texttt{\{yuhao\}}@hku.edu.hk}, 
+    \text {\texttt{\{hxyhxy\}}@stu.xjtu.edu.cn}, 
+    \text {\texttt{\{zejunma, qianliu\}}@bytedance.com}
+}
+
+authors:
+  - name: Mingzhe Du
+    email: mingzhe001@ntu.edu.sg
+    affiliations:
+      name: Nanyang Technological University
+  - name: Luu Tuan Tuan
+    email: anhtuan@ntu.edu.sg
+    affiliations:
+      name: National University of Singapore
+  - name: Yue Liu
+    email: yliu@ntu.edu.sg
+    affiliations:
+      name: Nanyang Technological University
+  - name: Yuhao Qing
+    email: yuhao@hku.edu.hk
+    affiliations:
+      name: The University of Hong Kong
+  - name: Dong Huang
+    email: dhuang@ntu.edu.sg
+    affiliations:
+      name: Nanyang Technological University
+  - name: Xinyi He
+    email: hxyhxy@stu.xjtu.edu.cn
+    affiliations:
+      name: Xi'an Jiaotong University
+  - name: Qian Liu
+    email: qianliu@bytedance.com
+    affiliations:
+      name: ByteDance
+  - name: Zejun Ma  
+    email: zejunma@bytedance.com
+    affiliations:
+      name: ByteDance
+  - name: See-kiong Ng
+    email: seekiong@nus.edu.sg
+    affiliations:
+      name: National University of Singapore
+
+bibliography: afterburner.bib
 
 Large Language Models (LLMs) generate functionally correct solutions but often fall short in code efficiency, a critical bottleneck for real-world deployment. In this paper, we introduce a novel test-time iterative optimization framework to address this, employing a closed-loop system where LLMs iteratively refine code based on empirical performance feedback from an execution sandbox. We explore three training strategies: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization~(GRPO). Experiments on our Venus dataset and the APPS benchmark show that SFT and DPO rapidly saturate in efficiency gains. In contrast, GRPO, using reinforcement learning (RL) with execution feedback, continuously optimizes code performance, significantly boosting both pass@1 (from 47% to 62%) and the likelihood of outperforming human submissions in efficiency (from 31% to 45%). Our work demonstrates effective test-time code efficiency improvement and critically reveals the power of RL in teaching LLMs to truly self-improve code efficiency.
 
