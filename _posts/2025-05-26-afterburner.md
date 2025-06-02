@@ -21,31 +21,31 @@ typograms: true
 authors:
   - name: Mingzhe Du
     affiliations:
-      name: Nanyang Technological University
+      name: NTU / NUS
   - name: Luu Tuan Tuan
     affiliations:
-      name: National University of Singapore
+      name: NTU
   - name: Yue Liu
     affiliations:
-      name: Nanyang Technological University
+      name: NUS
   - name: Yuhao Qing
     affiliations:
-      name: The University of Hong Kong
+      name: HKU
   - name: Dong Huang
     affiliations:
-      name: Nanyang Technological University
+      name: NUS
   - name: Xinyi He
     affiliations:
-      name: Xi'an Jiaotong University
+      name: XJTU
   - name: Qian Liu
     affiliations:
-      name: ByteDance
+      name: TikTok
   - name: Zejun Ma
     affiliations:
-      name: ByteDance
+      name: TikTok
   - name: See-kiong Ng
     affiliations:
-      name: National University of Singapore
+      name: NUS
 
 bibliography: afterburner.bib
 
