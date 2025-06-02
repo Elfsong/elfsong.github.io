@@ -1,0 +1,289 @@
+<!DOCTYPE html> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Advancements in Automated MCQ Generation | Mingzhe Du </title> <meta name="author" content="Mingzhe Du"> <meta name="description" content="By Humans, Beyond Humans."> <meta name="keywords" content="Du Mingzhe, Mingzhe Du, 杜明哲, Mingzhe, academic-website, NUS, NTU, IDS, CCDS, NLP, AI, Research, PhD, Machine Learning, Artificial Intelligence, Computer Science, Data Science, Singapore, Australia"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%98%83&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://elfsong.github.io/blog/2025/mcq/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <script src="/assets/js/distillpub/template.v2.js"></script> <script src="/assets/js/distillpub/transforms.v2.js"></script> </head> <body> <d-front-matter> <script async type="text/json">
+      {
+            "title": "Advancements in Automated MCQ Generation",
+            "description": "By Humans, Beyond Humans.",
+            "published": "May 26, 2025",
+            "authors": [
+              
+            ],
+            "katex": {
+              "delimiters": [
+                {
+                  "left": "$",
+                  "right": "$",
+                  "display": false
+                },
+                {
+                  "left": "$$",
+                  "right": "$$",
+                  "display": true
+                }
+              ]
+            }
+          }
+    </script> </d-front-matter> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Mingzhe</span> Du </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">Blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">Publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">Projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/service/">Service </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="post distill"> <d-title> <h1>Advancements in Automated MCQ Generation</h1> <p>By Humans, Beyond Humans.</p> </d-title> <d-article> <p>&lt;!DOCTYPE html&gt;</p> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Interactive Report: LLMs for MCQ Generation</title> <script src="https://cdn.tailwindcss.com"></script> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"> <style>body{font-family:'Inter',sans-serif;background-color:#fdfbf6;color:#2d3748}.chart-container{position:relative;width:100%;max-width:800px;margin-left:auto;margin-right:auto;height:450px;max-height:60vh}@media(max-width:768px){.chart-container{height:350px;max-height:50vh}}.nav-link{transition:color .3s,border-bottom-color .3s}.nav-link:hover{color:#319795}.nav-link.active{color:#319795;border-bottom-color:#319795}.section-card{background-color:#fff;border-radius:.75rem;border:1px solid #e2e8f0;padding:1.5rem;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05),0 2px 4px -2px rgba(0,0,0,0.05)}.section-card:hover{transform:translateY(-5px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.07),0 4px 6px -2px rgba(0,0,0,0.07)}.accordion-button{background-color:#f7fafc;border:1px solid #e2e8f0}.accordion-content{max-height:0;overflow:hidden;transition:max-height .5s ease-in-out}</style> <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200"> <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-16"> <div class="flex-shrink-0"> <h1 class="text-xl font-bold text-teal-700">MCQ-LLM Synthesis</h1> </div> <div class="hidden md:block"> <div id="nav-menu" class="ml-10 flex items-baseline space-x-4"> <a href="#introduction" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Introduction</a> <a href="#techniques" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Techniques</a> <a href="#quality" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Quality</a> <a href="#performance" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Performance</a> <a href="#evaluation" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Evaluation</a> <a href="#ethics" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Ethics</a> </div> </div> </div> </nav> </header> <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"> <section id="introduction" class="text-center mb-16 scroll-mt-20"> <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-800 mb-4">Advancements in Automated MCQ Generation</h2> <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600"> An interactive synthesis of 2023-2025 research on using Large Language Models (LLMs) to create high-quality Multiple-Choice Questions. Explore the techniques, challenges, and breakthroughs shaping the future of educational assessment. </p> </section> <section id="techniques" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Core Generation Techniques</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> The foundation of generating MCQs with LLMs relies on a set of core methodologies. Each technique offers a different level of control and sophistication, from simple instructions to deep, domain-specific model adaptation. Click each technique to learn more. </p> </div> <div id="accordion-container" class="space-y-4 max-w-4xl mx-auto"> </div> </section> <section id="quality" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Crafting Quality Questions</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> Beyond basic generation, creating truly effective MCQs requires careful engineering of their components. This involves crafting plausible distractors that diagnose misconceptions and controlling the cognitive complexity of the question itself. </p> </div> <div class="grid md:grid-cols-2 gap-8"> <div class="section-card"> <h4 class="text-xl font-semibold mb-3 text-teal-700">Engineering Effective Distractors</h4> <p class="text-gray-600 mb-4">A high-quality distractor is more than just a wrong answer; it's a plausible option that reflects common student errors, making the question a powerful diagnostic tool. Advanced techniques now focus on generating these diagnostically valuable distractors.</p> <div class="p-4 border border-gray-200 rounded-lg bg-gray-50"> <p class="font-semibold text-gray-700 mb-2">Q: What is the capital of Australia?</p> <div class="space-y-2"> <p class="p-2 rounded bg-green-100 text-green-800 border border-green-200">A. Canberra</p> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200">B. Melbourne</p> <div class="relative group"> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200 cursor-pointer">C. Sydney</p> <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-3 py-1.5 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity"> Highly plausible distractor based on common misconception. </div> </div> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200">D. Wellington</p> </div> </div> </div> <div class="section-card"> <h4 class="text-xl font-semibold mb-3 text-teal-700">Controlling Cognitive Levels</h4> <p class="text-gray-600 mb-4">Aligning questions with frameworks like Bloom's Taxonomy ensures assessments test a range of skills from simple recall to complex analysis and evaluation. Click on a level to see an example question type.</p> <div id="bloom-taxonomy" class="space-y-1"> </div> <div id="bloom-example" class="mt-4 p-3 bg-teal-50 border border-teal-200 rounded-lg text-teal-800 h-24 flex items-center justify-center text-center italic"> Select a level to see an example. </div> </div> </div> </section> <section id="performance" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">The Performance Arena: LLM Showdown</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> How do leading LLMs stack up? This chart shows the accuracy of various models on domain-specific MCQ answering tasks, based on recent research. While answering isn't the same as generating, it provides a strong proxy for a model's underlying knowledge. </p> </div> <div class="section-card"> <div class="chart-container"> <canvas id="llmPerformanceChart"></canvas> </div> </div> </section> <section id="innovative-systems" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Innovative Systems &amp; Frameworks</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> Researchers are developing sophisticated systems that go beyond single LLM prompts. These frameworks often use multiple specialized agents, iterative refinement, and external knowledge to create higher-quality, more reliable MCQs. </p> </div> <div id="frameworks-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"> </div> </section> <section id="evaluation" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Evaluating Generated Questions</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> How do we know if an LLM-generated MCQ is any good? A comprehensive evaluation requires a multi-faceted approach, combining statistical analysis with crucial human judgment. </p> </div> <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"> <div class="section-card text-center"> <div class="text-4xl mb-3">📊</div> <h4 class="font-semibold text-lg">Psychometric Analysis</h4> <p class="text-sm text-gray-600 mt-1">Using statistical methods like Item Response Theory (IRT) to measure item difficulty and discrimination.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🧑‍🏫</div> <h4 class="font-semibold text-lg">Human Expert Review</h4> <p class="text-sm text-gray-600 mt-1">Subject Matter Experts (SMEs) validating factual accuracy, pedagogical soundness, and clarity.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🎓</div> <h4 class="font-semibold text-lg">Student Perception</h4> <p class="text-sm text-gray-600 mt-1">Gathering feedback from students on perceived difficulty, fairness, and overall quality.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🤖</div> <h4 class="font-semibold text-lg">Automated Evaluation</h4> <p class="text-sm text-gray-600 mt-1">Using other LLMs ("LLM-as-a-Judge") or rule-based systems to check for structural integrity and quality at scale.</p> </div> </div> </section> <section id="ethics" class="scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-amber-700">Challenges &amp; Ethical Considerations</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> The power of LLMs comes with significant responsibilities. Deploying these tools in education requires navigating persistent challenges and complex ethical questions to ensure fairness, accuracy, and true learning. </p> </div> <div class="grid md:grid-cols-2 gap-8"> <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg"> <h4 class="font-semibold text-lg text-amber-800 mb-2">Key Technical Challenges</h4> <ul class="list-disc list-inside space-y-2 text-amber-900/80"> <li> <strong>Factual Accuracy:</strong> Combating "hallucinations" and ensuring content is verifiable and up-to-date.</li> <li> <strong>Bias Mitigation:</strong> Preventing the amplification of societal biases present in training data.</li> <li> <strong>Quality at Scale:</strong> Ensuring every question in a large batch meets high pedagogical standards.</li> </ul> </div> <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg"> <h4 class="font-semibold text-lg text-amber-800 mb-2">The Indispensable Human</h4> <p class="text-amber-900/80"> Despite advances, a <strong>Human-in-the-Loop (HITL)</strong> system is non-negotiable. Experts are essential for: </p> <ul class="list-disc list-inside space-y-2 text-amber-900/80 mt-2"> <li>Validating accuracy and fairness.</li> <li>Refining pedagogical nuance.</li> <li>Providing ethical oversight.</li> </ul> </div> </div> </section> </main> <footer class="bg-gray-800 text-white mt-16"> <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm"> <p>© 2025 Interactive Synthesis. All content derived from the research report "Advancements in Automated Multiple-Choice Question Generation using Large Language Models: A 2023-2025 Research Synthesis".</p> </div> </footer> <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const accordionData = [
+                {
+                    title: 'Prompt Engineering',
+                    content: 'This is the foundational technique of carefully crafting the input (prompt) given to the LLM. Strategies include role-playing ("Act as a professor..."), few-shot prompting (providing examples), and Chain-of-Thought (CoT) to guide the model\'s reasoning process. The quality of the prompt directly impacts the quality of the generated MCQ.'
+                },
+                {
+                    title: 'Fine-Tuning',
+                    content: 'This process adapts a general pre-trained LLM for a specific task or domain. By training the model further on a smaller, targeted dataset (e.g., course textbooks, past exams), it becomes more adept at creating relevant questions. Techniques like Direct Preference Optimization (DPO) can specifically improve distractor quality.'
+                },
+                {
+                    title: 'Retrieval Augmented Generation (RAG)',
+                    content: 'RAG systems enhance LLMs by grounding them in external knowledge. Before generating a question, the system retrieves relevant information from a trusted corpus (like a textbook or research articles) and provides it to the LLM as context. This helps combat hallucinations and ensures factual accuracy.'
+                },
+                {
+                    title: 'Knowledge Graph (KG) Integration',
+                    content: 'KGs provide structured, factual knowledge as a network of entities and relationships. Integrating KGs can ground LLM reasoning, reduce errors, and even help control the cognitive level of questions by mapping KG structures to frameworks like Bloom\'s Taxonomy.'
+                },
+                {
+                    title: 'Small Language Models (SLMs)',
+                    content: 'SLMs (<10 billion parameters) are emerging as efficient, accessible alternatives to massive LLMs. They require fewer resources, can be run locally (enhancing privacy), and, when trained on high-quality educational data, can be highly effective for specialized tasks. This democratizes access to AIED tools.'
+                }
+            ];
+
+            const accordionContainer = document.getElementById('accordion-container');
+            accordionData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div>
+                        <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none">
+                            <span>${item.title}</span>
+                            <span class="transform transition-transform duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content bg-white p-4 border border-t-0 border-gray-200 rounded-b-lg">
+                            <p class="text-gray-600">${item.content}</p>
+                        </div>
+                    </div>
+                `;
+                accordionContainer.appendChild(div);
+            });
+
+            accordionContainer.addEventListener('click', function(e) {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('svg').parentElement;
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                    // Close all others
+                    document.querySelectorAll('.accordion-content').forEach(c => {
+                        if (c !== content) {
+                            c.style.maxHeight = '0px';
+                            c.previousElementSibling.querySelector('svg').parentElement.classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle current
+                    if (isOpen) {
+                        content.style.maxHeight = '0px';
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.classList.add('rotate-180');
+                    }
+                }
+            });
+
+            const bloomData = [
+                { level: 'Creation', example: 'Design an experiment to test...' },
+                { level: 'Evaluation', example: 'Critique the methodology of...' },
+                { level: 'Analysis', example: 'What is the relationship between...?' },
+                { level: 'Application', example: 'How would you apply this theory to...' },
+                { level: 'Understanding', example: 'Explain in your own words...' },
+                { level: 'Remembering', example: 'What is the definition of...' },
+            ];
+            
+            const bloomColors = {
+                'Creation': 'bg-red-100 border-red-300 text-red-800',
+                'Evaluation': 'bg-orange-100 border-orange-300 text-orange-800',
+                'Analysis': 'bg-yellow-100 border-yellow-300 text-yellow-800',
+                'Application': 'bg-green-100 border-green-300 text-green-800',
+                'Understanding': 'bg-blue-100 border-blue-300 text-blue-800',
+                'Remembering': 'bg-purple-100 border-purple-300 text-purple-800',
+            };
+
+            const bloomContainer = document.getElementById('bloom-taxonomy');
+            const bloomExample = document.getElementById('bloom-example');
+
+            bloomData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `p-2 text-center font-medium rounded-md cursor-pointer border-2 transition-all ${bloomColors[item.level]} hover:shadow-md`;
+                div.textContent = item.level;
+                div.dataset.example = item.example;
+                bloomContainer.appendChild(div);
+            });
+            
+            bloomContainer.addEventListener('click', (e) => {
+                if (e.target.dataset.example) {
+                    bloomExample.textContent = e.target.dataset.example;
+                    bloomExample.className = `mt-4 p-3 rounded-lg text-center italic h-24 flex items-center justify-center transition-all border-2 ${bloomColors[e.target.textContent]}`;
+                }
+            });
+
+
+            const llmPerformanceData = {
+                labels: ['Copilot Pro (GPT-4 Turbo)', 'Claude 3.5 Sonnet', 'GPT-4o', 'Mistral Large 2', 'Gemini 1.5 Pro', 'Llama 3.1 405b'],
+                datasets: [{
+                    label: 'Accuracy on Dental MCQs (%)',
+                    data: [85.5, 84.0, 83.8, 78.3, 77.1, 72.4],
+                    backgroundColor: [
+                        'rgba(49, 151, 149, 0.6)',
+                        'rgba(213, 119, 58, 0.6)',
+                        'rgba(128, 90, 213, 0.6)',
+                        'rgba(245, 101, 101, 0.6)',
+                        'rgba(66, 153, 225, 0.6)',
+                        'rgba(237, 100, 166, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(49, 151, 149, 1)',
+                        'rgba(213, 119, 58, 1)',
+                        'rgba(128, 90, 213, 1)',
+                        'rgba(245, 101, 101, 1)',
+                        'rgba(66, 153, 225, 1)',
+                        'rgba(237, 100, 166, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const ctx = document.getElementById('llmPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: llmPerformanceData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                             grid: {
+                                color: '#E2E8F0'
+                            },
+                            ticks: {
+                                color: '#4A5568'
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#4A5568'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'LLM Performance on MCQ Answering (Source: Dental MCQ Study, Aug 2024)',
+                            font: {
+                                size: 16
+                            },
+                            color: '#2D3748',
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            const frameworksData = [
+                {
+                    name: 'Multi-Examiner',
+                    desc: 'A multi-agent system using KGs and Bloom\'s Taxonomy to create high-quality IT MCQs.',
+                    icon: '🧠'
+                },
+                {
+                    name: 'TwinStar',
+                    desc: 'A dual-LLM engine with one agent for generation and another for cognitive level evaluation.',
+                    icon: '⚖️'
+                },
+                 {
+                    name: 'MCQG-SRefine',
+                    desc: 'An iterative self-refinement framework where the LLM critiques and improves its own generated questions.',
+                    icon: '🔄'
+                },
+                {
+                    name: 'ILearner-LLM',
+                    desc: 'Focuses on iteratively generating high-quality MCQ explanations based on student preferences.',
+                    icon: '💡'
+                },
+                {
+                    name: 'ACCORD',
+                    desc: 'Uses counterfactuals to generate complex reasoning questions and disentangle true reasoning from parroting.',
+                    icon: '🔗'
+                },
+                {
+                    name: 'Reason-Align-Respond (RAR)',
+                    desc: 'Systematically integrates LLM reasoning with Knowledge Graphs to improve factual grounding.',
+                    icon: '🗺️'
+                }
+            ];
+
+            const frameworksGrid = document.getElementById('frameworks-grid');
+            frameworksData.forEach(fw => {
+                const card = document.createElement('div');
+                card.className = 'section-card flex flex-col items-center text-center';
+                card.innerHTML = `
+                    <div class="text-5xl mb-4">${fw.icon}</div>
+                    <h4 class="font-semibold text-lg text-teal-700">${fw.name}</h4>
+                    <p class="text-sm text-gray-600 mt-2 flex-grow">${fw.desc}</p>
+                `;
+                frameworksGrid.appendChild(card);
+            });
+
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('#nav-menu a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script> </d-article> <d-appendix> <d-footnote-list></d-footnote-list> <d-citation-list></d-citation-list> </d-appendix> <d-bibliography src="/assets/bibliography/"></d-bibliography> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Mingzhe Du. Last updated: June 02, 2025. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
