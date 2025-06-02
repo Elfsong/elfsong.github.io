@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afterburner: Interactive Research Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices: 
+        - IOF Diagram: Goal: Explain. Method: HTML/CSS diagram with Unicode character icons and animated arrows to show the dynamic process loop. Interaction: Passive animation on scroll. Justification: More engaging and clearer than a static image, adheres to no-SVG. Library: None.
+        - Training Strategy Chart: Goal: Compare. Method: Interactive Bar Chart. Interaction: User-clickable buttons to toggle between 'Pass@1' and 'BEYOND-I' metrics. Justification: Allows direct, active comparison of the paper's key results. Library: Chart.js.
+        - GRPO Rewards: Goal: Inform. Method: Icon-driven cards with Unicode characters. Interaction: Hover effects. Justification: Simplifies a complex concept into digestible parts, adheres to no-SVG. Library: None.
+        - Venus Stats: Goal: Inform. Method: Animated number counters. Interaction: Animation on scroll. Justification: Visually impactful way to present key data points about the benchmark. Library: JS. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfcfb; /* Warm Neutral Background */
+            color: #3f3c3a; /* Darker Warm Neutral for Text */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Max width for readability */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 50vh; /* Max height relative to viewport */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px; /* Taller on larger screens */
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+            color: #78716c; /* Neutral color for nav links */
+        }
+        .nav-link:hover {
+            color: #a855f7; /* Subtle Accent for hover - Purple */
+        }
+        .active-nav {
+            color: #a855f7; /* Subtle Accent for active - Purple */
+            font-weight: 600;
+        }
+        .flow-arrow {
+            position: absolute;
+            font-size: 1.5rem; /* 24px */
+            color: #a1a1aa; /* Lighter neutral for arrows */
+            animation: pulse-arrow 2s infinite ease-in-out;
+        }
+        @keyframes pulse-arrow {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .active-btn {
+            background-color: #a855f7 !important; /* Subtle Accent - Purple */
+            color: #ffffff !important;
+        }
+        .chart-toggle-btn {
+             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .section-icon-container {
+            display: inline-flex; /* Changed from inline-block for better centering of text char */
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem; /* 12px */
+            margin-bottom: 1.5rem; /* 24px */
+            border-radius: 9999px; /* full */
+            font-size: 1.875rem; /* 30px, for unicode chars */
+            line-height: 1; /* Ensure char is centered vertically */
+            width: 3.5rem; /* 56px */
+            height: 3.5rem; /* 56px */
+        }
+        .flow-icon-container {
+            font-size: 2.5rem; /* Larger for diagram icons */
+            margin-bottom: 0.5rem; /* 8px */
+            line-height: 1;
+        }
+        .icon-bg-problem { background-color: #f3e8ff; color: #a855f7; } /* Light Purple bg, Purple icon */
+        .icon-bg-framework { background-color: #e0e7ff; color: #4f46e5; } /* Light Indigo bg, Indigo icon */
+        .icon-bg-strategy { background-color: #dcfce7; color: #16a34a; } /* Light Green bg, Green icon */
+        .icon-bg-grpo { background-color: #ffedd5; color: #f97316; } /* Light Orange bg, Orange icon */
+        .icon-bg-venus { background-color: #dbeafe; color: #2563eb; } /* Light Blue bg, Blue icon */
+
+        .stat-highlight { color: #a855f7; } /* Subtle Accent - Purple for stats */
+        .footer-bg { background-color: #292524; } /* Darker Warm Neutral for footer */
+        .footer-text { color: #e7e5e4; } /* Lighter Warm Neutral for footer text */
+        .footer-link { color: #c084fc; } /* Purple accent for links in footer */
+        .footer-link:hover { color: #a855f7; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-fdfcfb/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-purple-600">Afterburner</h1>
+            <div class="hidden md:flex items-center space-x-5">
+                <a href="#problem" class="nav-link">The Problem</a>
+                <a href="#framework" class="nav-link">Framework</a>
+                <a href="#strategies" class="nav-link">Strategies</a>
+                <a href="#grpo-deep-dive" class="nav-link">GRPO Deep Dive</a>
+                <a href="#benchmarks" class="nav-link">Benchmarks</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none text-2xl">
+                ☰
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#problem" class="block py-2 px-6 text-sm nav-link">The Problem</a>
+            <a href="#framework" class="block py-2 px-6 text-sm nav-link">Framework</a>
+            <a href="#strategies" class="block py-2 px-6 text-sm nav-link">Strategies</a>
+            <a href="#grpo-deep-dive" class="block py-2 px-6 text-sm nav-link">GRPO Deep Dive</a>
+            <a href="#benchmarks" class="block py-2 px-6 text-sm nav-link">Benchmarks</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6">
+
+        <section id="problem" class="py-20 md:py-28 text-center scroll-mt-20">
+            <div class="section-icon-container icon-bg-problem">
+                💡
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6 tracking-tight">Correct Isn't Enough.</h2>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
+                Large Language Models (LLMs) can write functionally correct code, but it's often slow and inefficient. This creates a critical bottleneck for real-world applications, increasing costs and hurting performance. The "Afterburner" paper introduces a framework to teach LLMs to write not just correct code, but *efficient* code. This interactive summary will guide you through its key findings.
+            </p>
+        </section>
+
+        <section id="framework" class="py-16 md:py-14 sm:py-10 bg-stone-100 rounded-2xl scroll-mt-20">
+            <div class="text-center mb-12">
+                <div class="section-icon-container icon-bg-framework">⚙️</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Iterative Optimization Framework</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600 p-5 md:p-2">
+                    The core of Afterburner is a closed-loop system where an LLM progressively refines code based on real-world performance feedback. This mimics how a human developer might test and improve their own work, creating a powerful cycle of self-improvement. This section visualizes that loop.
+                </p>
+            </div>
+            <div class="relative w-full max-w-4xl mx-auto p-8 md:p-5">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div id="flow-start" class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 text-center">
+                        <div class="text-indigo-500 flow-icon-container">🧠</div>
+                        <h3 class="text-lg font-semibold">Afterburner Model</h3>
+                        <p class="text-sm text-gray-500">Proposes an efficiency improvement to existing code.</p>
+                    </div>
+                    <div id="flow-end" class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 text-center">
+                        <div class="text-green-500 flow-icon-container">💻</div>
+                        <h3 class="text-lg font-semibold">Monolith Sandbox</h3>
+                        <p class="text-sm text-gray-500">Executes code and provides empirical feedback.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategies" class="py-20 md:py-28 scroll-mt-20">
+            <div class="text-center mb-12">
+                <div class="section-icon-container icon-bg-strategy">📊</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Which Training Strategy Wins?</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    The paper tested three different ways to train the Afterburner model: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization (GRPO). While all methods provided some benefit, GRPO proved vastly superior for enabling continuous, adaptive learning. Click the buttons below to explore the comparative results on key metrics.
+                </p>
+            </div>
+
+            <div class="flex justify-center space-x-2 md:space-x-4 mb-8">
+                <button id="pass-rate-btn" class="chart-toggle-btn active-btn px-4 py-2 rounded-md text-sm font-medium">PASS@1 Rate</button>
+                <button id="beyond-rate-btn" class="chart-toggle-btn bg-stone-200 text-stone-700 px-4 py-2 rounded-md text-sm font-medium">BEYOND-I Score</button>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="efficiencyChart"></canvas>
+            </div>
+
+            <div class="mt-12 grid md:grid-cols-3 gap-8 text-left">
+                <div class="bg-stone-100 p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-2">Supervised Fine-Tuning (SFT)</h3>
+                    <p class="text-gray-600 text-sm">Trains the model on examples of inefficient vs. efficient code. It learns superficial patterns, and its performance gains saturate quickly. This method provides a baseline understanding but lacks adaptability.</p>
+                </div>
+                <div class="bg-stone-100 p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-2">Direct Preference Optimization (DPO)</h3>
+                    <p class="text-gray-600 text-sm">Trains the model on pairs of "preferred" and "dispreferred" solutions. It performs better than SFT but also plateaus as it relies on a static, offline dataset of preferences, limiting its ability to discover novel optimizations.</p>
+                </div>
+                <div class="bg-stone-100 p-6 rounded-lg ring-2 ring-purple-500">
+                    <h3 class="font-bold text-lg mb-2 text-purple-600">Group Relative Policy Optimization (GRPO)</h3>
+                    <p class="text-gray-600 text-sm">Uses online Reinforcement Learning (RL) with direct feedback from the sandbox. This allows the model to continuously explore and adapt, leading to significant and sustained efficiency gains. GRPO is the star of the show.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="grpo-deep-dive" class="py-16 md:py-24 bg-stone-100 rounded-2xl scroll-mt-20">
+            <div class="text-center mb-16">
+                <div class="section-icon-container icon-bg-grpo">✨</div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">The Secret Sauce of GRPO</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600 p-5 md:p-2">
+                    GRPO's success comes from its intelligent reward system, which guides the model's learning process. It's not just about being fast; it's about being correct, well-structured, and demonstrably better than the previous version. This section breaks down the key reward components.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto p-6 md:p-5">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center transition-transform hover:scale-105">
+                    <div class="text-purple-500 flow-icon-container">📜</div>
+                    <h3 class="font-semibold text-lg">Format Control Reward</h3>
+                    <p class="text-sm text-gray-500 mt-1">Encourages a clean output structure, including a "thinking" process before the final code. This helps the model organize its approach.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center transition-transform hover:scale-105">
+                    <div class="text-green-500 flow-icon-container">✔️</div>
+                    <h3 class="font-semibold text-lg">Functional Correctness Reward</h3>
+                    <p class="text-sm text-gray-500 mt-1">Gives a strong positive signal for fixing broken code and penalizes regressions. Correctness is paramount.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 text-center transition-transform hover:scale-105">
+                    <div class="text-orange-500 flow-icon-container">⚡️</div>
+                    <h3 class="font-semibold text-lg">Efficiency Improvement Reward</h3>
+                    <p class="text-sm text-gray-500 mt-1">Directly rewards measurable gains in time and memory efficiency against the previous version. This drives the core goal.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="benchmarks" class="py-20 md:py-28 scroll-mt-20">
+            <div class="text-center mb-12">
+                <div class="section-icon-container icon-bg-venus">
+                    🏆
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Putting It to the Test: The Venus Dataset</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    To rigorously evaluate efficiency, the researchers created Venus, a new benchmark designed specifically for this task. Unlike older benchmarks, Venus compares generated code against a large distribution of human-written solutions, providing a much more realistic and stable assessment of performance. The key statistics of Venus are highlighted below.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
+                <div class="bg-stone-100 p-8 rounded-lg">
+                    <p class="text-5xl font-bold stat-highlight venus-stat" data-target="2181">0</p>
+                    <p class="text-gray-500 mt-2">Training Tasks</p>
+                </div>
+                <div class="bg-stone-100 p-8 rounded-lg">
+                    <p class="text-5xl font-bold stat-highlight venus-stat" data-target="300">0</p>
+                    <p class="text-gray-500 mt-2">Test Tasks</p>
+                </div>
+                <div class="bg-stone-100 p-8 rounded-lg">
+                    <p class="text-5xl font-bold stat-highlight venus-stat" data-target="106.6">0</p>
+                    <p class="text-gray-500 mt-2">Avg. Human Solutions per Task</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer-bg text-white mt-20">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <p class="text-lg font-semibold footer-text">Key Takeaway</p>
+            <p class="mt-3 max-w-3xl mx-auto text-stone-300">
+                The "Afterburner" paper demonstrates that online reinforcement learning (GRPO) with direct, empirical execution feedback is a highly effective method for teaching LLMs to generate truly efficient code, significantly outperforming offline methods like SFT and DPO. This approach paves the way for more practical and performant AI-generated software.
+            </p>
+            <p class="text-sm text-stone-400 mt-8">Interactive summary based on "Afterburner: Reinforcement Learning Facilitates Self-Improving Code Efficiency Optimization" (<a href="https://arxiv.org/abs/2505.23387" target="_blank" rel="noopener noreferrer" class="footer-link underline">arXiv:2505.23387v1</a>).</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartData = {
+                passRate: {
+                    labels: ['SFT', 'DPO', 'GRPO (Ours)'],
+                    values: [49.7, 51.3, 62.0],
+                    title: 'PASS@1 Rate (%) on Venus Dataset'
+                },
+                beyondRate: {
+                    labels: ['SFT', 'DPO', 'GRPO (Ours)'],
+                    values: [35.0, 38.0, 45.0],
+                    title: 'BEYOND-I Score (%) on Venus Dataset'
+                }
+            };
+
+            const ctx = document.getElementById('efficiencyChart').getContext('2d');
+            const efficiencyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.passRate.labels,
+                    datasets: [{
+                        label: 'Performance',
+                        data: chartData.passRate.values,
+                        backgroundColor: ['#e9d5ff', '#c4b5fd', '#a855f7'], // Lighter purples, main accent purple
+                        borderColor: ['#c084fc', '#a78bfa', '#8b5cf6'], // Slightly darker borders
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: chartData.passRate.title,
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            color: '#3f3c3a' // Darker warm neutral
+                        },
+                        tooltip: {
+                            backgroundColor: '#3f3c3a', // Darker warm neutral
+                            titleColor: '#fdfcfb', // Light background for title
+                            bodyColor: '#fdfcfb', // Light background for body
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(1) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 70,
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                font: {
+                                    size: 14
+                                },
+                                color: '#78716c' // Neutral color
+                            },
+                            grid: {
+                                color: '#e7e5e4' // Lighter grid lines
+                            },
+                            ticks: {
+                                color: '#78716c' // Neutral ticks
+                            }
+                        },
+                        x: {
+                             grid: {
+                                display: false // Cleaner look
+                            },
+                            ticks: {
+                                color: '#78716c' // Neutral ticks
+                            }
+                        }
+                    }
+                }
+            });
+
+            const passRateBtn = document.getElementById('pass-rate-btn');
+            const beyondRateBtn = document.getElementById('beyond-rate-btn');
+            
+            function updateChart(dataType) {
+                const data = chartData[dataType];
+                efficiencyChart.data.labels = data.labels;
+                efficiencyChart.data.datasets[0].data = data.values;
+                efficiencyChart.options.plugins.title.text = data.title;
+                efficiencyChart.options.scales.y.max = dataType === 'passRate' ? 70 : 50;
+                efficiencyChart.update();
+            }
+
+            passRateBtn.addEventListener('click', () => {
+                updateChart('passRate');
+                passRateBtn.classList.add('active-btn');
+                passRateBtn.classList.remove('bg-stone-200', 'text-stone-700');
+                beyondRateBtn.classList.remove('active-btn');
+                beyondRateBtn.classList.add('bg-stone-200', 'text-stone-700');
+            });
+
+            beyondRateBtn.addEventListener('click', () => {
+                updateChart('beyondRate');
+                beyondRateBtn.classList.add('active-btn');
+                beyondRateBtn.classList.remove('bg-stone-200', 'text-stone-700');
+                passRateBtn.classList.remove('active-btn');
+                passRateBtn.classList.add('bg-stone-200', 'text-stone-700');
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a, nav a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                    if (mobileMenu.classList.contains('hidden') === false && mobileMenu.contains(link)) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+
+            const observerOptions = {
+                root: null,
+                threshold: 0.2, 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-nav');
+                            if (link.getAttribute('href') === `#${targetId}`) {
+                                link.classList.add('active-nav');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            function animateStat(el) {
+                const target = parseFloat(el.dataset.target);
+                const duration = 1500; 
+                const frameDuration = 1000 / 60; 
+                const totalFrames = Math.round(duration / frameDuration);
+                let frame = 0;
+
+                const counter = setInterval(() => {
+                    frame++;
+                    const progress = frame / totalFrames;
+                    const currentVal = target * progress;
+                    
+                    if(target % 1 !== 0) { 
+                        el.textContent = currentVal.toFixed(1);
+                    } else {
+                        el.textContent = Math.round(currentVal).toLocaleString();
+                    }
+
+                    if (frame === totalFrames) {
+                        clearInterval(counter);
+                        el.textContent = target.toLocaleString(); 
+                    }
+                }, frameDuration);
+            }
+
+            const statObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStat(entry.target);
+                        obs.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.venus-stat').forEach(stat => {
+                statObserver.observe(stat);
+            });
+
+            function positionArrows() {
+                const startEl = document.getElementById('flow-start');
+                const endEl = document.getElementById('flow-end');
+                const arrow1 = document.getElementById('arrow1');
+                const arrow2 = document.getElementById('arrow2');
+                
+                if (!startEl || !endEl || !arrow1 || !arrow2) return;
+
+                const startRect = startEl.getBoundingClientRect(); // Bounding rect relative to viewport
+                const endRect = endEl.getBoundingClientRect();     // Bounding rect relative to viewport
+                
+                // The container for arrows is the div with class="relative..."
+                const arrowContainer = startEl.closest('.relative');
+                if (!arrowContainer) return;
+
+                const isMobile = window.innerWidth < 768;
+
+                if (isMobile) {
+                    // Position arrows for vertical flow on mobile
+                    // top is relative to arrowContainer's padding box
+                    arrow1.style.left = '50%';
+                    arrow1.style.top = `${startEl.offsetTop + startRect.height + 10}px`;
+                    arrow1.style.transform = 'translateX(-50%) rotate(90deg)';
+                    
+                    arrow2.style.left = '50%';
+                    arrow2.style.top = `${endEl.offsetTop - 30}px`;
+                    arrow2.style.transform = 'translateX(-50%) rotate(-90deg)';
+
+                } else {
+                    // Position arrows for horizontal flow on desktop
+                    // top and left are relative to arrowContainer's padding box
+                    const midPointY = startEl.offsetTop + (startRect.height / 2);
+                    arrow1.style.top = `${midPointY}px`;
+                    arrow1.style.left = `${startEl.offsetLeft + startRect.width + 5}px`;
+                    arrow1.style.transform = 'translateY(-50%)';
+
+                    arrow2.style.top = `${midPointY}px`;
+                    arrow2.style.left = `${endEl.offsetLeft - 30}px`;
+                    arrow2.style.transform = 'translateY(-50%)';
+                }
+            }
+            
+            positionArrows();
+            window.addEventListener('resize', positionArrows);
+            setTimeout(positionArrows, 100); // Re-calculate after initial render
+        });
+    </script>
+</body>
+</html>
