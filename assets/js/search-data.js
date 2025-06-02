@@ -48,11 +48,11 @@ ninja.data = [{
       
         title: "Advancements in Automated MCQ Generation",
       
-      description: "By Humans, Beyond Humans.",
+      description: "",
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/mcq/";
+          window.location.href = "/assets/html/mcq.html";
         
       },
     },{id: "post-afterburner",

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://elfsong.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://elfsong.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-06-02T11:51:12+00:00</updated><id>https://elfsong.github.io/feed.xml</id><title type="html">blank</title><subtitle>The Personal Website of Du Mingzhe (杜明哲). </subtitle><entry><title type="html">Afterburner</title><link href="https://elfsong.github.io/blog/2025/afterburner/" rel="alternate" type="text/html" title="Afterburner"/><published>2025-05-26T00:00:00+00:00</published><updated>2025-05-26T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2025/afterburner</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/afterburner/"><![CDATA[<h2 id="abstract">Abstract</h2> <p>Large Language Models (LLMs) generate functionally correct solutions but often fall short in code efficiency, a critical bottleneck for real-world deployment. In this paper, we introduce a novel test-time iterative optimization framework to address this, employing a closed-loop system where LLMs iteratively refine code based on empirical performance feedback from an execution sandbox. We explore three training strategies: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization~(GRPO). Experiments on our Venus dataset and the APPS benchmark show that SFT and DPO rapidly saturate in efficiency gains. In contrast, GRPO, using reinforcement learning (RL) with execution feedback, continuously optimizes code performance, significantly boosting both pass@1 (from 47% to 62%) and the likelihood of outperforming human submissions in efficiency (from 31% to 45%). Our work demonstrates effective test-time code efficiency improvement and critically reveals the power of RL in teaching LLMs to truly self-improve code efficiency.</p> <h2 id="venus-code-efficiency-dataset">Venus: Code Efficiency Dataset</h2> <h2 id="monolith-code-execution-sandbox">Monolith: Code Execution Sandbox</h2> <h2 id="afterburner-test-time-iterative-optimization-framework">Afterburner: Test-Time Iterative Optimization Framework</h2> <h2 id="experiments">Experiments</h2> <pre><code class="language-echarts">{
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://elfsong.github.io/feed.xml" rel="self" type="application/atom+xml"/><link href="https://elfsong.github.io/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-06-02T12:01:21+00:00</updated><id>https://elfsong.github.io/feed.xml</id><title type="html">blank</title><subtitle>The Personal Website of Du Mingzhe (杜明哲). </subtitle><entry><title type="html">Afterburner</title><link href="https://elfsong.github.io/blog/2025/afterburner/" rel="alternate" type="text/html" title="Afterburner"/><published>2025-05-26T00:00:00+00:00</published><updated>2025-05-26T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2025/afterburner</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/afterburner/"><![CDATA[<h2 id="abstract">Abstract</h2> <p>Large Language Models (LLMs) generate functionally correct solutions but often fall short in code efficiency, a critical bottleneck for real-world deployment. In this paper, we introduce a novel test-time iterative optimization framework to address this, employing a closed-loop system where LLMs iteratively refine code based on empirical performance feedback from an execution sandbox. We explore three training strategies: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Group Relative Policy Optimization~(GRPO). Experiments on our Venus dataset and the APPS benchmark show that SFT and DPO rapidly saturate in efficiency gains. In contrast, GRPO, using reinforcement learning (RL) with execution feedback, continuously optimizes code performance, significantly boosting both pass@1 (from 47% to 62%) and the likelihood of outperforming human submissions in efficiency (from 31% to 45%). Our work demonstrates effective test-time code efficiency improvement and critically reveals the power of RL in teaching LLMs to truly self-improve code efficiency.</p> <h2 id="venus-code-efficiency-dataset">Venus: Code Efficiency Dataset</h2> <h2 id="monolith-code-execution-sandbox">Monolith: Code Execution Sandbox</h2> <h2 id="afterburner-test-time-iterative-optimization-framework">Afterburner: Test-Time Iterative Optimization Framework</h2> <h2 id="experiments">Experiments</h2> <pre><code class="language-echarts">{
     "title": {
         "text": "Pass@1 Over Iterations"
     },
@@ -108,268 +108,7 @@
         }
     ]
 }
-</code></pre>]]></content><author><name>Mingzhe Du</name></author><category term="academia"/><category term="math"/><category term="code"/><summary type="html"><![CDATA[By Humans, Beyond Humans.]]></summary></entry><entry><title type="html">Advancements in Automated MCQ Generation</title><link href="https://elfsong.github.io/blog/2025/mcq/" rel="alternate" type="text/html" title="Advancements in Automated MCQ Generation"/><published>2025-05-26T00:00:00+00:00</published><updated>2025-05-26T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2025/mcq</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/mcq/"><![CDATA[<html lang="en" class="scroll-smooth"> <head> <meta charset="UTF-8"/> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <title>Interactive Report: LLMs for MCQ Generation</title> <script src="https://cdn.tailwindcss.com"></script> <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <link rel="preconnect" href="https://fonts.googleapis.com"/> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/> <style>body{font-family:'Inter',sans-serif;background-color:#fdfbf6;color:#2d3748}.chart-container{position:relative;width:100%;max-width:800px;margin-left:auto;margin-right:auto;height:450px;max-height:60vh}@media(max-width:768px){.chart-container{height:350px;max-height:50vh}}.nav-link{transition:color .3s,border-bottom-color .3s}.nav-link:hover{color:#319795}.nav-link.active{color:#319795;border-bottom-color:#319795}.section-card{background-color:#fff;border-radius:.75rem;border:1px solid #e2e8f0;padding:1.5rem;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05),0 2px 4px -2px rgba(0,0,0,0.05)}.section-card:hover{transform:translateY(-5px);box-shadow:0 10px 15px -3px rgba(0,0,0,0.07),0 4px 6px -2px rgba(0,0,0,0.07)}.accordion-button{background-color:#f7fafc;border:1px solid #e2e8f0}.accordion-content{max-height:0;overflow:hidden;transition:max-height .5s ease-in-out}</style> </head> <body class="antialiased"> <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200"> <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="flex items-center justify-between h-16"> <div class="flex-shrink-0"> <h1 class="text-xl font-bold text-teal-700">MCQ-LLM Synthesis</h1> </div> <div class="hidden md:block"> <div id="nav-menu" class="ml-10 flex items-baseline space-x-4"> <a href="#introduction" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Introduction</a> <a href="#techniques" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Techniques</a> <a href="#quality" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Quality</a> <a href="#performance" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Performance</a> <a href="#evaluation" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Evaluation</a> <a href="#ethics" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Ethics</a> </div> </div> </div> </nav> </header> <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"> <section id="introduction" class="text-center mb-16 scroll-mt-20"> <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-800 mb-4">Advancements in Automated MCQ Generation</h2> <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600"> An interactive synthesis of 2023-2025 research on using Large Language Models (LLMs) to create high-quality Multiple-Choice Questions. Explore the techniques, challenges, and breakthroughs shaping the future of educational assessment. </p> </section> <section id="techniques" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Core Generation Techniques</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> The foundation of generating MCQs with LLMs relies on a set of core methodologies. Each technique offers a different level of control and sophistication, from simple instructions to deep, domain-specific model adaptation. Click each technique to learn more. </p> </div> <div id="accordion-container" class="space-y-4 max-w-4xl mx-auto"> </div> </section> <section id="quality" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Crafting Quality Questions</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> Beyond basic generation, creating truly effective MCQs requires careful engineering of their components. This involves crafting plausible distractors that diagnose misconceptions and controlling the cognitive complexity of the question itself. </p> </div> <div class="grid md:grid-cols-2 gap-8"> <div class="section-card"> <h4 class="text-xl font-semibold mb-3 text-teal-700">Engineering Effective Distractors</h4> <p class="text-gray-600 mb-4">A high-quality distractor is more than just a wrong answer; it's a plausible option that reflects common student errors, making the question a powerful diagnostic tool. Advanced techniques now focus on generating these diagnostically valuable distractors.</p> <div class="p-4 border border-gray-200 rounded-lg bg-gray-50"> <p class="font-semibold text-gray-700 mb-2">Q: What is the capital of Australia?</p> <div class="space-y-2"> <p class="p-2 rounded bg-green-100 text-green-800 border border-green-200">A. Canberra</p> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200">B. Melbourne</p> <div class="relative group"> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200 cursor-pointer">C. Sydney</p> <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-3 py-1.5 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity"> Highly plausible distractor based on common misconception. </div> </div> <p class="p-2 rounded bg-red-100 text-red-800 border border-red-200">D. Wellington</p> </div> </div> </div> <div class="section-card"> <h4 class="text-xl font-semibold mb-3 text-teal-700">Controlling Cognitive Levels</h4> <p class="text-gray-600 mb-4">Aligning questions with frameworks like Bloom's Taxonomy ensures assessments test a range of skills from simple recall to complex analysis and evaluation. Click on a level to see an example question type.</p> <div id="bloom-taxonomy" class="space-y-1"> </div> <div id="bloom-example" class="mt-4 p-3 bg-teal-50 border border-teal-200 rounded-lg text-teal-800 h-24 flex items-center justify-center text-center italic"> Select a level to see an example. </div> </div> </div> </section> <section id="performance" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">The Performance Arena: LLM Showdown</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> How do leading LLMs stack up? This chart shows the accuracy of various models on domain-specific MCQ answering tasks, based on recent research. While answering isn't the same as generating, it provides a strong proxy for a model's underlying knowledge. </p> </div> <div class="section-card"> <div class="chart-container"> <canvas id="llmPerformanceChart"></canvas> </div> </div> </section> <section id="innovative-systems" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Innovative Systems &amp; Frameworks</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> Researchers are developing sophisticated systems that go beyond single LLM prompts. These frameworks often use multiple specialized agents, iterative refinement, and external knowledge to create higher-quality, more reliable MCQs. </p> </div> <div id="frameworks-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"> </div> </section> <section id="evaluation" class="mb-16 scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-gray-800">Evaluating Generated Questions</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> How do we know if an LLM-generated MCQ is any good? A comprehensive evaluation requires a multi-faceted approach, combining statistical analysis with crucial human judgment. </p> </div> <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"> <div class="section-card text-center"> <div class="text-4xl mb-3">📊</div> <h4 class="font-semibold text-lg">Psychometric Analysis</h4> <p class="text-sm text-gray-600 mt-1">Using statistical methods like Item Response Theory (IRT) to measure item difficulty and discrimination.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🧑‍🏫</div> <h4 class="font-semibold text-lg">Human Expert Review</h4> <p class="text-sm text-gray-600 mt-1">Subject Matter Experts (SMEs) validating factual accuracy, pedagogical soundness, and clarity.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🎓</div> <h4 class="font-semibold text-lg">Student Perception</h4> <p class="text-sm text-gray-600 mt-1">Gathering feedback from students on perceived difficulty, fairness, and overall quality.</p> </div> <div class="section-card text-center"> <div class="text-4xl mb-3">🤖</div> <h4 class="font-semibold text-lg">Automated Evaluation</h4> <p class="text-sm text-gray-600 mt-1">Using other LLMs ("LLM-as-a-Judge") or rule-based systems to check for structural integrity and quality at scale.</p> </div> </div> </section> <section id="ethics" class="scroll-mt-20"> <div class="text-center mb-12"> <h3 class="text-2xl md:text-3xl font-bold text-amber-700">Challenges &amp; Ethical Considerations</h3> <p class="mt-3 max-w-2xl mx-auto text-md text-gray-500"> The power of LLMs comes with significant responsibilities. Deploying these tools in education requires navigating persistent challenges and complex ethical questions to ensure fairness, accuracy, and true learning. </p> </div> <div class="grid md:grid-cols-2 gap-8"> <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg"> <h4 class="font-semibold text-lg text-amber-800 mb-2">Key Technical Challenges</h4> <ul class="list-disc list-inside space-y-2 text-amber-900/80"> <li><strong>Factual Accuracy:</strong> Combating "hallucinations" and ensuring content is verifiable and up-to-date.</li> <li><strong>Bias Mitigation:</strong> Preventing the amplification of societal biases present in training data.</li> <li><strong>Quality at Scale:</strong> Ensuring every question in a large batch meets high pedagogical standards.</li> </ul> </div> <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg"> <h4 class="font-semibold text-lg text-amber-800 mb-2">The Indispensable Human</h4> <p class="text-amber-900/80"> Despite advances, a <strong>Human-in-the-Loop (HITL)</strong> system is non-negotiable. Experts are essential for: </p> <ul class="list-disc list-inside space-y-2 text-amber-900/80 mt-2"> <li>Validating accuracy and fairness.</li> <li>Refining pedagogical nuance.</li> <li>Providing ethical oversight.</li> </ul> </div> </div> </section> </main> <footer class="bg-gray-800 text-white mt-16"> <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm"> <p>&copy; 2025 Interactive Synthesis. All content derived from the research report "Advancements in Automated Multiple-Choice Question Generation using Large Language Models: A 2023-2025 Research Synthesis".</p> </div> </footer> <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            
-            const accordionData = [
-                {
-                    title: 'Prompt Engineering',
-                    content: 'This is the foundational technique of carefully crafting the input (prompt) given to the LLM. Strategies include role-playing ("Act as a professor..."), few-shot prompting (providing examples), and Chain-of-Thought (CoT) to guide the model\'s reasoning process. The quality of the prompt directly impacts the quality of the generated MCQ.'
-                },
-                {
-                    title: 'Fine-Tuning',
-                    content: 'This process adapts a general pre-trained LLM for a specific task or domain. By training the model further on a smaller, targeted dataset (e.g., course textbooks, past exams), it becomes more adept at creating relevant questions. Techniques like Direct Preference Optimization (DPO) can specifically improve distractor quality.'
-                },
-                {
-                    title: 'Retrieval Augmented Generation (RAG)',
-                    content: 'RAG systems enhance LLMs by grounding them in external knowledge. Before generating a question, the system retrieves relevant information from a trusted corpus (like a textbook or research articles) and provides it to the LLM as context. This helps combat hallucinations and ensures factual accuracy.'
-                },
-                {
-                    title: 'Knowledge Graph (KG) Integration',
-                    content: 'KGs provide structured, factual knowledge as a network of entities and relationships. Integrating KGs can ground LLM reasoning, reduce errors, and even help control the cognitive level of questions by mapping KG structures to frameworks like Bloom\'s Taxonomy.'
-                },
-                {
-                    title: 'Small Language Models (SLMs)',
-                    content: 'SLMs (<10 billion parameters) are emerging as efficient, accessible alternatives to massive LLMs. They require fewer resources, can be run locally (enhancing privacy), and, when trained on high-quality educational data, can be highly effective for specialized tasks. This democratizes access to AIED tools.'
-                }
-            ];
-
-            const accordionContainer = document.getElementById('accordion-container');
-            accordionData.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.innerHTML = `
-                    <div>
-                        <button class="accordion-button w-full flex justify-between items-center text-left p-4 font-semibold text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none">
-                            <span>${item.title}</span>
-                            <span class="transform transition-transform duration-300">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </button>
-                        <div class="accordion-content bg-white p-4 border border-t-0 border-gray-200 rounded-b-lg">
-                            <p class="text-gray-600">${item.content}</p>
-                        </div>
-                    </div>
-                `;
-                accordionContainer.appendChild(div);
-            });
-
-            accordionContainer.addEventListener('click', function(e) {
-                const button = e.target.closest('.accordion-button');
-                if (button) {
-                    const content = button.nextElementSibling;
-                    const icon = button.querySelector('svg').parentElement;
-                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-
-                    // Close all others
-                    document.querySelectorAll('.accordion-content').forEach(c => {
-                        if (c !== content) {
-                            c.style.maxHeight = '0px';
-                            c.previousElementSibling.querySelector('svg').parentElement.classList.remove('rotate-180');
-                        }
-                    });
-
-                    // Toggle current
-                    if (isOpen) {
-                        content.style.maxHeight = '0px';
-                        icon.classList.remove('rotate-180');
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                        icon.classList.add('rotate-180');
-                    }
-                }
-            });
-
-            const bloomData = [
-                { level: 'Creation', example: 'Design an experiment to test...' },
-                { level: 'Evaluation', example: 'Critique the methodology of...' },
-                { level: 'Analysis', example: 'What is the relationship between...?' },
-                { level: 'Application', example: 'How would you apply this theory to...' },
-                { level: 'Understanding', example: 'Explain in your own words...' },
-                { level: 'Remembering', example: 'What is the definition of...' },
-            ];
-            
-            const bloomColors = {
-                'Creation': 'bg-red-100 border-red-300 text-red-800',
-                'Evaluation': 'bg-orange-100 border-orange-300 text-orange-800',
-                'Analysis': 'bg-yellow-100 border-yellow-300 text-yellow-800',
-                'Application': 'bg-green-100 border-green-300 text-green-800',
-                'Understanding': 'bg-blue-100 border-blue-300 text-blue-800',
-                'Remembering': 'bg-purple-100 border-purple-300 text-purple-800',
-            };
-
-            const bloomContainer = document.getElementById('bloom-taxonomy');
-            const bloomExample = document.getElementById('bloom-example');
-
-            bloomData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = `p-2 text-center font-medium rounded-md cursor-pointer border-2 transition-all ${bloomColors[item.level]} hover:shadow-md`;
-                div.textContent = item.level;
-                div.dataset.example = item.example;
-                bloomContainer.appendChild(div);
-            });
-            
-            bloomContainer.addEventListener('click', (e) => {
-                if (e.target.dataset.example) {
-                    bloomExample.textContent = e.target.dataset.example;
-                    bloomExample.className = `mt-4 p-3 rounded-lg text-center italic h-24 flex items-center justify-center transition-all border-2 ${bloomColors[e.target.textContent]}`;
-                }
-            });
-
-
-            const llmPerformanceData = {
-                labels: ['Copilot Pro (GPT-4 Turbo)', 'Claude 3.5 Sonnet', 'GPT-4o', 'Mistral Large 2', 'Gemini 1.5 Pro', 'Llama 3.1 405b'],
-                datasets: [{
-                    label: 'Accuracy on Dental MCQs (%)',
-                    data: [85.5, 84.0, 83.8, 78.3, 77.1, 72.4],
-                    backgroundColor: [
-                        'rgba(49, 151, 149, 0.6)',
-                        'rgba(213, 119, 58, 0.6)',
-                        'rgba(128, 90, 213, 0.6)',
-                        'rgba(245, 101, 101, 0.6)',
-                        'rgba(66, 153, 225, 0.6)',
-                        'rgba(237, 100, 166, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(49, 151, 149, 1)',
-                        'rgba(213, 119, 58, 1)',
-                        'rgba(128, 90, 213, 1)',
-                        'rgba(245, 101, 101, 1)',
-                        'rgba(66, 153, 225, 1)',
-                        'rgba(237, 100, 166, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            const ctx = document.getElementById('llmPerformanceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: llmPerformanceData,
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 100,
-                             grid: {
-                                color: '#E2E8F0'
-                            },
-                            ticks: {
-                                color: '#4A5568'
-                            }
-                        },
-                        y: {
-                             grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#4A5568'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'LLM Performance on MCQ Answering (Source: Dental MCQ Study, Aug 2024)',
-                            font: {
-                                size: 16
-                            },
-                            color: '#2D3748',
-                            padding: {
-                                bottom: 20
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.x !== null) {
-                                        label += context.parsed.x + '%';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-
-            const frameworksData = [
-                {
-                    name: 'Multi-Examiner',
-                    desc: 'A multi-agent system using KGs and Bloom\'s Taxonomy to create high-quality IT MCQs.',
-                    icon: '🧠'
-                },
-                {
-                    name: 'TwinStar',
-                    desc: 'A dual-LLM engine with one agent for generation and another for cognitive level evaluation.',
-                    icon: '⚖️'
-                },
-                 {
-                    name: 'MCQG-SRefine',
-                    desc: 'An iterative self-refinement framework where the LLM critiques and improves its own generated questions.',
-                    icon: '🔄'
-                },
-                {
-                    name: 'ILearner-LLM',
-                    desc: 'Focuses on iteratively generating high-quality MCQ explanations based on student preferences.',
-                    icon: '💡'
-                },
-                {
-                    name: 'ACCORD',
-                    desc: 'Uses counterfactuals to generate complex reasoning questions and disentangle true reasoning from parroting.',
-                    icon: '🔗'
-                },
-                {
-                    name: 'Reason-Align-Respond (RAR)',
-                    desc: 'Systematically integrates LLM reasoning with Knowledge Graphs to improve factual grounding.',
-                    icon: '🗺️'
-                }
-            ];
-
-            const frameworksGrid = document.getElementById('frameworks-grid');
-            frameworksData.forEach(fw => {
-                const card = document.createElement('div');
-                card.className = 'section-card flex flex-col items-center text-center';
-                card.innerHTML = `
-                    <div class="text-5xl mb-4">${fw.icon}</div>
-                    <h4 class="font-semibold text-lg text-teal-700">${fw.name}</h4>
-                    <p class="text-sm text-gray-600 mt-2 flex-grow">${fw.desc}</p>
-                `;
-                frameworksGrid.appendChild(card);
-            });
-
-
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('#nav-menu a');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 80) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        });
-    </script> </body> </html>]]></content><author><name></name></author><category term="academia"/><category term="math"/><category term="code"/><summary type="html"><![CDATA[By Humans, Beyond Humans.]]></summary></entry><entry><title type="html">LaTeX Color Palette</title><link href="https://elfsong.github.io/blog/2025/Xcolor/" rel="alternate" type="text/html" title="LaTeX Color Palette"/><published>2025-05-01T15:12:00+00:00</published><updated>2025-05-01T15:12:00+00:00</updated><id>https://elfsong.github.io/blog/2025/Xcolor</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/Xcolor/"><![CDATA[<iframe src="/assets/pdf/Xcolor.pdf" width="100%" height="600" style="border: none;"></iframe>]]></content><author><name></name></author><category term="academia"/><category term="math"/><summary type="html"><![CDATA[Latex Color]]></summary></entry><entry><title type="html">NTU × NUS Exchange</title><link href="https://elfsong.github.io/blog/2025/event/" rel="alternate" type="text/html" title="NTU × NUS Exchange"/><published>2025-04-17T21:01:00+00:00</published><updated>2025-04-17T21:01:00+00:00</updated><id>https://elfsong.github.io/blog/2025/event</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/event/"><![CDATA[<iframe src="https://lucky-reactor.notion.site/ebd/1d933f409b0480c28717e0b0b66ef48a" width="100%" height="1000" frameborder="0" allowfullscreen=""/>]]></content><author><name></name></author><category term="academia"/><category term="event"/><summary type="html"><![CDATA[Submit new event to NTU × NUS Exchange]]></summary></entry><entry><title type="html">How to execute LLVM IR generated from Codon?</title><link href="https://elfsong.github.io/blog/2024/Codon/" rel="alternate" type="text/html" title="How to execute LLVM IR generated from Codon?"/><published>2024-07-01T00:00:00+00:00</published><updated>2024-07-01T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2024/Codon</id><content type="html" xml:base="https://elfsong.github.io/blog/2024/Codon/"><![CDATA[<p>1) Assume we have a python snippet like that:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File Name: foo.py
+</code></pre>]]></content><author><name>Mingzhe Du</name></author><category term="academia"/><category term="math"/><category term="code"/><summary type="html"><![CDATA[By Humans, Beyond Humans.]]></summary></entry><entry><title type="html">Advancements in Automated MCQ Generation</title><link href="https://elfsong.github.io/blog/2025/mcq/" rel="alternate" type="text/html" title="Advancements in Automated MCQ Generation"/><published>2025-05-26T00:00:00+00:00</published><updated>2025-05-26T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2025/mcq</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/mcq/"><![CDATA[]]></content><author><name></name></author><category term="academia"/><category term="math"/><category term="code"/><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">LaTeX Color Palette</title><link href="https://elfsong.github.io/blog/2025/Xcolor/" rel="alternate" type="text/html" title="LaTeX Color Palette"/><published>2025-05-01T15:12:00+00:00</published><updated>2025-05-01T15:12:00+00:00</updated><id>https://elfsong.github.io/blog/2025/Xcolor</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/Xcolor/"><![CDATA[<iframe src="/assets/pdf/Xcolor.pdf" width="100%" height="600" style="border: none;"></iframe>]]></content><author><name></name></author><category term="academia"/><category term="math"/><summary type="html"><![CDATA[Latex Color]]></summary></entry><entry><title type="html">NTU × NUS Exchange</title><link href="https://elfsong.github.io/blog/2025/event/" rel="alternate" type="text/html" title="NTU × NUS Exchange"/><published>2025-04-17T21:01:00+00:00</published><updated>2025-04-17T21:01:00+00:00</updated><id>https://elfsong.github.io/blog/2025/event</id><content type="html" xml:base="https://elfsong.github.io/blog/2025/event/"><![CDATA[<iframe src="https://lucky-reactor.notion.site/ebd/1d933f409b0480c28717e0b0b66ef48a" width="100%" height="1000" frameborder="0" allowfullscreen=""/>]]></content><author><name></name></author><category term="academia"/><category term="event"/><summary type="html"><![CDATA[Submit new event to NTU × NUS Exchange]]></summary></entry><entry><title type="html">How to execute LLVM IR generated from Codon?</title><link href="https://elfsong.github.io/blog/2024/Codon/" rel="alternate" type="text/html" title="How to execute LLVM IR generated from Codon?"/><published>2024-07-01T00:00:00+00:00</published><updated>2024-07-01T00:00:00+00:00</updated><id>https://elfsong.github.io/blog/2024/Codon</id><content type="html" xml:base="https://elfsong.github.io/blog/2024/Codon/"><![CDATA[<p>1) Assume we have a python snippet like that:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File Name: foo.py
 </span><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
     <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello World!</span><span class="sh">"</span><span class="p">)</span>
 <span class="nf">foo</span><span class="p">()</span>
@@ -411,16 +150,16 @@ Content 2
 <span class="cp">{%</span><span class="w"> </span><span class="nt">endtab</span><span class="w"> </span><span class="cp">%}</span>
 
 <span class="cp">{%</span><span class="w"> </span><span class="nt">endtabs</span><span class="w"> </span><span class="cp">%}</span>
-</code></pre></div></div> <p>With this you can generate visualizations like:</p> <ul id="log" class="tab" data-tab="8ce909dc-fb40-4192-ac8e-645cbd55fd9d" data-name="log"> <li class="active" id="log-php"> <a href="#">php </a> </li> <li id="log-js"> <a href="#">js </a> </li> <li id="log-ruby"> <a href="#">ruby </a> </li> </ul> <ul class="tab-content" id="8ce909dc-fb40-4192-ac8e-645cbd55fd9d" data-name="log"> <li class="active"> <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">var_dump</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
+</code></pre></div></div> <p>With this you can generate visualizations like:</p> <ul id="log" class="tab" data-tab="8f81dadf-baf4-4ed9-96ca-2201ef91a2d2" data-name="log"> <li class="active" id="log-php"> <a href="#">php </a> </li> <li id="log-js"> <a href="#">js </a> </li> <li id="log-ruby"> <a href="#">ruby </a> </li> </ul> <ul class="tab-content" id="8f81dadf-baf4-4ed9-96ca-2201ef91a2d2" data-name="log"> <li class="active"> <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">var_dump</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
 </code></pre></div></div> </li> <li> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">);</span>
 </code></pre></div></div> </li> <li> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">pputs</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
-</code></pre></div></div> </li> </ul> <h2 id="another-example">Another example</h2> <ul id="data-struct" class="tab" data-tab="c24552ec-c26e-4195-93ea-1b66ea4fae89" data-name="data-struct"> <li class="active" id="data-struct-yaml"> <a href="#">yaml </a> </li> <li id="data-struct-json"> <a href="#">json </a> </li> </ul> <ul class="tab-content" id="c24552ec-c26e-4195-93ea-1b66ea4fae89" data-name="data-struct"> <li class="active"> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">hello</span><span class="pi">:</span>
+</code></pre></div></div> </li> </ul> <h2 id="another-example">Another example</h2> <ul id="data-struct" class="tab" data-tab="0a672cdb-cbe3-4748-a8bc-86a3fb6b0256" data-name="data-struct"> <li class="active" id="data-struct-yaml"> <a href="#">yaml </a> </li> <li id="data-struct-json"> <a href="#">json </a> </li> </ul> <ul class="tab-content" id="0a672cdb-cbe3-4748-a8bc-86a3fb6b0256" data-name="data-struct"> <li class="active"> <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">hello</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">whatsup"</span>
   <span class="pi">-</span> <span class="s2">"</span><span class="s">hi"</span>
 </code></pre></div></div> </li> <li> <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"hello"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"whatsup"</span><span class="p">,</span><span class="w"> </span><span class="s2">"hi"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div> </li> </ul> <h2 id="tabs-for-something-else">Tabs for something else</h2> <ul id="something-else" class="tab" data-tab="c81847bf-4455-46f5-a11d-676e3c9e7c56" data-name="something-else"> <li class="active" id="something-else-text"> <a href="#">text </a> </li> <li id="something-else-quote"> <a href="#">quote </a> </li> <li id="something-else-list"> <a href="#">list </a> </li> </ul> <ul class="tab-content" id="c81847bf-4455-46f5-a11d-676e3c9e7c56" data-name="something-else"> <li class="active"> <p>Regular text</p> </li> <li> <blockquote> <p>A quote</p> </blockquote> </li> <li> <p>Hipster list</p> <ul> <li>brunch</li> <li>fixie</li> <li>raybans</li> <li>messenger bag</li> </ul> </li> </ul>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="code"/><summary type="html"><![CDATA[this is what included tabs in a post could look like]]></summary></entry><entry><title type="html">a post with typograms</title><link href="https://elfsong.github.io/blog/2024/typograms/" rel="alternate" type="text/html" title="a post with typograms"/><published>2024-04-29T23:36:10+00:00</published><updated>2024-04-29T23:36:10+00:00</updated><id>https://elfsong.github.io/blog/2024/typograms</id><content type="html" xml:base="https://elfsong.github.io/blog/2024/typograms/"><![CDATA[<p>This is an example post with some <a href="https://github.com/google/typograms/">typograms</a> code.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">typograms
+</span></code></pre></div></div> </li> </ul> <h2 id="tabs-for-something-else">Tabs for something else</h2> <ul id="something-else" class="tab" data-tab="45429049-2fb7-481c-bff4-2ff5b1f7be80" data-name="something-else"> <li class="active" id="something-else-text"> <a href="#">text </a> </li> <li id="something-else-quote"> <a href="#">quote </a> </li> <li id="something-else-list"> <a href="#">list </a> </li> </ul> <ul class="tab-content" id="45429049-2fb7-481c-bff4-2ff5b1f7be80" data-name="something-else"> <li class="active"> <p>Regular text</p> </li> <li> <blockquote> <p>A quote</p> </blockquote> </li> <li> <p>Hipster list</p> <ul> <li>brunch</li> <li>fixie</li> <li>raybans</li> <li>messenger bag</li> </ul> </li> </ul>]]></content><author><name></name></author><category term="sample-posts"/><category term="formatting"/><category term="code"/><summary type="html"><![CDATA[this is what included tabs in a post could look like]]></summary></entry><entry><title type="html">a post with typograms</title><link href="https://elfsong.github.io/blog/2024/typograms/" rel="alternate" type="text/html" title="a post with typograms"/><published>2024-04-29T23:36:10+00:00</published><updated>2024-04-29T23:36:10+00:00</updated><id>https://elfsong.github.io/blog/2024/typograms</id><content type="html" xml:base="https://elfsong.github.io/blog/2024/typograms/"><![CDATA[<p>This is an example post with some <a href="https://github.com/google/typograms/">typograms</a> code.</p> <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">```</span><span class="nl">typograms
 </span><span class="sb">+----+
 |    |---&gt; My first diagram!
 +----+</span>
