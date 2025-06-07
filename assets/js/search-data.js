@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-advancements-in-automated-mcq-generation",
+        },{id: "post-where-the-time-comes-from",
+      
+        title: "Where the Time Comes From?",
+      
+      description: "Wall Clocks vs. Monotonic Clocks",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/time/";
+        
+      },
+    },{id: "post-advancements-in-automated-mcq-generation",
       
         title: "Advancements in Automated MCQ Generation",
       
