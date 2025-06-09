@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-where-the-time-comes-from",
+        },{id: "post-predicting-and-optimizing-llvm-compiler-pass-order",
+      
+        title: "PREDICTING AND OPTIMIZING LLVM COMPILER PASS ORDER",
+      
+      description: "Predicting and optimizing LLVM compiler pass order",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/llvm/";
+        
+      },
+    },{id: "post-where-the-time-comes-from",
       
         title: "Where the Time Comes From?",
       
