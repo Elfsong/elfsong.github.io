@@ -585,7 +585,7 @@ ninja.data = [{
           section: "News",},{id: "news-our-paper-collective-bias-mitigation-via-model-routing-and-collaboration-has-been-accepted-into-cfagentic-icml-25",
           title: 'Our paper “Collective Bias Mitigation via Model Routing and Collaboration” has been accepted...',
           description: "",
-          section: "News",},{id: "news-our-paper-afterburner-reinforcement-learning-facilitates-self-improving-code-efficiency-optimization-has-been-accepted-into-pral-workshop-icml-25",
+          section: "News",},{id: "news-our-paper-afterburner-reinforcement-learning-facilitates-self-improving-code-efficiency-optimization-has-been-accepted-into-pral-icml-25",
           title: 'Our paper “Afterburner: Reinforcement Learning Facilitates Self-Improving Code Efficiency Optimization” has been accepted...',
           description: "",
           section: "News",},{id: "news-our-paper-measuring-the-influence-of-incorrect-code-on-test-generation-has-been-accepted-into-icse-26",
