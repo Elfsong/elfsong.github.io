@@ -25,6 +25,7 @@ horizontal: false
 
 ## Volunteer
 
+- Volunteer, ACL 2025
 - Volunteer, WWW 2024
 - Volunteer, EMNLP 2024
 - Volunteer, AAAI 2023
