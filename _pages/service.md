@@ -10,12 +10,14 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Reviewer, ECAI 2025
 - Senior PC, CIKM 2025 
 - Reviewer, NeurIPS 2025
 - Reviewer, ICLR 2025
 - Reviewer, NAACL 2025
 - Reviewer, ICML 2025
 - Reviewer, ICLR 2024
+- Reviewer, ECAI 2024
 - Reviewer, NeurIPS 2024
 - Reviewer, AISTATS 2024
 
