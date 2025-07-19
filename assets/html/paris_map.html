@@ -105,10 +105,10 @@
             border: 2px solid white;
             box-shadow: 0 0 0 1px #ccc;
         }
-        .day1 { background-color: #FF6B6B; }
-        .day2 { background-color: #3aab34; }
-        .day3 { background-color: #45B7D1; }
-        .all { background-color: #e6ec71; }
+        .day1 { background-color: #EA4335; }
+        .day2 { background-color: #34A853; }
+        .day3 { background-color: #4285F4; }
+        .all { background-color: #FBBC04; }
         
         .custom-popup {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -143,40 +143,39 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🗺️ 巴黎3天旅游景点地图</h1>
-            <p>点击地图标记查看详细信息 | 使用筛选器按天查看行程</p>
+            <h1>🗺️ Paris 3-Day Travel Map</h1>
         </div>
         
         <div class="controls">
-            <span style="font-weight: 500; color: #333;">筛选显示：</span>
+            <span style="font-weight: 500; color: #333;">Filter:</span>
             <div class="day-filter">
-                <button class="btn active" data-day="all">全部景点</button>
-                <button class="btn" data-day="day1">第一天</button>
-                <button class="btn" data-day="day2">第二天</button>
-                <button class="btn" data-day="day3">第三天</button>
+                <button class="btn active" data-day="all">All</button>
+                <button class="btn" data-day="day1">Day 1</button>
+                <button class="btn" data-day="day2">Day 2</button>
+                <button class="btn" data-day="day3">Day 3</button>
             </div>
         </div>
         
         <div id="map"></div>
         
         <div class="legend">
-            <h3>📍 图例说明</h3>
+            <h3>📍 Legend</h3>
             <div class="legend-items">
                 <div class="legend-item">
                     <div class="legend-color day1"></div>
-                    <span><strong>第一天:</strong> 经典地标游</span>
+                    <span><strong>Day 1:</strong> 经典地标</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color day2"></div>
-                    <span><strong>第二天:</strong> 艺术与文化之旅</span>
+                    <span><strong>Day 2:</strong> 艺术文化</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color day3"></div>
-                    <span><strong>第三天:</strong> 优雅巴黎体验</span>
+                    <span><strong>Day 3:</strong> 优雅巴黎</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color all"></div>
-                    <span><strong>周边景点:</strong> 额外推荐</span>
+                    <span><strong>Extra:</strong> 额外推荐</span>
                 </div>
             </div>
         </div>
@@ -392,10 +391,10 @@
 
         // 颜色映射
         const dayColors = {
-            'day1': '#FF6B6B',
-            'day2': '#3aab34', 
-            'day3': '#45B7D1',
-            'all': '#e6ec71'
+            'day1': '#EA4335',
+            'day2': '#34A853', 
+            'day3': '#4285F4',
+            'all': '#FBBC04'
         };
 
         let markers = [];
