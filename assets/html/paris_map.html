@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巴黎3天旅游景点地图</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .day-filter {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn.active {
+            background: #007bff;
+            color: white;
+        }
+        .btn:not(.active) {
+            background: white;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        .legend {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        .legend h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px #ccc;
+        }
+        .day1 { background-color: #FF6B6B; }
+        .day2 { background-color: #3aab34; }
+        .day3 { background-color: #45B7D1; }
+        .all { background-color: #e6ec71; }
+        
+        .custom-popup {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .popup-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin: 0 0 8px 0;
+        }
+        .popup-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin: 0 0 8px 0;
+        }
+        .popup-description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+        }
+        .popup-day {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: white;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ 巴黎3天旅游景点地图</h1>
+            <p>点击地图标记查看详细信息 | 使用筛选器按天查看行程</p>
+        </div>
+        
+        <div class="controls">
+            <span style="font-weight: 500; color: #333;">筛选显示：</span>
+            <div class="day-filter">
+                <button class="btn active" data-day="all">全部景点</button>
+                <button class="btn" data-day="day1">第一天</button>
+                <button class="btn" data-day="day2">第二天</button>
+                <button class="btn" data-day="day3">第三天</button>
+            </div>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div class="legend">
+            <h3>📍 图例说明</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color day1"></div>
+                    <span><strong>第一天:</strong> 经典地标游</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color day2"></div>
+                    <span><strong>第二天:</strong> 艺术与文化之旅</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color day3"></div>
+                    <span><strong>第三天:</strong> 优雅巴黎体验</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color all"></div>
+                    <span><strong>周边景点:</strong> 额外推荐</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        // 初始化地图
+        const map = L.map('map').setView([48.8566, 2.3522], 13);
+        
+        // 添加地图图层
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 景点数据
+        const attractions = [
+            // 第一天景点
+            {
+                name: "埃菲尔铁塔",
+                french: "Tour Eiffel",
+                english: "Eiffel Tower",
+                lat: 48.8584,
+                lng: 2.2945,
+                day: "day1",
+                time: "上午",
+                description: "巴黎最著名地标，高324米，建议早上前往避开人潮。登塔观景或在战神广场拍照。",
+                category: "主要景点"
+            },
+            {
+                name: "卢浮宫",
+                french: "Musée du Louvre", 
+                english: "Louvre Museum",
+                lat: 48.8606,
+                lng: 2.3376,
+                day: "day1",
+                time: "下午",
+                description: "世界最大艺术博物馆，必看蒙娜丽莎、断臂维纳斯、胜利女神雕像。建议提前预约。",
+                category: "主要景点"
+            },
+            {
+                name: "塞纳河游船码头",
+                french: "Croisière sur la Seine",
+                english: "Seine River Cruise",
+                lat: 48.8606,
+                lng: 2.3122,
+                day: "day1", 
+                time: "晚上",
+                description: "从水上欣赏巴黎夜景，经过圣母院、奥赛博物馆等著名建筑。",
+                category: "主要景点"
+            },
+            
+            // 第二天景点
+            {
+                name: "巴黎圣母院",
+                french: "Cathédrale Notre-Dame",
+                english: "Notre-Dame Cathedral",
+                lat: 48.8530,
+                lng: 2.3499,
+                day: "day2",
+                time: "上午",
+                description: "虽在修复中但外观仍壮观。可游览西岱岛，参观圣礼拜堂的彩色玻璃窗。",
+                category: "主要景点"
+            },
+            {
+                name: "圣心大教堂",
+                french: "Basilique du Sacré-Cœur",
+                english: "Basilica of Sacred Heart",
+                lat: 48.8867,
+                lng: 2.3431,
+                day: "day2",
+                time: "下午",
+                description: "蒙马特高地最高点，拜占庭式白色大理石建筑，360度俯瞰巴黎全景。",
+                category: "主要景点"
+            },
+            {
+                name: "凯旋门",
+                french: "Arc de Triomphe",
+                english: "Arc de Triomphe", 
+                lat: 48.8738,
+                lng: 2.2950,
+                day: "day2",
+                time: "晚上",
+                description: "拿破仑纪念建筑，登顶可看香榭丽舍大街全景。每天18:30点燃无名烈士墓长明火。",
+                category: "主要景点"
+            },
+            
+            // 第三天景点
+            {
+                name: "孚日广场",
+                french: "Place des Vosges",
+                english: "Vosges Square",
+                lat: 48.8555,
+                lng: 2.3659,
+                day: "day3",
+                time: "上午", 
+                description: "法国最古老规划广场，36栋红砖建筑围成，雨果故居博物馆在此。",
+                category: "主要景点"
+            },
+            {
+                name: "卢森堡公园",
+                french: "Jardin du Luxembourg",
+                english: "Luxembourg Gardens",
+                lat: 48.8462,
+                lng: 2.3372,
+                day: "day3",
+                time: "下午",
+                description: "巴黎人最爱的公园，可租模型帆船、观看木偶戏，美第奇喷泉是拍照热点。",
+                category: "主要景点"
+            },
+            {
+                name: "圣日耳曼德佩",
+                french: "Saint-Germain-des-Prés", 
+                english: "Saint-Germain-des-Prés",
+                lat: 48.8534,
+                lng: 2.3324,
+                day: "day3",
+                time: "晚上",
+                description: "左岸文艺区，莎士比亚书店、花神咖啡馆，萨特和海明威曾在此创作。",
+                category: "主要景点"
+            },
+
+            // 周边景点
+            {
+                name: "战神广场",
+                french: "Champ-de-Mars",
+                english: "Field of Mars",
+                lat: 48.8553,
+                lng: 2.2983,
+                day: "all",
+                time: "",
+                description: "埃菲尔铁塔前的大草坪，野餐和拍照的绝佳场所。",
+                category: "周边景点"
+            },
+            {
+                name: "特罗卡德罗宫",
+                french: "Palais de Chaillot",
+                english: "Trocadéro Palace",
+                lat: 48.8625,
+                lng: 2.2883,
+                day: "all",
+                time: "",
+                description: "最佳埃菲尔铁塔观景台，经典拍照角度。",
+                category: "周边景点"
+            },
+            {
+                name: "协和广场", 
+                french: "Place de la Concorde",
+                english: "Place de la Concorde",
+                lat: 48.8656,
+                lng: 2.3212,
+                day: "all",
+                time: "",
+                description: "巴黎最大广场，有埃及方尖碑，连接香榭丽舍大街和杜乐丽花园。",
+                category: "周边景点"
+            },
+            {
+                name: "圣礼拜堂",
+                french: "Sainte-Chapelle",
+                english: "Holy Chapel",
+                lat: 48.8548,
+                lng: 2.3450,
+                day: "all",
+                time: "",
+                description: "路易九世建造，15扇13世纪彩绘玻璃窗高达15米，上午阳光最美。",
+                category: "周边景点"
+            },
+            {
+                name: "小丘广场",
+                french: "Place du Tertre", 
+                english: "Tertre Square",
+                lat: 48.8865,
+                lng: 2.3407,
+                day: "all",
+                time: "",
+                description: "蒙马特艺术家聚集地，可委托画肖像，曾是毕加索、雷诺阿工作室聚集地。",
+                category: "周边景点"
+            },
+            {
+                name: "香榭丽舍大街",
+                french: "Avenue des Champs-Élysées",
+                english: "Champs-Élysées Avenue", 
+                lat: 48.8698,
+                lng: 2.3075,
+                day: "all",
+                time: "",
+                description: "世界最著名购物大街，从协和广场到凯旋门1.9公里，奢侈品店云集。",
+                category: "周边景点"
+            },
+            {
+                name: "奥赛博物馆",
+                french: "Musée d'Orsay",
+                english: "Orsay Museum",
+                lat: 48.8600,
+                lng: 2.3266,
+                day: "all", 
+                time: "",
+                description: "世界最大印象派收藏，梵高、莫奈、雷诺阿杰作，前火车站建筑。",
+                category: "周边景点"
+            },
+            {
+                name: "毕加索博物馆",
+                french: "Musée Picasso",
+                english: "Picasso Museum",
+                lat: 48.8597,
+                lng: 2.3622,
+                day: "all",
+                time: "",
+                description: "世界最大毕加索收藏，位于马莱区17世纪贵族府邸内。",
+                category: "周边景点"
+            }
+        ];
+
+        // 颜色映射
+        const dayColors = {
+            'day1': '#FF6B6B',
+            'day2': '#4ECDC4', 
+            'day3': '#45B7D1',
+            'all': '#96CEB4'
+        };
+
+        let markers = [];
+
+        // 创建标记
+        function createMarkers(filterDay = 'all') {
+            // 清除现有标记
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            attractions.forEach(attraction => {
+                if (filterDay !== 'all' && attraction.day !== filterDay && attraction.day !== 'all') {
+                    return;
+                }
+
+                const color = dayColors[attraction.day];
+                
+                // 创建自定义图标
+                const customIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="
+                        background-color: ${color};
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        border: 3px solid white;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                    "></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                // 创建弹出窗口内容
+                const dayText = {
+                    'day1': '第一天',
+                    'day2': '第二天', 
+                    'day3': '第三天',
+                    'all': '周边景点'
+                };
+
+                const popupContent = `
+                    <div class="custom-popup">
+                        <div class="popup-title">${attraction.name}</div>
+                        <div class="popup-subtitle">
+                            🇫🇷 ${attraction.french}<br>
+                            🇬🇧 ${attraction.english}
+                        </div>
+                        <div class="popup-day" style="background-color: ${color};">
+                            ${dayText[attraction.day]} ${attraction.time}
+                        </div>
+                        <div class="popup-description">${attraction.description}</div>
+                    </div>
+                `;
+
+                const marker = L.marker([attraction.lat, attraction.lng], {
+                    icon: customIcon
+                }).addTo(map)
+                .bindPopup(popupContent, {
+                    maxWidth: 300,
+                    className: 'custom-popup'
+                });
+
+                markers.push(marker);
+            });
+        }
+
+        // 初始化标记
+        createMarkers();
+
+        // 筛选按钮事件
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // 更新按钮状态
+                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // 筛选标记
+                const filterDay = e.target.dataset.day;
+                createMarkers(filterDay);
+                
+                // 调整地图视野
+                if (filterDay !== 'all') {
+                    const dayAttractions = attractions.filter(a => a.day === filterDay);
+                    if (dayAttractions.length > 0) {
+                        const group = new L.featureGroup(markers);
+                        map.fitBounds(group.getBounds().pad(0.1));
+                    }
+                } else {
+                    map.setView([48.8566, 2.3522], 13);
+                }
+            });
+        });
+
+        // 添加比例尺
+        L.control.scale({
+            imperial: false,
+            metric: true
+        }).addTo(map);
+    </script>
+</body>
+</html>
