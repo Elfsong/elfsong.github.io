@@ -10,6 +10,7 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Program Committee, AAAI 2026
 - Ethics Reviewer, NeurIPS 2025
 - Reviewer, ECAI 2025
 - Senior PC, CIKM 2025 
