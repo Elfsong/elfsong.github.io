@@ -14,7 +14,7 @@ horizontal: false
 - Program Committee, AAAI 2026
 - Ethics Reviewer, NeurIPS 2025
 - Reviewer, ECAI 2025
-- Senior PC, CIKM 2025 
+- Senior Program Committee, CIKM 2025 
 - Reviewer, NeurIPS 2025
 - Reviewer, AISTATS 2025
 - Reviewer, ICLR 2025
@@ -27,6 +27,7 @@ horizontal: false
 
 ## Consultation
 
+- Research Engineer, Cisco Systems, Inc., 2022 - Present
 - STEM Mentor, University of Melbourne, 2020 - Present
 
 ## Volunteer
