@@ -39,7 +39,7 @@ ninja.data = [{
           },
         },{id: "nav-cv",
           title: "CV",
-          description: "Redircting to Mingzhe Du&#39;s CV (it may takes a few seconds)...",
+          description: "Redircting to Mingzhe Du&#39;s resume (it may takes a few seconds)...",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
