@@ -35,4 +35,4 @@ Mingzhe's research currently focuses on **Code Generation** and **Preference Ali
 <!-- **Contact Info:** -->
 - 📮: 3 Research Link, Singapore 117602
 - 📧: mingzhe [at] nus.edu.sg / mingzhe001 [at] ntu.edu.sg / mz [at] alumni.unimelb.edu.au
-- 🌠: [[Google Scholar](https://scholar.google.com/citations?user=CJHW1IgAAAAJ&hl=en)] [[LinkedIn](https://www.linkedin.com/in/dumingzhe/)] [[GitHub](https://github.com/Elfsong)] [[WeChat](/assets/img/logos.png)]
+- 🌠: [[Google Scholar](https://scholar.google.com/citations?user=CJHW1IgAAAAJ&hl=en)] [[LinkedIn](https://www.linkedin.com/in/dumingzhe/)] [[GitHub](https://github.com/Elfsong)] [[WeChat](/assets/img/wechat.jpg)]
