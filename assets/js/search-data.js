@@ -23,12 +23,12 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/publications/";
           },
-        },{id: "nav-projects",
-          title: "Projects",
+        },{id: "nav-personal",
+          title: "Personal",
           description: "有趣的灵魂 终会相遇",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/projects/";
+            window.location.href = "/personal/";
           },
         },{id: "nav-service",
           title: "Service",
