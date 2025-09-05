@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Projects
-permalink: /projects/
+title: Personal
+permalink: /personal/
 description: 有趣的灵魂 终会相遇
 nav: true
 nav_order: 3
@@ -9,7 +9,7 @@ display_categories: [work, fun]
 horizontal: false
 ---
 
-<!-- pages/projects.md -->
+<!-- pages/personal.md -->
 <div class="projects">
 {% if site.enable_project_categories and page.display_categories %}
   <!-- Display categorized projects -->
