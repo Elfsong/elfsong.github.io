@@ -10,6 +10,7 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Reviewer, ICLR 2026
 - Program Committee, AISI 2026
 - Program Committee, AAAI 2026
 - Ethics Reviewer, NeurIPS 2025
