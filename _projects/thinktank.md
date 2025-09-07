@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Ideas
+title: Think Tank
 description: 念念不忘 必有回想
 img: assets/img/jungle.jpg
 redirect: https://lucky-reactor.notion.site/Think-Tank-23033f409b048098bee2c4aa9d2092a8
