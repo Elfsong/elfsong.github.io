@@ -3,18 +3,11 @@ layout: page
 title: Ideas
 description: Brainstorm
 img: assets/img/jungle.jpg
+redirect: https://lucky-reactor.notion.site/Think-Tank-23033f409b048098bee2c4aa9d2092a8
 importance: 3
 category: work
 ---
 
-念念不忘 必有回想
+念念不忘 必有回想 正在跳转智库...
 
-MoE Exploration: [An Early Exploration of Lifelong Learning with Mixture-of-Experts](https://github.com/Elfsong/Ultramarine)
-
-An ODE Layer as a LoRA
-
-CLIP with ODE diffusion process
-
-Collective Bias Mitigation
-
-Coding like a guru (learning from tutorial or seminar videos or posts)
+Where there is a will, there is a way. Now jumping to the think tank...
