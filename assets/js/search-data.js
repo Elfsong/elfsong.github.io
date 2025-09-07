@@ -629,7 +629,7 @@ ninja.data = [{
               window.location.href = "/projects/food/";
             },},{id: "projects-ideas",
           title: 'Ideas',
-          description: "Brainstorm",
+          description: "念念不忘 必有回想",
           section: "Projects",handler: () => {
               window.location.href = "/projects/ideas/";
             },},{id: "projects-metaphor",
