@@ -612,12 +612,7 @@ ninja.data = [{
           section: "News",},{id: "news-i-was-nominated-as-an-iclr-26-reviewer",
           title: 'I was nominated as an ICLR’26 Reviewer.',
           description: "",
-          section: "News",},{id: "projects-bikes",
-          title: 'Bikes',
-          description: "Where The Trail Ends",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/bike/";
-            },},{id: "projects-ntu-x-nus",
+          section: "News",},{id: "projects-ntu-x-nus",
           title: 'NTU x NUS',
           description: "NTU and NUS Information Exchange",
           section: "Projects",handler: () => {
@@ -637,6 +632,11 @@ ninja.data = [{
           description: "Hustle and Bustle",
           section: "Projects",handler: () => {
               window.location.href = "/projects/schedule/";
+            },},{id: "projects-sports",
+          title: 'Sports',
+          description: "Where The Trail Ends",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/sports/";
             },},{id: "projects-think-tank",
           title: 'Think Tank',
           description: "念念不忘 必有回想",
