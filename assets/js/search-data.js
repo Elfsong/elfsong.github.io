@@ -621,7 +621,7 @@ ninja.data = [{
           section: "News",},{id: "news-our-paper-effibench-x-a-multi-language-benchmark-for-measuring-efficiency-of-llm-generated-code-has-been-accepted-into-neurips-26",
           title: 'Our paper “EffiBench-X: A Multi-Language Benchmark for Measuring Efficiency of LLM-Generated Code” has...',
           description: "",
-          section: "News",},{id: "news-our-paper-swe-perf-can-language-models-optimize-code-performance-on-real-world-repositories-has-been-accepted-into-dl4c-neurips-25",
+          section: "News",},{id: "news-our-paper-swe-perf-can-language-models-optimize-code-performance-on-real-world-repositories-has-been-accepted-into-dl4c-neurips-26",
           title: 'Our paper “SWE-Perf: Can Language Models Optimize Code Performance on Real-World Repositories?” has...',
           description: "",
           section: "News",},{id: "news-our-paper-on-assigning-product-and-software-codes-to-customer-service-requests-with-large-language-models-has-been-accepted-into-emnlp-25",
