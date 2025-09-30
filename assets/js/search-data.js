@@ -618,7 +618,7 @@ ninja.data = [{
           section: "News",},{id: "news-our-paper-guardreasoner-vl-safeguarding-vlms-via-reinforced-reasoning-has-been-accepted-into-neurips-26",
           title: 'Our paper “GuardReasoner-VL: Safeguarding VLMs via Reinforced Reasoning” has been accepted into NeurIPS’26...',
           description: "",
-          section: "News",},{id: "news-our-paper-effibench-x-a-multi-language-benchmark-for-measuring-efficiency-of-llm-generated-code-has-been-accepted-into-neurips-25",
+          section: "News",},{id: "news-our-paper-effibench-x-a-multi-language-benchmark-for-measuring-efficiency-of-llm-generated-code-has-been-accepted-into-neurips-26",
           title: 'Our paper “EffiBench-X: A Multi-Language Benchmark for Measuring Efficiency of LLM-Generated Code” has...',
           description: "",
           section: "News",},{id: "news-our-paper-swe-perf-can-language-models-optimize-code-performance-on-real-world-repositories-has-been-accepted-into-dl4c-neurips-25",
