@@ -12,6 +12,8 @@ images:
 
 <iframe height='160' width='100%' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/athletes/106061318/activity-summary/2e164d038c246959ef77bcc02ec83b1b7d0a20e4'></iframe>
 
+🎉 News: I got my new bike recently! Please call me if you want to ride through SG together:)
+
 My first bike is a cross-country bike. I bought it when I was a high school student (Oh more than 10 years alreay).
 I am updating and polishing it from time to time. Currently, it resides on my balcony, a testament to the miles we've traversed together.
 
