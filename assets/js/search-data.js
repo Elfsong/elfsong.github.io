@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-predicting-and-optimizing-llvm-compiler-pass-order",
+        },{id: "post-challenges-in-code-generation",
+      
+        title: "Challenges in Code Generation",
+      
+      description: "Challenges in Code Generation",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/code-challenge/";
+        
+      },
+    },{id: "post-predicting-and-optimizing-llvm-compiler-pass-order",
       
         title: "PREDICTING AND OPTIMIZING LLVM COMPILER PASS ORDER",
       
