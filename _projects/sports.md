@@ -54,5 +54,10 @@ I decided to have a foldable bike upon my arrival in Singapore, which has consid
     <swiper-slide>{% include figure.liquid loading="eager" path="assets/img/bikes/bike_4_4.jpg" class="img-fluid rounded z-depth-1" %}</swiper-slide>
 </swiper-container>
 
+I got a Decathlon GCR bike recently. Since it doesn't onboard Singapore yet, I bought it from China and shipped it to Singapore.
+<swiper-container keyboard="true" navigation="true" pagination="true" pagination-clickable="true" pagination-dynamic-bullets="true" rewind="true">
+    <swiper-slide>{% include figure.liquid loading="eager" path="assets/img/bikes/bike_5_0.jpg" class="img-fluid rounded z-depth-1" %}</swiper-slide>
+</swiper-container>
+
 
 # Where the trail ends, wheels are rolling!
