@@ -1,0 +1,53 @@
+paths:
+  static: ''
+  uploads: uploads
+timezone: Asia/Singapore
+markdown:
+  engine: kramdown
+  options:
+    heading_ids: false
+    gfm: false
+    breaks: false
+    typographer: false
+    attributes: true
+    attribute_elements:
+      inline: right
+      block: below
+      tr: none
+      td: none
+      li: right-of-prefix
+    treat_indentation_as_code: true
+_snippets_imports:
+  jekyll: true
+collections_config:
+  pages:
+    path: ''
+    icon: wysiwyg
+  blog:
+    path: blog
+    icon: event_available
+    disable_url: true
+  cv:
+    path: cv
+    icon: csv
+    disable_url: true
+  news:
+    path: news
+    icon: newsmode
+    disable_url: true
+  personal:
+    path: personal
+    icon: person
+    disable_url: true
+  projects:
+    path: projects
+    icon: eject
+    disable_url: true
+  publications:
+    path: publications
+    icon: functions
+    disable_url: true
+  service:
+    path: service
+    icon: devices
+    disable_url: true
