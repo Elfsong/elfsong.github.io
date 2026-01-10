@@ -4,4 +4,4 @@ date: 2026-01-01 00:05:00-0000
 inline: true
 ---
 
-My project has been selected in the Research Program at [Planet Labs](https://www.planet.com/).
+I received a research grant from [Planet Labs](https://www.planet.com/).
