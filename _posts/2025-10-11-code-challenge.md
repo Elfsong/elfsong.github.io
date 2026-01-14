@@ -16,15 +16,14 @@ authors:
 ## Training Data
 
 - Training
-    - Generalization
-    - Preference
+  - Generalization
+  - Preference
 
 - Inference
-    - Memory Management
-    - Hallucination
-    - Integration
+  - Memory Management
+  - Hallucination
+  - Integration
 
 - Evaluation
-    - Benchmarks
-    - Metrics
-
+  - Benchmarks
+  - Metrics
