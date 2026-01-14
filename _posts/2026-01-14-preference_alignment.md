@@ -15,13 +15,21 @@ authors:
 
 ## Preference Alignment
 
-###The Starting Point: RLHF Objective
+### The Starting Point: RLHF Objective
 
 We start with the standard objective function for Reinforcement Learning from Human Feedback (RLHF). We want to maximize the expected reward $r(x,y)$ while penalizing the model if it drifts too far from the reference model $\pi_{ref}$ (using KL divergence).
 
 $$\max_{\pi} J(\pi) = \mathbb{E}_{y \sim \pi(\cdot|x)} \left[ r(x, y) \right] - \beta D_{KL}(\pi(\cdot|x) || \pi_{ref}(\cdot|x))$$
 
+### Algebraic Expansion
+
+We expand the KL divergence term using logarithm properties ($\log \frac{a}{b} = \log a - \log b$) to separate the policy and reference terms.
+
 $$J(\pi) = \sum_y \pi(y|x) r(x, y) - \beta \sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi_{ref}(y|x)}$$
+
+### Factorization
+
+We factor out $-\beta$ to reorganize the terms. This is a mathematical trick to make the equation look like a new KL divergence formula.
 
 $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \frac{\pi(y|x)}{\pi_{ref}(y|x)} \right)$$
 
@@ -29,9 +37,15 @@ $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \pi(y|x) + \beta \log \pi
 
 $$J(\pi) = -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \log \pi_{ref}(y|x) - \frac{1}{\beta} r(x, y) \right)$$
 
+### Defining the "Optimal Policy" ($\pi^*$)
+
+We define a theoretical optimal policy $\pi^*$ (closed-form solution) that follows a Boltzmann distribution. This represents the ideal state where the probability of generating a response is proportional to its reward.
+
 $$\log \pi^*(y|x) = \log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) - \log Z(x)$$
 
 $$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
+
+$Z(x)$ is the Partition Function (normalization constant) to ensure probabilities sum to 1.
 
 $$Z(x) = \sum_y \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
 
