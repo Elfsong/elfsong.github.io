@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-challenges-in-code-generation",
+        },{id: "post-preference-alignment",
+      
+        title: "Preference Alignment",
+      
+      description: "Preference Alignment",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/preference_alignment/";
+        
+      },
+    },{id: "post-challenges-in-code-generation",
       
         title: "Challenges in Code Generation",
       
