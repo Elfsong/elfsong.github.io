@@ -25,11 +25,11 @@ authors:
 
 ## Direct Alignment / RL-Free
 
-## Direct Preference Optimization (DPO)
+### Direct Preference Optimization (DPO)
 
-## Identity Policy Optimization (IPO)
+### Identity Policy Optimization (IPO)
 
-## Kahneman-Tversky Optimization (KTO)
+### Kahneman-Tversky Optimization (KTO)
 
 ## Make RL Great Again
 
