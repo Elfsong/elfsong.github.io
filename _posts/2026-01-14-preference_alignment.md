@@ -75,14 +75,20 @@ we factor out $-\beta$ to reorganize the terms. This is a mathematical trick to 
 
 $$J(\pi) = -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \log \pi_{ref}(y|x) - \frac{1}{\beta} r(x, y) \right)$$
 
-##### 3. Defining the "Optimal Policy" ($\pi^*$)
+##### 3. Defining the Optimal Policy
 
 we define a theoretical optimal policy $\pi^*$ (closed-form solution) that follows a *Boltzmann distribution*. This represents the ideal state where the probability of generating a response is proportional to its reward.
 $Z(x)$ is the Partition Function (normalization constant) to ensure probabilities sum to 1.
 
-$$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
+$$\mathcal{L}(\pi, \lambda) = \underbrace{\sum_y \pi(y|x) \left[ r(x, y) - \beta \log \frac{\pi(y|x)}{\pi_{ref}(y|x)} \right]}_{\text{objective: reward + KL constraint}} - \underbrace{\lambda \left( \sum_y \pi(y|x) - 1 \right)}_{\text{constraint: sum to 1}}$$
+
+$$\frac{\partial \mathcal{L}}{\partial \pi(y|x)} = r(x, y) - \beta \left( \log \frac{\pi(y|x)}{\pi_{ref}(y|x)} + 1 \right) - \lambda = 0$$
+
+$$\pi(y|x) = \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right) \cdot \underbrace{\exp\left( - \frac{\beta + \lambda}{\beta} \right)}_{\text{normalization constant}}$$
 
 $$Z(x) = \sum_y \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
+
+$$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
 
 ##### 4. Log-Space Transformation
 
