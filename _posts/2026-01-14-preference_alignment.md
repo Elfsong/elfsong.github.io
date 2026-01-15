@@ -21,41 +21,62 @@ We start with the standard objective function for Reinforcement Learning from Hu
 
 $$\max_{\pi} J(\pi) = \mathbb{E}_{y \sim \pi(\cdot|x)} \left[ r(x, y) \right] - \beta D_{KL}(\pi(\cdot|x) || \pi_{ref}(\cdot|x))$$
 
-### Algebraic Expansion
-
-We expand the KL divergence term using logarithm properties ($\log \frac{a}{b} = \log a - \log b$) to separate the policy and reference terms.
+1. **Algebraic Expansion:**
+we expand the KL divergence term using logarithm properties ($\log \frac{a}{b} = \log a - \log b$) to separate the policy and reference terms.
 
 $$J(\pi) = \sum_y \pi(y|x) r(x, y) - \beta \sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi_{ref}(y|x)}$$
-
-### Factorization
-
-We factor out $-\beta$ to reorganize the terms. This is a mathematical trick to make the equation look like a new KL divergence formula.
 
 $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \frac{\pi(y|x)}{\pi_{ref}(y|x)} \right)$$
 
 $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \pi(y|x) + \beta \log \pi_{ref}(y|x) \right)$$
 
+2. **Factorization:**
+we factor out $-\beta$ to reorganize the terms. This is a mathematical trick to make the equation look like a new KL divergence formula.
+
 $$J(\pi) = -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \log \pi_{ref}(y|x) - \frac{1}{\beta} r(x, y) \right)$$
 
-### Defining the "Optimal Policy" ($\pi^*$)
-
-We define a theoretical optimal policy $\pi^*$ (closed-form solution) that follows a Boltzmann distribution. This represents the ideal state where the probability of generating a response is proportional to its reward.
-
-$$\log \pi^*(y|x) = \log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) - \log Z(x)$$
+3. **Defining the "Optimal Policy" ($\pi^*$):**
+we define a theoretical optimal policy $\pi^*$ (closed-form solution) that follows a *Boltzmann distribution*. This represents the ideal state where the probability of generating a response is proportional to its reward.
+$Z(x)$ is the Partition Function (normalization constant) to ensure probabilities sum to 1.
 
 $$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
 
-$Z(x)$ is the Partition Function (normalization constant) to ensure probabilities sum to 1.
-
 $$Z(x) = \sum_y \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
 
-## Imitation
+4. **Log-Space Transformation:**
+we take the logarithm of the optimal policy $\pi^*$. This allows us to express the reward $r(x,y)$ and reference model $\pi_{ref}$ in terms of $\pi^*$ and the constant $Z(x)$. By rearranging the terms, we isolate the part that matches our factored objective function.
+
+$$\log \pi^*(y|x) = \log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) - \log Z(x)$$
+
+$$\log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) = \log \pi^*(y|x) + \log Z(x)$$
+
+5. **Substitution:**
+we substitute the rearranged equation from Step 5 back into our objective function.
+
+$$\begin{aligned}
+J(\pi) &= -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \left[ \log \pi^*(y|x) + \log Z(x) \right] \right) \\
+&= -\beta \sum_y \pi(y|x) \left( \log \frac{\pi(y|x)}{\pi^*(y|x)} - \log Z(x) \right)
+\end{aligned}$$
+
+6. **Simplification to KL Divergence:** 
+we separate the terms to form the KL Divergence between our current policy $\pi$ and the optimal policy $\pi^*$. The second term simplifies because $\log Z(x)$ is constant with respect to $y$.
+
+$$J(\pi) = -\beta \underbrace{\sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi^*(y|x)}}_{D_{KL}(\pi || \pi^*)} + \beta \sum_y \pi(y|x) \log Z(x)$$
+
+$$J(\pi) = -\beta D_{KL}(\pi(\cdot|x) || \pi^*(\cdot|x)) + \beta \log Z(x)$$
+
+7. **The Optimization Equivalence:**
+Since $\beta \log Z(x)$ is a constant (it depends only on the reward function and reference model, not the policy $\pi$ we are training), maximizing the original objective $J(\pi)$ is mathematically equivalent to minimizing the KL divergence between our policy and the optimal policy.
+
+$$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
+
+## Paradigm I: Imitation
 
 ### Supervised Fine-Tuning (SFT)
 
 $$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]$$
 
-## Classic RLHF
+## Paradigm II: Reinforcement Learning from Human Feedback (RLHF)
 
 ### REINFORCE
 
@@ -70,21 +91,6 @@ $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
 ## Direct Alignment / RL-Free
 
 ### Direct Preference Optimization (DPO)
-
-
-
-$$\log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) = \log \pi^*(y|x) + \log Z(x)$$
-
-$$\begin{aligned}
-J(\pi) &= -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \left[ \log \pi^*(y|x) + \log Z(x) \right] \right) \\
-&= -\beta \sum_y \pi(y|x) \left( \log \frac{\pi(y|x)}{\pi^*(y|x)} - \log Z(x) \right)
-\end{aligned}$$
-
-$$J(\pi) = -\beta \underbrace{\sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi^*(y|x)}}_{D_{KL}(\pi || \pi^*)} + \beta \sum_y \pi(y|x) \log Z(x)$$
-
-$$J(\pi) = -\beta D_{KL}(\pi(\cdot|x) || \pi^*(\cdot|x)) + \beta \log Z(x)$$
-
-$$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
 
 $$\mathcal{L}_{\text{DPO}} = - \mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right) \right]$$
 
