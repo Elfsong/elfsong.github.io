@@ -1,11 +1,13 @@
 ---
-layout: distill
+layout: post
 title: Preference Alignment 101
 date: 2026-01-14 00:00:00
 description: Preference Alignment Preliminary Notes
 tags: math code
 categories: academia
 featured: false
+toc:
+  beginning: true
 
 authors:
   - name: Mingzhe Du
@@ -26,7 +28,7 @@ toc:
 
 This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
 
-$$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left( \sum_{t=1}^{T} \log \pi_\theta \right)$$
+$$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left( \sum_{t=1}^{T} \log \pi_\theta (y_t | x, y_{<t}) \right)$$
 
 - **Pros:** `simple implementation` (standard cross-entropy loss), `stable convergence`.
 - **Cons:** `exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
