@@ -155,7 +155,16 @@ $$\mathcal{L}_{\text{IPO}} = \mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ 
 #### Kahneman-Tversky Optimization (KTO)
 Standard alignment methods (DPO, PPO) require paired data (Winner vs. Loser). KTO is inspired by *"Prospect Theory"* from behavioral economics. It eliminates the need for pairs entirely, optimizing based on whether a single sample is *Good* (thumbs up) or *Bad* (thumbs down) relative to the reference model.
 
+$$\mathcal{L}_{\text{KTO}}(\pi_\theta) = \mathbb{E}_{(x, y, l) \sim \mathcal{D}} \left[ w(l) \cdot \left( 1 - \sigma \left( \text{target}(l) \cdot (r_\theta(x, y) - z_{\text{ref}}) \right) \right) \right]$$
+
+$$\text{target}(l) = \begin{cases} 
++1 & \text{if } l = 1 \text{ (Good)} \\
+-1 & \text{if } l = 0 \text{ (Bad)}
+\end{cases}$$
+
 $$\mathcal{L}_{\text{KTO}} = \underbrace{\sum_{y \in \text{Good}} w_{\text{good}} \cdot \left( 1 - \sigma(r_\theta(x,y) - z_{\text{ref}}) \right)}_{\text{Increase Good Cases}} + \underbrace{\sum_{y \in \text{Bad}} w_{\text{bad}} \cdot \left( 1 - \sigma(z_{\text{ref}} - r_\theta(x,y)) \right)}_{\text{Decrease Bad Cases}}$$
+
+$$w_{\text{good}} \approx \frac{1}{N_{\text{good}}}, w_{\text{bad}} \approx \frac{1}{N_{\text{bad}}}$$
 
 - **Pros:** Unlocks the use of vast amounts of `unpaired data` (e.g., customer support logs, star ratings) where explicit A/B comparisons are not available. Surprisingly, KTO often matches or exceeds DPO performance even without using paired preference data.
 - **Cons:** It introduces `weighting hyperparameters` ($w_{good}$, $w_{bad}$) that need to be tuned to balance the learning signal from positive and negative examples.
