@@ -8,11 +8,6 @@ categories: academia
 featured: false
 toc:
   beginning: true
-
-authors:
-  - name: Mingzhe Du
-    affiliations:
-      name: Nanyang Technological University
 ---
 
 ## Table of Contents
@@ -28,7 +23,7 @@ toc:
 
 This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
 
-$$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left( \sum_{t=1}^{T} \log \pi_\theta (y_t | x, y_{<t}) \right)$$
+$$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta (y_t | x, y_{<t}) \right]$$
 
 - **Pros:** `simple implementation` (standard cross-entropy loss), `stable convergence`.
 - **Cons:** `exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
@@ -42,7 +37,7 @@ SFT struggles to discern "better" from "good".
 
 REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
 
-$$\mathcal{L}_{\text{REINFORCE}} = FUCK$$
+$$\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)}$$
 
 - **Pros:** theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
 
