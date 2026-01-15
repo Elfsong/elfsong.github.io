@@ -13,7 +13,7 @@ authors:
       name: Nanyang Technological University
 ---
 
-## Preference Alignment
+## Preference Alignment 101
 
 ### The Starting Point: RLHF Objective
 
@@ -70,44 +70,90 @@ Since $\beta \log Z(x)$ is a constant (it depends only on the reward function an
 
 $$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
 
-## Paradigm I: Imitation
+## Chapter I: Imitation
 
 ### Supervised Fine-Tuning (SFT)
+This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
 
 $$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]$$
 
-## Paradigm II: Reinforcement Learning from Human Feedback (RLHF)
+- **Pros:** `Simple implementation` (standard cross-entropy loss), `stable convergence`.
+- **Cons:** `Exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
+
+## Chapter II: Reinforcement Learning from Human Feedback (RLHF)
+
+SFT struggles to discern "better" from "good".
+ Humans are often better at judging quality than writing perfect demonstrations. RLHF introduces a **Reward Model** to act as a proxy for human preference, allowing the model to explore and optimize for higher rewards.
 
 ### REINFORCE
+REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
 
 $$\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)} \left[ r(x, y) \cdot \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]$$
 
+- **Pros:** Theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
+
+- **Cons:** Because it relies on full Monte Carlo returns, the gradient estimates are `extremely noisy`, making `training unstable`. It also requires a large number of samples to converge. Without a mechanism to limit update size, a single bad update can `ruin the policy`.
+
 ### Proximal Policy Optimization (PPO)
+
+PPO improves upon REINFORCE by adopting an *Actor-Critic* architecture and a *Trust Region* approach. It introduces a *Critic* (Value Function) to reduce variance and a *Clipping* mechanism to constrain the policy update. This ensures the new policy $\pi_\theta$ does not deviate too drastically away from the old policy $\pi_{\text{old}}$ in a single step.
 
 $$\mathcal{L}_{\text{PPO}} = - \mathbb{E}_{(x,y)} \left[ \min \left( \rho_t(\theta) A_t, \text{clip}(\rho_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] - \beta_{\text{KL}} D_{\text{KL}}(\pi_\theta || \pi_{\text{ref}})$$
 
 $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
 
-## Direct Alignment / RL-Free
+- **Pros:** The clipping mechanism `prevents catastrophic forgetting` and ensures `reliable convergence`.
+
+- **Cons:** A standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
+
+## Chapter III: Direct Alignment
+Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training a separate Reward Model`?"
+This led to the era of Direct Alignment, which implicitly solves the RL problem using supervised objectives.
 
 ### Direct Preference Optimization (DPO)
+DPO re-parameterizes the reward function $r(x,y)$ using the optimal policy equation. Instead of training a separate reward model to predict which response is better, DPO directly optimizes the policy using a binary cross-entropy loss on preference pairs. It effectively treats the language model itself as the reward model.
 
 $$\mathcal{L}_{\text{DPO}} = - \mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right) \right]$$
 
+- **Pros:** `Removes the extensive resource need` for a separate Reward Model and the complex "Actor-Critic" loop of PPO. It is essentially supervised fine-tuning on preference pairs. It is also a supervised objective, which `avoids the high variance and instability often found in RL training`.
+
+- **Cons:** DPO learns strictly from the static preference dataset. Unlike PPO, it does not generate new samples during training to explore the solution space, which can lead to `distribution shift`. It can be `highly sensitive to the distribution and quality of the preference data`.
+
 ### Identity Policy Optimization (IPO)
+IPO was introduced to address a theoretical flaw in DPO: the DPO loss can sometimes be minimized by driving the probability ratios (between policy and reference) to infinity, effectively ignoring the KL-divergence constraint. IPO fixes this by placing a quadratic regularization term directly on the "log-likelihood gap" between the winning and losing responses.
 
 $$\mathcal{L}_{\text{IPO}} = \mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \left( \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} - \frac{\tau}{2} \right)^2 \right]$$
 
+- **Pros:** IPO provides a `theoretically stricter bound` on the policy, preventing the model from drifting too far from the reference model (overfitting) even if the reward signal is strong. It also often yields `more stable convergence behavior` than DPO on noisy datasets.
+
+- **Cons:** The strict regularization can sometimes result in `slower adaptation` to the preference signal compared to the more aggressive DPO.
+
 ### Kahneman-Tversky Optimization (KTO)
+Standard alignment methods (DPO, PPO) require paired data (Winner vs. Loser). KTO is inspired by *"Prospect Theory"* from behavioral economics. It eliminates the need for pairs entirely, optimizing based on whether a single sample is *Good* (thumbs up) or *Bad* (thumbs down) relative to the reference model.
 
 $$\mathcal{L}_{\text{KTO}} = \underbrace{\sum_{y \in \text{Good}} w_{\text{good}} \cdot \left( 1 - \sigma(r_\theta(x,y) - z_{\text{ref}}) \right)}_{\text{Increase Good Cases}} + \underbrace{\sum_{y \in \text{Bad}} w_{\text{bad}} \cdot \left( 1 - \sigma(z_{\text{ref}} - r_\theta(x,y)) \right)}_{\text{Decrease Bad Cases}}$$
 
-## Make RL Great Again
+- **Pros:** Unlocks the use of vast amounts of `unpaired data` (e.g., customer support logs, star ratings) where explicit A/B comparisons are not available. Surprisingly, KTO often matches or exceeds DPO performance even without using paired preference data.
+- **Cons:** It introduces `weighting hyperparameters` ($w_{good}$, $w_{bad}$) that need to be tuned to balance the learning signal from positive and negative examples.
+
+
+## Chapter IV: Make RL Great Again
+As models scale, the memory cost of PPO's Critic model becomes prohibitive. Furthermore, for reasoning tasks, relative correctness within a group of generated outputs is often a stronger signal than a singular reward score.
 
 ### Group Relative Policy Optimization (GRPO)
+GRPO eliminates the need for a Value Function (Critic) entirely. Instead of using a learned Critic to estimate the baseline for the advantage function, GRPO samples a group of outputs $\{y_1, y_2, \dots, y_G\}$ for the same prompt $x$ and uses the group average reward as the baseline.Essentially, it asks: "How good is this specific response compared to the other variants I just generated?"
 
 $$\mathcal{L}_{\text{GRPO}} = \mathcal{L}_{\text{surrogate}} + \beta D_{\text{KL}}(\pi_\theta || \pi_{\text{ref}})$$
 
 $$\mathcal{L}_{\text{surrogate}} = - \frac{1}{G} \sum_{i=1}^{G} \left[ \min \left( \rho_i A_i, \text{clip}(\rho_i, 1-\epsilon, 1+\epsilon) A_i \right) \right]$$
 
 $$  A_i = \frac{r_i - \text{mean}(\{r_1 \dots r_G\})}{\text{std}(\{r_1 \dots r_G\})}$$
+
+**Pros:**
+- **Memory Efficiency:** By removing the Critic model, it significantly reduces VRAM usage (often saving ~50% of the memory required for PPO), allowing for training larger models or using larger batch sizes.
+- **Reasoning Power:** It has proven exceptionally effective for "Aha! moment" domains (Math, Code, Logic) where verifying a solution is easier than predicting its value. The group comparison stabilizes the gradient in these sparse-reward environments.
+- **Simplicity:** Fewer moving parts than PPO makes it easier to implement and tune.
+
+**Cons:**
+- **Generation Cost:** The training loop requires generating multiple outputs ($G$) for every single prompt, which increases the computational cost of the data collection phase.
+- **Dependency on Reward Function:** Since it relies heavily on relative ranking within a group, it requires a robust reward signal (like a unit test or a verifier) to be effective. It may be less stable for purely subjective tasks where "better than average" is ambiguous.
