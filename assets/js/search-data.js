@@ -44,11 +44,11 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-preference-alignment",
+        },{id: "post-preference-alignment-101",
       
-        title: "Preference Alignment",
+        title: "Preference Alignment 101",
       
-      description: "Preference Alignment",
+      description: "Preference Alignment Preliminary Notes",
       section: "Posts",
       handler: () => {
         
