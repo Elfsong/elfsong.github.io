@@ -1,8 +1,8 @@
 ---
 layout: distill
-title: Preference Alignment
+title: Preference Alignment 101
 date: 2026-01-14 00:00:00
-description: Preference Alignment
+description: Preference Alignment Preliminary Notes
 tags: math code
 categories: academia
 featured: false
@@ -12,8 +12,6 @@ authors:
     affiliations:
       name: Nanyang Technological University
 ---
-
-## Preference Alignment 101
 
 ## Chapter I: Imitation Learning
 
