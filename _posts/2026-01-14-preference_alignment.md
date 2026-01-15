@@ -18,6 +18,7 @@ authors:
 ## Chapter I: Imitation Learning
 
 ### Supervised Fine-Tuning (SFT)
+
 This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
 
 $$
@@ -33,6 +34,7 @@ SFT struggles to discern "better" from "good".
  Humans are often better at judging quality than writing perfect demonstrations. RLHF introduces a **Reward Model** to act as a proxy for human preference, allowing the model to explore and optimize for higher rewards.
 
 ### REINFORCE
+
 REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
 
 $$
@@ -56,6 +58,7 @@ $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
 - **Cons:** A standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
 
 ## Chapter III: Direct Alignment
+
 Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training a separate Reward Model`?"
 This led to the era of Direct Alignment, which implicitly solves the RL problem using supervised objectives.
 
