@@ -15,6 +15,50 @@ authors:
 
 ## Preference Alignment 101
 
+## Chapter I: Imitation Learning
+
+### Supervised Fine-Tuning (SFT)
+This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
+
+$$
+\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
+$$
+
+- **Pros:** `Simple implementation` (standard cross-entropy loss), `stable convergence`.
+- **Cons:** `Exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
+
+## Chapter II: Reinforcement Learning from Human Feedback (RLHF)
+
+SFT struggles to discern "better" from "good".
+ Humans are often better at judging quality than writing perfect demonstrations. RLHF introduces a **Reward Model** to act as a proxy for human preference, allowing the model to explore and optimize for higher rewards.
+
+### REINFORCE
+REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
+
+$$
+\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)} \left[ r(x, y) \cdot \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
+$$
+
+- **Pros:** Theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
+
+- **Cons:** Because it relies on full Monte Carlo returns, the gradient estimates are `extremely noisy`, making `training unstable`. It also requires a large number of samples to converge. Without a mechanism to limit update size, a single bad update can `ruin the policy`.
+
+### Proximal Policy Optimization (PPO)
+
+PPO improves upon REINFORCE by adopting an *Actor-Critic* architecture and a *Trust Region* approach. It introduces a *Critic* (Value Function) to reduce variance and a *Clipping* mechanism to constrain the policy update. This ensures the new policy $\pi_\theta$ does not deviate too drastically away from the old policy $\pi_{\text{old}}$ in a single step.
+
+$$\mathcal{L}_{\text{PPO}} = - \mathbb{E}_{(x,y)} \left[ \min \left( \rho_t(\theta) A_t, \text{clip}(\rho_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] - \beta_{\text{KL}} D_{\text{KL}}(\pi_\theta || \pi_{\text{ref}})$$
+
+$$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
+
+- **Pros:** The clipping mechanism `prevents catastrophic forgetting` and ensures `reliable convergence`.
+
+- **Cons:** A standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
+
+## Chapter III: Direct Alignment
+Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training a separate Reward Model`?"
+This led to the era of Direct Alignment, which implicitly solves the RL problem using supervised objectives.
+
 ### The Starting Point: RLHF Objective
 
 We start with the standard objective function for Reinforcement Learning from Human Feedback (RLHF). We want to maximize the expected reward $r(x,y)$ while penalizing the model if it drifts too far from the reference model $\pi_{ref}$ (using KL divergence).
@@ -74,50 +118,6 @@ $$J(\pi) = -\beta D_{KL}(\pi(\cdot|x) || \pi^*(\cdot|x)) + \beta \log Z(x)$$
 Since $\beta \log Z(x)$ is a constant (it depends only on the reward function and reference model, not the policy $\pi$ we are training), maximizing the original objective $J(\pi)$ is mathematically equivalent to minimizing the KL divergence between our policy and the optimal policy.
 
 $$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
-
-## Chapter I: Imitation Learning
-
-### Supervised Fine-Tuning (SFT)
-This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
-
-$$
-\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
-$$
-
-- **Pros:** `Simple implementation` (standard cross-entropy loss), `stable convergence`.
-- **Cons:** `Exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
-
-## Chapter II: Reinforcement Learning from Human Feedback (RLHF)
-
-SFT struggles to discern "better" from "good".
- Humans are often better at judging quality than writing perfect demonstrations. RLHF introduces a **Reward Model** to act as a proxy for human preference, allowing the model to explore and optimize for higher rewards.
-
-### REINFORCE
-REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
-
-$$
-\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)} \left[ r(x, y) \cdot \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
-$$
-
-- **Pros:** Theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
-
-- **Cons:** Because it relies on full Monte Carlo returns, the gradient estimates are `extremely noisy`, making `training unstable`. It also requires a large number of samples to converge. Without a mechanism to limit update size, a single bad update can `ruin the policy`.
-
-### Proximal Policy Optimization (PPO)
-
-PPO improves upon REINFORCE by adopting an *Actor-Critic* architecture and a *Trust Region* approach. It introduces a *Critic* (Value Function) to reduce variance and a *Clipping* mechanism to constrain the policy update. This ensures the new policy $\pi_\theta$ does not deviate too drastically away from the old policy $\pi_{\text{old}}$ in a single step.
-
-$$\mathcal{L}_{\text{PPO}} = - \mathbb{E}_{(x,y)} \left[ \min \left( \rho_t(\theta) A_t, \text{clip}(\rho_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] - \beta_{\text{KL}} D_{\text{KL}}(\pi_\theta || \pi_{\text{ref}})$$
-
-$$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
-
-- **Pros:** The clipping mechanism `prevents catastrophic forgetting` and ensures `reliable convergence`.
-
-- **Cons:** A standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
-
-## Chapter III: Direct Alignment
-Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training a separate Reward Model`?"
-This led to the era of Direct Alignment, which implicitly solves the RL problem using supervised objectives.
 
 ### Direct Preference Optimization (DPO)
 DPO re-parameterizes the reward function $r(x,y)$ using the optimal policy equation. Instead of training a separate reward model to predict which response is better, DPO directly optimizes the policy using a binary cross-entropy loss on preference pairs. It effectively treats the language model itself as the reward model.
