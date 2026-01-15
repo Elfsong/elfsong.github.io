@@ -29,7 +29,7 @@ latest_posts:
 
 Du Mingzhe (杜 明哲) is a third-year PhD Candidate at the *College of Computing and Data Science (CCDS)*, *Nanyang Technological University (NTU)*, advised by [Prof. Luu Anh Tuan](https://tuanluu.github.io/). He is concurrently a Research Associate at the *Institute of Data Science (IDS)*, *National University of Singapore (NUS)*, working closely with [Prof. See-Kiong Ng](https://www.comp.nus.edu.sg/~ngsk/). Mingzhe obtained his Master's degree from the *University of Melbourne*, under the guidance of [Prof. Richard Sinnott](https://findanexpert.unimelb.edu.au/profile/342078-richard-sinnott). Before his PhD journey, Mingzhe developed [Tiktok](https://www.tiktok.com/) search engine at *ByteDance*.
 
-Mingzhe's research currently focuses on **Code Generation** and **Preference Alignment**.  
+Mingzhe's research currently focuses on [**Code Generation**](https://mingzhe.space/blog/2025/code-challenge/) and [**Preference Alignment**](https://mingzhe.space/blog/2026/preference_alignment).  
 *If you are interested in collaborating, please feel free to connect!*
 
 <!-- **Contact Info:** -->

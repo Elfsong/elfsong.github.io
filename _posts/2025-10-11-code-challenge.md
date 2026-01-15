@@ -13,16 +13,17 @@ authors:
       name: Nanyang Technological University
 ---
 
-## Training Data
-
 - Training
   - Generalization
-  - Preference
+  - Preference Alignment
+  - Agentic RL
+  - PRM / ORM
 
 - Inference
   - Memory Management
   - Hallucination
-  - Integration
+  - Rollout Efficiency
+  - Context Management
 
 - Evaluation
   - Benchmarks
