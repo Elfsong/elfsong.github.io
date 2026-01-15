@@ -19,7 +19,7 @@ This is the first step in the alignment pipeline, transitioning from "Next Token
 $$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta (y_t | x, y_{<t}) \right]$$
 
 - **Pros:** `simple implementation` (standard cross-entropy loss), `stable convergence`.
-- **Cons:** `exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
+- **Cons:** `exposure bias` (training on ground truth, testing on self-generated output) and `lack of negative feedback` (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
 
 ### Chapter II: Reinforcement Learning from Human Feedback (RLHF)
 
