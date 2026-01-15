@@ -21,7 +21,8 @@ We start with the standard objective function for Reinforcement Learning from Hu
 
 $$\max_{\pi} J(\pi) = \mathbb{E}_{y \sim \pi(\cdot|x)} \left[ r(x, y) \right] - \beta D_{KL}(\pi(\cdot|x) || \pi_{ref}(\cdot|x))$$
 
-1. **Algebraic Expansion:**
+#### 1. Algebraic Expansion
+
 we expand the KL divergence term using logarithm properties ($\log \frac{a}{b} = \log a - \log b$) to separate the policy and reference terms.
 
 $$J(\pi) = \sum_y \pi(y|x) r(x, y) - \beta \sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi_{ref}(y|x)}$$
@@ -30,12 +31,14 @@ $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \frac{\pi(y|x)}{\pi_{ref}
 
 $$J(\pi) = \sum_y \pi(y|x) \left( r(x, y) - \beta \log \pi(y|x) + \beta \log \pi_{ref}(y|x) \right)$$
 
-2. **Factorization:**
+#### 2. Factorization
+
 we factor out $-\beta$ to reorganize the terms. This is a mathematical trick to make the equation look like a new KL divergence formula.
 
 $$J(\pi) = -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \log \pi_{ref}(y|x) - \frac{1}{\beta} r(x, y) \right)$$
 
-3. **Defining the "Optimal Policy" ($\pi^*$):**
+#### 3. Defining the "Optimal Policy" ($\pi^*$)
+
 we define a theoretical optimal policy $\pi^*$ (closed-form solution) that follows a *Boltzmann distribution*. This represents the ideal state where the probability of generating a response is proportional to its reward.
 $Z(x)$ is the Partition Function (normalization constant) to ensure probabilities sum to 1.
 
@@ -43,14 +46,16 @@ $$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \r
 
 $$Z(x) = \sum_y \pi_{ref}(y|x) \exp\left( \frac{r(x, y)}{\beta} \right)$$
 
-4. **Log-Space Transformation:**
+#### 4. Log-Space Transformation
+
 we take the logarithm of the optimal policy $\pi^*$. This allows us to express the reward $r(x,y)$ and reference model $\pi_{ref}$ in terms of $\pi^*$ and the constant $Z(x)$. By rearranging the terms, we isolate the part that matches our factored objective function.
 
 $$\log \pi^*(y|x) = \log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) - \log Z(x)$$
 
 $$\log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) = \log \pi^*(y|x) + \log Z(x)$$
 
-5. **Substitution:**
+#### 5. Substitution
+
 we substitute the rearranged equation from Step 5 back into our objective function.
 
 $$\begin{aligned}
@@ -58,24 +63,26 @@ J(\pi) &= -\beta \sum_y \pi(y|x) \left( \log \pi(y|x) - \left[ \log \pi^*(y|x) +
 &= -\beta \sum_y \pi(y|x) \left( \log \frac{\pi(y|x)}{\pi^*(y|x)} - \log Z(x) \right)
 \end{aligned}$$
 
-6. **Simplification to KL Divergence:** 
+#### 6. Simplification to KL Divergence:
 we separate the terms to form the KL Divergence between our current policy $\pi$ and the optimal policy $\pi^*$. The second term simplifies because $\log Z(x)$ is constant with respect to $y$.
 
 $$J(\pi) = -\beta \underbrace{\sum_y \pi(y|x) \log \frac{\pi(y|x)}{\pi^*(y|x)}}_{D_{KL}(\pi || \pi^*)} + \beta \sum_y \pi(y|x) \log Z(x)$$
 
 $$J(\pi) = -\beta D_{KL}(\pi(\cdot|x) || \pi^*(\cdot|x)) + \beta \log Z(x)$$
 
-7. **The Optimization Equivalence:**
+#### 7. The Optimization Equivalence:
 Since $\beta \log Z(x)$ is a constant (it depends only on the reward function and reference model, not the policy $\pi$ we are training), maximizing the original objective $J(\pi)$ is mathematically equivalent to minimizing the KL divergence between our policy and the optimal policy.
 
 $$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
 
-## Chapter I: Imitation
+## Chapter I: Imitation Learning
 
 ### Supervised Fine-Tuning (SFT)
 This is the first step in the alignment pipeline, transitioning from "Next Token Prediction" (Pre-training) to "Instruction Following". It bridges the gap between *the vast knowledge base of the model* and *the user's intent*.
 
-$$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]$$
+$$
+\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left[ \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
+$$
 
 - **Pros:** `Simple implementation` (standard cross-entropy loss), `stable convergence`.
 - **Cons:** `Exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
@@ -88,7 +95,9 @@ SFT struggles to discern "better" from "good".
 ### REINFORCE
 REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates the policy by estimating the gradient using full response trajectories. Simply put: *if a generated sequence gets a high reward, the model increases the probability of all tokens in that sequence; if it gets a low reward, it decreases them.*
 
-$$\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)} \left[ r(x, y) \cdot \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]$$
+$$
+\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(\cdot|x)} \left[ r(x, y) \cdot \sum_{t=1}^{T} \log \pi_\theta(y_t | x, y_{<t}) \right]
+$$
 
 - **Pros:** Theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
 
@@ -135,7 +144,6 @@ $$\mathcal{L}_{\text{KTO}} = \underbrace{\sum_{y \in \text{Good}} w_{\text{good}
 
 - **Pros:** Unlocks the use of vast amounts of `unpaired data` (e.g., customer support logs, star ratings) where explicit A/B comparisons are not available. Surprisingly, KTO often matches or exceeds DPO performance even without using paired preference data.
 - **Cons:** It introduces `weighting hyperparameters` ($w_{good}$, $w_{bad}$) that need to be tuned to balance the learning signal from positive and negative examples.
-
 
 ## Chapter IV: Make RL Great Again
 As models scale, the memory cost of PPO's Critic model becomes prohibitive. Furthermore, for reasoning tasks, relative correctness within a group of generated outputs is often a stronger signal than a singular reward score.
