@@ -10,13 +10,6 @@ toc:
   beginning: true
 ---
 
-## Table of Contents
-
-```yml
-toc:
-  beginning: true
-```
-
 ### Chapter I: Imitation Learning
 
 #### Supervised Fine-Tuning (SFT)
