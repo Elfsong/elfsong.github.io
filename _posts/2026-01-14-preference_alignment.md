@@ -21,8 +21,8 @@ This is the first step in the alignment pipeline, transitioning from "Next Token
 
 $$\mathcal{L}_{\text{SFT}} = - \mathbb{E}_{(x, y) \sim \mathcal{D}} \left( \sum_{t=1}^{T} \log \pi_\theta \right)$$
 
-- **Pros:** `Simple implementation` (standard cross-entropy loss), `stable convergence`.
-- **Cons:** `Exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
+- **Pros:** `simple implementation` (standard cross-entropy loss), `stable convergence`.
+- **Cons:** `exposure bias` (training on ground truth, testing on self-generated output) and lack of negative feedback (the model learns *what to do*, but not necessarily *what not to do*). It mimics the dataset distribution rather than optimizing for response quality.
 
 ## Chapter II: Reinforcement Learning from Human Feedback (RLHF)
 
@@ -35,9 +35,9 @@ REINFORCE is the fundamental *Monte Carlo Policy Gradient* algorithm. It updates
 
 $$\mathcal{L}_{\text{REINFORCE}} = FUCK$$
 
-- **Pros:** Theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
+- **Pros:** theoretically `straightforward` and `unbiased` (asymptotically) implementation of the policy gradient theorem.
 
-- **Cons:** Because it relies on full Monte Carlo returns, the gradient estimates are `extremely noisy`, making `training unstable`. It also requires a large number of samples to converge. Without a mechanism to limit update size, a single bad update can `ruin the policy`.
+- **Cons:** because it relies on full Monte Carlo returns, the gradient estimates are `extremely noisy`, making `training unstable`. It also requires a large number of samples to converge. Without a mechanism to limit update size, a single bad update can `ruin the policy`.
 
 ### Proximal Policy Optimization (PPO)
 
@@ -47,9 +47,9 @@ $$\mathcal{L}_{\text{PPO}} = - \mathbb{E}_{(x,y)} \left[ \min \left( \rho_t(\the
 
 $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
 
-- **Pros:** The clipping mechanism `prevents catastrophic forgetting` and ensures `reliable convergence`.
+- **Pros:** the clipping mechanism `prevents catastrophic forgetting` and ensures `reliable convergence`.
 
-- **Cons:** A standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
+- **Cons:** a standard PPO setup requires loading four models into memory simultaneously: the Actor (Policy), Critic (Value), Reference Model, and Reward Model. This creates a `massive resource bottleneck` and makes hyperparameter tuning notoriously difficult.
 
 ## Chapter III: Direct Alignment
 
