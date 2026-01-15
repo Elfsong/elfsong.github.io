@@ -40,6 +40,12 @@ $$\mathcal{L}_{\text{REINFORCE}} = - \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_
 
 PPO improves upon REINFORCE by adopting an *Actor-Critic* architecture and a *Trust Region* approach. It introduces a *Critic* (Value Function) to reduce variance and a *Clipping* mechanism to constrain the policy update. This ensures the new policy $\pi_\theta$ does not deviate too drastically away from the old policy $\pi_{\text{old}}$ in a single step.
 
+$$A_t = Q(s_t, a_t) - V(s_t)$$
+
+$$\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$$
+
+$$A_t^{\text{GAE}} = \sum_{k=0}^{\infty} (\gamma \lambda)^k \delta_{t+k}$$
+
 $$\mathcal{L}_{\text{PPO}} = - \mathbb{E}_{(x,y)} \left[ \min \left( \rho_t(\theta) A_t, \text{clip}(\rho_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] - \beta_{\text{KL}} D_{\text{KL}}(\pi_\theta || \pi_{\text{ref}})$$
 
 $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
@@ -50,7 +56,7 @@ $$ \rho_t(\theta) = \frac{\pi_\theta(y_t|x)}{\pi_{\text{old}}(y_t|x)} $$
 
 ### Chapter III: Direct Alignment
 
-Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training a separate Reward Model`?"
+Researchers asked: "If the optimal policy $\pi^*$ can be expressed in terms of the reward and reference, can we optimize the policy directly `without training an explicit Reward Model`?"
 This led to the era of Direct Alignment, which implicitly solves the RL problem using supervised objectives.
 
 #### The Starting Point: RLHF Objective
