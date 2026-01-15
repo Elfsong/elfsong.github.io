@@ -119,6 +119,21 @@ $$\max_{\pi} J(\pi) \iff \min_{\pi} D_{KL}(\pi || \pi^*)$$
 ### Direct Preference Optimization (DPO)
 DPO re-parameterizes the reward function $r(x,y)$ using the optimal policy equation. Instead of training a separate reward model to predict which response is better, DPO directly optimizes the policy using a binary cross-entropy loss on preference pairs. It effectively treats the language model itself as the reward model.
 
+$$\log \pi^*(y|x) = \log \pi_{ref}(y|x) + \frac{1}{\beta} r(x, y) - \log Z(x)$$
+
+$$\frac{1}{\beta} r(x, y) = \log \frac{\pi^*(y|x)}{\pi_{ref}(y|x)} + \log Z(x)$$
+
+$$r(x, y) = \beta \log \frac{\pi^*(y|x)}{\pi_{ref}(y|x)} + \beta \log Z(x)$$
+
+$$P(y_w \succ y_l | x) = \sigma(r(x, y_w) - r(x, y_l))$$
+
+$$\begin{aligned}
+r(x, y_w) - r(x, y_l) &= \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{ref}(y_w|x)} + \beta \log Z(x) \right) - \left( \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{ref}(y_l|x)} + \beta \log Z(x) \right) \\
+&= \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{ref}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{ref}(y_l|x)}
+\end{aligned}$$
+
+$$P_{\theta}(y_w \succ y_l | x) = \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{ref}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{ref}(y_l|x)} \right)$$
+
 $$\mathcal{L}_{\text{DPO}} = - \mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right) \right]$$
 
 - **Pros:** `Removes the extensive resource need` for a separate Reward Model and the complex "Actor-Critic" loop of PPO. It is essentially supervised fine-tuning on preference pairs. It is also a supervised objective, which `avoids the high variance and instability often found in RL training`.
