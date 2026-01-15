@@ -149,11 +149,11 @@ $$\mathcal{L}_{\text{surrogate}} = - \frac{1}{G} \sum_{i=1}^{G} \left[ \min \lef
 
 $$  A_i = \frac{r_i - \text{mean}(\{r_1 \dots r_G\})}{\text{std}(\{r_1 \dots r_G\})}$$
 
-**Pros:**
-- **Memory Efficiency:** By removing the Critic model, it significantly reduces VRAM usage (often saving ~50% of the memory required for PPO), allowing for training larger models or using larger batch sizes.
-- **Reasoning Power:** It has proven exceptionally effective for "Aha! moment" domains (Math, Code, Logic) where verifying a solution is easier than predicting its value. The group comparison stabilizes the gradient in these sparse-reward environments.
-- **Simplicity:** Fewer moving parts than PPO makes it easier to implement and tune.
+- **Pros:**
+  - **Memory Efficiency:** By removing the Critic model, it significantly reduces VRAM usage (often saving ~50% of the memory required for PPO), allowing for training larger models or using larger batch sizes.
+  - **Reasoning Power:** It has proven exceptionally effective for "Aha! moment" domains (Math, Code, Logic) where verifying a solution is easier than predicting its value. The group comparison stabilizes the gradient in these sparse-reward environments.
+  - **Simplicity:** Fewer moving parts than PPO makes it easier to implement and tune.
 
-**Cons:**
-- **Generation Cost:** The training loop requires generating multiple outputs ($G$) for every single prompt, which increases the computational cost of the data collection phase.
-- **Dependency on Reward Function:** Since it relies heavily on relative ranking within a group, it requires a robust reward signal (like a unit test or a verifier) to be effective. It may be less stable for purely subjective tasks where "better than average" is ambiguous.
+- **Cons:**
+  - **Generation Cost:** The training loop requires generating multiple outputs ($G$) for every single prompt, which increases the computational cost of the data collection phase.
+  - **Dependency on Reward Function:** Since it relies heavily on relative ranking within a group, it requires a robust reward signal (like a unit test or a verifier) to be effective. It may be less stable for purely subjective tasks where "better than average" is ambiguous.
