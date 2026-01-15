@@ -13,6 +13,11 @@ authors:
       name: Nanyang Technological University
 ---
 
+```yml
+toc:
+  beginning: true
+```
+
 ## Chapter I: Imitation Learning
 
 ### Supervised Fine-Tuning (SFT)
