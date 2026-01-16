@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-preference-alignment-101",
+        },{id: "post-multi-head-attention",
+      
+        title: "Multi-Head Attention",
+      
+      description: "Multi-Head Attention Implementation Notes",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/multi_head_attention/";
+        
+      },
+    },{id: "post-preference-alignment-101",
       
         title: "Preference Alignment 101",
       
