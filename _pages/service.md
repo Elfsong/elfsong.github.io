@@ -10,6 +10,7 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Reviewer, ICML 2026
 - Reviewer, AISTATS 2026
 - Reviewer, ICLR 2026
 - Program Committee, AISI 2026
