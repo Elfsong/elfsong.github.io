@@ -84,7 +84,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: Mingzhe's Blog # blog_name will be displayed in your blog page
-blog_description: 愿风指引你的道路 愿圣光照亮你的前行
+blog_description: 愿长风指引你的道路 愿圣光照亮你的前行
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
