@@ -10,13 +10,14 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Reviewer, ICML 2026
 - Reviewer, AISTATS 2026
 - Reviewer, ICLR 2026
 - Program Committee, AISI 2026
 - Program Committee, AAAI 2026
 - Ethics Reviewer, NeurIPS 2025
 - Reviewer, ECAI 2025
-- Senior Program Committee, CIKM 2025 
+- Senior Program Committee, CIKM 2025
 - Reviewer, NeurIPS 2025
 - Reviewer, AISTATS 2025
 - Reviewer, ICLR 2025
@@ -34,6 +35,8 @@ horizontal: false
 
 ## Volunteer
 
+- Volunteer, AAAI 2026
+- Volunteer, NeurIPS 2025
 - Volunteer, ACL 2025
 - Volunteer, WWW 2024
 - Volunteer, EMNLP 2024
