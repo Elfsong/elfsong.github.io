@@ -670,7 +670,7 @@ ninja.data = [{
           section: "News",},{id: "news-i-will-attend-aaai-26-in-singapore",
           title: 'I will attend AAAI’26 in Singapore.',
           description: "",
-          section: "News",},{id: "news-our-paper-beyond-prompt-induced-lies-investigating-llm-deception-on-benign-prompts-has-been-accepted-into-iclr-26",
+          section: "News",},{id: "news-our-paper-beyond-prompt-induced-lies-investigating-llm-deception-on-benign-prompts-has-been-accepted-into-iclr-26-oral",
           title: 'Our paper “Beyond Prompt-Induced Lies: Investigating LLM Deception on Benign Prompts” has been...',
           description: "",
           section: "News",},{id: "projects-ntu-x-nus",
