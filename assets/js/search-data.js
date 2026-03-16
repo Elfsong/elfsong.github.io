@@ -695,7 +695,7 @@ ninja.data = [{
           section: "News",},{id: "news-our-paper-improving-arabic-dialectness-in-llms-with-reinforcement-learning-has-been-accepted-into-amiya-26",
           title: 'Our paper “Improving Arabic Dialectness in LLMs with Reinforcement Learning” has been accepted...',
           description: "",
-          section: "News",},{id: "news-our-paper-benchmarking-llms-for-unit-test-generation-from-real-world-functions-has-been-accepted-into-tosem-26",
+          section: "News",},{id: "news-our-paper-benchmarking-llms-for-unit-test-generation-from-real-world-functions-has-been-accepted-to-tosem-26",
           title: 'Our paper “Benchmarking LLMs for Unit Test Generation from Real-World Functions” has been...',
           description: "",
           section: "News",},{id: "news-our-team-received-an-academic-grant-from-nvidia",
