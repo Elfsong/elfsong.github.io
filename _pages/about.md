@@ -38,6 +38,6 @@ He published oral papers on ICLR, ICML, NeurIPS and more.
 *If you are interested in collaborating, please feel free to connect!*
 
 <!-- **Contact Info:** -->
-- 📮: 3 Research Link, Singapore 117602
+<!-- - 📮: 3 Research Link, Singapore 117602 -->
 - 📧: mingzhe [at] nus.edu.sg / mingzhe001 [at] ntu.edu.sg / mz [at] alumni.unimelb.edu.au
 - 🌠: [[Google Scholar](https://scholar.google.com/citations?user=CJHW1IgAAAAJ&hl=en)] [[LinkedIn](https://www.linkedin.com/in/dumingzhe/)] [[GitHub](https://github.com/Elfsong)] [[HuggingFace](https://huggingface.co/Elfsong)] [[X](https://x.com/spirit__song)] [[WeChat](/assets/img/wechat.jpg)]
