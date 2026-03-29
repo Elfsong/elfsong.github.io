@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年3月 中国之旅</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: #0a0a0f;
+    color: #e8e4df;
+    overflow: hidden;
+    height: 100vh;
+  }
+  #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+  .sidebar {
+    position: absolute; top: 0; left: 0;
+    width: 380px; height: 100%;
+    background: linear-gradient(180deg, rgba(12,12,18,0.97) 0%, rgba(18,15,22,0.95) 100%);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    overflow-y: auto;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .sidebar.collapsed { transform: translateX(-380px); }
+
+  .sidebar-header {
+    position: sticky; top: 0;
+    background: linear-gradient(180deg, rgba(12,12,18,1) 70%, rgba(12,12,18,0) 100%);
+    padding: 28px 24px 36px; z-index: 10;
+  }
+  .sidebar-header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px; font-weight: 700; letter-spacing: 2px;
+    background: linear-gradient(135deg, #f0e6d3, #c9a96e);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .sidebar-header .subtitle {
+    font-size: 12px; color: rgba(255,255,255,0.35);
+    letter-spacing: 3px; text-transform: uppercase; font-weight: 300;
+  }
+  .stats-bar {
+    display: flex; gap: 16px; margin-top: 16px; padding: 12px 16px;
+    background: rgba(255,255,255,0.03); border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .stat { text-align: center; flex: 1; }
+  .stat-value { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; color: #c9a96e; }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; margin-top: 2px; }
+
+  .day-card {
+    margin: 0 16px 8px; padding: 16px 18px;
+    border-radius: 12px; cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    position: relative; overflow: hidden;
+  }
+  .day-card::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 3px; height: 100%; border-radius: 0 2px 2px 0; opacity: 0.8;
+  }
+  .day-card:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
+    transform: translateX(4px);
+  }
+  .day-card.active {
+    background: rgba(201,169,110,0.08);
+    border-color: rgba(201,169,110,0.2);
+  }
+  .day-number {
+    font-family: 'Noto Serif SC', serif; font-size: 11px;
+    font-weight: 600; letter-spacing: 2px; margin-bottom: 4px; opacity: 0.6;
+  }
+  .day-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .day-locations { display: flex; flex-direction: column; gap: 4px; }
+  .location-item {
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    padding-left: 14px; position: relative; line-height: 1.6;
+  }
+  .location-item::before {
+    content: ''; position: absolute; left: 0; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%; opacity: 0.6;
+  }
+
+  .toggle-btn {
+    position: absolute; top: 50%; left: 380px; transform: translateY(-50%);
+    z-index: 1001; width: 28px; height: 56px;
+    background: rgba(12,12,18,0.9);
+    border: 1px solid rgba(255,255,255,0.1); border-left: none;
+    border-radius: 0 8px 8px 0; color: rgba(255,255,255,0.5);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toggle-btn:hover { background: rgba(201,169,110,0.15); color: #c9a96e; }
+  .sidebar.collapsed + .toggle-btn { left: 0; }
+
+  .legend {
+    position: absolute; bottom: 24px; right: 24px; z-index: 1000;
+    background: rgba(12,12,18,0.92); backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+    padding: 16px 20px; max-height: 340px; overflow-y: auto;
+  }
+  .legend h3 {
+    font-family: 'Noto Serif SC', serif; font-size: 13px;
+    color: rgba(255,255,255,0.5); margin-bottom: 10px; letter-spacing: 2px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px; padding: 3px 0;
+    font-size: 11px; color: rgba(255,255,255,0.55); cursor: pointer; transition: color 0.2s;
+  }
+  .legend-item:hover { color: rgba(255,255,255,0.9); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Leaflet popup overrides */
+  .leaflet-popup-content-wrapper {
+    background: rgba(12,12,18,0.95) !important;
+    border: 1px solid rgba(201,169,110,0.25) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+  }
+  .leaflet-popup-content {
+    color: #e8e4df !important; font-family: 'Noto Sans SC', sans-serif !important;
+    margin: 14px 16px !important; font-size: 13px; line-height: 1.6;
+  }
+  .leaflet-popup-tip { background: rgba(12,12,18,0.95) !important; }
+  .popup-title { font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .popup-day { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; margin-bottom: 8px; }
+  .popup-note { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px; }
+
+  .custom-marker {
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; border: 2px solid rgba(255,255,255,0.9);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 700;
+    color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); transition: transform 0.2s;
+  }
+  .custom-marker:hover { transform: scale(1.3); z-index: 9999 !important; }
+
+  /* Show All button */
+  .show-all-btn {
+    position: absolute; top: 16px; right: 16px; z-index: 1000;
+    background: rgba(12,12,18,0.9); border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 10px; padding: 10px 18px; color: #c9a96e;
+    font-family: 'Noto Sans SC', sans-serif; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.3s; letter-spacing: 1px;
+  }
+  .show-all-btn:hover { background: rgba(201,169,110,0.15); border-color: rgba(201,169,110,0.5); }
+
+  @media (max-width: 768px) {
+    .sidebar { width: 300px; }
+    .sidebar.collapsed { transform: translateX(-300px); }
+    .toggle-btn { left: 300px; }
+    .sidebar.collapsed + .toggle-btn { left: 0; }
+    .legend { bottom: 12px; right: 12px; padding: 12px 14px; }
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>二〇二六年三月 · 中国之旅</h1>
+    <div class="subtitle">西宁 → 河南 → 山东 → 江苏 → 浙江</div>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-value">16</div><div class="stat-label">天</div></div>
+      <div class="stat"><div class="stat-value">6</div><div class="stat-label">省</div></div>
+      <div class="stat"><div class="stat-value">40+</div><div class="stat-label">景点</div></div>
+    </div>
+  </div>
+  <div id="day-list"></div>
+  <div style="height:24px"></div>
+</div>
+
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">◀</button>
+<button class="show-all-btn" onclick="showAll()">全览</button>
+<div class="legend" id="legend"></div>
+
+<script>
+const dayColors = [
+  '#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c',
+  '#3498db','#9b59b6','#e84393','#fd79a8','#00cec9',
+  '#6c5ce7','#d63031','#e17055','#00b894','#0984e3','#a29bfe'
+];
+
+const tripData = [
+  { day:1, date:'3/14', title:'西宁出发', region:'青海西宁',
+    locations:[{name:'西宁（出发）',lat:36.600947,lng:101.827843,note:'旅程起点，从西宁出发前往河南'}] },
+  { day:2, date:'3/15', title:'新乡·城市文化', region:'河南新乡',
+    locations:[
+      {name:'平原博物院',lat:35.29857,lng:113.92667,note:'馆藏丰富，堪比国博，游客却少得多'},
+      {name:'胖东来·大胖',lat:35.305139,lng:113.877133,note:'被誉为中国零售业标杆'},
+      {name:'胖东来·小胖',lat:35.31,lng:113.88,note:'胖东来旗下精品超市'}
+    ]},
+  { day:3, date:'3/16', title:'太行山·绝壁奇观', region:'河南新乡',
+    locations:[
+      {name:'万仙山国家森林公园',lat:35.717779,lng:113.623397,note:'太行山深处的国家级森林公园'},
+      {name:'《太行山传奇》实景剧',lat:35.72,lng:113.62,note:'抗战主题实景演出，震撼人心'},
+      {name:'挂壁公路（世界第九大奇迹）',lat:35.725,lng:113.61,note:'村民在绝壁上凿出的公路隧道'},
+      {name:'郭亮村',lat:35.73021,lng:113.60352,note:'悬崖上的村庄，愚公精神的象征'}
+    ]},
+  { day:4, date:'3/17', title:'蓬莱·初见仙境', region:'山东蓬莱',
+    locations:[
+      {name:'八仙居',lat:37.8212,lng:120.7743,note:'蓬莱住宿，感受海边仙气'},
+      {name:'蓬莱仙境',lat:37.823,lng:120.76,note:'传说中八仙过海之地'}
+    ]},
+  { day:5, date:'3/18', title:'蓬莱·仙阁揽胜', region:'山东蓬莱',
+    locations:[
+      {name:'八仙过海景区',lat:37.823738,lng:120.77526,note:'海上仙山主题景区，可观赏海豹'},
+      {name:'蓬莱阁',lat:37.823527,lng:120.756584,note:'中国四大名楼之一，登阁远眺渤海'}
+    ]},
+  { day:6, date:'3/19', title:'长岛·海岛风光', region:'山东长岛',
+    locations:[
+      {name:'烽火林海',lat:37.96,lng:120.72,note:'长岛制高点，烽火台与松林交相辉映'},
+      {name:'黄渤海分界线（长山尾）',lat:37.91,lng:120.74,note:'两海交汇的神奇S形分界线'},
+      {name:'九丈崖',lat:37.988663,lng:120.692561,note:'绝壁凌空，长岛最壮观的海蚀地貌'},
+      {name:'月牙湾公园',lat:37.946346,lng:120.689525,note:'球石滩呈月牙形，独特的鹅卵石海滩'},
+      {name:'仙境源',lat:37.936353,lng:120.75226,note:'相传秦皇汉武曾在此寻仙访药'}
+    ]},
+  { day:7, date:'3/20', title:'济南·泉城初探', region:'山东济南',
+    locations:[
+      {name:'五龙潭公园',lat:36.664447,lng:117.01403,note:'五龙潭泉群，免费开放'},
+      {name:'趵突泉',lat:36.66119,lng:117.015954,note:'天下第一泉，三股泉水喷涌不息'}
+    ]},
+  { day:8, date:'3/21', title:'济南→扬州', region:'济南→扬州',
+    locations:[
+      {name:'大明湖',lat:36.6760289,lng:117.02424,note:'四面荷花三面柳，一城山色半城湖'},
+      {name:'洪家楼天主教堂',lat:36.686227,lng:117.066067,note:'华北最大天主教堂'},
+      {name:'宽厚里',lat:36.6611,lng:116.97485,note:'400年历史老街'},
+      {name:'扬州东关街',lat:32.39833,lng:119.45234,note:'千年古街品扬州美食'}
+    ]},
+  { day:9, date:'3/22', title:'扬州·园林之美', region:'江苏扬州',
+    locations:[
+      {name:'瘦西湖',lat:32.407573,lng:119.41993,note:'扬州标志景点，湖上园林精华荟萃'},
+      {name:'南宋城墙',lat:32.393,lng:119.435,note:'南宋时期古城墙遗址'},
+      {name:'个园',lat:32.39914,lng:119.44369,note:'中国四大名园之一，以竹石取胜'}
+    ]},
+  { day:10, date:'3/23', title:'扬州→无锡·赏樱', region:'扬州→无锡',
+    locations:[
+      {name:'冶春园',lat:32.401485,lng:119.43291,note:'百年老店，扬州早茶代表'},
+      {name:'鼋头渚（世界三大赏樱地）',lat:31.519559,lng:120.23466,note:'太湖绝佳处，3月樱花正当时'}
+    ]},
+  { day:11, date:'3/24', title:'无锡·灵山圣境', region:'江苏无锡',
+    locations:[
+      {name:'灵山大佛',lat:31.432107,lng:120.09156,note:'88米青铜大佛，可登佛脚祈福'},
+      {name:'灵山胜境梵宫',lat:31.420027,lng:120.10384,note:'金碧辉煌的佛教艺术殿堂'}
+    ]},
+  { day:12, date:'3/25', title:'无锡·古镇老街', region:'江苏无锡',
+    locations:[
+      {name:'惠山古镇',lat:31.581436,lng:120.2707,note:'800年历史古镇，夜景尤为惊艳'},
+      {name:'南长街',lat:31.54748,lng:120.32629,note:'清名桥运河畔，最有味道的老街'}
+    ]},
+  { day:13, date:'3/26', title:'杭州·西湖十景', region:'浙江杭州',
+    locations:[
+      {name:'西湖',lat:30.247933,lng:120.15027,note:'世界文化遗产，环湖十景一日尽览'}
+    ]},
+  { day:14, date:'3/27', title:'杭州·龙井问茶', region:'浙江杭州',
+    locations:[
+      {name:'狮峰山',lat:30.219,lng:120.1125,note:'狮峰龙井被誉为龙井茶中极品'},
+      {name:'老龙井御茶园',lat:30.215,lng:120.108,note:'乾隆御封十八棵茶树所在地'}
+    ]},
+  { day:15, date:'3/28', title:'杭州·湿地与夜市', region:'浙江杭州',
+    locations:[
+      {name:'西溪国家湿地公园',lat:30.268056,lng:120.06629,note:'城市中的天然湿地，可乘船穿行'},
+      {name:'河坊街',lat:30.24012,lng:120.17249,note:'杭州最热闹的历史街区'},
+      {name:'吴山夜市',lat:30.253001,lng:120.169033,note:'杭州传统夜市，小吃与烟火气'}
+    ]},
+  { day:16, date:'3/29', title:'返回西宁', region:'青海西宁',
+    locations:[{name:'西宁（返回）',lat:36.600947,lng:101.827843,note:'16天旅程完美收官！'}] }
+];
+
+const map = L.map('map', { center:[34.5,114], zoom:5, zoomControl:false, attributionControl:true });
+L.control.zoom({ position:'topright' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+}).addTo(map);
+
+const dayLayers = {};
+const routePoints = [];
+tripData.forEach(d => d.locations.forEach(l => routePoints.push([l.lat, l.lng])));
+
+L.polyline(routePoints, { color:'rgba(201,169,110,0.2)', weight:2, dashArray:'8,8', smoothFactor:1.5 }).addTo(map);
+
+tripData.forEach((day, di) => {
+  const color = dayColors[di];
+  const pts = day.locations.map(l => [l.lat, l.lng]);
+
+  if (di < tripData.length - 1) {
+    const a = day.locations[day.locations.length-1], b = tripData[di+1].locations[0];
+    L.polyline([[a.lat,a.lng],[b.lat,b.lng]], { color, weight:2, opacity:0.3, dashArray:'6,10' }).addTo(map);
+  }
+  if (pts.length > 1) L.polyline(pts, { color, weight:3, opacity:0.7 }).addTo(map);
+
+  dayLayers[di] = [];
+  day.locations.forEach(loc => {
+    const t = di===0||di===15, sz = t?28:22, lb = di===0?'起':di===15?'终':di;
+    const icon = L.divIcon({
+      className:'',
+      html:`<div class="custom-marker" style="width:${sz}px;height:${sz}px;background:${color};font-size:${t?11:9}px;">${lb}</div>`,
+      iconSize:[sz,sz], iconAnchor:[sz/2,sz/2]
+    });
+    const m = L.marker([loc.lat,loc.lng],{icon}).bindPopup(`
+      <div class="popup-title" style="color:${color}">${loc.name}</div>
+      <div class="popup-day">DAY ${day.day} · ${day.date} · ${day.region}</div>
+      <div class="popup-note">${loc.note}</div>
+    `,{maxWidth:280}).addTo(map);
+    dayLayers[di].push(m);
+  });
+});
+
+// Sidebar
+const dayList = document.getElementById('day-list');
+tripData.forEach((day, di) => {
+  const s = document.createElement('style');
+  s.textContent = `#dc${di}::before{background:${dayColors[di]}} #dc${di} .location-item::before{background:${dayColors[di]}}`;
+  document.head.appendChild(s);
+  const c = document.createElement('div');
+  c.className = 'day-card'; c.id = `dc${di}`;
+  c.innerHTML = `
+    <div class="day-number" style="color:${dayColors[di]}">DAY ${day.day} · ${day.date}</div>
+    <div class="day-title">${day.title}</div>
+    <div class="day-locations">${day.locations.map(l=>`<div class="location-item">${l.name}</div>`).join('')}</div>
+  `;
+  c.addEventListener('click', () => focusDay(di));
+  dayList.appendChild(c);
+});
+
+// Legend
+document.getElementById('legend').innerHTML = `<h3>行程图例</h3>` +
+  tripData.map((d,i) => `<div class="legend-item" onclick="focusDay(${i})"><div class="legend-dot" style="background:${dayColors[i]}"></div><span>D${d.day} ${d.title}</span></div>`).join('');
+
+function focusDay(di) {
+  document.querySelectorAll('.day-card').forEach((c,i) => c.classList.toggle('active', i===di));
+  const d = tripData[di];
+  if (d.locations.length===1) map.setView([d.locations[0].lat,d.locations[0].lng],10,{animate:true,duration:0.8});
+  else map.fitBounds(L.latLngBounds(d.locations.map(l=>[l.lat,l.lng])).pad(0.4),{animate:true,duration:0.8});
+  if (dayLayers[di]&&dayLayers[di][0]) setTimeout(()=>dayLayers[di][0].openPopup(),500);
+  document.getElementById(`dc${di}`).scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function showAll() {
+  document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('active'));
+  map.closePopup();
+  map.fitBounds(L.latLngBounds(routePoints).pad(0.08),{animate:true,duration:0.8});
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar'), btn = document.getElementById('toggleBtn');
+  sb.classList.toggle('collapsed');
+  btn.textContent = sb.classList.contains('collapsed') ? '▶' : '◀';
+}
+
+map.fitBounds(L.latLngBounds(routePoints).pad(0.08));
+</script>
+</body>
+</html>
