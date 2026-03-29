@@ -551,10 +551,217 @@
     .title-bar h1 { font-size: 17px; letter-spacing: 3px; }
   }
 
-  @media (max-width: 480px) {
-    .sidebar { width: 100%; }
-    .sidebar-toggle { display: none; }
-    .title-bar h1 { font-size: 15px; }
+  /* ========== MOBILE: Bottom sheet pattern ========== */
+  @media (max-width: 640px) {
+    body {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    .title-bar {
+      padding: 10px 14px 20px;
+      gap: 10px;
+    }
+    .title-bar h1 {
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+    .title-bar .subtitle {
+      font-size: 9px;
+      letter-spacing: 1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 70vw;
+    }
+    .title-bar .train-icon { font-size: 22px; }
+
+    /* Sidebar → Bottom sheet */
+    .sidebar {
+      position: fixed;
+      top: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100% !important;
+      height: 55vh;
+      border-left: none;
+      border-top: 1px solid rgba(212, 167, 98, 0.3);
+      border-radius: 16px 16px 0 0;
+      transform: translateY(calc(100% - 52px));
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+      z-index: 1001;
+    }
+
+    .sidebar.sheet-open {
+      transform: translateY(0);
+    }
+
+    .sidebar.collapsed {
+      transform: translateY(100%);
+    }
+
+    /* Drag handle */
+    .sidebar::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 4px;
+      background: rgba(26, 26, 46, 0.2);
+      border-radius: 2px;
+      margin: 10px auto 0;
+      flex-shrink: 0;
+    }
+
+    /* Sheet peek bar */
+    .sheet-peek {
+      display: flex !important;
+    }
+
+    .sidebar-header {
+      padding: 8px 16px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .sidebar-header h2 {
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    .sidebar-header .stats {
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .stat-value { font-size: 18px; }
+    .stat-label { font-size: 9px; }
+
+    .day-card {
+      padding: 12px 16px;
+      -webkit-tap-highlight-color: rgba(212, 167, 98, 0.15);
+    }
+
+    .day-city { font-size: 15px; }
+    .day-spots li { font-size: 12px; line-height: 1.5; }
+    .day-number { font-size: 28px; right: 14px; top: 12px; }
+
+    /* Toggle button → floating FAB */
+    .sidebar-toggle {
+      position: fixed !important;
+      right: 16px !important;
+      top: auto !important;
+      bottom: 68px !important;
+      left: auto !important;
+      transform: none !important;
+      width: 48px !important;
+      height: 48px !important;
+      border-radius: 50% !important;
+      border: 1px solid rgba(212, 167, 98, 0.4) !important;
+      background: var(--mist) !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+      font-size: 16px !important;
+      z-index: 1002 !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar.collapsed ~ .sidebar-toggle {
+      right: 16px !important;
+      bottom: 16px !important;
+    }
+
+    /* Legend - compact, collapsible */
+    .legend {
+      bottom: 62px;
+      left: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 180px;
+      font-size: 11px;
+    }
+
+    .legend.legend-collapsed {
+      max-width: 110px;
+      padding: 8px 10px;
+    }
+
+    .legend.legend-collapsed .legend-routes,
+    .legend.legend-collapsed .legend-markers {
+      display: none;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .legend.legend-collapsed .legend-title {
+      margin-bottom: 0;
+    }
+
+    .legend.legend-collapsed .legend-title::after {
+      content: ' ▸';
+    }
+
+    .legend-routes { gap: 3px; margin-bottom: 6px; padding-bottom: 6px; }
+    .legend-item { padding: 3px 4px; gap: 6px; }
+    .legend-label { font-size: 10px; }
+    .legend-line { width: 18px; height: 3px; }
+
+    /* Popup touch-friendly */
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px !important;
+    }
+    .leaflet-popup-content {
+      margin: 12px 14px !important;
+      font-size: 13px !important;
+    }
+    .spot-popup-desc { font-size: 12px; }
+
+    /* Larger touch targets for map controls */
+    .leaflet-control-zoom a {
+      width: 36px !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      font-size: 18px !important;
+    }
+
+    /* Safe area padding for notch phones */
+    .sidebar {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 380px) {
+    .title-bar h1 { font-size: 13px; letter-spacing: 1px; }
+    .title-bar .subtitle { font-size: 8px; max-width: 60vw; }
+    .sidebar { height: 50vh; }
+    .legend { bottom: 58px; left: 6px; }
+  }
+
+  /* Sheet peek tab - hidden on desktop */
+  .sheet-peek {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 0 2px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 1px;
+    opacity: 0.6;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 </style>
 </head>
@@ -571,6 +778,9 @@
 <div id="map"></div>
 
 <div class="sidebar" id="sidebar">
+  <div class="sheet-peek" id="sheetPeek">
+    <span>▲ 行程安排</span>
+  </div>
   <div class="sidebar-header">
     <h2>行 程 安 排</h2>
     <div class="stats">
@@ -700,7 +910,7 @@ const itinerary = [
     spots: ['西溪国家湿地公园', '河坊街', '吴山夜市']
   },
   {
-    day: 17, date: '3月29日', city: '返回西宁', province: '青海',
+    day: 17, date: '3月29日', city: '西宁', province: '青海',
     lat: 36.617, lng: 101.778,
     spots: ['返回西宁'],
     isEnd: true
@@ -774,7 +984,7 @@ const trainRoutes = [
     [30.274, 120.155] // Hangzhou
   ]},
   // Hangzhou → Xining (return via major corridor)
-  { from: '杭州', to: '西宁（返回）', waypoints: [
+  { from: '杭州', to: '西宁', waypoints: [
     [30.274, 120.155],
     [30.60, 120.00],
     [31.10, 119.50],
@@ -793,10 +1003,11 @@ const trainRoutes = [
 
 // Initialize map
 const map = L.map('map', {
-  center: [35.0, 110.0],
-  zoom: 4,
+  center: [35.0, 108.0],
+  zoom: window.innerWidth <= 640 ? 3 : 4,
   zoomControl: false,
-  attributionControl: true
+  attributionControl: true,
+  tap: true
 });
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -879,7 +1090,8 @@ trainRoutes.forEach((route, idx) => {
       routePolylines.forEach((pl, i) => {
         pl.setStyle({ opacity: i === idx ? 1 : 0.1, weight: i === idx ? 6 : 2 });
       });
-      map.fitBounds(routePolylines[idx].getBounds(), { padding: [80, 420, 80, 80], maxZoom: 9 });
+      const pad = window.innerWidth <= 640 ? [60, 40, 100, 40] : [80, 420, 80, 80];
+      map.fitBounds(routePolylines[idx].getBounds(), { padding: pad, maxZoom: 9 });
     } else {
       routePolylines.forEach((pl, i) => {
         pl.setStyle({ opacity: 0.82, weight: 4 });
@@ -1120,17 +1332,90 @@ itinerary.forEach((day, idx) => {
     if (markers[key]) {
       setTimeout(() => markers[key].openPopup(), 600);
     }
+    handleDayCardMobile();
   });
 
   dayList.appendChild(card);
 });
 
-// Sidebar toggle
+// Sidebar toggle - responsive
+const isMobile = () => window.innerWidth <= 640;
+
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const btn = document.getElementById('sidebarToggle');
-  sidebar.classList.toggle('collapsed');
-  btn.innerHTML = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+
+  if (isMobile()) {
+    if (sidebar.classList.contains('sheet-open')) {
+      sidebar.classList.remove('sheet-open');
+      btn.innerHTML = '📋';
+    } else if (sidebar.classList.contains('collapsed')) {
+      sidebar.classList.remove('collapsed');
+      btn.innerHTML = '📋';
+    } else {
+      sidebar.classList.add('sheet-open');
+      btn.innerHTML = '✕';
+    }
+  } else {
+    sidebar.classList.toggle('collapsed');
+    btn.innerHTML = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+  }
+}
+
+// Sheet peek tap to open
+document.getElementById('sheetPeek').addEventListener('click', () => {
+  const sidebar = document.getElementById('sidebar');
+  const btn = document.getElementById('sidebarToggle');
+  sidebar.classList.add('sheet-open');
+  btn.innerHTML = '✕';
+});
+
+// Touch swipe to dismiss bottom sheet
+let touchStartY = 0;
+let touchCurrentY = 0;
+const sidebar = document.getElementById('sidebar');
+
+sidebar.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+sidebar.addEventListener('touchmove', (e) => {
+  touchCurrentY = e.touches[0].clientY;
+}, { passive: true });
+
+sidebar.addEventListener('touchend', () => {
+  if (!isMobile()) return;
+  const deltaY = touchCurrentY - touchStartY;
+  if (deltaY > 60 && sidebar.classList.contains('sheet-open')) {
+    sidebar.classList.remove('sheet-open');
+    document.getElementById('sidebarToggle').innerHTML = '📋';
+  } else if (deltaY < -40 && !sidebar.classList.contains('sheet-open')) {
+    sidebar.classList.add('sheet-open');
+    document.getElementById('sidebarToggle').innerHTML = '✕';
+  }
+  touchStartY = 0;
+  touchCurrentY = 0;
+});
+
+// Legend collapse on mobile
+document.querySelector('.legend-title').addEventListener('click', () => {
+  if (!isMobile()) return;
+  document.getElementById('legend').classList.toggle('legend-collapsed');
+});
+
+// On mobile, clicking a day card auto-closes the sheet
+function handleDayCardMobile() {
+  if (isMobile()) {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.remove('sheet-open');
+    document.getElementById('sidebarToggle').innerHTML = '📋';
+  }
+}
+
+// Start mobile with legend collapsed
+if (isMobile()) {
+  document.getElementById('legend').classList.add('legend-collapsed');
+  document.getElementById('sidebarToggle').innerHTML = '📋';
 }
 
 // Initial view: China full territory
