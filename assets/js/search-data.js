@@ -711,7 +711,7 @@ ninja.data = [{
           title: 'I will give a talk on “Towards Efficient Code Generation” at Zhongguancun Academy...',
           description: "",
           section: "News",},{id: "news-we-release-our-new-paper-paper-espresso-from-paper-overload-to-research-insight",
-          title: 'We release our new paper Paper Espresso: From Paper Overload to Research Insight...',
+          title: 'We release our new paper “Paper Espresso: From Paper Overload to Research Insight”....',
           description: "",
           section: "News",},{id: "projects-ntu-x-nus",
           title: 'NTU x NUS',
