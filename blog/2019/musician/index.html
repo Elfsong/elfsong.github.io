@@ -1,0 +1,105 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Musician | Mingzhe Du </title> <meta name="author" content="Mingzhe Du"> <meta name="description" content="The Personal Website of Du Mingzhe (杜明哲). "> <meta name="keywords" content="Du Mingzhe, Mingzhe Du, 杜明哲, 杜 明哲, Mingzhe, academic-website, NUS, NTU, IDS, CCDS, NLP, AI, Research, PhD, Machine Learning, Artificial Intelligence, Reinforcement Learning, Computer Science, Data Science, Singapore, Australia"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%94%AE&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://mingzhe.space/blog/2019/musician/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Mingzhe</span> Du </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">Blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/news/">News </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">Publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/personal/">Personal </a> </li> <li class="nav-item "> <a class="nav-link" href="/service/">Service </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Musician</h1> <p class="post-meta"> Created in April 02, 2019 </p> <p class="post-tags"> <a href="/blog/2019"> <i class="fa-solid fa-calendar fa-sm"></i> 2019 </a>   ·   <a href="/blog/tag/elfsong-cn"> <i class="fa-solid fa-hashtag fa-sm"></i> elfsong.cn</a>   ·   <a href="/blog/category/aha-moments"> <i class="fa-solid fa-tag fa-sm"></i> Aha moments</a>   <a href="/blog/category/atypical-programmer"> <i class="fa-solid fa-tag fa-sm"></i> Atypical programmer</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <p>Let’s say there are two persons, <strong>Composer</strong> and <strong>Performer</strong>.</p> <p>The <strong>Composer</strong> randomly selects three different <strong>Pitch</strong> which constructed by two part, <strong>Note</strong> and <strong>Octave</strong>. <strong>Note</strong> in the range of “A” to “G”, <strong>Octave</strong> in the range of “1” to “3”.</p> <p>For example, here is a typical <strong>Pitch</strong> combined by ‘A’ and ‘1’, in which ‘A’ is the <strong>Note</strong>, and ‘1’ is the <strong>Octave</strong>.</p> <p>Once <strong>Composer</strong> selected a Combination, <strong>Performer</strong> needs to guess it as quick as possible. After each guess, <strong>Performer</strong> get a feedback which indicates that:</p> <ul> <li>how many pitches in the guess are included in the target (<strong>correct pitches</strong>) - how many pitches have the right note but the wrong octave (<strong>correct notes</strong>) - how many pitches have the right octave but the wrong note (<strong>correct octaves</strong>)</li> </ul> <p>Now, the question is how to get the corrected answer as less times as possible.</p> <p>The core idea is that when we get a feedback from the previous guess, we’d check out combinations that have identical feedback in the remind possible set, in which the problem scale can be reduced effectively.</p> <p>Now, the question is how to get the corrected answer as less times as possible.</p> <p>The core idea is that when we get a feedback from the previous guess, we are able to check out combinations that have identical feedback in the remaining possible set, by which the problem scale can be pruned effectively.</p> <p>possible set, in which the problem scale can be reduced effectively.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--  Subject  : UniMelb 2019 SM1 COMP90048 Declarative Programming
+--  File     : Proj1.hs
+--  Author   : Mingzhe Du
+--  Origin   : Mon Apr 8 2019 
+--  Purpose  : This program for guessing a target chord. In each round of the game,
+--             the program will generate a chord from a possible set, and then a feedback 
+--             against the guess will be given. Depanding on these feedbacks, the aim of this
+--             program is get the correct chord with as less as possible guess times.
+
+module Proj1 (Pitch, GameState, toPitch, feedback, initialGuess, nextGuess) where
+
+-- Pitch structure
+data Pitch = Pitch { note :: Char, 
+                     octave :: Char   
+                   } deriving (Eq)
+instance Show Pitch where
+    show (Pitch note octave) = [note, octave]
+
+-- Game State
+data GameState = GameState { times :: Int,                  -- Guess times
+                             cCombinations :: [[[Char]]]    -- Possible set
+                           } deriving (Eq, Show)
+
+-- Converting String to Pitch                          
+toPitch :: String -&gt; Maybe Pitch
+toPitch (a:b:t)
+    | not (null t) = Nothing
+    | (elem note' ['A'..'G']) &amp;&amp; (elem octave' ['1'..'3']) = Just Pitch {note = note', octave = octave'}
+    | otherwise = Nothing
+    where note' = a
+          octave' = b
+
+-- Comparing target chord and guessed chord
+feedback :: [Pitch] -&gt; [Pitch] -&gt; (Int,Int,Int)
+feedback pitch_a pitch_b
+    | (length pitch_a == 3) &amp;&amp; (length pitch_b == 3) = (c_p, c_n - c_p, c_o - c_p)
+    | otherwise = (0,0,0)
+    where get_key key = foldr (\x acc -&gt; key x:acc) []
+          c_p = getCounter pitch_a pitch_b 0                              -- Correct pitches
+          c_n = getCounter (map note pitch_a) (map note pitch_b) 0        -- Correct notes
+          c_o = getCounter (map octave pitch_a) (map octave pitch_b) 0    -- Correct Octaves
+
+-- Initial guess
+initialGuess :: ([Pitch], GameState)
+initialGuess = (currentGuess, gameState)
+    where currentGuess = combinationToPitch  (cGuess)
+          gameState = GameState 0 all_combinations 
+          all_items = getCombination "ABCDEFG" "123"
+          cGuess:all_combinations = subsequencesOfSize 3 all_items        -- New guess and new possible set
+          getCombination p_note p_octave = foldr (\x acc -&gt; (map (\y -&gt; y:[x]) p_note) ++ acc) [] p_octave
+          combinationToPitch combinations = map (\(Just x) -&gt; x) $ map toPitch combinations     -- Converting String to Pitch
+
+-- Get the next guess
+nextGuess :: ([Pitch], GameState) -&gt; (Int,Int,Int) -&gt; ([Pitch],GameState)
+nextGuess (pGuess, pGameState) pFeedback = (cGuess, cGameState)
+    where cGuess':cCombs = getNewCombination pGuess pCombinations pFeedback
+          pCombinations = cCombinations pGameState
+          cGuess = toChord cGuess'
+          cGameState = GameState ((times pGameState) + 1) cCombs 
+          toChord = map (\x -&gt; Pitch (x !! 0) (x !! 1))
+
+-- Help Functions 
+
+-- remove an item from a list
+removeItem :: (Eq a) =&gt; a -&gt; [a] -&gt; [a]
+removeItem _ [] = []
+removeItem x (y:ys) 
+    | x == y = ys
+    | otherwise = y : removeItem x ys 
+
+-- get the number of same elements in two lists
+getCounter :: (Eq a) =&gt; [a] -&gt; [a] -&gt; Int -&gt; Int
+getCounter [] y c = c
+getCounter  (x:xs) y c
+    | elem x y = getCounter xs (removeItem x y) (c+1)
+    | otherwise = getCounter xs y c
+ 
+-- Generate combinations by a specifc size    
+subsequencesOfSize :: Int -&gt; [a] -&gt; [[a]]
+subsequencesOfSize n xs = let l = length xs in if n&gt;l then [] else subsequencesBySize xs !! (l-n)
+    where subsequencesBySize [] = [[[]]]
+          subsequencesBySize (x:xs) = let next = subsequencesBySize xs in zipWith (++) ([]:next) (map (map (x:)) next ++ [[]])
+
+-- Converting a string list to pitch list
+toChord :: [[Char]] -&gt; [Pitch]
+toChord a = map (\x -&gt; Pitch (x !! 0) (x !! 1)) a 
+
+-- retrive a new guess
+getNewCombination :: [Pitch] -&gt; [[[Char]]] -&gt; (Int, Int, Int) -&gt; [[[Char]]]
+getNewCombination guess allCombinations pFeedback = foldr (\x acc -&gt; if checkFeedback (toChord x) then  x:acc else acc) [] allCombinations
+    where checkFeedback nChord = if pFeedback == (feedback guess nChord) then True else False
+
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/resilience/">Resillience</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/multi_head_attention/">Multi-Head Attention</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/preference_alignment/">Preference Alignment 101</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/code-challenge/">Challenges in Code Generation</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/llvm/">PREDICTING AND OPTIMIZING LLVM COMPILER PASS ORDER</a> </li> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Mingzhe Du. Last updated: April 08, 2026. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGB4MTSLQM"></script> <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-GGB4MTSLQM');
+  </script> <script defer src="/assets/js/google-analytics-setup.js"></script> <script defer src="/assets/js/progress-bar.js" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
