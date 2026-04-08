@@ -469,6 +469,17 @@ ninja.data = [{
           window.location.href = "/blog/2022/general-will/";
         
       },
+    },{id: "post-2周年啦",
+      
+        title: "2周年啦",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2022/2%E5%91%A8%E5%B9%B4%E5%95%A6/";
+        
+      },
     },{id: "post-leviathan-ii",
       
         title: "Leviathan II",
@@ -502,6 +513,39 @@ ninja.data = [{
           window.location.href = "/blog/2022/nlp-road-map/";
         
       },
+    },{id: "post-有些小朋友好久好久没写love-story了",
+      
+        title: "有些小朋友好久好久没写love story了",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2021/%E6%9C%89%E4%BA%9B%E5%B0%8F%E6%9C%8B%E5%8F%8B%E5%A5%BD%E4%B9%85%E5%A5%BD%E4%B9%85%E6%B2%A1%E5%86%99love-story%E4%BA%86/";
+        
+      },
+    },{id: "post-xmas-treasure-hunt",
+      
+        title: "Xmas Treasure Hunt！",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2021/xmas-treasure-hunt/";
+        
+      },
+    },{id: "post-520",
+      
+        title: "520",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2021/520/";
+        
+      },
     },{id: "post-gradient-divergence-curl-laplacian-jacobian-and-hessian",
       
         title: "Gradient, Divergence, Curl, Laplacian, Jacobian and Hessian",
@@ -533,6 +577,28 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2021/%E6%AD%87%E6%96%AF%E5%BA%95%E9%87%8C/";
+        
+      },
+    },{id: "post-关于广州机场的三件小事",
+      
+        title: "关于广州机场的三件小事",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2021/%E5%85%B3%E4%BA%8E%E5%B9%BF%E5%B7%9E%E7%9A%84%E4%B8%89%E4%BB%B6%E5%B0%8F%E4%BA%8B/";
+        
+      },
+    },{id: "post-subway",
+      
+        title: "Subway",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2021/%E5%BD%B1/";
         
       },
     },{id: "post-a-post-with-diagrams",
@@ -731,6 +797,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2020/the-discrete-fourier-transform/";
+        
+      },
+    },{id: "post-往明月多处走",
+      
+        title: "往明月多处走",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2020/%E5%BE%80%E6%98%8E%E6%9C%88%E5%A4%9A%E5%A4%84%E8%B5%B0/";
         
       },
     },{id: "post-bug-oriented-programming",
