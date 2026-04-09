@@ -14,8 +14,20 @@ nav_order: 3
 
 <!-- {% include bib_search.liquid %} -->
 
+## Preprints
+
 <div class="publications">
 
-{% bibliography %}
+{% bibliography --query @*[category=preprint] %}
 
 </div>
+
+## Published Papers
+
+<div class="publications">
+
+{% bibliography --query @*[category!=preprint] %}
+
+</div>
+
+

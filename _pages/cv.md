@@ -1,9 +1,9 @@
 ---
-layout: page
+layout: cv
 permalink: /cv/
 title: CV
 nav: true
 nav_order: 6
-redirect: assets/pdf/mingzhe_du_resume.pdf
-description: Redircting to Mingzhe Du's resume (it may takes a few seconds)...
+cv_pdf: mingzhe_du_resume.pdf
+description: Mingzhe Du's Curriculum Vitae
 ---

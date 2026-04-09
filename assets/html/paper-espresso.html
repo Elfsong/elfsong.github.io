@@ -37,6 +37,8 @@ main{margin-left:var(--nav-w);padding:2rem 2.5rem 4rem}
 .hero .links a{display:inline-flex;align-items:center;gap:.3rem;padding:.4rem 1rem;border-radius:20px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:600;text-decoration:none;transition:all .2s}
 .btn-demo{background:var(--accent);color:#fff}.btn-demo:hover{background:var(--primary)}
 .btn-data{background:#fff;color:var(--accent);border:1.5px solid var(--accent)}.btn-data:hover{background:var(--accent);color:#fff}
+.lang-select{padding:.4rem .8rem .4rem .5rem;border-radius:20px;font-family:Inter,sans-serif;font-size:.75rem;font-weight:600;border:1.5px solid var(--accent);color:var(--accent);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%232b5ea7'/%3E%3C/svg%3E") no-repeat right .6rem center;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer;transition:all .2s;padding-right:1.6rem}
+.lang-select:hover,.lang-select:focus{background-color:var(--accent);color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23fff'/%3E%3C/svg%3E");outline:none}
 
 /* Abstract */
 .abstract{background:linear-gradient(135deg,#f0f4f8,#e8edf5);border-radius:12px;padding:1.5rem 2rem;margin-bottom:2.5rem;border-left:4px solid var(--accent)}
@@ -151,8 +153,14 @@ footer a{color:var(--accent);text-decoration:none}
   </div>
   <div class="affiliations"><sup>1</sup>National University of Singapore &nbsp;&middot;&nbsp; <sup>2</sup>Nanyang Technological University</div>
   <div class="links">
+    <a class="btn-data" href="https://arxiv.org/abs/2604.04562" target="_blank">&#128196; Paper</a>
     <a class="btn-demo" href="https://huggingface.co/spaces/Elfsong/Paper_Espresso" target="_blank">&#9889; Live Demo</a>
     <a class="btn-data" href="https://huggingface.co/datasets/Elfsong/hf_paper_summary" target="_blank">&#128202; Datasets</a>
+    <select class="lang-select" id="lang-select" onchange="switchLanguage(this.value)">
+      <option value="en">&#127760; English</option>
+      <option value="zh">&#127760; 中文</option>
+      <option value="vi">&#127760; Tiếng Việt</option>
+    </select>
   </div>
 </header>
 
