@@ -19,7 +19,7 @@ nav_order: 3
 <div class="publications">
 
 {% for y in page.years %}
-  <h2 class="year">{{y}}</h2>
+  <!-- <h2 class="year">{{y}}</h2> -->
   {% bibliography --query @*[category=preprint, year={{y}}] --group_by none %}
 {% endfor %}
 
@@ -30,7 +30,7 @@ nav_order: 3
 <div class="publications">
 
 {% for y in page.years %}
-  <h2 class="year">{{y}}</h2>
+  <!-- <h2 class="year">{{y}}</h2> -->
   {% bibliography --query @*[category!=preprint, year={{y}}] --group_by none %}
 {% endfor %}
 
