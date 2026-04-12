@@ -964,6 +964,288 @@ navLinks.forEach(a => a.addEventListener('click', () => document.querySelector('
 
 // Resize charts
 window.addEventListener('resize', () => charts.forEach(c => c.resize()));
+
+// ═══════════════════════════════════════════════
+// LANGUAGE SWITCHING
+// ═══════════════════════════════════════════════
+const translations = {
+  zh: {
+    "nav": [
+      "摘要",
+      "关键要点",
+      "1. 引言",
+      "2. 系统架构",
+      "3. 数据集",
+      "4. 实证分析",
+      "4.1 论文量 &amp; 社区参与度",
+      "4.2 主题图景",
+      "4.3 主题生命周期",
+      "4.4 新颖性 &amp; 参与度",
+      "5. 相关工作",
+      "6. 结论",
+      "参考文献"
+    ],
+    "heroTitle": "Paper Espresso：从论文过载到研究洞察",
+    "abstractHeading": "摘要",
+    "abstractText": "科学出版不断加速的节奏，使研究人员越来越难以及时跟进最新进展。我们提出 <strong>Paper Espresso</strong>，一个能够自动发现、总结并分析热门 arXiv 论文的开源平台。该系统使用 large language models (LLMs) 生成带有主题标签和关键词的结构化摘要，并通过由 LLM 驱动的主题整合，在日、周、月三个粒度上提供趋势分析。在持续部署的 <span class=\"stat\">35 个月</span> 中，Paper Espresso 已处理超过 <span class=\"stat\">13,300 篇论文</span>，并公开发布了全部结构化元数据，揭示了 AI 研究版图中的丰富动态：2025 年中期面向 LLM 推理的强化学习激增、持续不饱和的主题涌现（<span class=\"stat\">6,673 个独特主题</span>），以及主题新颖性与社区参与度之间的正相关（最具新颖性的论文其中位点赞数达到 <span class=\"stat\">2.0&times;</span>）。",
+    "keywords": [
+      "论文摘要",
+      "趋势分析",
+      "知识发现",
+      "大型语言模型",
+      "研究工具"
+    ],
+    "statLabels": [
+      "已处理论文数",
+      "独特主题数",
+      "独特作者数",
+      "部署月数",
+      "细粒度主题数",
+      "平均每篇论文主题数",
+      "平均每月主题数",
+      "平均点赞数"
+    ],
+    "takeaways": [
+      "<strong>AI 研究前沿并未收敛，而是在不断扩展。</strong> 新主题以不减的速度持续出现（最高达 408/月），同时 Shannon 熵保持稳定（约 7.9 bits），表明多样化趋势仍在持续。研究人员应主动关注边缘主题，以避免隧道视野。",
+      "<strong>主题达到峰值很慢，但衰退很快。</strong> 主题的中位数需要 8 个月才能达到最高显著性，却会在仅 1 个月内损失其中一半，因此及时感知至关重要。只做事后报告的趋势系统，可能会在机会窗口关闭后才提供洞察。",
+      "<strong>新颖性会吸引关注。</strong> 结合意外主题组合的论文，其点赞数是传统组合论文的 2.0&times;。社区会奖励跨领域融合，推荐系统应主动呈现这些令人意外的交叉点。",
+      "<strong>流行度与参与度是不同信号。</strong> 出现频率最高的主题（LLMs，13.6%）远不是单篇最能吸引参与的主题；像 Pre-training Strategies 和 GUI Agents 这样的细分主题，其点赞中位数高出 2-4&times;。有效的策展必须同时权衡总体量和单篇影响力。"
+    ],
+    "sectionH2": [
+      "1. 引言",
+      "2. 系统架构",
+      "3. 数据集",
+      "4. 实证分析",
+      "5. 相关工作",
+      "6. 结论",
+      "参考文献"
+    ],
+    "sectionH3": [
+      "数据摄取层",
+      "论文处理层",
+      "展示层",
+      "4.1 论文量与社区参与度",
+      "4.2 主题图景与动态",
+      "4.3 主题生命周期",
+      "4.4 论文新颖性与社区参与度"
+    ],
+    "sectionH4": [
+      "主题分布",
+      "主题时间演化",
+      "主题涌现与多样性",
+      "主题共现",
+      "关键词演化",
+      "主题速度",
+      "学术论文发现",
+      "科学文档摘要",
+      "研究趋势分析"
+    ],
+    "sectionP": [
+      "如今科学出版的速度已经超过任何单个研究人员保持信息更新的能力。如图 1 所示，仅 arXiv 每月就接收近 30,000 份投稿，且没有减速迹象。这造成了尖锐的 <em>信息不对称</em>：整体前沿快速推进，而每位研究人员的认知却滞后于前沿，并受到关键词提醒和社交媒体筛选的限制。",
+      "现有平台如 Semantic Scholar <a class=\"cite\" href=\"#ref-1\">[1]</a>、Papers with Code <a class=\"cite\" href=\"#ref-16\">[16]</a> 和 ArXiv Sanity <a class=\"cite\" href=\"#ref-8\">[8]</a>，以及 PaSa、LitLLM 和 ScholarCopilot 等由 LLM 驱动的工具，分别解决了这个问题的某些片段（索引、检索或写作辅助），但本质上仍然是 <em>被动式</em> 的：它们要求研究人员事先知道自己要寻找什么。没有任何系统能够提供将结构化论文理解与时间趋势分析结合起来的 <em>主动、持续监测</em>。",
+      "我们提出 <strong>Paper Espresso</strong>，一个持续摄取经社区验证的热门论文、将每篇论文提炼为结构化摘要、并主动呈现新兴研究方向的开源系统。它有三项贡献：",
+      "该系统被组织为模块化、CLI 驱动的流水线（日度、月度和生命周期），并由 Streamlit Web 前端支撑。所有数据都以按日期分区的 Parquet 格式持久化到四个公开的 Hugging Face 数据集，确保完全可复现。",
+      "我们的论文来源于 Hugging Face Daily Papers API，这是一个由社区策展、用户可对值得关注的 arXiv 预印本点赞的数据流。这带来了约占 arXiv 总量 2-3% 的聚焦论文流，而点赞数则可作为社区关注度的轻量代理指标。",
+      "处理层通过 LiteLLM 调用 LLMs，使流水线与任何模型提供商解耦。每篇论文的标题、摘要和完整 PDF 会作为单个多模态请求发送。返回的 JSON 包含：(1) 简洁摘要，(2) 详细的优缺点分析，(3) 开放词汇主题标签，以及 (4) 技术关键词。趋势分析会将数百个细粒度主题整合为约 20 个连贯簇（约 50:1 压缩）。",
+      "Web 界面提供三种视图：<strong>Daily</strong>（按点赞数排序的论文，并可展开摘要）、<strong>Monthly</strong>（去重后的论文与 LLM 生成的趋势叙述）以及 <strong>Lifecycle</strong>（带有每主题时间序列的 Gartner Hype Cycle <a class=\"cite\" href=\"#ref-6\">[6]</a> 图表）。",
+      "Paper Espresso 在 HF Hub 上公开发布了三个互补数据集，并通过自动化流水线持续更新。所有数据集都存储为按日期分区的 Parquet 文件。",
+      "我们的分析覆盖了 35 个月的部署期（2023 年 5 月至 2026 年 4 月），并考察四个维度：(1) 论文量增长与社区参与模式，(2) 主题分布、时间演化与共现结构，(3) 主题生命周期分类与速度，以及 (4) 论文新颖性与社区参与度之间的关系。",
+      "月度摄取量从 2023 年 5 月的 259 篇增长到 <span class=\"highlight\">2025 年 10 月 923 篇</span> 的峰值，工作日平均 18.8 篇，周末平均 3.3 篇。社区点赞呈明显右偏分布（偏度 = 5.28）：论文点赞中位数为 13，但第 90 百分位达到 52，最大值为 664。",
+      "系统平均每篇论文分配 3.03 个主题标签，因此在 13,388 篇论文中产生了 6,673 个独特的细粒度主题。月度整合步骤会合并语义等价标签，将数百个标签压缩为 15-20 个连贯簇（约 50:1 压缩）。",
+      "图 5 展示了主题主导地位如何随时间变化。2025 年初，Large Language Models 和 Diffusion Models 主导整个版图。到 2025 年中期，<span class=\"highlight\">Reinforcement Learning 跃升至首位</span>，这由 Group Relative Policy Optimization (GRPO) <a class=\"cite\" href=\"#ref-15\">[15]</a> 和 Reinforcement Learning with Verifiable Rewards (RLVR) <a class=\"cite\" href=\"#ref-9\">[9]</a> 在 LLM 推理中的快速采用所推动。",
+      "新主题以 <span class=\"highlight\">每月 19-408 个</span> 的速度出现，且没有饱和迹象，而月度主题频率分布上的 Shannon 熵稳定在 <span class=\"highlight\">7.9 bits</span> 左右（范围 6.9-8.6）。这两点共同表明，研究前沿仍在持续多样化，而不是向少数主导主题坍缩。",
+      "图 7 展示了前 10 大主题的原始共现计数（下三角）和 Jaccard 相似度（上三角）。可以看出三种模式：(1) <strong>RL 作为跨领域方法论</strong>：Reinforcement Learning 与 LLMs（215）、VLMs（152）和 Multimodal LLMs（132）的共现最高。(2) <strong>生成式视觉簇</strong>：Diffusion Models 与 Video Generation 强相关（197）。(3) <strong>频率不等于亲和性</strong>：计数最高的组合（RL + LLMs，215）只有中等的 Jaccard 值（0.08），因为这两个主题本身都很常见。",
+      "跟踪某个主题 <em>内部</em> 的关键词，可以揭示推动其兴衰的具体方法。在 <em>Reinforcement Learning</em> 中，RLHF <a class=\"cite\" href=\"#ref-11\">[11]</a>（2024 年中期约占 RL 论文的 25%）迅速被 GRPO <a class=\"cite\" href=\"#ref-15\">[15]</a>（到 2025 年初约占 65%）和 RLVR <a class=\"cite\" href=\"#ref-9\">[9]</a> 所取代。在 <em>Diffusion Models</em> 中，UNet 向 Transformer 的架构迁移十分明显：Stable Diffusion <a class=\"cite\" href=\"#ref-14\">[14]</a> 和 ControlNet <a class=\"cite\" href=\"#ref-19\">[19]</a> 逐渐淡出，而 DiT <a class=\"cite\" href=\"#ref-12\">[12]</a> 和 Flow Matching <a class=\"cite\" href=\"#ref-10\">[10]</a> 则稳步获得关注。",
+      "我们将 Gartner Hype Cycle <a class=\"cite\" href=\"#ref-6\">[6]</a> 适配到文献计量数据上。对于每个至少包含 15 篇论文的主题，我们计算其月度占比，然后根据峰值时间、衰减比例和近期趋势斜率，将其分类为五个生命周期阶段之一。",
+      "对于每个包含 &ge;15 篇论文的主题，我们测量 <em>达到峰值所需时间</em> 和 <em>半衰期</em>。对比十分鲜明：<span class=\"highlight\">达到峰值的中位时间为 8 个月</span>，但 <span class=\"highlight\">半衰期中位数仅为 1 个月</span>。AI 研究主题上升缓慢，却会突然衰退。",
+      "我们研究具有非寻常主题组合的论文是否会吸引更多社区关注。对于每篇至少有两个主题标签的论文，我们将其新颖性分数定义为所有共同分配主题对上的 Pointwise Mutual Information (PMI) 平均值取负。结合常见共现主题的论文分数较低；具有意外配对的论文分数较高。",
+      "Semantic Scholar <a class=\"cite\" href=\"#ref-1\">[1]</a> 提供大规模索引和 AI 生成的 TLDRs <a class=\"cite\" href=\"#ref-4\">[4]</a>，Papers with Code <a class=\"cite\" href=\"#ref-16\">[16]</a> 将论文与实现关联起来，而 ArXiv Sanity <a class=\"cite\" href=\"#ref-8\">[8]</a> 则率先引入了基于 SVM 的个性化推荐。LLM 时代的工具进一步扩展了这一版图：PaSa 导航引文图谱，LitLLM 将 RAG 应用于文献综述，ScholarCopilot 则微调了一个 7B 模型来支持基于引文的写作。这些系统本质上都是 <em>被动式</em> 的。Paper Espresso 填补的是另一个细分位置：将结构化摘要与时间趋势分析结合起来的 <em>主动式日常监测</em>。",
+      "既有工作涵盖了 discourse-aware attention models <a class=\"cite\" href=\"#ref-4\">[4]</a>、极限摘要到基于 LLM 的学术综述。与自由形式摘要器不同，Paper Espresso 生成 <em>结构化</em> JSON 输出（摘要、优缺点、主题），从而支持程序化筛选与聚合。",
+      "经典方法包括用于主题建模的 LDA <a class=\"cite\" href=\"#ref-2\">[2]</a>、用于文献计量映射的 VOSviewer <a class=\"cite\" href=\"#ref-17\">[17]</a>，以及用于引文突发检测的 CiteSpace <a class=\"cite\" href=\"#ref-5\">[5]</a>。BERTopic <a class=\"cite\" href=\"#ref-7\">[7]</a> 和 BERTrend <a class=\"cite\" href=\"#ref-3\">[3]</a> 等神经主题模型提供了基于嵌入的替代方案。我们的系统在论文发布时使用 LLMs 进行 <em>实时</em> 主题标注与整合，并在数小时内生成人类可读的趋势报告。",
+      "Paper Espresso 是一个开源系统，可将 AI 论文的日常流转化为结构化摘要和多粒度趋势报告。对 35 个月数据的分析揭示了持续不饱和的主题涌现（6,673 个独特标签）、快速的主题衰减（半衰期中位数为 1 个月），以及正向的新颖性-参与度效应（非传统主题组合的点赞中位数达到 2.0&times;）。所有代码、数据和在线演示均已公开。"
+    ],
+    "figcaptions": [
+      "<strong>图 1.</strong> 月度论文量：arXiv 总量（红色，左轴）对比 Paper Espresso（蓝色，右轴）。尽管 Paper Espresso 只选择社区热门论文（约占 arXiv 的 2-3%），两条曲线仍呈现出一致的共同趋势。",
+      "<strong>图 2.</strong> Paper Espresso 的系统架构。数据摄取层从 Hugging Face Daily Papers API 和 arXiv 获取论文。AI 处理层使用 Google Gemini 生成结构化摘要和趋势分析。展示层提供支持多粒度浏览的交互式 Streamlit 界面。",
+      "<strong>图 3.</strong> 社区参与度分布。直方图（红色，左轴）显示点赞分布明显右偏；CDF（蓝色，右轴）则确认 50% 的论文获得 &le;13 个点赞，90% 的论文获得 &le;52 个点赞。",
+      "<strong>表 3 / 图 4.</strong> 按论文数量统计的前 5 大整合研究主题。点击柱状图查看详情。这五个主题合计覆盖了超过 56% 的全部论文。",
+      "<strong>图 5.</strong> 从 2023 年 5 月到 2026 年 3 月前 10 大研究主题的双月占比（%），并进行了平滑处理以提升视觉清晰度。点击图例项可切换主题。悬停可查看精确数值。",
+      "<strong>图 6.</strong> 主题涌现与多样性。红色柱表示每月新主题数量；蓝线追踪月度主题分布的 Shannon 熵，其稳定在 7.9 bits 左右，证实了多样性持续存在。",
+      "<strong>图 7.</strong> 前 20 大主题的共现热力图。下三角：原始共现计数（暖色）。上三角：Jaccard 相似度（冷色）。悬停可查看精确数值。",
+      "<strong>图 8.</strong> 三个主要主题内部的关键词演化。每条线表示每月提及某个关键词的论文百分比。上图：RL 展示 RLHF&rarr;GRPO/RLVR 的转变。中图：LLMs 也反映了这一变化，同时 CoT 上升。下图：Diffusion 展示 UNet&rarr;Transformer 的迁移。",
+      "<strong>图 9.</strong> 基于 35 个月主题占比时间序列推导出的 AI 研究 hype cycle。主题被划分为五个生命周期阶段。点的大小与论文总数成正比。悬停查看详情。",
+      "<strong>图 10.</strong> 主题速度。达到峰值时间（左，红色）衡量从首次出现到最大占比所经历的月数；半衰期（右，蓝色）衡量从峰值降至峰值 50% 所经历的月数。主题通常需要 8 个月达到峰值，却会在 1 个月内失去一半显著性。",
+      "<strong>图 11.</strong> 新颖性与参与度。每个点代表一篇论文；红线为带 95% CI 的 OLS 拟合。具有更高新颖主题组合的论文获得更多点赞（Spearman &rho; = 0.194, p &lt; 10<sup>-98</sup>）。",
+      "<strong>图 12.</strong> 随时间变化的月度新颖性趋势。尽管论文量增长了 3&times;，平均新颖性依然稳定，表明研究前沿保持着创造性多样性。"
+    ],
+    "tableCaptions": [
+      "表 1. 数据集统计（2023 年 5 月 - 2026 年 4 月）。",
+      "表 2. 已发布数据集的字段模式。"
+    ],
+    "footerP": [
+      "<strong>Paper Espresso</strong> &middot; CIKM 2026 演示论文 &middot; <a href=\"https://huggingface.co/spaces/Elfsong/Paper_Espresso\" target=\"_blank\">在线演示</a> &middot; <a href=\"https://huggingface.co/datasets/Elfsong/hf_paper_summary\" target=\"_blank\">数据集</a>",
+      "根据论文内容生成的交互式展示。所有图表均为基于已发表统计数据的近似表示。"
+    ]
+  },
+  vi: {
+    "nav": [
+      "Tóm tắt",
+      "Điểm chính",
+      "1. Giới thiệu",
+      "2. Kiến trúc hệ thống",
+      "3. Bộ dữ liệu",
+      "4. Phân tích thực nghiệm",
+      "4.1 Khối lượng bài báo &amp; mức độ tương tác",
+      "4.2 Bức tranh chủ đề",
+      "4.3 Vòng đời chủ đề",
+      "4.4 Tính mới &amp; mức độ tương tác",
+      "5. Công trình liên quan",
+      "6. Kết luận",
+      "Tài liệu tham khảo"
+    ],
+    "heroTitle": "Paper Espresso: Từ quá tải bài báo đến insight nghiên cứu",
+    "abstractHeading": "Tóm tắt",
+    "abstractText": "Tốc độ xuất bản khoa học ngày càng tăng khiến các nhà nghiên cứu ngày càng khó theo kịp những tiến triển mới nhất. Chúng tôi giới thiệu <strong>Paper Espresso</strong>, một nền tảng mã nguồn mở tự động khám phá, tóm tắt và phân tích các bài báo arXiv đang thịnh hành. Hệ thống sử dụng large language models (LLMs) để tạo các bản tóm tắt có cấu trúc kèm nhãn chủ đề và từ khóa, đồng thời cung cấp phân tích xu hướng đa độ hạt theo ngày, tuần và tháng thông qua việc hợp nhất chủ đề do LLM điều khiển. Trong <span class=\"stat\">35 tháng</span> triển khai liên tục, Paper Espresso đã xử lý hơn <span class=\"stat\">13,300 bài báo</span> và công khai toàn bộ metadata có cấu trúc, qua đó cho thấy các động lực phong phú trong bức tranh nghiên cứu AI: làn sóng tăng vọt giữa năm 2025 của reinforcement learning cho suy luận LLM, sự xuất hiện chủ đề không bão hòa (<span class=\"stat\">6,673 chủ đề duy nhất</span>) và tương quan dương giữa tính mới của chủ đề với mức độ tương tác cộng đồng (các bài báo mới lạ nhất có số upvote trung vị cao hơn <span class=\"stat\">2.0&times;</span>).",
+    "keywords": [
+      "Tóm tắt bài báo",
+      "Phân tích xu hướng",
+      "Khám phá tri thức",
+      "Mô hình ngôn ngữ lớn",
+      "Công cụ nghiên cứu"
+    ],
+    "statLabels": [
+      "Số bài báo đã xử lý",
+      "Số chủ đề duy nhất",
+      "Số tác giả duy nhất",
+      "Số tháng triển khai",
+      "Số chủ đề chi tiết",
+      "Số chủ đề trung bình/bài",
+      "Số chủ đề trung bình/tháng",
+      "Số upvote trung bình"
+    ],
+    "takeaways": [
+      "<strong>Biên giới nghiên cứu AI đang mở rộng chứ không hội tụ.</strong> Các chủ đề mới xuất hiện với tốc độ không suy giảm (lên tới 408/tháng) trong khi entropy Shannon vẫn ổn định (~7.9 bits), cho thấy sự đa dạng hóa được duy trì. Các nhà nghiên cứu nên chủ động theo dõi các chủ đề ngoại vi để tránh tầm nhìn đường hầm.",
+      "<strong>Chủ đề đạt đỉnh chậm nhưng tàn lụi nhanh.</strong> Một chủ đề trung vị cần 8 tháng để đạt mức nổi bật cao nhất nhưng mất một nửa mức đó chỉ trong 1 tháng, khiến việc nhận biết kịp thời trở nên then chốt. Các hệ thống chỉ báo cáo xu hướng hồi cứu có nguy cơ đưa ra insight sau khi cửa sổ cơ hội đã khép lại.",
+      "<strong>Tính mới thu hút sự chú ý.</strong> Các bài báo kết hợp những cặp chủ đề bất ngờ nhận số upvote cao gấp 2.0&times; so với các bài có tổ hợp thông thường. Cộng đồng tưởng thưởng cho sự lai ghép chéo, và các hệ thống gợi ý nên làm nổi bật những giao điểm bất ngờ.",
+      "<strong>Mức độ phổ biến và mức độ tương tác là hai tín hiệu khác nhau.</strong> Chủ đề xuất hiện nhiều nhất (LLMs, 13.6%) không phải là chủ đề hấp dẫn nhất tính theo từng bài; các chủ đề ngách như Pre-training Strategies và GUI Agents có median upvote cao hơn 2-4&times;. Việc tuyển chọn hiệu quả phải cân nhắc cả khối lượng lẫn tác động trên từng bài."
+    ],
+    "sectionH2": [
+      "1. Giới thiệu",
+      "2. Kiến trúc hệ thống",
+      "3. Bộ dữ liệu",
+      "4. Phân tích thực nghiệm",
+      "5. Công trình liên quan",
+      "6. Kết luận",
+      "Tài liệu tham khảo"
+    ],
+    "sectionH3": [
+      "Lớp thu nạp dữ liệu",
+      "Lớp xử lý bài báo",
+      "Lớp trình bày",
+      "4.1 Khối lượng bài báo và mức độ tương tác cộng đồng",
+      "4.2 Bức tranh chủ đề và động lực",
+      "4.3 Vòng đời chủ đề",
+      "4.4 Tính mới của bài báo và mức độ tương tác cộng đồng"
+    ],
+    "sectionH4": [
+      "Phân bố chủ đề",
+      "Diễn biến thời gian của chủ đề",
+      "Sự xuất hiện và đa dạng của chủ đề",
+      "Đồng xuất hiện chủ đề",
+      "Diễn biến từ khóa",
+      "Tốc độ chủ đề",
+      "Khám phá bài báo học thuật",
+      "Tóm tắt tài liệu khoa học",
+      "Phân tích xu hướng nghiên cứu"
+    ],
+    "sectionP": [
+      "Tốc độ xuất bản khoa học hiện nay đã vượt quá khả năng theo kịp thông tin của bất kỳ nhà nghiên cứu cá nhân nào. Như thể hiện trong Figure 1, riêng arXiv đã nhận gần 30,000 bài nộp mỗi tháng và chưa có dấu hiệu chậm lại. Điều này tạo ra một <em>bất đối xứng thông tin</em> rõ rệt: biên giới tập thể tiến lên rất nhanh, nhưng nhận thức của từng nhà nghiên cứu lại tụt lại phía sau, bị lọc qua các cảnh báo từ khóa và tuyển chọn trên mạng xã hội.",
+      "Các nền tảng hiện có như Semantic Scholar <a class=\"cite\" href=\"#ref-1\">[1]</a>, Papers with Code <a class=\"cite\" href=\"#ref-16\">[16]</a> và ArXiv Sanity <a class=\"cite\" href=\"#ref-8\">[8]</a>, cùng với các công cụ dùng LLM như PaSa, LitLLM và ScholarCopilot, giải quyết từng mảnh của vấn đề này (lập chỉ mục, truy hồi hoặc hỗ trợ viết) nhưng về bản chất vẫn là <em>phản ứng</em>: chúng yêu cầu nhà nghiên cứu phải biết trước mình cần tìm gì. Chưa có hệ thống nào cung cấp <em>giám sát chủ động, liên tục</em> kết hợp hiểu bài báo có cấu trúc với phân tích xu hướng theo thời gian.",
+      "Chúng tôi giới thiệu <strong>Paper Espresso</strong>, một hệ thống mã nguồn mở liên tục thu nạp các bài báo thịnh hành đã được cộng đồng xác thực, chắt lọc mỗi bài thành bản tóm tắt có cấu trúc và chủ động làm nổi bật các hướng nghiên cứu mới nổi. Hệ thống có ba đóng góp:",
+      "Hệ thống được tổ chức thành các pipeline mô-đun điều khiển bằng CLI (hàng ngày, hàng tháng và vòng đời) với một frontend web Streamlit. Toàn bộ dữ liệu được lưu trữ vào bốn bộ dữ liệu Hugging Face công khai ở định dạng Parquet phân vùng theo ngày, bảo đảm khả năng tái lập hoàn toàn.",
+      "Chúng tôi lấy bài báo từ Hugging Face Daily Papers API, một nguồn do cộng đồng tuyển chọn nơi người dùng upvote các preprint arXiv đáng chú ý. Điều này tạo ra một luồng tập trung tương đương ~2-3% arXiv, với số upvote đóng vai trò chỉ báo nhẹ về mức độ chú ý của cộng đồng.",
+      "Lớp xử lý gọi LLMs thông qua LiteLLM, tách pipeline khỏi bất kỳ nhà cung cấp mô hình nào. Tiêu đề, tóm tắt và PDF đầy đủ của mỗi bài báo được gửi như một yêu cầu đa phương thức duy nhất. JSON trả về bao gồm: (1) một bản tóm tắt ngắn gọn, (2) phân tích ưu/nhược điểm chi tiết, (3) nhãn chủ đề open-vocabulary và (4) từ khóa kỹ thuật. Phân tích xu hướng hợp nhất hàng trăm chủ đề chi tiết thành khoảng 20 cụm mạch lạc (~50:1 compression).",
+      "Giao diện web cung cấp ba chế độ xem: <strong>Daily</strong> (bài báo được sắp theo upvote với phần tóm tắt có thể mở rộng), <strong>Monthly</strong> (bài báo đã loại trùng với các tường thuật xu hướng do LLM tạo ra) và <strong>Lifecycle</strong> (biểu đồ Gartner Hype Cycle <a class=\"cite\" href=\"#ref-6\">[6]</a> kèm chuỗi thời gian theo từng chủ đề).",
+      "Paper Espresso công khai phát hành ba bộ dữ liệu bổ sung cho nhau trên HF Hub, được cập nhật liên tục qua các pipeline tự động. Tất cả bộ dữ liệu đều được lưu dưới dạng tệp Parquet phân vùng theo ngày.",
+      "Phân tích của chúng tôi trải dài 35 tháng triển khai (tháng 5 năm 2023 đến tháng 4 năm 2026) và bao quát bốn chiều cạnh: (1) tăng trưởng khối lượng bài báo và các mẫu tương tác cộng đồng, (2) phân bố chủ đề, diễn biến theo thời gian và cấu trúc đồng xuất hiện, (3) phân loại vòng đời chủ đề và tốc độ, và (4) mối quan hệ giữa tính mới của bài báo với mức độ tương tác cộng đồng.",
+      "Lượng bài thu nạp theo tháng tăng từ 259 bài vào tháng 5 năm 2023 lên đỉnh <span class=\"highlight\">923 vào tháng 10 năm 2025</span>, trung bình 18.8 bài vào ngày thường so với 3.3 bài vào cuối tuần. Upvote cộng đồng lệch phải mạnh (độ lệch = 5.28): bài báo trung vị nhận 13 upvote, nhưng phân vị thứ 90 đạt 52 và giá trị lớn nhất là 664.",
+      "Với trung bình 3.03 nhãn chủ đề mỗi bài, hệ thống tạo ra 6,673 chủ đề chi tiết duy nhất trên 13,388 bài báo. Bước hợp nhất theo tháng gộp các nhãn tương đương về ngữ nghĩa, giảm hàng trăm nhãn xuống còn 15-20 cụm mạch lạc (~50:1 compression).",
+      "Figure 5 cho thấy mức độ chi phối của các chủ đề thay đổi theo thời gian như thế nào. Đầu năm 2025, Large Language Models và Diffusion Models dẫn dắt bức tranh. Đến giữa năm 2025, <span class=\"highlight\">Reinforcement Learning vọt lên dẫn đầu</span>, được thúc đẩy bởi việc áp dụng nhanh Group Relative Policy Optimization (GRPO) <a class=\"cite\" href=\"#ref-15\">[15]</a> và Reinforcement Learning with Verifiable Rewards (RLVR) <a class=\"cite\" href=\"#ref-9\">[9]</a> cho suy luận LLM.",
+      "Các chủ đề mới xuất hiện với tốc độ <span class=\"highlight\">19-408 mỗi tháng</span> mà chưa có dấu hiệu bão hòa, trong khi entropy Shannon trên phân bố tần suất chủ đề theo tháng vẫn ổn định quanh <span class=\"highlight\">7.9 bits</span> (khoảng 6.9-8.6). Hai dấu hiệu này cho thấy biên giới nghiên cứu tiếp tục đa dạng hóa thay vì sụp vào một vài chủ đề thống trị.",
+      "Figure 7 cho thấy số đếm đồng xuất hiện thô (tam giác dưới) và độ tương đồng Jaccard (tam giác trên) của top-10 chủ đề. Ba mô thức nổi lên: (1) <strong>RL như một phương pháp luận xuyên cắt</strong>: Reinforcement Learning có mức đồng xuất hiện cao nhất với LLMs (215), VLMs (152) và Multimodal LLMs (132). (2) <strong>Cụm thị giác tạo sinh</strong>: Diffusion Models bắt cặp mạnh với Video Generation (197). (3) <strong>Tần suất không đồng nghĩa với độ gắn kết</strong>: cặp có số đếm cao nhất (RL + LLMs, 215) chỉ có Jaccard trung bình (0.08) vì cả hai chủ đề đều phổ biến riêng lẻ.",
+      "Theo dõi các từ khóa <em>bên trong</em> một chủ đề cho thấy những phương pháp cụ thể nào thúc đẩy sự tăng hay giảm của nó. Trong <em>Reinforcement Learning</em>, RLHF <a class=\"cite\" href=\"#ref-11\">[11]</a> (~25% số bài RL vào giữa năm 2024) nhanh chóng bị thay thế bởi GRPO <a class=\"cite\" href=\"#ref-15\">[15]</a> (~65% vào đầu năm 2025) và RLVR <a class=\"cite\" href=\"#ref-9\">[9]</a>. Trong <em>Diffusion Models</em>, sự dịch chuyển kiến trúc từ UNet sang Transformer rất rõ ràng: Stable Diffusion <a class=\"cite\" href=\"#ref-14\">[14]</a> và ControlNet <a class=\"cite\" href=\"#ref-19\">[19]</a> suy giảm trong khi DiT <a class=\"cite\" href=\"#ref-12\">[12]</a> và Flow Matching <a class=\"cite\" href=\"#ref-10\">[10]</a> tăng trưởng đều đặn.",
+      "Chúng tôi điều chỉnh Gartner Hype Cycle <a class=\"cite\" href=\"#ref-6\">[6]</a> cho dữ liệu trắc lượng thư mục. Với mỗi chủ đề có ít nhất 15 bài báo, chúng tôi tính tỷ lệ theo tháng, sau đó phân loại mỗi chủ đề vào một trong năm giai đoạn vòng đời dựa trên thời điểm đạt đỉnh, tỷ lệ suy giảm và độ dốc xu hướng gần đây.",
+      "Với mỗi chủ đề có &ge;15 bài báo, chúng tôi đo <em>thời gian tới đỉnh</em> và <em>half-life</em>. Sự tương phản rất rõ: <span class=\"highlight\">thời gian tới đỉnh trung vị là 8 tháng</span>, nhưng <span class=\"highlight\">half-life trung vị chỉ là 1 tháng</span>. Các chủ đề nghiên cứu AI tăng dần nhưng suy giảm đột ngột.",
+      "Chúng tôi khảo sát liệu các bài báo có tổ hợp chủ đề khác thường có thu hút nhiều chú ý từ cộng đồng hơn hay không. Với mỗi bài báo có ít nhất hai nhãn chủ đề, chúng tôi định nghĩa điểm tính mới là giá trị âm của Pointwise Mutual Information (PMI) trung bình trên mọi cặp chủ đề được gán cùng nhau. Các bài báo kết hợp các chủ đề thường đồng xuất hiện sẽ có điểm thấp; các bài có cặp ghép bất ngờ sẽ có điểm cao.",
+      "Semantic Scholar <a class=\"cite\" href=\"#ref-1\">[1]</a> cung cấp lập chỉ mục quy mô lớn với TLDRs do AI tạo ra <a class=\"cite\" href=\"#ref-4\">[4]</a>, Papers with Code <a class=\"cite\" href=\"#ref-16\">[16]</a> liên kết bài báo với hiện thực, còn ArXiv Sanity <a class=\"cite\" href=\"#ref-8\">[8]</a> tiên phong trong gợi ý cá nhân hóa dựa trên SVM. Các công cụ thời đại LLM mở rộng bức tranh này: PaSa điều hướng đồ thị trích dẫn, LitLLM áp dụng RAG cho tổng quan tài liệu, và ScholarCopilot fine-tune một mô hình 7B cho viết có căn cứ trích dẫn. Các hệ thống này về bản chất là <em>phản ứng</em>. Paper Espresso lấp đầy một ngách khác: <em>giám sát hằng ngày chủ động</em> kết hợp tóm tắt có cấu trúc với phân tích xu hướng theo thời gian.",
+      "Các công trình trước đây trải từ discourse-aware attention models <a class=\"cite\" href=\"#ref-4\">[4]</a> và extreme summarization đến tổng quan học thuật dựa trên LLM. Khác với các bộ tóm tắt tự do, Paper Espresso tạo đầu ra JSON <em>có cấu trúc</em> (tóm tắt, ưu/nhược điểm, chủ đề), cho phép lọc và tổng hợp theo chương trình.",
+      "Các cách tiếp cận cổ điển bao gồm LDA <a class=\"cite\" href=\"#ref-2\">[2]</a> cho topic modeling, VOSviewer <a class=\"cite\" href=\"#ref-17\">[17]</a> cho bản đồ trắc lượng thư mục và CiteSpace <a class=\"cite\" href=\"#ref-5\">[5]</a> cho phát hiện citation burst. Các mô hình chủ đề thần kinh như BERTopic <a class=\"cite\" href=\"#ref-7\">[7]</a> và BERTrend <a class=\"cite\" href=\"#ref-3\">[3]</a> đưa ra lựa chọn thay thế dựa trên embedding. Hệ thống của chúng tôi dùng LLMs để gán nhãn và hợp nhất chủ đề theo thời gian <em>thực</em> ngay khi bài báo được xuất bản, tạo ra các báo cáo xu hướng dễ đọc chỉ trong vài giờ.",
+      "Paper Espresso là một hệ thống mã nguồn mở chuyển dòng bài báo AI hằng ngày thành các bản tóm tắt có cấu trúc và báo cáo xu hướng đa độ hạt. Phân tích trong 35 tháng cho thấy sự xuất hiện chủ đề không bão hòa (6,673 nhãn duy nhất), sự suy giảm chủ đề nhanh (half-life trung vị là 1 tháng) và hiệu ứng dương giữa tính mới với mức độ tương tác (median upvote cao hơn 2.0&times; cho các tổ hợp chủ đề không thông thường). Toàn bộ mã nguồn, dữ liệu và bản demo trực tiếp đều được công khai."
+    ],
+    "figcaptions": [
+      "<strong>Hình 1.</strong> Khối lượng bài báo theo tháng: tổng arXiv (đỏ, trục trái) so với Paper Espresso (xanh, trục phải). Dù Paper Espresso chỉ chọn các bài báo đang thịnh hành trong cộng đồng (~2-3% của arXiv), hai đường cong vẫn thể hiện xu hướng đồng biến nhất quán.",
+      "<strong>Hình 2.</strong> Kiến trúc hệ thống của Paper Espresso. Lớp thu nạp dữ liệu lấy bài báo từ Hugging Face Daily Papers API và arXiv. Lớp xử lý AI sử dụng Google Gemini để tạo các bản tóm tắt có cấu trúc và phân tích xu hướng. Lớp trình bày cung cấp giao diện Streamlit tương tác với khả năng duyệt đa độ hạt.",
+      "<strong>Hình 3.</strong> Phân bố mức độ tương tác cộng đồng. Biểu đồ histogram (đỏ, trục trái) cho thấy phân bố upvote lệch phải mạnh; CDF (xanh, trục phải) xác nhận rằng 50% bài báo nhận &le;13 upvote và 90% nhận &le;52.",
+      "<strong>Bảng 3 / Hình 4.</strong> Top-5 chủ đề nghiên cứu đã hợp nhất theo số lượng bài báo. Nhấp vào các cột để xem chi tiết. Năm chủ đề này cộng lại bao phủ hơn 56% tổng số bài báo.",
+      "<strong>Hình 5.</strong> Tỷ lệ hai tháng một lần (%) của top-10 chủ đề nghiên cứu từ tháng 5 năm 2023 đến tháng 3 năm 2026, được làm mượt để rõ hơn về mặt trực quan. Nhấp vào các mục chú giải để bật/tắt chủ đề. Di chuột để xem giá trị chính xác.",
+      "<strong>Hình 6.</strong> Sự xuất hiện chủ đề và tính đa dạng. Các cột đỏ biểu thị số chủ đề mới mỗi tháng; đường xanh theo dõi entropy Shannon của phân bố chủ đề theo tháng, vẫn phẳng quanh 7.9 bits, xác nhận sự đa dạng được duy trì.",
+      "<strong>Hình 7.</strong> Heatmap đồng xuất hiện cho top-20 chủ đề. Tam giác dưới: số đếm đồng xuất hiện thô (màu ấm). Tam giác trên: độ tương đồng Jaccard (màu lạnh). Di chuột để xem giá trị chính xác.",
+      "<strong>Hình 8.</strong> Diễn biến từ khóa trong ba chủ đề lớn. Mỗi đường cho biết tỷ lệ phần trăm bài báo đề cập một từ khóa nhất định theo tháng. Trên cùng: RL cho thấy quá trình chuyển đổi RLHF&rarr;GRPO/RLVR. Giữa: LLMs phản chiếu sự dịch chuyển này với CoT tăng lên. Dưới cùng: Diffusion cho thấy sự chuyển dịch UNet&rarr;Transformer.",
+      "<strong>Hình 9.</strong> Hype cycle của nghiên cứu AI được suy ra từ 35 tháng chuỗi thời gian tỷ lệ chủ đề. Các chủ đề được phân loại vào năm giai đoạn vòng đời. Kích thước chấm tỷ lệ với tổng số bài báo. Di chuột để xem chi tiết.",
+      "<strong>Hình 10.</strong> Tốc độ chủ đề. Time to peak (trái, đỏ) đo số tháng từ lần xuất hiện đầu tiên đến tỷ lệ tối đa; half-life (phải, xanh) đo số tháng từ đỉnh đến 50% của đỉnh. Các chủ đề mất 8 tháng để đạt đỉnh nhưng mất một nửa mức nổi bật chỉ trong 1 tháng.",
+      "<strong>Hình 11.</strong> Tính mới so với mức độ tương tác. Mỗi điểm là một bài báo; đường đỏ là đường fit OLS với 95% CI. Các bài có tổ hợp chủ đề mới lạ hơn nhận nhiều upvote hơn (Spearman &rho; = 0.194, p &lt; 10<sup>-98</sup>).",
+      "<strong>Hình 12.</strong> Xu hướng tính mới theo tháng theo thời gian. Mặc dù khối lượng bài báo tăng 3&times;, mức tính mới trung bình vẫn ổn định, cho thấy biên giới nghiên cứu duy trì sự đa dạng sáng tạo."
+    ],
+    "tableCaptions": [
+      "Bảng 1. Thống kê bộ dữ liệu (tháng 5 năm 2023 - tháng 4 năm 2026).",
+      "Bảng 2. Lược đồ trường của các bộ dữ liệu đã phát hành."
+    ],
+    "footerP": [
+      "<strong>Paper Espresso</strong> &middot; Bài báo demo CIKM 2026 &middot; <a href=\"https://huggingface.co/spaces/Elfsong/Paper_Espresso\" target=\"_blank\">Demo trực tiếp</a> &middot; <a href=\"https://huggingface.co/datasets/Elfsong/hf_paper_summary\" target=\"_blank\">Bộ dữ liệu</a>",
+      "Bản trình bày tương tác được tạo từ bài báo. Mọi biểu đồ đều là các biểu diễn xấp xỉ dựa trên số liệu thống kê đã công bố."
+    ]
+  }
+};
+
+const i18nMappings = [
+  ['nav a', 'nav'],
+  ['.hero h1', 'heroTitle'],
+  ['.abstract h2', 'abstractHeading'],
+  ['.abstract > p', 'abstractText'],
+  ['.kw', 'keywords'],
+  ['.stat-card .label', 'statLabels'],
+  ['.takeaways li', 'takeaways'],
+  ['section > h2', 'sectionH2'],
+  ['section > h3', 'sectionH3'],
+  ['section > h4', 'sectionH4'],
+  ['section > p', 'sectionP'],
+  ['figcaption', 'figcaptions'],
+  ['.table-caption', 'tableCaptions'],
+  ['footer p', 'footerP'],
+];
+
+function switchLanguage(lang) {
+  document.documentElement.lang = lang;
+  if (lang === 'en') {
+    i18nMappings.forEach(function(m) {
+      document.querySelectorAll(m[0]).forEach(function(el) {
+        if (el.dataset.origHtml) el.innerHTML = el.dataset.origHtml;
+      });
+    });
+    return;
+  }
+  var t = translations[lang];
+  if (!t) return;
+  i18nMappings.forEach(function(m) {
+    var val = t[m[1]];
+    if (!val) return;
+    document.querySelectorAll(m[0]).forEach(function(el, i) {
+      if (!el.dataset.origHtml) el.dataset.origHtml = el.innerHTML;
+      if (Array.isArray(val)) { if (val[i] !== undefined) el.innerHTML = val[i]; }
+      else { el.innerHTML = val; }
+    });
+  });
+}
 </script>
 </body>
 </html>
