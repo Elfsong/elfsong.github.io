@@ -124,7 +124,7 @@ footer a{color:var(--accent);text-decoration:none}
 <button id="nav-toggle" onclick="document.querySelector('nav').classList.toggle('open')">&#9776;</button>
 
 <nav>
-  <div class="logo">Paper <span>Espresso</span></div>
+  <div class="logo">Paper <span id="espresso-egg">Espresso</span></div>
   <a href="#abstract">Abstract</a>
   <a href="#takeaways">Key Takeaways</a>
   <a href="#introduction">1. Introduction</a>
@@ -1246,6 +1246,196 @@ function switchLanguage(lang) {
     });
   });
 }
+</script>
+<script>
+(function(){
+  var egg=document.getElementById('espresso-egg');
+  if(!egg)return;
+  var clicks=0,timer=null;
+  egg.style.cursor='pointer';
+  egg.addEventListener('click',function(e){
+    e.stopPropagation();
+    clicks++;
+    clearTimeout(timer);
+    timer=setTimeout(function(){clicks=0},1500);
+    if(clicks>=3){clicks=0;spawnBunny();}
+  });
+
+  var bunnySVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">'
+    +'<defs><radialGradient id="bg" cx="50%" cy="40%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#f5e6e0"/></radialGradient>'
+    +'<radialGradient id="ep" cx="50%" cy="30%"><stop offset="0%" stop-color="#ffcdd6"/><stop offset="100%" stop-color="#f8a4b8"/></radialGradient>'
+    +'<radialGradient id="ck" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffc0cb" stop-opacity="0.6"/><stop offset="100%" stop-color="#ffc0cb" stop-opacity="0"/></radialGradient>'
+    +'<filter id="sf"><feGaussianBlur stdDeviation="1.5"/></filter></defs>'
+    // shadow
+    +'<ellipse cx="58" cy="112" rx="28" ry="6" fill="rgba(0,0,0,0.08)" filter="url(#sf)"/>'
+    // tail
+    +'<circle cx="22" cy="78" r="8" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1"/>'
+    // body
+    +'<ellipse cx="52" cy="76" rx="30" ry="26" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1.2"/>'
+    // hind leg
+    +'<ellipse cx="34" cy="98" rx="10" ry="12" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1" transform="rotate(-5,34,98)"/>'
+    +'<ellipse cx="32" cy="108" rx="8" ry="5" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1"/>'
+    // front leg
+    +'<ellipse cx="72" cy="100" rx="6" ry="10" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1"/>'
+    +'<ellipse cx="72" cy="108" rx="7" ry="4.5" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1"/>'
+    // head
+    +'<ellipse cx="78" cy="48" rx="22" ry="20" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1.2"/>'
+    // left ear
+    +'<ellipse cx="66" cy="16" rx="7" ry="22" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1.2" transform="rotate(-10,66,16)"/>'
+    +'<ellipse cx="66" cy="16" rx="3.5" ry="15" fill="url(#ep)" transform="rotate(-10,66,16)"/>'
+    // right ear
+    +'<ellipse cx="86" cy="12" rx="7" ry="24" fill="url(#bg)" stroke="#e8cfc8" stroke-width="1.2" transform="rotate(8,86,12)"/>'
+    +'<ellipse cx="86" cy="12" rx="3.5" ry="16" fill="url(#ep)" transform="rotate(8,86,12)"/>'
+    // cheeks
+    +'<circle cx="64" cy="54" r="6" fill="url(#ck)"/>'
+    +'<circle cx="92" cy="54" r="6" fill="url(#ck)"/>'
+    // eyes
+    +'<ellipse cx="70" cy="44" rx="3.5" ry="4" fill="#2c2c2c"/>'
+    +'<ellipse cx="87" cy="44" rx="3.5" ry="4" fill="#2c2c2c"/>'
+    +'<circle cx="71.2" cy="42.5" r="1.3" fill="#fff"/>'
+    +'<circle cx="88.2" cy="42.5" r="1.3" fill="#fff"/>'
+    // nose
+    +'<ellipse cx="79" cy="52" rx="3" ry="2.2" fill="#f8a4b8"/>'
+    // mouth
+    +'<path d="M79 54 Q75 58 73 56" fill="none" stroke="#e8a0a0" stroke-width="0.8" stroke-linecap="round"/>'
+    +'<path d="M79 54 Q83 58 85 56" fill="none" stroke="#e8a0a0" stroke-width="0.8" stroke-linecap="round"/>'
+    +'</svg>';
+
+  function spawnBunny(){
+    var overlay=document.createElement('div');
+    overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;pointer-events:none;overflow:hidden';
+    document.body.appendChild(overlay);
+
+    var el=document.createElement('div');
+    el.innerHTML=bunnySVG;
+    el.style.cssText='position:absolute;bottom:30px;left:-130px;width:120px;height:120px;';
+    overlay.appendChild(el);
+
+    var canvas=document.createElement('canvas');
+    canvas.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%';
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    overlay.appendChild(canvas);
+    var ctx=canvas.getContext('2d');
+    var W=canvas.width,H=canvas.height;
+
+    var x=-130,frame=0;
+    var totalFrames=300;
+    var speed=(W+260)/totalFrames;
+    var groundBottom=30;
+    var particles=[];
+    var sparkles=[];
+
+    function drawStar(cx,cy,r,rot,color,alpha){
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(rot);ctx.globalAlpha=alpha;
+      ctx.beginPath();
+      for(var i=0;i<5;i++){
+        var a=Math.PI*2/5*i-Math.PI/2;
+        ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);
+        var ia=a+Math.PI/5;
+        ctx.lineTo(Math.cos(ia)*r*0.4,Math.sin(ia)*r*0.4);
+      }
+      ctx.closePath();ctx.fillStyle=color;ctx.fill();
+      ctx.restore();ctx.globalAlpha=1;
+    }
+
+    function drawHeart(cx,cy,size,alpha,color){
+      ctx.save();ctx.translate(cx,cy);ctx.globalAlpha=alpha;
+      ctx.beginPath();
+      ctx.moveTo(0,-size*0.3);
+      ctx.bezierCurveTo(-size*0.5,-size,  -size, -size*0.2,  0, size*0.5);
+      ctx.bezierCurveTo( size, -size*0.2,   size*0.5,-size,  0,-size*0.3);
+      ctx.fillStyle=color||'#ff6b8a';ctx.fill();
+      ctx.restore();ctx.globalAlpha=1;
+    }
+
+    function animate(){
+      frame++;
+      if(frame>totalFrames+60){overlay.remove();return;}
+
+      x+=speed;
+      var jumpPhase=Math.sin(frame*0.08)*1.2;
+      var jumpY=jumpPhase>0?Math.pow(jumpPhase,1.3)*70:0;
+      var squash=jumpPhase<-0.8?0.92:1;
+      var stretch=jumpY>20?1.06:1;
+
+      el.style.left=x+'px';
+      el.style.bottom=(groundBottom+jumpY)+'px';
+      el.style.transform='scaleX('+squash+') scaleY('+stretch+')';
+
+      // ear wiggle via slight rotation
+      var tilt=Math.sin(frame*0.15)*3;
+      el.querySelector('svg').style.transform='rotate('+tilt+'deg)';
+
+      // spawn particles on landing
+      if(jumpPhase<-0.7 && jumpPhase>-0.9){
+        var bx=x+60,by=H-groundBottom;
+        for(var i=0;i<5;i++){
+          particles.push({
+            x:bx+Math.random()*30-15,y:by,
+            vx:(Math.random()-0.5)*4,vy:-Math.random()*5-2,
+            r:Math.random()*3+2,
+            color:['#ffc0cb','#ffd700','#87ceeb','#c8a2f8','#ff9a9e'][Math.floor(Math.random()*5)],
+            life:1
+          });
+        }
+      }
+
+      // sparkles behind bunny
+      if(frame%3===0 && frame<totalFrames){
+        sparkles.push({
+          x:x+10+Math.random()*20,y:H-groundBottom-jumpY-30-Math.random()*50,
+          r:Math.random()*5+3,rot:Math.random()*Math.PI*2,life:1,
+          type:Math.random()<0.4?'heart':'star',
+          color:['#ffd700','#ff69b4','#87ceeb','#c8a2f8','#ffb347'][Math.floor(Math.random()*5)]
+        });
+      }
+
+      // rainbow trail
+      if(frame%2===0 && frame<totalFrames){
+        var rainbow=['#ff6b6b','#ffa502','#ffd700','#2ed573','#70a1ff','#a855f7'];
+        var rc=rainbow[Math.floor(frame/2)%rainbow.length];
+        particles.push({
+          x:x+15,y:H-groundBottom-jumpY-10,
+          vx:-1.5,vy:(Math.random()-0.5)*0.5,
+          r:Math.random()*2+3,
+          color:rc,life:1,trail:true
+        });
+      }
+
+      ctx.clearRect(0,0,W,H);
+
+      // draw particles
+      for(var p=particles.length-1;p>=0;p--){
+        var pt=particles[p];
+        pt.x+=pt.vx;pt.y+=pt.vy;
+        if(!pt.trail)pt.vy+=0.15;
+        pt.life-=pt.trail?0.025:0.018;
+        if(pt.life<=0){particles.splice(p,1);continue;}
+        ctx.globalAlpha=pt.life;
+        ctx.beginPath();
+        ctx.arc(pt.x,pt.y,pt.r*pt.life,0,Math.PI*2);
+        ctx.fillStyle=pt.color;ctx.fill();
+        ctx.globalAlpha=1;
+      }
+
+      // draw sparkles
+      for(var s=sparkles.length-1;s>=0;s--){
+        var sp=sparkles[s];
+        sp.life-=0.012;sp.rot+=0.06;sp.y-=0.8;
+        if(sp.life<=0){sparkles.splice(s,1);continue;}
+        if(sp.type==='heart'){
+          drawHeart(sp.x,sp.y,sp.r*sp.life*1.5,sp.life*0.8,sp.color);
+        }else{
+          drawStar(sp.x,sp.y,sp.r*sp.life,sp.rot,sp.color,sp.life*0.9);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+})();
 </script>
 </body>
 </html>
