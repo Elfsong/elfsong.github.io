@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伊犁 5.1–5.4 · 赛里木湖 × 那拉提 自驾手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1f2e;
+    --ink-soft: #3c4454;
+    --ink-faint: #6e7688;
+    --cream: #f5efe1;
+    --cream-soft: #faf6eb;
+    --paper: #fdfaf2;
+    --sayram: #0d4f5c;
+    --sayram-deep: #072e38;
+    --sayram-mist: #a8c5cc;
+    --terra: #b85c3b;
+    --terra-soft: #d98968;
+    --gold: #c19a55;
+    --sage: #6e7d4a;
+    --line: #d8cfbd;
+    --line-soft: #e8e0cd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 15px;
+    font-weight: 400;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  .wrap-wide { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+
+  /* ============ HEADER ============ */
+  header.hero {
+    background: var(--sayram-deep);
+    color: var(--cream);
+    padding: 72px 0 96px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--terra);
+  }
+  header.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 100%, rgba(193, 154, 85, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 0%, rgba(184, 92, 59, 0.18) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: clamp(42px, 8vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero-title .accent { color: var(--terra-soft); }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--sayram-mist);
+    margin-bottom: 40px;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(245, 239, 225, 0.2);
+  }
+  .meta-item .label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .meta-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cream);
+  }
+
+  /* ============ SECTION STRUCTURE ============ */
+  section { padding: 64px 0; }
+  section.tight { padding: 40px 0; }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    color: var(--sayram-deep);
+  }
+  .section-title .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--gold);
+    margin-right: 14px;
+    font-size: 0.75em;
+    vertical-align: 2px;
+  }
+
+  /* ============ MAP ============ */
+  .map-wrap {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px 16px;
+    margin-top: 8px;
+  }
+  .map-wrap svg { width: 100%; height: auto; display: block; }
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--line);
+    font-size: 13px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-swatch {
+    width: 26px; height: 3px; border-radius: 1px;
+  }
+  .d1 { background: var(--sayram); }
+  .d2 { background: var(--sage); }
+  .d3 { background: var(--gold); }
+  .d4 { background: var(--terra); }
+
+  /* ============ HEADS UP CALLOUTS ============ */
+  .heads-up-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .heads-up {
+    background: var(--paper);
+    border-left: 3px solid var(--terra);
+    padding: 22px 24px;
+    border-radius: 2px;
+  }
+  .heads-up h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--sayram-deep);
+  }
+  .heads-up p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ============ DAY CARDS ============ */
+  .day-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .day-head {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .day-head::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+  }
+  .day-card[data-day="1"] .day-head::before { background: var(--sayram); }
+  .day-card[data-day="2"] .day-head::before { background: var(--sage); }
+  .day-card[data-day="3"] .day-head::before { background: var(--gold); }
+  .day-card[data-day="4"] .day-head::before { background: var(--terra); }
+
+  .day-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 2.5px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .day-title {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--sayram-deep);
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .day-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.5px;
+  }
+  .day-stats span::before {
+    content: '·';
+    margin-right: 8px;
+    color: var(--terra);
+  }
+  .day-stats span:first-child::before { display: none; }
+
+  .timeline {
+    padding: 8px 32px 28px;
+  }
+  .tl-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--terra);
+    padding-top: 2px;
+  }
+  .tl-content h5 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .tl-content p {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .tl-content .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--cream);
+    color: var(--sayram);
+    border-radius: 2px;
+    margin-right: 6px;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ============ INFO GRID ============ */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+    margin-top: 8px;
+  }
+  .info-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 24px 26px;
+    border-radius: 3px;
+  }
+  .info-card h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--sayram-deep);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .info-card h4 .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+  .info-card p { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { list-style: none; padding: 0; font-size: 14px; color: var(--ink-soft); }
+  .info-card ul li {
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .info-card ul li:last-child { border-bottom: none; }
+  .info-card ul li .k { color: var(--ink); font-weight: 500; }
+  .info-card ul li .v {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--terra);
+    white-space: nowrap;
+  }
+
+  /* ============ ATTRACTION SPOTS ============ */
+  .info-card ul li.spot {
+    cursor: pointer;
+    flex-direction: column;
+    align-items: stretch;
+    transition: background 0.15s;
+    padding: 8px 10px;
+    margin: 0 -10px;
+    border-radius: 3px;
+  }
+  .info-card ul li.spot:hover { background: var(--cream); }
+  .spot-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .spot-hint {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--terra);
+    opacity: 0;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+  .spot:hover .spot-hint { opacity: 1; }
+  .spot-desc {
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.55;
+    margin-top: 3px;
+  }
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: pointer;
+  }
+  .lightbox-overlay.open { display: flex; }
+  .lightbox-box {
+    max-width: 680px;
+    width: 100%;
+    background: var(--paper);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    cursor: default;
+    position: relative;
+  }
+  .lightbox-box img {
+    width: 100%;
+    display: block;
+    max-height: 55vh;
+    object-fit: cover;
+    background: var(--cream);
+  }
+  .lightbox-placeholder {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 240px;
+    background: var(--cream);
+    color: var(--ink-faint);
+    font-size: 14px;
+    font-style: italic;
+  }
+  .lightbox-info { padding: 20px 24px; }
+  .lightbox-info h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--sayram-deep);
+    margin-bottom: 6px;
+  }
+  .lightbox-info p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0,0,0,0.45);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background 0.15s;
+    z-index: 1;
+  }
+  .lightbox-close:hover { background: rgba(0,0,0,0.7); }
+
+  /* ============ PACKING CHECKLIST ============ */
+  .pack-group {
+    margin-bottom: 28px;
+  }
+  .pack-group h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    color: var(--sayram-deep);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--terra);
+    display: inline-block;
+  }
+  .pack-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px 24px;
+  }
+  .pack-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .pack-item::before {
+    content: '';
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 4px;
+    background: var(--cream-soft);
+  }
+
+  /* ============ BUDGET TABLE ============ */
+  .budget {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .budget-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line-soft);
+    align-items: baseline;
+  }
+  .budget-row:last-child { border-bottom: none; }
+  .budget-row.total {
+    background: var(--sayram-deep);
+    color: var(--cream);
+  }
+  .budget-row.total .b-label,
+  .budget-row.total .b-note,
+  .budget-row.total .b-value { color: var(--cream); }
+  .budget-row.total .b-value { color: var(--gold); }
+  .b-label { font-weight: 500; }
+  .b-note { font-size: 12px; color: var(--ink-faint); }
+  .b-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--terra);
+    font-size: 15px;
+  }
+
+  /* ============ EMERGENCY ============ */
+  .emergency {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 32px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .emergency h4 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--terra-soft);
+  }
+  .emergency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px 32px;
+  }
+  .emerg-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .emerg-item .e-name {
+    font-size: 13px;
+    color: var(--sayram-mist);
+  }
+  .emerg-item .e-phone {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    text-align: center;
+    padding: 48px 24px 32px;
+    color: var(--ink-faint);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+  }
+  footer .sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--sayram);
+    margin-bottom: 8px;
+  }
+
+  /* ============ QUOTE ============ */
+  .pullquote {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 400;
+    font-size: clamp(20px, 3vw, 26px);
+    line-height: 1.55;
+    color: var(--sayram-deep);
+    padding: 36px 0;
+    border-top: 2px solid var(--terra);
+    border-bottom: 1px solid var(--line);
+    margin: 16px 0;
+    font-style: italic;
+    text-align: center;
+  }
+  .pullquote::before,
+  .pullquote::after {
+    content: '—';
+    color: var(--gold);
+    margin: 0 12px;
+    font-style: normal;
+  }
+
+  /* ============ MEDIA ============ */
+  @media (max-width: 640px) {
+    header.hero { padding: 48px 0 64px; }
+    section { padding: 48px 0; }
+    .day-head, .timeline { padding-left: 22px; padding-right: 22px; }
+    .tl-row { grid-template-columns: 56px 1fr; gap: 14px; }
+    .wrap { padding: 0 20px; }
+  }
+
+  /* ============ TRANSIT / MAIN AXIS ============ */
+  .axis-map {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 16px;
+    margin-bottom: 36px;
+  }
+  .axis-map svg { width: 100%; height: auto; display: block; }
+
+  .transit-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .transit-head {
+    padding: 22px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 22px;
+    align-items: baseline;
+  }
+  .tc-out { background: var(--sayram-deep); color: var(--cream); border-left: 5px solid var(--terra); }
+  .tc-in { background: var(--sayram); color: var(--cream); border-left: 5px solid var(--gold); }
+  .tc-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .tc-in .tc-label { color: var(--cream); }
+  .tc-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--sayram-mist);
+    letter-spacing: 0.5px;
+  }
+  .tc-route {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(18px, 3vw, 22px);
+    font-weight: 700;
+    margin-left: auto;
+    letter-spacing: 0.02em;
+  }
+
+  .transit-body { padding: 12px 28px 24px; }
+
+  .opt { padding: 20px 0; border-bottom: 1px dashed var(--line-soft); }
+  .opt:last-child { border-bottom: none; padding-bottom: 4px; }
+  .opt-badge {
+    display: inline-block;
+    background: var(--terra);
+    color: var(--cream);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 3px 9px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .opt h5 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--sayram-deep);
+    margin-bottom: 10px;
+  }
+  .opt-alt h5 { color: var(--ink-soft); font-weight: 500; font-size: 15px; }
+  .opt p, .opt .opt-note {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.65;
+    margin-top: 8px;
+  }
+  .opt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 4px;
+    font-size: 13px;
+  }
+  .opt-table td {
+    padding: 9px 8px;
+    border-bottom: 1px dotted var(--line-soft);
+    color: var(--ink-soft);
+    vertical-align: middle;
+  }
+  .opt-table tr:last-child td { border-bottom: none; }
+  .tr-name, .tr-time, .tr-price {
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+  .tr-name { color: var(--terra); font-weight: 500; }
+  .tr-time { color: var(--ink); font-weight: 500; }
+  .tr-arrow { color: var(--gold); text-align: center; width: 18px; }
+  .tr-price { color: var(--sayram); text-align: right; font-weight: 500; }
+  .tr-note { font-size: 12px; color: var(--ink-faint); }
+
+  .transit-tip {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .transit-tip strong { color: var(--sayram-deep); }
+  .tip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px 28px;
+    margin: 10px 0 4px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .tc-route { margin-left: 0; width: 100%; }
+    .transit-head { padding: 18px 22px; }
+    .transit-body { padding: 8px 22px 20px; }
+    .opt-table { font-size: 12px; }
+    .opt-table td { padding: 7px 5px; }
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: white; color: black; }
+    header.hero { background: white; color: black; border-bottom: 2px solid black; }
+    .hero-title, .hero-subtitle, .meta-item .value { color: black; }
+    .day-card, .info-card, .budget, .heads-up, .emergency, .map-wrap { break-inside: avoid; }
+    .emergency { background: white; color: black; border: 1px solid black; }
+    .emergency h4, .emerg-item .e-phone, .emerg-item .e-name { color: black; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow">Ili · Xinjiang · Self-Drive Dossier</div>
+    <h1 class="hero-title">赛里木湖<br><span class="accent">那拉提</span></h1>
+    <div class="hero-subtitle">四天三夜，从冰推到草原初绿</div>
+
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="label">Dates</div>
+        <div class="value">2026.05.01 – 05.04</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Route</div>
+        <div class="value">伊宁 ⇄ 赛湖 ⇄ 那拉提</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Distance</div>
+        <div class="value">≈ 980 km</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Drive Hours</div>
+        <div class="value">≈ 18 hrs</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MAP ============ -->
+<section class="tight">
+  <div class="wrap-wide">
+    <div class="section-label">I · Route</div>
+    <h2 class="section-title"><span class="num">I.</span>全程路线</h2>
+
+    <div class="map-wrap">
+    <div class="map-wrap">
+      <svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="伊犁全程路线示意图">
+        <defs>
+          <linearGradient id="routeBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#faf6eb"/>
+            <stop offset="100%" stop-color="#efe2bf"/>
+          </linearGradient>
+          <marker id="arrD1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d4f5c"/>
+          </marker>
+          <marker id="arrD2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6e7d4a"/>
+          </marker>
+          <marker id="arrD4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b85c3b"/>
+          </marker>
+        </defs>
+
+        <rect width="1000" height="470" fill="url(#routeBg)"/>
+
+        <!-- ===== MOUNTAIN SILHOUETTES (soft decorative Tianshan) ===== -->
+        <path d="M 0 385 L 80 330 L 160 370 L 240 325 L 320 365 L 400 318 L 480 358 L 560 320 L 640 355 L 720 325 L 800 360 L 880 330 L 1000 360 L 1000 470 L 0 470 Z"
+              fill="#e8dcc1" opacity="0.55"/>
+        <path d="M 0 415 L 70 375 L 150 405 L 240 370 L 320 400 L 400 365 L 480 400 L 560 368 L 640 398 L 720 375 L 800 400 L 880 375 L 1000 395 L 1000 470 L 0 470 Z"
+              fill="#d4c6a8" opacity="0.45"/>
+
+        <!-- Snow caps on ridges -->
+        <path d="M 235 327 L 243 318 L 251 327 L 244 335 Z" fill="#faf6eb"/>
+        <path d="M 395 320 L 403 311 L 411 320 L 404 328 Z" fill="#faf6eb"/>
+        <path d="M 555 322 L 563 313 L 571 323 L 564 331 Z" fill="#faf6eb"/>
+        <path d="M 715 327 L 723 318 L 731 328 L 724 335 Z" fill="#faf6eb"/>
+
+        <!-- ===== MAIN AXIS (faded, behind everything) ===== -->
+        <path d="M 215 243 Q 540 150 860 237"
+              stroke="#1a1f2e" stroke-width="1.4" fill="none" stroke-dasharray="2 6" opacity="0.45"/>
+        <text x="540" y="158" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#1a1f2e" text-anchor="middle" opacity="0.6">主干线 · K6701 夜车 / 直飞</text>
+
+        <!-- Duku closed marker -->
+        <g transform="translate(710, 335)">
+          <rect x="-44" y="-11" width="88" height="23" fill="#fdfaf2" stroke="#b85c3b" stroke-width="0.8" opacity="0.95"/>
+          <text x="0" y="-1" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#b85c3b" text-anchor="middle">独库公路 G217</text>
+          <text x="0" y="11" font-family="JetBrains Mono, monospace" font-size="9" fill="#b85c3b" text-anchor="middle">✕ CLOSED · 5月</text>
+        </g>
+
+        <!-- ===== DAY 1: Yining ⇌ Sayram (solid up + dashed down, forming a loop) ===== -->
+        <path d="M 189 243 C 145 180 145 115 192 92"
+              stroke="#0d4f5c" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD1)"/>
+        <path d="M 202 92 C 248 118 248 180 202 245"
+              stroke="#0d4f5c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="6 5" opacity="0.75"/>
+
+        <!-- D1 label -->
+        <g transform="translate(80, 170)">
+          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 01</text>
+          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#0d4f5c">赛湖往返</text>
+          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">≈ 240 km · 4 h</text>
+        </g>
+
+        <!-- ===== DAY 2: Yining → Nalati (upper arc) ===== -->
+        <path d="M 208 250 Q 370 200 525 298"
+              stroke="#6e7d4a" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD2)"/>
+
+        <!-- D2 label -->
+        <g transform="translate(370, 218)">
+          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 02</text>
+          <text y="-16" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#4e5c36" text-anchor="middle">伊宁 → 那拉提 · G218</text>
+          <text y="16" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4.5 h</text>
+        </g>
+
+        <!-- ===== DAY 3: Nalati loop ===== -->
+        <circle cx="535" cy="305" r="26" stroke="#c19a55" stroke-width="2.5" fill="none" stroke-dasharray="3 3"/>
+        <circle cx="535" cy="305" r="16" stroke="#c19a55" stroke-width="1" fill="none" stroke-dasharray="2 2" opacity="0.5"/>
+        <g transform="translate(615, 288)">
+          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 03</text>
+          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#8a6a30">那拉提深度</text>
+          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">河谷 + 空中草原</text>
+        </g>
+
+        <!-- ===== DAY 4: Nalati → Yining (lower arc, dashed) ===== -->
+        <path d="M 523 317 Q 370 375 206 264"
+              stroke="#b85c3b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="9 5" marker-end="url(#arrD4)"/>
+
+        <!-- D4 label -->
+        <g transform="translate(370, 405)">
+          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 04</text>
+          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#b85c3b" text-anchor="middle">那拉提 → 伊宁 · 返程</text>
+          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4 h · 之后飞乌鲁木齐</text>
+        </g>
+
+        <!-- ===== CITIES ===== -->
+
+        <!-- Sayram Lake -->
+        <ellipse cx="195" cy="85" rx="24" ry="14" fill="#a8c5cc" stroke="#0d4f5c" stroke-width="1.3"/>
+        <ellipse cx="195" cy="85" rx="17" ry="9" fill="none" stroke="#ffffff" stroke-width="0.4" opacity="0.45"/>
+        <text x="195" y="58" font-family="Noto Serif SC, serif" font-size="15" font-weight="700" fill="#0d4f5c" text-anchor="middle">赛里木湖</text>
+        <text x="195" y="44" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#c19a55" text-anchor="middle" letter-spacing="1.5">SAYRAM · 2,073 m</text>
+
+        <!-- Yining -->
+        <circle cx="195" cy="250" r="9" fill="#1a1f2e"/>
+        <circle cx="195" cy="250" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
+        <text x="195" y="287" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">伊 宁</text>
+        <text x="195" y="305" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">YINING · 基地</text>
+
+        <!-- Nalati -->
+        <circle cx="535" cy="305" r="9" fill="#b85c3b"/>
+        <circle cx="535" cy="305" r="16" fill="none" stroke="#b85c3b" stroke-width="1.2" stroke-dasharray="2 2"/>
+        <text x="535" y="356" font-family="Noto Serif SC, serif" font-size="16" font-weight="700" fill="#1a1f2e" text-anchor="middle">那拉提</text>
+
+        <!-- Urumqi -->
+        <circle cx="868" cy="240" r="9" fill="#1a1f2e"/>
+        <circle cx="868" cy="240" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
+        <text x="868" y="278" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">乌鲁木齐</text>
+        <text x="868" y="296" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">ÜRÜMQI · 枢纽</text>
+
+        <!-- ===== TITLE ===== -->
+        <g transform="translate(30, 35)">
+          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">THE ILI LOOP</text>
+          <text y="28" font-family="Noto Serif SC, serif" font-size="22" font-weight="700" fill="#072e38">全程路线</text>
+          <line x1="0" y1="38" x2="120" y2="38" stroke="#c19a55" stroke-width="0.5"/>
+          <text y="54" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">四天三夜 · ≈ 980 km</text>
+          <text y="68" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">2026.05.01 – 05.04</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITINERARY ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-label">II · Day by Day</div>
+    <h2 class="section-title"><span class="num">II.</span>逐日行程</h2>
+
+    <!-- DAY 0 -->
+    <div class="day-card" data-day="0" style="--dummy: 0;">
+      <div class="day-head" style="border-left: 5px solid var(--ink-faint);">
+        <div class="day-date">DAY 0 · WED · 04.30</div>
+        <div class="day-title">两人会合 · 伊宁</div>
+        <div class="day-stats">
+          <span>你：CA8563 西宁→乌鲁木齐 13:15–15:45，转火车</span>
+          <span>她：北京直飞伊宁</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">15:45</div>
+          <div class="tl-content">
+            <h5>乌鲁木齐落地</h5>
+            <p>出机场后打车去 <strong>乌鲁木齐南站</strong>，车程约 30 分钟 40 元左右。中间可以先吃个米粉。</p>
+            <span class="tag">建议晚餐</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">20:30<br>或<br>21:23</div>
+          <div class="tl-content">
+            <h5>搭夜班卧铺去伊宁</h5>
+            <p><strong>K6701</strong> 20:30 发车，次日 06:00 到伊宁；或 <strong>K9789</strong> 21:23 发，次日 08:05 到（从乌鲁木齐南站发车，经停伊宁继续开往霍尔果斯）。提前订下铺或中铺。</p>
+            <span class="tag">硬卧 ≈ ¥175</span>
+            <span class="tag">软卧 ≈ ¥270</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">傍晚</div>
+          <div class="tl-content">
+            <h5>女朋友抵达伊宁</h5>
+            <p>她单独住一晚伊宁。建议订 <strong>六星街</strong> 附近酒店（机场出租车 15 分钟）：全季伊宁六星街、希尔顿欢朋都不错。到了给你发个房号共享。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card" data-day="1">
+      <div class="day-head">
+        <div class="day-date">DAY 1 · THU · 05.01</div>
+        <div class="day-title">赛里木湖 · 冰推日</div>
+        <div class="day-stats">
+          <span>240 km</span>
+          <span>驾车 ≈ 4 h</span>
+          <span>海拔 600 → 2073 m</span>
+          <span>夜宿伊宁</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">06:00<br>/08:05</div>
+          <div class="tl-content">
+            <h5>到达伊宁火车站 · 接人取车</h5>
+            <p>出站后叫车去 <strong>伊宁机场租车点</strong>（神州/一嗨都在这里）。提前锁好的订单，扫证件 + 驾照 + 押信用卡，10 分钟搞定。取完车去酒店接女朋友 + 吃个早饭。</p>
+            <span class="tag">早餐推荐：六星街·阿哥拉勒奶酪坊</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">09:30</div>
+          <div class="tl-content">
+            <h5>上 G30，往北</h5>
+            <p>伊宁 → 霍城 → 果子沟。<strong>加满油再走</strong>——赛湖方向加油站密度明显下降。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">11:00</div>
+          <div class="tl-content">
+            <h5>果子沟大桥观景台</h5>
+            <p>G30 主线上不能停，得从 <strong>霍城 / 清水河出口</strong> 绕到老路观景台拍大桥。拍完 20 分钟够，继续北上。</p>
+            <span class="tag">免费</span>
+            <span class="tag">顺光建议上午</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">12:00</div>
+          <div class="tl-content">
+            <h5>抵达赛里木湖 · 开始环湖</h5>
+            <p>门票 70 + 区间车 75，环湖 90 km 自驾可以开自己的车。建议 <strong>逆时针</strong>（南门 → 东岸 → 北岸 → 西岸）：</p>
+            <ul style="list-style: disc; margin: 10px 0 0 20px; color: var(--ink-soft); font-size: 14px; line-height: 1.8;">
+              <li><strong>月亮湾</strong>（进门第一站，西南角）</li>
+              <li><strong>东岸冰推</strong>（盛行西北风，冰推最集中）</li>
+              <li><strong>点将台</strong>（最经典观湖位）</li>
+              <li><strong>克勒涌珠</strong>（唯一不结冰的泉眼群）</li>
+              <li><strong>西海草原</strong>（拍雪山倒影）</li>
+            </ul>
+            <span class="tag">¥145 / 人</span>
+            <span class="tag">带羽绒服</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">17:30</div>
+          <div class="tl-content">
+            <h5>原路返伊宁</h5>
+            <p>赛湖 → 伊宁约 2 小时。路上累了可以在霍城服务区补个咖啡。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">20:00</div>
+          <div class="tl-content">
+            <h5>晚餐 · 喀赞其 / 六星街</h5>
+            <p>推荐：<strong>皇轩烤包子</strong>（烤包子 + 薄皮包子 + 奶茶），<strong>手抓饭王</strong>（老字号），<strong>布拉克食府</strong>（清淡些的新疆菜）。饭后可以在六星街走一圈，俄罗斯风情街夜景不错。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card" data-day="2">
+      <div class="day-head">
+        <div class="day-date">DAY 2 · FRI · 05.02</div>
+        <div class="day-title">伊宁 → 那拉提 · 巩乃斯河谷</div>
+        <div class="day-stats">
+          <span>280 km</span>
+          <span>驾车 ≈ 4.5 h</span>
+          <span>G218 全程</span>
+          <span>夜宿那拉提</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">09:00</div>
+          <div class="tl-content">
+            <h5>早餐 + 出发</h5>
+            <p>六星街买两个烤包子 + 一杯奶茶当路餐。加满油再上路（G218 沿途加油站少）。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">09:30</div>
+          <div class="tl-content">
+            <h5>上 G218 东行</h5>
+            <p>沿伊犁河 + 巩乃斯河谷向东，两侧是雪山 + 松林 + 牧场。这段是独库闭路期间唯一能看到的"天山河谷风光"，路慢但值得慢慢开。</p>
+            <span class="tag">限速多 60–80</span>
+            <span class="tag">大车多</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">12:30</div>
+          <div class="tl-content">
+            <h5>新源县午餐</h5>
+            <p>新源是 G218 沿途最后一个大县城，下一段到那拉提没大饭馆了。推荐 <strong>新源马肠子</strong> 和 <strong>熏马肉抓饭</strong>。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">15:30</div>
+          <div class="tl-content">
+            <h5>抵达那拉提镇 · 入住</h5>
+            <p>建议住景区门口附近：<strong>那拉提雪莲山庄</strong>、<strong>那拉提醉美缘主题酒店</strong>。5 月还是淡季，¥250–450 就能订到旺季 ¥800 的房。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">17:00</div>
+          <div class="tl-content">
+            <h5>河谷草原夕阳（自选）</h5>
+            <p>如果没累，可以先进景区河谷段逛一下，夕阳光下的初绿草原很出片。或者在镇上闲逛，明天是重头戏。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card" data-day="3">
+      <div class="day-head">
+        <div class="day-date">DAY 3 · SAT · 05.03</div>
+        <div class="day-title">那拉提 · 河谷 + 空中草原</div>
+        <div class="day-stats">
+          <span>景区内移动</span>
+          <span>空中草原海拔 2200 m</span>
+          <span>骑马 / 徒步</span>
+          <span>夜宿那拉提</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">09:00</div>
+          <div class="tl-content">
+            <h5>河谷草原</h5>
+            <p>套票 95 + 区间车 75 = ¥170/人。上午先走河谷段，地形平缓，适合骑马 + 溜达：</p>
+            <ul style="list-style: disc; margin: 10px 0 0 20px; color: var(--ink-soft); font-size: 14px; line-height: 1.8;">
+              <li>骑马 100–300 元看距离（短程 30 分钟够）</li>
+              <li>哈萨克族毡房体验，可以买奶酪和酸奶</li>
+              <li>拍照位：游客中心后的小溪 + 木栈道</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">13:00</div>
+          <div class="tl-content">
+            <h5>午餐 · 景区或下山</h5>
+            <p>景区里有餐厅但选择少，可以下山到镇上吃个饭再上空中草原。或者景区内简单吃碗汤饭 + 馕。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">14:30</div>
+          <div class="tl-content">
+            <h5>空中草原（重头）</h5>
+            <p>区间车上山，约 40 分钟盘山。这里是那拉提精华——海拔 2200m，视野完全开阔，能看天山雪山全景。5 月山顶可能还有残雪，草原刚泛绿，<strong>白雪 + 初绿 + 蓝天</strong> 的过渡景非常漂亮。</p>
+            <span class="tag">带外套</span>
+            <span class="tag">下午 3–5 点逆光最佳</span>
+            <span class="tag">高反药备着</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">19:30</div>
+          <div class="tl-content">
+            <h5>晚餐 · 烤全羊（需预订）</h5>
+            <p>那拉提的 <strong>烤全羊</strong> 很正宗，但要提前一天打电话订（当天现宰现烤）。¥980–1800 一只看大小，两人吃不完但冻起来第二天带上路也行。馕坑肉和哈萨克咸奶茶也值得试。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="day-card" data-day="4">
+      <div class="day-head">
+        <div class="day-date">DAY 4 · SUN · 05.04</div>
+        <div class="day-title">那拉提 → 伊宁 → 飞乌鲁木齐</div>
+        <div class="day-stats">
+          <span>280 km 地面</span>
+          <span>+ 1 h 飞行</span>
+          <span>还车 + 换航线</span>
+          <span>夜宿乌鲁木齐机场</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">08:00</div>
+          <div class="tl-content">
+            <h5>从那拉提出发</h5>
+            <p>早餐后 G218 原路返回。这次不用停，直奔伊宁。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">13:00</div>
+          <div class="tl-content">
+            <h5>抵达伊宁 · 还车</h5>
+            <p>直接开到 <strong>伊宁机场</strong> 还车。注意：还车前加满油、检查车况拍照、保留押金单。整个流程 30 分钟。</p>
+            <span class="tag">还车点 = 机场</span>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">14:00</div>
+          <div class="tl-content">
+            <h5>午餐在机场 / 附近</h5>
+            <p>机场餐食一般，建议还车前在机场外面先吃个饭再过安检。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">傍晚</div>
+          <div class="tl-content">
+            <h5>你：飞乌鲁木齐（1 h）</h5>
+            <p>伊宁→乌鲁木齐 每天多班，南航/东航/国航都有，票价 ¥400–700。到机场打车去附近酒店（宜必思/格林豪泰），第二天一早直接去航站楼。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">同日</div>
+          <div class="tl-content">
+            <h5>女朋友：伊宁直飞北京（建议）</h5>
+            <p>伊宁机场每天有 <strong>KN2225 / CZ6891</strong> 之类的伊宁→北京航班，单程约 ¥1200–1800。如果她当前是 5.5 乌鲁木齐→北京，改成 5.4 伊宁→北京可以省掉她再去乌鲁木齐中转的时间，两人 5.4 在伊宁机场直接告别就行。改签前先查价差。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="day-card" data-day="5">
+      <div class="day-head" style="border-left: 5px solid var(--ink-faint);">
+        <div class="day-date">DAY 5 · MON · 05.05</div>
+        <div class="day-title">返程</div>
+        <div class="day-stats">
+          <span>3U3453 乌鲁木齐→西宁 09:35–11:55</span>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-time">07:30</div>
+          <div class="tl-content">
+            <h5>机场办登机</h5>
+            <p>乌鲁木齐地窝堡的安检可能比较长，留足 1.5 小时。新疆出港查得严，提前装好充电宝（散装不托运）。</p>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-time">11:55</div>
+          <div class="tl-content">
+            <h5>西宁着陆</h5>
+            <p>到家。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ATTRACTIONS ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-label">III · Along the Way</div>
+    <h2 class="section-title"><span class="num">III.</span>沿途景点</h2>
+
+    <div class="info-grid">
+
+      <div class="info-card">
+        <h4>5.1 去赛湖路上 <span class="en">G30 北上</span></h4>
+        <ul>
+          <li class="spot" data-img="../img/xingjiang/huiyuan-gucheng.jpg" data-title="惠远古城" data-desc="清代"伊犁九城"之首，城内钟鼓楼、将军府保存完好，是清代新疆军政中心。伊犁将军府曾统辖天山南北，城墙与衙署至今可见当年规模。">
+            <div class="spot-row"><span class="k">惠远古城</span><span class="v">霍城 9 km</span></div>
+            <div class="spot-desc">清代伊犁将军驻地，"伊犁九城"之首，城内将军府、钟鼓楼保存完好。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/linzexu-yizhi.jpg" data-title="林则徐流放遗址" data-desc="虎门销烟后林则徐被流放伊犁三年（1842-1845），在惠远古城内留有纪念馆。流放期间他兴修水利、勘垦屯田，留下了"苟利国家生死以"的名句。">
+            <div class="spot-row"><span class="k">林则徐流放遗址</span><span class="v">古城内</span></div>
+            <div class="spot-desc">林则徐虎门销烟后被流放至此三年，纪念馆在惠远古城内。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/huocheng-xunyicao.jpg" data-title="霍城薰衣草园" data-desc="中国最大的薰衣草种植基地，与法国普罗旺斯同纬度。花期 6 月中至 7 月初，紫色花海绵延数公里；5 月只有温室大棚可看，室外仍是绿苗。">
+            <div class="spot-row"><span class="k">霍城薰衣草园</span><span class="v">5月未开</span></div>
+            <div class="spot-desc">中国最大薰衣草基地，花期 6 月中至 7 月初，5 月只能看温室。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/guozigou-daqiao.jpg" data-title="果子沟大桥" data-desc="连霍高速上的双塔双索面钢桁梁斜拉桥，全长 700 米，桥面距谷底 200 米，横跨果子沟峡谷，被誉为"新疆第一桥"。观景台可停车 30 分钟拍摄。">
+            <div class="spot-row"><span class="k">果子沟大桥</span><span class="v">观景台 30 min</span></div>
+            <div class="spot-desc">连霍高速上横跨峡谷的斜拉桥，桥面距谷底 200 米，"新疆第一桥"。</div>
+          </li>
+        </ul>
+        <p>惠远古城是清代"伊犁九城"之首，林则徐在这里流放三年。霍城薰衣草要等到 6 月底才开花，5 月过只能看室内基地。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>5.2 / 5.4 伊宁 ⇌ 那拉提 <span class="en">G218</span></h4>
+        <ul>
+          <li class="spot" data-img="../img/xingjiang/chabuchar.jpg" data-title="察布查尔" data-desc="全国唯一的锡伯族自治县。锡伯族是清代从东北西迁至此的戍边后裔，至今保留锡伯文字和射箭传统，县内有锡伯族博物馆和靖远寺可参观。">
+            <div class="spot-row"><span class="k">察布查尔</span><span class="v">伊宁 20 km</span></div>
+            <div class="spot-desc">全国唯一锡伯族自治县，清代从东北西迁戍边的后裔，保留独特语言文字。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/tugeren-xinghuagou.jpg" data-title="吐尔根杏花沟" data-desc="中世纪遗留的原始野杏林，占地 3 万亩，每年 4 月初有约十天花期。漫山遍野粉白杏花与绿色草坡交织，被誉为中国最美杏花谷。5 月只剩绿叶。">
+            <div class="spot-row"><span class="k">吐尔根杏花沟</span><span class="v">4 月花期</span></div>
+            <div class="spot-desc">三万亩中世纪野杏林，4 月初十天花期漫山粉白，5 月只剩绿叶。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/gongliu-qiaxi.jpg" data-title="巩留恰西" data-desc="天山深处的秘境牧场，松林溪谷交错，游客稀少。哈萨克牧民夏季在此放牧，被称为"人体草原"——起伏的草地如人体曲线般柔美。需绕行 50 km。">
+            <div class="spot-row"><span class="k">巩留恰西</span><span class="v">绕 50 km</span></div>
+            <div class="spot-desc">天山深处的秘境牧场，松林溪谷、游客稀少，被称为"人体草原"。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/gongnaisi-hegu.jpg" data-title="巩乃斯河谷" data-desc="G218 后半段的精华路段，公路沿巩乃斯河穿行于雪山、松林与牧场之间，三重景观的交响——不用下车，车窗就是画框。">
+            <div class="spot-row"><span class="k">巩乃斯河谷</span><span class="v">沿路车窗</span></div>
+            <div class="spot-desc">G218 沿河穿行，雪山松林牧场三重景观，车窗即是画框。</div>
+          </li>
+        </ul>
+        <p>察布查尔是全国唯一的锡伯族自治县，锡伯族是清代从东北西迁过来的戍边后裔。吐尔根杏花沟 4 月初十天花期，5 月只剩绿叶。巩乃斯河谷是 G218 后半段精华——雪山 + 松林 + 牧场的三重奏，车窗景观就够。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>5.3 那拉提景区内</h4>
+        <ul>
+          <li class="spot" data-img="../img/xingjiang/hegu-caoyuan.jpg" data-title="河谷草原" data-desc="海拔较低的平缓草原，适合骑马慢行。牛羊遍野、毡房点点，远处雪山若隐若现，是那拉提最亲近的草原体验。">
+            <div class="spot-row"><span class="k">河谷草原</span><span class="v">骑马 · 平缓</span></div>
+            <div class="spot-desc">海拔较低的平缓草原，适合骑马漫步，牛羊遍野、毡房点点。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/kongzhong-caoyuan.jpg" data-title="空中草原" data-desc="海拔 2200 米的高山草甸，背靠连绵雪峰，是那拉提的核心景观。夏季野花铺地、雪山在望，视野开阔到让人屏息。必去。">
+            <div class="spot-row"><span class="k">空中草原</span><span class="v">2,200 m · 雪山</span></div>
+            <div class="spot-desc">海拔 2200 米高山草甸，背靠雪山，那拉提核心景观，必去。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/wangtian-dong.jpg" data-title="望天洞" data-desc="山体南侧的天然溶洞，洞内钟乳石形态各异，光线从洞顶射入如同天窗。需步行前往，距离较远，时间紧可略过。">
+            <div class="spot-row"><span class="k">望天洞</span><span class="v">山洞 · 南侧</span></div>
+            <div class="spot-desc">山体南侧天然溶洞，洞内钟乳石形态各异，光线从洞顶射入。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/kezilaxia-pubu.jpg" data-title="柯孜拉霞瀑布" data-desc="那拉提景区最深处的瀑布，雪山融水汇聚而成，落差约 30 米，沿栈道徒步可达。是景区的最远点，需预留充足时间。">
+            <div class="spot-row"><span class="k">柯孜拉霞瀑布</span><span class="v">最远点</span></div>
+            <div class="spot-desc">景区最深处的雪山融水瀑布，落差约 30 米，沿栈道徒步可达。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/hasake-minsucu.jpg" data-title="哈萨克民俗村" data-desc="体验哈萨克牧民传统生活方式，品尝酸奶疙瘩、马奶酒、包尔萨克，入住传统白色毡房，感受游牧文化的热情好客。">
+            <div class="spot-row"><span class="k">哈萨克民俗村</span><span class="v">毡房 · 奶品</span></div>
+            <div class="spot-desc">体验哈萨克牧民生活，品酸奶马奶酒，住传统毡房。</div>
+          </li>
+        </ul>
+        <p>空中草原必去，雪山视野是那拉提的核心卖点。望天洞 / 柯孜拉霞瀑布距离远，时间紧可以略，把时间留给空中草原慢慢走。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>伊宁市区 <span class="en">空档 / 候车</span></h4>
+        <ul>
+          <li class="spot" data-img="../img/xingjiang/liuxingjie.jpg" data-title="六星街" data-desc="六条道路放射状交汇的多民族混居老街，哈萨克、俄罗斯、维吾尔族比邻而居。街区内咖啡馆、手工艺品店密布，建筑风格融合中亚与俄式元素，文艺气息浓厚。">
+            <div class="spot-row"><span class="k">六星街</span><span class="v">民俗 · 咖啡</span></div>
+            <div class="spot-desc">六条道路放射交汇的多民族老街，咖啡馆与手工艺品店密布。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/kazanqi.jpg" data-title="喀赞其民俗区" data-desc="伊宁最大的维吾尔族聚居区，蓝色门窗、彩色花砖老巷纵横交错。可以坐传统蓝绿色马车穿街串巷 1-2 小时，非常出片，是伊宁最有烟火气的地方。">
+            <div class="spot-row"><span class="k">喀赞其民俗区</span><span class="v">维族老城</span></div>
+            <div class="spot-desc">伊宁最大维吾尔族聚居区，蓝色门窗老巷，可坐马车穿街串巷。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/hanjia-gongzhu.jpg" data-title="汉家公主纪念馆" data-desc="纪念西汉细君公主和解忧公主远嫁乌孙国的历史。两位公主先后和亲西域，为汉朝经营西域、开辟丝绸之路做出了重要贡献。">
+            <div class="spot-row"><span class="k">汉家公主纪念馆</span><span class="v">历史</span></div>
+            <div class="spot-desc">纪念西汉细君、解忧公主远嫁乌孙的和亲历史。</div>
+          </li>
+          <li class="spot" data-img="../img/xingjiang/baidula-qingzhensi.jpg" data-title="拜都拉清真寺" data-desc="伊犁最大的清真寺，建于清乾隆年间（1773 年），是伊斯兰建筑风格的典范。穹顶与宣礼塔在蓝天下庄严肃穆，是伊宁城市的地标之一。">
+            <div class="spot-row"><span class="k">拜都拉清真寺</span><span class="v">伊犁最大</span></div>
+            <div class="spot-desc">伊犁最大清真寺，建于清乾隆年间，伊斯兰风格建筑典范。</div>
+          </li>
+        </ul>
+        <p>机场 / 火车站之间的空档很适合逛市区。六星街是哈 / 俄 / 维混居的放射状老街，咖啡馆+手工艺品多；喀赞其可以坐传统蓝绿色马车串维族老巷 1-2 h，非常出片。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOD ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-label">IV · Food</div>
+    <h2 class="section-title"><span class="num">IV.</span>全程美食</h2>
+
+    <div class="info-grid">
+
+      <div class="info-card">
+        <h4>伊宁 · 六星街 <span class="en">早餐</span></h4>
+        <ul>
+          <li><span class="k">阿哥拉勒奶酪坊</span><span class="v">俄式</span></li>
+          <li><span class="k">皇轩烤包子</span><span class="v">老字号</span></li>
+          <li><span class="k">手抓饭王</span><span class="v">老字号</span></li>
+          <li><span class="k">布拉克食府</span><span class="v">清淡</span></li>
+        </ul>
+        <p>六星街的俄式奶酪、蛋糕、列巴 + 一杯咖啡是最舒服的早餐开局。烤包子要趁热吃，从炉子里夹出来那两分钟最脆。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>伊宁特产 <span class="en">Ili specialties</span></h4>
+        <ul>
+          <li><span class="k">克拉古斯熏马肉</span><span class="v">哈萨克</span></li>
+          <li><span class="k">俄式大列巴</span><span class="v">面包</span></li>
+          <li><span class="k">伊犁马奶酒</span><span class="v">发酵</span></li>
+          <li><span class="k">纳仁</span><span class="v">面片羊肉</span></li>
+          <li><span class="k">伊犁冰激凌</span><span class="v">本地老牌</span></li>
+        </ul>
+        <p>纳仁是哈萨克族把煮羊肉 + 宽面片 + 洋葱汁拌在盘里吃的家常菜，一份够两人分。马奶酒酸得有点冲，浅尝即可。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>G218 路餐 · 新源 <span class="en">Xinyuan</span></h4>
+        <ul>
+          <li><span class="k">熏马肠</span><span class="v">哈萨克</span></li>
+          <li><span class="k">熏马肉抓饭</span><span class="v">主食</span></li>
+          <li><span class="k">新疆汤饭</span><span class="v">暖胃</span></li>
+        </ul>
+        <p>新源是 G218 上最后一个正经县城，下一段到那拉提没大馆子了。马肠子最正宗的就在这里，可以打包一份路上吃。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>那拉提 <span class="en">Nalati</span></h4>
+        <ul>
+          <li><span class="k">烤全羊</span><span class="v">¥980–1,800</span></li>
+          <li><span class="k">馕坑肉</span><span class="v">羊排</span></li>
+          <li><span class="k">哈萨克咸奶茶</span><span class="v">盐 + 黄油</span></li>
+          <li><span class="k">酸奶疙瘩</span><span class="v">毡房购</span></li>
+          <li><span class="k">包尔萨克</span><span class="v">油炸面</span></li>
+        </ul>
+        <p>烤全羊提前 1 天订（景区门口店家可代购），两人吃不完可以打包冻起来当 5.4 返程路餐。咸奶茶第一口会震惊但配包尔萨克就对了。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>赛里木湖 <span class="en">Sayram</span></h4>
+        <ul>
+          <li><span class="k">高白鲑</span><span class="v">冷水鱼</span></li>
+          <li><span class="k">蒙古包烤肉</span><span class="v">牧民点菜</span></li>
+          <li><span class="k">湖畔奶茶</span><span class="v">哈萨克</span></li>
+        </ul>
+        <p>高白鲑是赛湖独有的冷水鱼，肉细、清蒸最好。景区内餐厅偏贵，预算有限可以环湖找牧民毡房点一壶咸奶茶 + 风干肉。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>乌鲁木齐 <span class="en">过境</span></h4>
+        <ul>
+          <li><span class="k">红山大盘鸡</span><span class="v">市区</span></li>
+          <li><span class="k">五一夜市</span><span class="v">市集</span></li>
+          <li><span class="k">T3 航站楼餐食</span><span class="v">方便</span></li>
+        </ul>
+        <p>你只是过境，T3 的大盘鸡 / 拌面能吃，就是比外面贵 30%。赶飞机赶火车不如就在这解决。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRANSIT / MAIN AXIS ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-label">V · Main Axis</div>
+    <h2 class="section-title"><span class="num">V.</span>主干线衔接 · 乌鲁木齐 ⇌ 伊宁</h2>
+
+    <div class="axis-map">
+      <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="axisBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#faf6eb"/>
+            <stop offset="100%" stop-color="#f2ead5"/>
+          </linearGradient>
+          <marker id="arrowOut" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d4f5c"/>
+          </marker>
+          <marker id="arrowIn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b85c3b"/>
+          </marker>
+        </defs>
+
+        <rect width="800" height="260" fill="url(#axisBg)"/>
+
+        <!-- Tianshan silhouette strip in middle -->
+        <path d="M 140 145 L 200 115 L 260 135 L 320 100 L 380 130 L 440 105 L 510 130 L 580 115 L 650 140 L 700 130 L 700 155 L 140 155 Z"
+              fill="#d4c6a8" opacity="0.35"/>
+        <path d="M 315 102 L 320 100 L 326 105 L 322 109 Z" fill="#faf6eb"/>
+        <path d="M 435 108 L 440 105 L 446 111 L 442 115 Z" fill="#faf6eb"/>
+        <path d="M 575 117 L 580 115 L 586 120 L 582 124 Z" fill="#faf6eb"/>
+
+        <!-- Outbound arrow (top): URC → YIN, curves above -->
+        <path d="M 650 130 Q 420 30 160 130"
+              stroke="#0d4f5c" stroke-width="2.5" fill="none"
+              marker-end="url(#arrowOut)"/>
+        <text x="405" y="58" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#0d4f5c" text-anchor="middle">04.30 晚 · 去程</text>
+        <text x="405" y="75" font-family="JetBrains Mono, monospace" font-size="11" fill="#3c4454" text-anchor="middle">K6701 / K9789 夜车卧铺 · 约 10 h</text>
+
+        <!-- Return arrow (bottom): YIN → URC, curves below -->
+        <path d="M 160 160 Q 420 245 650 160"
+              stroke="#b85c3b" stroke-width="2.5" fill="none"
+              marker-end="url(#arrowIn)"/>
+        <text x="405" y="223" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#b85c3b" text-anchor="middle">05.04 傍晚 · 返程</text>
+        <text x="405" y="240" font-family="JetBrains Mono, monospace" font-size="11" fill="#3c4454" text-anchor="middle">直飞 · 1 h 15 min</text>
+
+        <!-- Yining (left) -->
+        <circle cx="160" cy="145" r="10" fill="#1a1f2e"/>
+        <circle cx="160" cy="145" r="16" fill="none" stroke="#1a1f2e" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="160" y="180" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">伊宁</text>
+        <text x="160" y="196" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#6e7688" text-anchor="middle">YIN · 基地</text>
+
+        <!-- Urumqi (right) -->
+        <circle cx="650" cy="145" r="10" fill="#1a1f2e"/>
+        <circle cx="650" cy="145" r="16" fill="none" stroke="#1a1f2e" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="650" y="180" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">乌鲁木齐</text>
+        <text x="650" y="196" font-family="Cormorant Garamond, serif" font-style="italic" font-size="11" fill="#6e7688" text-anchor="middle">URC · 枢纽</text>
+
+        <!-- Distance label -->
+        <text x="405" y="150" font-family="JetBrains Mono, monospace" font-size="12" fill="#6e7688" text-anchor="middle" font-style="italic">≈ 700 km / 隔一条天山</text>
+
+        <!-- Title -->
+        <text x="30" y="32" font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="2">MAIN AXIS</text>
+        <text x="30" y="50" font-family="Noto Serif SC, serif" font-size="16" font-weight="700" fill="#072e38">两头的主干衔接</text>
+      </svg>
+    </div>
+
+    <!-- OUTBOUND 04.30 -->
+    <div class="transit-card">
+      <div class="transit-head tc-out">
+        <div class="tc-label">Outbound</div>
+        <div class="tc-date">04.30 · WED · 晚</div>
+        <div class="tc-route">乌鲁木齐 ───► 伊宁</div>
+      </div>
+      <div class="transit-body">
+
+        <div class="opt">
+          <div class="opt-badge">★ 推荐 · A</div>
+          <h5>夜班卧铺火车 · 省一晚酒店</h5>
+          <table class="opt-table">
+            <tr>
+              <td class="tr-name">K6701</td>
+              <td>乌鲁木齐站</td>
+              <td class="tr-time">20:30</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">伊宁 06:00+1</td>
+              <td class="tr-price">9h30m</td>
+            </tr>
+            <tr>
+              <td class="tr-name">K9789</td>
+              <td>乌鲁木齐南站</td>
+              <td class="tr-time">21:23</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">伊宁 08:05+1</td>
+              <td class="tr-price">10h42m</td>
+            </tr>
+          </table>
+          <p class="opt-note">硬卧 ¥175 / 中铺 ¥180 / 软卧 ¥270。<strong>K6701 到得早</strong>，赛湖行程更从容；K9789 从南站发且延伸至霍尔果斯，伊宁只是经停。五一假期下铺紧俏，<strong>开售即锁</strong>（15 天前放票）。</p>
+        </div>
+
+        <div class="opt">
+          <div class="opt-badge">B</div>
+          <h5>当日直飞 · 快但中转有风险</h5>
+          <p class="opt-note" style="margin-top: 4px;">每日 10+ 班，飞行 1 h，¥500–1,200（五一票价偏高）。承运：南航 CZ / 东航 MU / 天津航 GS / 乌鲁木齐航 UQ / 长龙 9H。</p>
+          <p class="opt-note"><strong>风险</strong>：你 15:45 落地乌鲁木齐 T3，转国内段理论上够，但新疆行李慢、安检严，2 h 中转窗口行李一慢就悬。选这个的话<strong>只带登机箱、不托运</strong>。</p>
+        </div>
+
+        <div class="opt">
+          <div class="opt-badge">C</div>
+          <h5>5.1 早班动车（需乌鲁木齐过夜）</h5>
+          <table class="opt-table">
+            <tr>
+              <td class="tr-name">C841</td>
+              <td>乌鲁木齐 08:26</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">伊宁 14:16</td>
+              <td class="tr-price">5h50m</td>
+            </tr>
+            <tr>
+              <td class="tr-name">C843</td>
+              <td>乌鲁木齐 09:00</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">伊宁 14:32</td>
+              <td class="tr-price">5h32m</td>
+            </tr>
+            <tr>
+              <td class="tr-name">C845</td>
+              <td>乌鲁木齐 09:45</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">伊宁 15:17</td>
+              <td class="tr-price">5h32m</td>
+            </tr>
+          </table>
+          <p class="opt-note">二等座 ¥128 / 一等座 ¥204。<strong>代价</strong>：5.1 下午才到伊宁，赛湖当天来回基本吹了，得把赛湖挪到 5.2 再挪后续。不如 K6701。</p>
+        </div>
+
+        <div class="opt opt-alt">
+          <h5>其它方式（不推荐）</h5>
+          <p><strong>普通硬座</strong>：K 字头 10+ h 硬座 ¥93，能坐但累；<strong>长途大巴</strong>：乌鲁木齐客运南站发车 12 h，效率低；<strong>自驾</strong>：700 km 单程 8–10 h，你在伊宁才取车所以不成立。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="transit-tip">
+      <strong>机场 → 火车站怎么转</strong>
+      <div class="tip-grid">
+        <div><strong>去乌鲁木齐站</strong>（K6701 发）<br>出租车 ¥25 / 20 min · 或地铁 1 号线直达</div>
+        <div><strong>去乌鲁木齐南站</strong>（K9789 发）<br>出租车 ¥50 / 40 min · 或地铁 1 号线 55 min</div>
+      </div>
+      T3 吃个大盘鸡再出发，卧铺上餐食一般。带眼罩耳塞、充电宝别放托运。
+    </div>
+
+    <!-- RETURN 05.04 -->
+    <div class="transit-card">
+      <div class="transit-head tc-in">
+        <div class="tc-label">Return</div>
+        <div class="tc-date">05.04 · SUN · 傍晚</div>
+        <div class="tc-route">伊宁 ───► 乌鲁木齐</div>
+      </div>
+      <div class="transit-body">
+
+        <div class="opt">
+          <div class="opt-badge">★ 推荐 · A</div>
+          <h5>直飞 · 最快最省心</h5>
+          <p class="opt-note" style="margin-top: 4px; margin-bottom: 10px;">每日 10+ 班，飞行 1 h 15 min，¥500–900（五一返程高峰 ¥800–1,200）。承运：南航 CZ / 东航 MU / 天津航 GS / 乌鲁木齐航 UQ。你 13:30 还完车的可用窗口：</p>
+          <table class="opt-table">
+            <tr>
+              <td class="tr-time">13:55</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">15:10</td>
+              <td class="tr-note">刚还完车就赶，紧但可行</td>
+            </tr>
+            <tr>
+              <td class="tr-time">17:00 前后</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">18:15 前后</td>
+              <td class="tr-note">★ 最舒服窗口</td>
+            </tr>
+            <tr>
+              <td class="tr-time">19:30 前后</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">20:45 前后</td>
+              <td class="tr-note">晚餐后出发也可</td>
+            </tr>
+            <tr>
+              <td class="tr-time">21:10</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">22:35</td>
+              <td class="tr-note">晚到但安全</td>
+            </tr>
+            <tr>
+              <td class="tr-time">22:55</td>
+              <td class="tr-arrow">→</td>
+              <td class="tr-time">00:20+1</td>
+              <td class="tr-note">太晚，次日 09:35 要飞</td>
+            </tr>
+          </table>
+          <p class="opt-note">具体航班号每日滚动，去携程 / 飞猪查「伊宁 YIN → 乌鲁木齐 URC · 5.4」当天实际班次。</p>
+        </div>
+
+        <div class="opt">
+          <div class="opt-badge">B</div>
+          <h5>动车 C 字头</h5>
+          <p class="opt-note" style="margin-top: 4px;">C842 / C844 / C846 / C848 / C850 伊宁 → 乌鲁木齐，5–6 h，二等座 ¥128 / 一等座 ¥204。五一假期票紧，<strong>提前 15 天开售时订</strong>。</p>
+          <p class="opt-note"><strong>注意</strong>：部分 C 车终到乌鲁木齐南站（不是乌鲁木齐站），如果你酒店订在机场附近，从南站还要再打车 40 min / ¥50。飞机反而更直接。</p>
+        </div>
+
+        <div class="opt">
+          <div class="opt-badge">C</div>
+          <h5>夜班卧铺 K 字头（不适合你）</h5>
+          <p class="opt-note" style="margin-top: 4px;">K6702 / K9790 伊宁方向返程的夜车 5.4 晚发车、5.5 早上到。问题是你 5.5 09:35 要飞西宁（3U3453），夜车抵达乌鲁木齐再赶机场太赶。<strong>除非</strong>你把 5.5 主程航班改到下午。</p>
+        </div>
+
+        <div class="opt opt-alt">
+          <h5>其它方式（不推荐）</h5>
+          <p><strong>长途大巴</strong>：伊宁客运站发乌鲁木齐 12 h，硬座 ¥200，五一假期路上能堵到你怀疑人生。</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="sig">May your road rise to meet you.</div>
+  <div>伊犁 · 2026 春末 · 带上女朋友，带上耐心，带上防晒</div>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox-overlay">
+  <div class="lightbox-box">
+    <button class="lightbox-close">&times;</button>
+    <img src="" alt="">
+    <div class="lightbox-placeholder"></div>
+    <div class="lightbox-info">
+      <h4></h4>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var overlay = document.getElementById('lightbox');
+  var lbImg = overlay.querySelector('img');
+  var lbTitle = overlay.querySelector('.lightbox-info h4');
+  var lbDesc = overlay.querySelector('.lightbox-info p');
+  var lbPlaceholder = overlay.querySelector('.lightbox-placeholder');
+
+  document.querySelectorAll('.spot').forEach(function(spot) {
+    spot.addEventListener('click', function() {
+      var title = this.dataset.title;
+      var desc = this.dataset.desc;
+      var imgSrc = this.dataset.img;
+
+      lbTitle.textContent = title;
+      lbDesc.textContent = desc;
+      lbImg.src = imgSrc;
+      lbImg.alt = title;
+      lbImg.style.display = 'block';
+      lbPlaceholder.style.display = 'none';
+
+      lbImg.onerror = function() {
+        this.style.display = 'none';
+        lbPlaceholder.style.display = 'flex';
+        lbPlaceholder.textContent = title;
+      };
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeLightbox();
+  });
+  overlay.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
+</script>
+
+</body>
+</html>
