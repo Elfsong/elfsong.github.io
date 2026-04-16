@@ -172,6 +172,40 @@
   .d3 { background: var(--gold); }
   .d4 { background: var(--terra); }
 
+  /* ============ INTERACTIVE MAP ============ */
+  .map-wrap { position: relative; }
+  g.route-day { cursor: pointer; opacity: 0; transition: opacity 0.5s ease-out; }
+  g.route-day.show { opacity: 1; }
+  g.route-day path { transition: stroke-width 0.25s, filter 0.25s; }
+  g.route-day:hover path {
+    stroke-width: 5 !important;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.18));
+  }
+  g.route-day.active path {
+    stroke-width: 4.5 !important;
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.15));
+  }
+  g.city-marker { cursor: pointer; opacity: 0; transition: opacity 0.5s ease-out, filter 0.25s; }
+  g.city-marker.show { opacity: 1; }
+  g.city-marker:hover { filter: drop-shadow(0 0 8px rgba(26,31,46,0.3)); }
+  .map-tip {
+    position: absolute;
+    background: var(--sayram-deep);
+    color: var(--cream);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    z-index: 10;
+    transform: translate(-50%, -100%);
+    font-family: 'Noto Sans SC', sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .map-tip.show { opacity: 1; }
+
   /* ============ HEADS UP CALLOUTS ============ */
   .heads-up-grid {
     display: grid;
@@ -790,7 +824,6 @@
     <h2 class="section-title"><span class="num">I.</span>全程路线</h2>
 
     <div class="map-wrap">
-    <div class="map-wrap">
       <svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="伊犁全程路线示意图">
         <defs>
           <linearGradient id="routeBg" x1="0" y1="0" x2="0" y2="1">
@@ -834,74 +867,84 @@
           <text x="0" y="11" font-family="JetBrains Mono, monospace" font-size="9" fill="#b85c3b" text-anchor="middle">✕ CLOSED · 5月</text>
         </g>
 
-        <!-- ===== DAY 1: Yining ⇌ Sayram (solid up + dashed down, forming a loop) ===== -->
-        <path d="M 189 243 C 145 180 145 115 192 92"
-              stroke="#0d4f5c" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD1)"/>
-        <path d="M 202 92 C 248 118 248 180 202 245"
-              stroke="#0d4f5c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="6 5" opacity="0.75"/>
-
-        <!-- D1 label -->
-        <g transform="translate(80, 170)">
-          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 01</text>
-          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#0d4f5c">赛湖往返</text>
-          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">≈ 240 km · 4 h</text>
+        <!-- ===== DAY 1: Yining ⇌ Sayram ===== -->
+        <g class="route-day" data-day="1" data-tip="DAY 1 · 赛湖往返 · 240 km — 点击查看行程">
+          <path d="M 189 243 C 145 180 145 115 192 92"
+                stroke="#0d4f5c" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD1)"/>
+          <path d="M 202 92 C 248 118 248 180 202 245"
+                stroke="#0d4f5c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="6 5" opacity="0.75"/>
+          <path d="M 189 243 C 145 180 145 115 192 92" stroke="transparent" stroke-width="22" fill="none"/>
+          <g transform="translate(80, 170)">
+            <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 01</text>
+            <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#0d4f5c">赛湖往返</text>
+            <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">≈ 240 km · 4 h</text>
+          </g>
         </g>
 
-        <!-- ===== DAY 2: Yining → Nalati (upper arc) ===== -->
-        <path d="M 208 250 Q 370 200 525 298"
-              stroke="#6e7d4a" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD2)"/>
-
-        <!-- D2 label -->
-        <g transform="translate(370, 218)">
-          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 02</text>
-          <text y="-16" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#4e5c36" text-anchor="middle">伊宁 → 那拉提 · G218</text>
-          <text y="16" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4.5 h</text>
+        <!-- ===== DAY 2: Yining → Nalati ===== -->
+        <g class="route-day" data-day="2" data-tip="DAY 2 · 伊宁→那拉提 · G218 · 280 km — 点击查看行程">
+          <path d="M 208 250 Q 370 200 525 298"
+                stroke="#6e7d4a" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#arrD2)"/>
+          <path d="M 208 250 Q 370 200 525 298" stroke="transparent" stroke-width="22" fill="none"/>
+          <g transform="translate(370, 218)">
+            <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 02</text>
+            <text y="-16" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#4e5c36" text-anchor="middle">伊宁 → 那拉提 · G218</text>
+            <text y="16" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4.5 h</text>
+          </g>
         </g>
 
         <!-- ===== DAY 3: Nalati loop ===== -->
-        <circle cx="535" cy="305" r="26" stroke="#c19a55" stroke-width="2.5" fill="none" stroke-dasharray="3 3"/>
-        <circle cx="535" cy="305" r="16" stroke="#c19a55" stroke-width="1" fill="none" stroke-dasharray="2 2" opacity="0.5"/>
-        <g transform="translate(615, 288)">
-          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 03</text>
-          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#8a6a30">那拉提深度</text>
-          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">河谷 + 空中草原</text>
+        <g class="route-day" data-day="3" data-tip="DAY 3 · 那拉提深度 · 河谷+空中草原 — 点击查看行程">
+          <circle cx="535" cy="305" r="26" stroke="#c19a55" stroke-width="2.5" fill="none" stroke-dasharray="3 3"/>
+          <circle cx="535" cy="305" r="16" stroke="#c19a55" stroke-width="1" fill="none" stroke-dasharray="2 2" opacity="0.5"/>
+          <circle cx="535" cy="305" r="32" fill="transparent"/>
+          <g transform="translate(615, 288)">
+            <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3">DAY 03</text>
+            <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#8a6a30">那拉提深度</text>
+            <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">河谷 + 空中草原</text>
+          </g>
         </g>
 
-        <!-- ===== DAY 4: Nalati → Yining (lower arc, dashed) ===== -->
-        <path d="M 523 317 Q 370 375 206 264"
-              stroke="#b85c3b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="9 5" marker-end="url(#arrD4)"/>
-
-        <!-- D4 label -->
-        <g transform="translate(370, 405)">
-          <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 04</text>
-          <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#b85c3b" text-anchor="middle">那拉提 → 伊宁 · 返程</text>
-          <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4 h · 之后飞乌鲁木齐</text>
+        <!-- ===== DAY 4: Nalati → Yining ===== -->
+        <g class="route-day" data-day="4" data-tip="DAY 4 · 那拉提→伊宁 · 返程 · 280 km — 点击查看行程">
+          <path d="M 523 317 Q 370 375 206 264"
+                stroke="#b85c3b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="9 5" marker-end="url(#arrD4)"/>
+          <path d="M 523 317 Q 370 375 206 264" stroke="transparent" stroke-width="22" fill="none"/>
+          <g transform="translate(370, 405)">
+            <text font-family="Cormorant Garamond, serif" font-style="italic" font-size="12" fill="#c19a55" letter-spacing="3" text-anchor="middle">DAY 04</text>
+            <text y="18" font-family="Noto Serif SC, serif" font-size="13" font-weight="600" fill="#b85c3b" text-anchor="middle">那拉提 → 伊宁 · 返程</text>
+            <text y="34" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454" text-anchor="middle">≈ 280 km · 4 h · 之后飞乌鲁木齐</text>
+          </g>
         </g>
 
         <!-- ===== CITIES ===== -->
 
-        <!-- Sayram Lake -->
-        <ellipse cx="195" cy="85" rx="24" ry="14" fill="#a8c5cc" stroke="#0d4f5c" stroke-width="1.3"/>
-        <ellipse cx="195" cy="85" rx="17" ry="9" fill="none" stroke="#ffffff" stroke-width="0.4" opacity="0.45"/>
-        <text x="195" y="58" font-family="Noto Serif SC, serif" font-size="15" font-weight="700" fill="#0d4f5c" text-anchor="middle">赛里木湖</text>
-        <text x="195" y="44" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#c19a55" text-anchor="middle" letter-spacing="1.5">SAYRAM · 2,073 m</text>
+        <g class="city-marker" data-day="1" data-tip="赛里木湖 · 海拔 2,073m · 点击查看行程">
+          <ellipse cx="195" cy="85" rx="24" ry="14" fill="#a8c5cc" stroke="#0d4f5c" stroke-width="1.3"/>
+          <ellipse cx="195" cy="85" rx="17" ry="9" fill="none" stroke="#ffffff" stroke-width="0.4" opacity="0.45"/>
+          <text x="195" y="58" font-family="Noto Serif SC, serif" font-size="15" font-weight="700" fill="#0d4f5c" text-anchor="middle">赛里木湖</text>
+          <text x="195" y="44" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#c19a55" text-anchor="middle" letter-spacing="1.5">SAYRAM · 2,073 m</text>
+        </g>
 
-        <!-- Yining -->
-        <circle cx="195" cy="250" r="9" fill="#1a1f2e"/>
-        <circle cx="195" cy="250" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
-        <text x="195" y="287" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">伊 宁</text>
-        <text x="195" y="305" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">YINING · 基地</text>
+        <g class="city-marker" data-tip="伊宁 · 全程大本营">
+          <circle cx="195" cy="250" r="9" fill="#1a1f2e"/>
+          <circle cx="195" cy="250" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
+          <text x="195" y="287" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">伊 宁</text>
+          <text x="195" y="305" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">YINING · 基地</text>
+        </g>
 
-        <!-- Nalati -->
-        <circle cx="535" cy="305" r="9" fill="#b85c3b"/>
-        <circle cx="535" cy="305" r="16" fill="none" stroke="#b85c3b" stroke-width="1.2" stroke-dasharray="2 2"/>
-        <text x="535" y="356" font-family="Noto Serif SC, serif" font-size="16" font-weight="700" fill="#1a1f2e" text-anchor="middle">那拉提</text>
+        <g class="city-marker" data-day="3" data-tip="那拉提 · 天山腹地草原 · 点击查看行程">
+          <circle cx="535" cy="305" r="9" fill="#b85c3b"/>
+          <circle cx="535" cy="305" r="16" fill="none" stroke="#b85c3b" stroke-width="1.2" stroke-dasharray="2 2"/>
+          <text x="535" y="356" font-family="Noto Serif SC, serif" font-size="16" font-weight="700" fill="#1a1f2e" text-anchor="middle">那拉提</text>
+        </g>
 
-        <!-- Urumqi -->
-        <circle cx="868" cy="240" r="9" fill="#1a1f2e"/>
-        <circle cx="868" cy="240" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
-        <text x="868" y="278" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">乌鲁木齐</text>
-        <text x="868" y="296" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">ÜRÜMQI · 枢纽</text>
+        <g class="city-marker" data-tip="乌鲁木齐 · 进出疆枢纽">
+          <circle cx="868" cy="240" r="9" fill="#1a1f2e"/>
+          <circle cx="868" cy="240" r="16" fill="none" stroke="#1a1f2e" stroke-width="1.2" stroke-dasharray="2 2"/>
+          <text x="868" y="278" font-family="Noto Serif SC, serif" font-size="18" font-weight="700" fill="#1a1f2e" text-anchor="middle">乌鲁木齐</text>
+          <text x="868" y="296" font-family="Cormorant Garamond, serif" font-style="italic" font-size="10" fill="#6e7688" text-anchor="middle" letter-spacing="1.5">ÜRÜMQI · 枢纽</text>
+        </g>
 
         <!-- ===== TITLE ===== -->
         <g transform="translate(30, 35)">
@@ -912,6 +955,7 @@
           <text y="68" font-family="JetBrains Mono, monospace" font-size="10" fill="#3c4454">2026.05.01 – 05.04</text>
         </g>
       </svg>
+      <div class="map-tip" id="mapTip"></div>
     </div>
   </div>
 </section>
@@ -926,9 +970,9 @@
     <div class="day-card" data-day="0" style="--dummy: 0;">
       <div class="day-head" style="border-left: 5px solid var(--ink-faint);">
         <div class="day-date">DAY 0 · WED · 04.30</div>
-        <div class="day-title">两人会合 · 伊宁</div>
+        <div class="day-title">🐷🐰 会合 · 伊宁</div>
         <div class="day-stats">
-          <span>你：CA8563 西宁→乌鲁木齐 13:15–15:45，转火车</span>
+          <span>🐷：CA8563 西宁→乌鲁木齐 13:15–15:45，转火车</span>
           <span>她：北京直飞伊宁</span>
         </div>
       </div>
@@ -953,8 +997,8 @@
         <div class="tl-row">
           <div class="tl-time">傍晚</div>
           <div class="tl-content">
-            <h5>女朋友抵达伊宁</h5>
-            <p>她单独住一晚伊宁。建议订 <strong>六星街</strong> 附近酒店（机场出租车 15 分钟）：全季伊宁六星街、希尔顿欢朋都不错。到了给你发个房号共享。</p>
+            <h5>🐰抵达伊宁</h5>
+            <p>🐰 单独住一晚伊宁。建议订 <strong>六星街</strong> 附近酒店（机场出租车 15 分钟）：全季伊宁六星街、希尔顿欢朋都不错。到了给 🐷 发个房号共享。</p>
           </div>
         </div>
       </div>
@@ -977,7 +1021,7 @@
           <div class="tl-time">06:00<br>/08:05</div>
           <div class="tl-content">
             <h5>到达伊宁火车站 · 接人取车</h5>
-            <p>出站后叫车去 <strong>伊宁机场租车点</strong>（神州/一嗨都在这里）。提前锁好的订单，扫证件 + 驾照 + 押信用卡，10 分钟搞定。取完车去酒店接女朋友 + 吃个早饭。</p>
+            <p>出站后叫车去 <strong>伊宁机场租车点</strong>（神州/一嗨都在这里）。提前锁好的订单，扫证件 + 驾照 + 押信用卡，10 分钟搞定。取完车去酒店接🐰 + 吃个早饭。</p>
             <span class="tag">早餐推荐：六星街·阿哥拉勒奶酪坊</span>
           </div>
         </div>
@@ -1173,15 +1217,15 @@
         <div class="tl-row">
           <div class="tl-time">傍晚</div>
           <div class="tl-content">
-            <h5>你：飞乌鲁木齐（1 h）</h5>
+            <h5>🐷：飞乌鲁木齐（1 h）</h5>
             <p>伊宁→乌鲁木齐 每天多班，南航/东航/国航都有，票价 ¥400–700。到机场打车去附近酒店（宜必思/格林豪泰），第二天一早直接去航站楼。</p>
           </div>
         </div>
         <div class="tl-row">
           <div class="tl-time">同日</div>
           <div class="tl-content">
-            <h5>女朋友：伊宁直飞北京（建议）</h5>
-            <p>伊宁机场每天有 <strong>KN2225 / CZ6891</strong> 之类的伊宁→北京航班，单程约 ¥1200–1800。如果她当前是 5.5 乌鲁木齐→北京，改成 5.4 伊宁→北京可以省掉她再去乌鲁木齐中转的时间，两人 5.4 在伊宁机场直接告别就行。改签前先查价差。</p>
+            <h5>🐰：伊宁直飞北京（建议）</h5>
+            <p>伊宁机场每天有 <strong>KN2225 / CZ6891</strong> 之类的伊宁→北京航班，单程约 ¥1200–1800。如果 🐰 当前是 5.5 乌鲁木齐→北京，改成 5.4 伊宁→北京可以省掉 🐰 再去乌鲁木齐中转的时间，🐷🐰 5.4 在伊宁机场直接告别就行。改签前先查价差。</p>
           </div>
         </div>
       </div>
@@ -1463,7 +1507,7 @@
             <div class="spot-desc">机场内也有大盘鸡和拌面，比外面贵 30%，赶飞机时的保底选择。</div>
           </li>
         </ul>
-        <p>你只是过境，T3 的大盘鸡 / 拌面能吃，就是比外面贵 30%。赶飞机赶火车不如就在这解决。</p>
+        <p>🐷 只是过境，T3 的大盘鸡 / 拌面能吃，就是比外面贵 30%。赶飞机赶火车不如就在这解决。</p>
       </div>
 
     </div>
@@ -1572,7 +1616,7 @@
           <div class="opt-badge">B</div>
           <h5>当日直飞 · 快但中转有风险</h5>
           <p class="opt-note" style="margin-top: 4px;">每日 10+ 班，飞行 1 h，¥500–1,200（五一票价偏高）。承运：南航 CZ / 东航 MU / 天津航 GS / 乌鲁木齐航 UQ / 长龙 9H。</p>
-          <p class="opt-note"><strong>风险</strong>：你 15:45 落地乌鲁木齐 T3，转国内段理论上够，但新疆行李慢、安检严，2 h 中转窗口行李一慢就悬。选这个的话<strong>只带登机箱、不托运</strong>。</p>
+          <p class="opt-note"><strong>风险</strong>：🐷 15:45 落地乌鲁木齐 T3，转国内段理论上够，但新疆行李慢、安检严，2 h 中转窗口行李一慢就悬。选这个的话<strong>只带登机箱、不托运</strong>。</p>
         </div>
 
         <div class="opt">
@@ -1606,7 +1650,7 @@
 
         <div class="opt opt-alt">
           <h5>其它方式（不推荐）</h5>
-          <p><strong>普通硬座</strong>：K 字头 10+ h 硬座 ¥93，能坐但累；<strong>长途大巴</strong>：乌鲁木齐客运南站发车 12 h，效率低；<strong>自驾</strong>：700 km 单程 8–10 h，你在伊宁才取车所以不成立。</p>
+          <p><strong>普通硬座</strong>：K 字头 10+ h 硬座 ¥93，能坐但累；<strong>长途大巴</strong>：乌鲁木齐客运南站发车 12 h，效率低；<strong>自驾</strong>：700 km 单程 8–10 h，🐷 在伊宁才取车所以不成立。</p>
         </div>
 
       </div>
@@ -1633,7 +1677,7 @@
         <div class="opt">
           <div class="opt-badge">★ 推荐 · A</div>
           <h5>直飞 · 最快最省心</h5>
-          <p class="opt-note" style="margin-top: 4px; margin-bottom: 10px;">每日 10+ 班，飞行 1 h 15 min，¥500–900（五一返程高峰 ¥800–1,200）。承运：南航 CZ / 东航 MU / 天津航 GS / 乌鲁木齐航 UQ。你 13:30 还完车的可用窗口：</p>
+          <p class="opt-note" style="margin-top: 4px; margin-bottom: 10px;">每日 10+ 班，飞行 1 h 15 min，¥500–900（五一返程高峰 ¥800–1,200）。承运：南航 CZ / 东航 MU / 天津航 GS / 乌鲁木齐航 UQ。🐷 13:30 还完车的可用窗口：</p>
           <table class="opt-table">
             <tr>
               <td class="tr-time">13:55</td>
@@ -1673,18 +1717,18 @@
           <div class="opt-badge">B</div>
           <h5>动车 C 字头</h5>
           <p class="opt-note" style="margin-top: 4px;">C842 / C844 / C846 / C848 / C850 伊宁 → 乌鲁木齐，5–6 h，二等座 ¥128 / 一等座 ¥204。五一假期票紧，<strong>提前 15 天开售时订</strong>。</p>
-          <p class="opt-note"><strong>注意</strong>：部分 C 车终到乌鲁木齐南站（不是乌鲁木齐站），如果你酒店订在机场附近，从南站还要再打车 40 min / ¥50。飞机反而更直接。</p>
+          <p class="opt-note"><strong>注意</strong>：部分 C 车终到乌鲁木齐南站（不是乌鲁木齐站），如果 🐷 酒店订在机场附近，从南站还要再打车 40 min / ¥50。飞机反而更直接。</p>
         </div>
 
         <div class="opt">
           <div class="opt-badge">C</div>
-          <h5>夜班卧铺 K 字头（不适合你）</h5>
-          <p class="opt-note" style="margin-top: 4px;">K6702 / K9790 伊宁方向返程的夜车 5.4 晚发车、5.5 早上到。问题是你 5.5 09:35 要飞西宁（3U3453），夜车抵达乌鲁木齐再赶机场太赶。<strong>除非</strong>你把 5.5 主程航班改到下午。</p>
+          <h5>夜班卧铺 K 字头（不适合 🐷）</h5>
+          <p class="opt-note" style="margin-top: 4px;">K6702 / K9790 伊宁方向返程的夜车 5.4 晚发车、5.5 早上到。问题是🐷 5.5 09:35 要飞西宁（3U3453），夜车抵达乌鲁木齐再赶机场太赶。<strong>除非</strong>🐷 把 5.5 主程航班改到下午。</p>
         </div>
 
         <div class="opt opt-alt">
           <h5>其它方式（不推荐）</h5>
-          <p><strong>长途大巴</strong>：伊宁客运站发乌鲁木齐 12 h，硬座 ¥200，五一假期路上能堵到你怀疑人生。</p>
+          <p><strong>长途大巴</strong>：伊宁客运站发乌鲁木齐 12 h，硬座 ¥200，五一假期路上能堵到 🐷 怀疑人生。</p>
         </div>
 
       </div>
@@ -1696,7 +1740,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="sig">May your road rise to meet you.</div>
-  <div>伊犁 · 2026 春末 · 带上女朋友，带上耐心，带上防晒</div>
+  <div>伊犁 · 2026 春末 · 🐷 带上 🐰，带上耐心，带上防晒</div>
 </footer>
 
 <!-- Lightbox -->
@@ -1756,6 +1800,77 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
+})();
+
+/* ====== Interactive Map ====== */
+(function() {
+  var mapWrap = document.querySelector('.map-wrap');
+  if (!mapWrap) return;
+  var tip = document.getElementById('mapTip');
+
+  /* — Click to scroll — */
+  document.querySelectorAll('.route-day, .city-marker').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var day = this.dataset.day;
+      if (!day) return;
+      var card = document.querySelector('.day-card[data-day="' + day + '"]');
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* — Tooltip — */
+  if (tip) {
+    document.querySelectorAll('[data-tip]').forEach(function(el) {
+      el.addEventListener('mouseenter', function(e) {
+        tip.textContent = this.dataset.tip;
+        tip.classList.add('show');
+        moveTip(e);
+      });
+      el.addEventListener('mousemove', moveTip);
+      el.addEventListener('mouseleave', function() {
+        tip.classList.remove('show');
+      });
+    });
+    function moveTip(e) {
+      var r = mapWrap.getBoundingClientRect();
+      tip.style.left = (e.clientX - r.left) + 'px';
+      tip.style.top  = (e.clientY - r.top - 12) + 'px';
+    }
+  }
+
+  /* — Staggered entrance animation — */
+  var groups = mapWrap.querySelectorAll('.route-day, .city-marker');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries, obs) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          groups.forEach(function(g, i) {
+            setTimeout(function() { g.classList.add('show'); }, i * 180);
+          });
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.25 }).observe(mapWrap);
+  } else {
+    groups.forEach(function(g) { g.classList.add('show'); });
+  }
+
+  /* — Scroll spy: highlight active day on map — */
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var day = entry.target.dataset.day;
+        var route = document.querySelector('.route-day[data-day="' + day + '"]');
+        if (route) {
+          if (entry.isIntersecting) route.classList.add('active');
+          else route.classList.remove('active');
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.day-card[data-day]').forEach(function(card) {
+      spy.observe(card);
+    });
+  }
 })();
 </script>
 
