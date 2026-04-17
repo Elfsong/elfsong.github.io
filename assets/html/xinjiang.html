@@ -338,6 +338,9 @@
     gap: 22px;
     margin-top: 8px;
   }
+  .info-grid.single-col {
+    grid-template-columns: 1fr;
+  }
   .info-card {
     background: var(--paper);
     border: 1px solid var(--line);
@@ -366,7 +369,14 @@
     text-transform: uppercase;
   }
   .info-card p { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; }
-  .info-card p:last-child { margin-bottom: 0; }
+  .info-card p:last-child {
+    margin-bottom: 0;
+    background: var(--cream);
+    padding: 10px 14px;
+    border-radius: 3px;
+    border-left: 3px solid var(--gold);
+    margin-top: 12px;
+  }
   .info-card ul { list-style: none; padding: 0; font-size: 14px; color: var(--ink-soft); }
   .info-card ul li {
     padding: 6px 0;
@@ -374,6 +384,11 @@
     display: flex;
     justify-content: space-between;
     gap: 12px;
+  }
+  .info-card ul li:has(.spot-desc) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
   }
   .info-card ul li:last-child { border-bottom: none; }
   .info-card ul li .k { color: var(--ink); font-weight: 500; }
@@ -1541,7 +1556,7 @@
     <div class="section-label">VI · Culture & History</div>
     <h2 class="section-title"><span class="num">VI.</span>文化 · 历史 · 习俗</h2>
 
-    <div class="info-grid">
+    <div class="info-grid single-col">
 
       <div class="info-card">
         <h4>伊犁多民族格局 <span class="en">Peoples of Ili</span></h4>
@@ -1633,6 +1648,41 @@
           </li>
         </ul>
         <p>5 月初正值春季转场尾声，G218 上遇到牛羊堵路不要急——那是伊犁送给你的免费人文大片。</p>
+      </div>
+
+      <div class="info-card">
+        <h4>诗词与文学 <span class="en">Literature</span></h4>
+        <ul>
+          <li>
+            <div class="spot-row"><span class="k">林则徐</span><span class="v">赴戍登程口占示家人 · 1842</span></div>
+            <div class="spot-desc">「苟利国家生死以，岂因祸福避趋之。」——林则徐被贬伊犁途中写下此句，成为流传最广的爱国名言。全诗感慨国事沉浮、个人际遇，悲壮而不颓丧。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">岑参</span><span class="v">白雪歌送武判官归京 · 唐</span></div>
+            <div class="spot-desc">「忽如一夜春风来，千树万树梨花开。」——岑参两度出塞，任安西北庭节度判官，深入天山以西。他笔下的风雪、火焰和大漠是唐代边塞诗的巅峰。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">纪晓岚</span><span class="v">乌鲁木齐杂诗 · 清</span></div>
+            <div class="spot-desc">「白草飞霜朔气昏，一回回首一销魂。」——纪晓岚因案牵连被流放乌鲁木齐两年（1770–1771），写下一百六十首杂诗记录西域风物人情，是清代新疆文学的重要文献。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">洪亮吉</span><span class="v">伊犁纪事诗 · 清</span></div>
+            <div class="spot-desc">「天山万笏耸琼瑶，导我西行伴寂寥。」——洪亮吉因直谏被嘉庆帝流放伊犁，以百日流放写下大量纪行诗，描绘天山雪峰与伊犁河谷的壮美。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">王维</span><span class="v">使至塞上 · 唐</span></div>
+            <div class="spot-desc">「大漠孤烟直，长河落日圆。」——王维出使河西时所作。虽写的是河西走廊而非伊犁，但这一意象几乎是所有人对西域的第一印象——自驾 G218 时你会真的看见。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">李娟</span><span class="v">《我的阿勒泰》· 当代</span></div>
+            <div class="spot-desc">李娟随母亲在新疆北部牧场开杂货店，以散文记录哈萨克牧民的四季转场与日常生活。文字干净温柔，是了解新疆牧区最好的当代文学入口。推荐旅途中翻一翻。</div>
+          </li>
+          <li>
+            <div class="spot-row"><span class="k">刘亮程</span><span class="v">《一个人的村庄》· 当代</span></div>
+            <div class="spot-desc">刘亮程是新疆本土作家，长居沙湾县。他的散文写新疆乡村的虫鸣、风声和土墙，被誉为"中国最后一个散文家"。短篇适合在长途车上读。</div>
+          </li>
+        </ul>
+        <p>清代流放伊犁的文人不少——林则徐、纪晓岚、洪亮吉都在贬途中留下了传世之作。到伊犁，不只看风景，也走一遍他们走过的路。</p>
       </div>
 
     </div>
