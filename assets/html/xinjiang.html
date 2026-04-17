@@ -172,6 +172,73 @@
   .d3 { background: var(--gold); }
   .d4 { background: var(--terra); }
 
+  /* ============ SEQUENCE TIMELINE ============ */
+  .seq-timeline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    margin: 32px 0 8px;
+    padding: 0 8px;
+  }
+  .seq-timeline::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 32px;
+    right: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ink-faint), var(--gold), var(--terra));
+    z-index: 0;
+  }
+  .seq-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    cursor: pointer;
+  }
+  .seq-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2.5px solid var(--gold);
+    background: var(--paper);
+    margin-top: 11px;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .seq-node:hover .seq-dot {
+    transform: scale(1.3);
+    background: var(--gold);
+  }
+  .seq-node.active .seq-dot {
+    background: var(--gold);
+  }
+  .seq-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .seq-label {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+  }
+  .seq-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
   /* ============ INTERACTIVE MAP ============ */
   .map-wrap { position: relative; }
   g.route-day { cursor: pointer; opacity: 0; transition: opacity 0.5s ease-out; }
@@ -1001,6 +1068,40 @@
       </svg>
       <div class="map-tip" id="mapTip"></div>
     </div>
+
+    <div class="seq-timeline">
+      <div class="seq-node" data-day="0">
+        <div class="seq-day">DAY 0</div>
+        <div class="seq-dot" style="border-color: var(--ink-faint);"></div>
+        <div class="seq-label">会合</div>
+        <div class="seq-sub">04.30 · 伊宁</div>
+      </div>
+      <div class="seq-node" data-day="1">
+        <div class="seq-day">DAY 1</div>
+        <div class="seq-dot" style="border-color: #0d4f5c;"></div>
+        <div class="seq-label">赛里木湖</div>
+        <div class="seq-sub">05.01 · 240 km</div>
+      </div>
+      <div class="seq-node" data-day="2">
+        <div class="seq-day">DAY 2</div>
+        <div class="seq-dot" style="border-color: #6e7d4a;"></div>
+        <div class="seq-label">伊宁→那拉提</div>
+        <div class="seq-sub">05.02 · 280 km</div>
+      </div>
+      <div class="seq-node" data-day="3">
+        <div class="seq-day">DAY 3</div>
+        <div class="seq-dot" style="border-color: var(--gold);"></div>
+        <div class="seq-label">那拉提深度</div>
+        <div class="seq-sub">05.03 · 草原</div>
+      </div>
+      <div class="seq-node" data-day="4">
+        <div class="seq-day">DAY 4</div>
+        <div class="seq-dot" style="border-color: var(--terra);"></div>
+        <div class="seq-label">返程</div>
+        <div class="seq-sub">05.04 · 280 km</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1785,7 +1886,7 @@
   var tip = document.getElementById('mapTip');
 
   /* — Click to scroll — */
-  document.querySelectorAll('.route-day, .city-marker').forEach(function(el) {
+  document.querySelectorAll('.route-day, .city-marker, .seq-node').forEach(function(el) {
     el.addEventListener('click', function() {
       var day = this.dataset.day;
       if (!day) return;
