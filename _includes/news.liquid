@@ -34,11 +34,27 @@
 </div>
 
 {% if include.limit and page.announcements.scrollable %}
+  <style>
+    @media (max-width: 768px) {
+      .news-scroll-fit {
+        overflow-y: visible !important;
+        max-height: none !important;
+      }
+    }
+  </style>
   <script>
     (function () {
+      var MOBILE_MAX_WIDTH = 768;
+      function isMobile() {
+        return window.innerWidth <= MOBILE_MAX_WIDTH;
+      }
       function adjustNewsHeight() {
         var el = document.querySelector('.news-scroll-fit');
         if (!el) return;
+        if (isMobile()) {
+          el.style.maxHeight = '';
+          return;
+        }
         var rect = el.getBoundingClientRect();
         var topInDoc = rect.top + window.scrollY;
         var docHeight = document.documentElement.scrollHeight;
