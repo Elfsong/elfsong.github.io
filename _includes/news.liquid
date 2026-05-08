@@ -39,9 +39,11 @@
       function adjustNewsHeight() {
         var el = document.querySelector('.news-scroll-fit');
         if (!el) return;
-        el.style.maxHeight = 'none';
-        var top = el.getBoundingClientRect().top + window.scrollY;
-        var available = window.innerHeight - (top - window.scrollY) - 24;
+        var rect = el.getBoundingClientRect();
+        var topInDoc = rect.top + window.scrollY;
+        var docHeight = document.documentElement.scrollHeight;
+        var belowInDoc = docHeight - (topInDoc + rect.height);
+        var available = window.innerHeight - topInDoc - belowInDoc;
         el.style.maxHeight = Math.max(180, available) + 'px';
       }
       var raf;
