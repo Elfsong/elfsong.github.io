@@ -2,9 +2,9 @@
   {% if site.news != blank %}
     {% assign news_size = site.news | size %}
     <div
-      class="table-responsive"
-      {% if include.limit and page.announcements.scrollable and news_size > 3 %}
-        style="max-height: 55vw"
+      class="table-responsive{% if include.limit and page.announcements.scrollable %} news-scroll-fit{% endif %}"
+      {% if include.limit and page.announcements.scrollable %}
+        style="overflow-y: auto;"
       {% endif %}
     >
       <table class="table table-sm table-borderless">
@@ -32,3 +32,30 @@
     <p>No news so far...</p>
   {% endif %}
 </div>
+
+{% if include.limit and page.announcements.scrollable %}
+  <script>
+    (function () {
+      function adjustNewsHeight() {
+        var el = document.querySelector('.news-scroll-fit');
+        if (!el) return;
+        el.style.maxHeight = 'none';
+        var top = el.getBoundingClientRect().top + window.scrollY;
+        var available = window.innerHeight - (top - window.scrollY) - 24;
+        el.style.maxHeight = Math.max(180, available) + 'px';
+      }
+      var raf;
+      function schedule() {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(adjustNewsHeight);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', schedule);
+      } else {
+        schedule();
+      }
+      window.addEventListener('load', schedule);
+      window.addEventListener('resize', schedule);
+    })();
+  </script>
+{% endif %}
