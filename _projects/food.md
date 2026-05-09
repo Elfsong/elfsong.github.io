@@ -11,10 +11,10 @@ category: fun
   <a href="https://www.google.com/maps/@/data=!3m1!4b1!4m3!11m2!2s1JX_FtCBNxg0J25yK-7TsV5Wc5jI!3e3?entry=tts&g_ep=EgoyMDI1MDIxMi4wKgBIAVAD" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
     🍔 Open Good Food in Google Maps
   </a>
-  <a href="https://maps.app.goo.gl/ZdwykHzP4mk5VLfk6" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
+  <a href="https://maps.app.goo.gl/hvMzCtZQwopoSAti7" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
     ☕️ Open Good Coffee in Google Maps
   </a>
-  <a href="https://maps.app.goo.gl/n6jnMMTZRVrmGU7k9" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
-    🇸🇬 Open SG Guide in Google Maps
+  <a href="https://maps.app.goo.gl/PKJKU7SA4BCrukW96" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
+    🇸🇬 Open SG Guide in Google Maps (You can edit and recommend!)
   </a>
 </div>
