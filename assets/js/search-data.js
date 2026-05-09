@@ -4277,11 +4277,11 @@ ninja.data = [{
           description: "Gastronomic Delight",
           section: "Projects",handler: () => {
               window.location.href = "/projects/food/";
-            },},{id: "projects-metaphor",
-          title: 'Metaphor',
-          description: "Virtual Assistant",
+            },},{id: "projects-photograph",
+          title: 'Photograph',
+          description: "The Best of Times",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/metaphor/";
+              window.location.href = "/projects/photograph/";
             },},{id: "projects-schedule",
           title: 'Schedule',
           description: "Hustle and Bustle",
