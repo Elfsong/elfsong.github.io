@@ -15,6 +15,6 @@ category: fun
     ☕️ Open Good Coffee in Google Maps
   </a>
   <a href="https://maps.app.goo.gl/PKJKU7SA4BCrukW96" target="_blank" style="display:inline-block; max-width:380px; width:100%; box-sizing:border-box; padding:12px 24px; background:#b509ac; color:#fff; text-decoration:none; border-radius:8px; font-size:1.1rem; font-weight:500; text-align:center;">
-    🇸🇬 Open SG Guide in Google Maps (You can edit and recommend!)
+    🇸🇬 Open SG Guide in Google Maps<br>(You can edit and recommend!)
   </a>
 </div>
