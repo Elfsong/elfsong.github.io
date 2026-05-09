@@ -35,9 +35,11 @@ horizontal: false
 
 ## Volunteer
 
-- Volunteer, AAAI 2026
-- Volunteer, NeurIPS 2025
-- Volunteer, ACL 2025
-- Volunteer, WWW 2024
-- Volunteer, EMNLP 2024
-- Volunteer, AAAI 2023
+**Conferences**
+- AAAI 2026 · NeurIPS 2025 · ACL 2025 · EMNLP 2024 · WWW 2024 · AAAI 2023
+
+**Community (long-term)**
+- [Be My Eyes](https://www.bemyeyes.com/) &mdash; remote visual assistance for blind and low-vision users
+- [CDAC 华社自助理事会](https://www.cl.cdac.org.sg/) &mdash; educational support programmes in Singapore
+
+
