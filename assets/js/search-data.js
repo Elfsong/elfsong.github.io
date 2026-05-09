@@ -55,7 +55,7 @@ ninja.data = [{
       
         title: "Resillience",
       
-      description: "Resillience",
+      description: "Resillience from Jensen Huang",
       section: "Posts",
       handler: () => {
         
