@@ -2,7 +2,7 @@
 layout: distill
 title: Resillience
 date: 2026-01-27 00:00:00
-description: Resillience
+description: Resillience from Jensen Huang
 tags: quotes
 categories: personal
 featured: false
