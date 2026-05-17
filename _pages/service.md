@@ -10,6 +10,7 @@ horizontal: false
 
 ## Conference Reviewers
 
+- Senior Program Committee, CIKM 2026
 - Reviewer, ICML 2026
 - Reviewer, AISTATS 2026
 - Reviewer, ICLR 2026
