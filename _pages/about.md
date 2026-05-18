@@ -32,7 +32,7 @@ He is concurrently a Research Associate at the *Institute of Data Science (IDS)*
 Mingzhe obtained his Master's degree from the *University of Melbourne*, under the guidance of [Prof. Richard Sinnott](https://findanexpert.unimelb.edu.au/profile/342078-richard-sinnott).
 Before his PhD journey, Mingzhe developed [Tiktok](https://www.tiktok.com/) search engine at *ByteDance*.
 
-Mingzhe's research focuses on [**<u>Code Generation</u>**](https://mingzhe.space/blog/2025/code-challenge/) and [**<u>Preference Alignment</u>**](https://mingzhe.space/blog/2026/preference_alignment).
+Mingzhe's research focuses on [Code Generation](https://mingzhe.space/blog/2025/code-challenge/) and [Preference Alignment](https://mingzhe.space/blog/2026/preference_alignment).
 He published oral papers on ICLR, ICML, NeurIPS and more.
 *Feel free to connect if you're interested in collaborating!*
 
