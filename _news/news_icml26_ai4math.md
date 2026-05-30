@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I'm honored to serve as an **Area Chair** for **ICML'26 AI4Math**.
+I'm honored to serve as an Area Chair for **ICML'26 AI4Math**.
