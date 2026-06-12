@@ -19,6 +19,7 @@ horizontal: false
 - Ethics Reviewer, NeurIPS 2025
 - Reviewer, ECAI 2025
 - Senior Program Committee, CIKM 2025
+- Reviewer, ACL Rolling Review
 - Reviewer, NeurIPS 2025
 - Reviewer, AISTATS 2025
 - Reviewer, ICLR 2025
