@@ -3,8 +3,12 @@
   contents:
     - name: Full Name
       value: Mingzhe Du
+    - name: Phone
+      value: "(+65) 9658 2486"
     - name: Email
-      value: dumingzhex@gmail.com
+      value: <a href="mailto:dumingzhex@gmail.com">dumingzhex@gmail.com</a>
+    - name: Website
+      value: <a href="https://mingzhe.space" target="_blank">https://mingzhe.space</a>
     - name: Address
       value: Innovation 4.0, 3 Research Link, Singapore, 117602
     - name: Languages
@@ -13,79 +17,68 @@
 - title: Research Interests
   type: list
   contents:
-    - Code Generation / Preference Alignment / Bias Evaluation and Mitigation
+    - Self-evolving Harness / Long-horizon Code Generation / Preference Alignment
 
 - title: Education
   type: time_table
   contents:
     - title: PhD Candidate in Computer Science
-      institution: Nanyang Technological University, College of Computing and Data Science, Singapore
-      year: 2022 - Present
+      institution: Nanyang Technological University, College of Computing and Data Science
+      year: Aug. 2022 - Present
+      location: Singapore
       description:
         - "Advisor: Prof. Anh Tuan Luu"
     - title: Master of Information Technology
-      institution: The University of Melbourne, Faculty of Engineering, Melbourne, Australia
-      year: 2017 - 2019
+      institution: The University of Melbourne, Faculty of Engineering
+      year: Oct. 2017 - Dec. 2019
+      location: Melbourne, Australia
       description:
         - "Advisor: Prof. Richard O. Sinnott"
         - "Specialization: Distributed Computing (Honorable Dissertation)"
     - title: Bachelor of Information Security
-      institution: Central South University, School of Computer Science and Engineering, Changsha, China
-      year: 2013 - 2017
+      institution: Central South University, School of Computer Science and Engineering
+      year: Sep. 2013 - Jun. 2017
+      location: Changsha, China
       description:
-        - Excellent Scholarships (GPA 3.7/4.0)
+        - Excellent Scholarships (GPA: 3.7/4.0)
 
 - title: Professional Experience
   type: time_table
   contents:
     - title: Research Associate
       institution: National University of Singapore, Institute of Data Science
-      year: 2021 - Present
+      year: Aug. 2021 - Present
       description:
         - "Advisor: Prof. See-Kiong Ng"
         - Affiliated with Cisco-NUS Accelerated Digital Economy Corporate Laboratory.
     - title: Software Architect (Full Time)
-      institution: ByteDance, Tiktok Search
-      year: 2019 - 2021
+      institution: ByteDance, TikTok Search
+      year: Dec. 2019 - Aug. 2021
       description:
         - Architected a scalable, general-purpose search engine (Search Eternal) that now powers core search services for major ByteDance platforms, including Douyin, TikTok and TouTiao.
     - title: Research Intern
       institution: Microsoft, Asia-Pacific Research and Development Group
-      year: 2018 - 2019
+      year: Nov. 2018 - Mar. 2019
       description:
         - "Mentor: Wei Liu"
         - Designed and implemented a Transformer-based model for text-to-image synthesis, generating visually coherent images from textual descriptions.
     - title: Software Engineer Intern
       institution: Alibaba, Ant Finance Core Clearing Team
-      year: 2016
+      year: Jul. 2016 - Oct. 2016
       description:
         - Developed components for a core system in Alipay's payment clearing flow, enabling the aggregation of millions of orders at minute-level latency for data exchange with banking partners.
     - title: Software Engineer Intern
       institution: Tencent, Social Network Group
-      year: 2016
+      year: Mar. 2016 - Jun. 2016
       description:
         - Built and deployed a URL analysis platform to process and detect suspicious content in high-volume public message traffic, significantly improving the filtering of malicious information to enhance content security.
-
-- title: Selected Publications
-  type: list
-  contents:
-    - "<b>[NeurIPS'25]</b> Afterburner: Reinforcement Learning Facilitates Self-Improving Code Efficiency Optimization."
-    - "<b>[ACL'25]</b> CodeArena: A collective evaluation platform for LLM code generation."
-    - "<b>[NeurIPS'24]</b> Mercury: A Code Efficiency Benchmark for Code Large Language Models."
-    - "<b>[ICLR'26]</b> Beyond Prompt-Induced Lies: Investigating LLM Deception on Benign Prompts. (Oral)"
-    - "<b>[ICML'25]</b> Position: Current Model Licensing Practices are Dragging Us into a Quagmire of Legal Noncompliance. (Oral)"
-    - "<b>[AAAI'25]</b> Towards Verifiable Text Generation with Generative Agent. (Oral)"
-    - "<b>[ACL'25]</b> AntiLeakBench: Preventing Data Contamination by Automatically Constructing Benchmarks with Updated Real-World Knowledge. (Oral and SAC Highlight Award)"
-    - "<b>[ICSE'25]</b> Measuring the Influence of Incorrect Code on Test Generation."
-    - "<b>[NeurIPS'25]</b> EffiBench-X: A Multi-Language Benchmark for Measuring Efficiency of LLM-Generated Code."
-    - "<b>[AAAI'24]</b> From Static to Dynamic: Knowledge Metabolism for Large Language Models."
 
 - title: Academic Services
   type: nested_list
   contents:
     - title: Conference Reviewer
       items:
-        - "NeurIPS (24,25), ICLR (24,25,26), ICML (25,26), AISTATS (24,26), AAAI'26, AISI'26, CIKM'25, ECAI'25, NAACL'24, EMNLP'24, ECAI'24, CLEF'23"
+        - "NeurIPS (24,25,26), ICLR (24,25,26), ICML (25,26), AISTATS (24,26), AAAI (26,27), CIKM (25,26), AISI'26, ECAI'25, NAACL'24, EMNLP'24, ECAI'24, CLEF'23"
     - title: Journal Reviewer
       items:
         - ACM Computing Survey, Frontiers in Artificial Intelligence
@@ -96,27 +89,58 @@
       items:
         - The University of Melbourne (2019-Present)
 
-- title: Awards
-  type: time_table
+- title: Selected Publications
+  type: list
   contents:
-    - year: 2025
-      items:
-        - Staff Research Award at Institute of Data Science, National University of Singapore.
-    - year: 2022
-      items:
-        - "First Runner-Up Award at the Singapore Healthcare AI Datathon: Identifying ICU Patient with Central Lines at Risk of CLABSI."
-    - year: 2019
-      items:
-        - "First Prize at Catalyst 2019: A Path Recommendation System based on Data Aggregation and Analysis."
-        - "First Prize at Codebrew 2019: After Dark (Finding Safe and Fast Routes for Pedestrians at Night)."
-    - year: 2015
-      items:
-        - "Second Prize at the 8th National Information Security Competition: An Efficient Express Label System Based on Hierarchical Encryption."
-        - Technology Pioneer Award at the Cyberspace Security Talent Development and Entrepreneurship Forum.
-        - First Prize at the National Internet of Things Competition.
-    - year: 2014
-      items:
-        - "First Prize at the Mathematical Contest in Modeling (MCM): Study on the Wreckage Position of Malaysia Airlines Flight MH370."
+    - "<b>[NeurIPS'25]</b> Afterburner: Reinforcement Learning Facilitates Self-Improving Code Efficiency Optimization.<br>Mingzhe Du, Luu Anh Tuan, Yue Liu, Yuhao Qing, Dong Huang, Xinyi He, Qian Liu, Zejun Ma, See-Kiong Ng"
+    - "<b>[ACL'25]</b> CodeArena: A collective evaluation platform for LLM code generation.<br>Mingzhe Du, Luu Anh Tuan, Bin Ji, Xiaobao Wu, Dong Huang, Terry Yue Zhuo, Qian Liu, See-Kiong Ng"
+    - "<b>[NeurIPS'24]</b> Mercury: A Code Efficiency Benchmark for Code Large Language Models.<br>Mingzhe Du, Luu Anh Tuan, Bin Ji, Qian Liu, See-Kiong Ng"
+
+- title: Publications
+  type: list
+  contents:
+    - "<b>[Preprint]</b> Paper Espresso: From Paper Overload to Research Insight.<br>Mingzhe Du, Luu Anh Tuan, Dong Huang, See-Kiong Ng."
+    - "<b>[Preprint]</b> Mastermind: Strategy-Level Learning for Repository-Scale Vulnerability Reproduction.<br>Mingzhe Du, Luu Anh Tuan, Dong Huang, Renyang Liu, Tianyi Wu, Zhijiang Guo, See-Kiong Ng."
+    - "<b>[Preprint]</b> Secure Code Generation via Online Reinforcement Learning with Vulnerability Reward Model.<br>Tianyi Wu, Mingzhe Du, Yue Liu, Chengran Yang, Terry Yue Zhuo, Jiaheng Zhang, See-Kiong Ng."
+    - "<b>[Preprint]</b> Scaling Code LLM Training and Test-Time Inference via Execution-Free Reward Models.<br>Xiao Zhu, Xinyu Zhou, Boyu Zhu, Hanxu Hu, Mingzhe Du, Haotian Zhang, Huiming Wang, Zhijiang Guo."
+    - "<b>[ICML'26]</b> SWE-Perf: Can Language Models Optimize Code Performance on Real-World Repositories?<br>Xinyi He, Qian Liu, Mingzhe Du, Lin Yan, Zhijie Fan, Yiming Huang, Zejian Yuan, Zejun Ma."
+    - "<b>[ICML'26 DL4C]</b> Nexus: Execution-Grounded Multi-Agent Test Oracle Synthesis.<br>Dong Huang, Mingzhe Du<sup>+</sup>, Jie M. Zhang, Zheng Lin, Meng Luo, Qianru Zhang, See-Kiong Ng."
+    - "<b>[ACL'26]</b> Semantics-Aligned, Curriculum-Driven, and Reasoning-Enhanced Vulnerability Repair Framework (Best Paper Nomination).<br>Chengran Yang, Ting Zhang, Jinfeng Jiang, Xin Zhou, Haoye Tian, Mingzhe Du, Jieke Shi, Junkai Chen, Yikun Li, Eng Lieh Ouh, Lwin Khin Shar, David Lo."
+    - "<b>[TOSEM'26]</b> Benchmarking LLMs for Unit Test Generation from Real-World Functions.<br>Dong Huang, Jie M. Zhang, Mark Harman, Qianru Zhang, Mingzhe Du<sup>+</sup>, See-Kiong Ng."
+    - "<b>[EACL'26]</b> Pro-QuEST: Prompt-chaining Quiz Engine for testing Specialized Technical Product Knowledge.<br>Sujatha Das Gollapalli, Mouad Hakam, Mingzhe Du, See-Kiong Ng, Mohammed Hamzeh."
+    - "<b>[AMIYA'26]</b> Improving Arabic Dialectness in LLMs with Reinforcement Learning.<br>Sujatha Das Gollapalli, Mouad Hakam, Mingzhe Du, See-Kiong Ng, Mohammed Hamzeh."
+    - "<b>[ICLR'26]</b> Beyond Prompt-Induced Lies: Investigating LLM Deception on Benign Prompts. (Oral)<br>Zhaomin Wu, Mingzhe Du, See-Kiong Ng, Bingsheng He."
+    - "<b>[EMNLP'25]</b> On Assigning Product and Software Codes to Service Requests with Large Language Models.<br>Sujatha Das Gollapalli, Mouad Hakam, Mingzhe Du, See-Kiong Ng, Mohammed Hamzeh."
+    - "<b>[NeurIPS'25]</b> EffiBench-X: A Multi-Language Benchmark for Measuring Efficiency of LLM-Generated Code.<br>Yuhao Qing*, Boyu Zhu*, Mingzhe Du*, Zhijiang Guo, Terry Yue Zhuo, Qianru Zhang, Jie M. Zhang, Heming Cui, Siu-Ming Yiu, Dong Huang, See-Kiong Ng, Luu Anh Tuan."
+    - "<b>[NeurIPS'25]</b> Guardreasoner-VL: Safeguarding VLMs via Reinforced Reasoning.<br>Yue Liu, Shengfang Zhai, Mingzhe Du, Yulin Chen, Tri Cao, Hongcheng Gao, Cheng Wang, Xinfeng Li, Kun Wang, Junfeng Fang, Jiaheng Zhang, Bryan Hooi."
+    - "<b>[ICSE'25]</b> Measuring the Influence of Incorrect Code on Test Generation.<br>Dong Huang, Jie M. Zhang, Mark Harman, Mingzhe Du<sup>+</sup>, Heming Cui."
+    - "<b>[ACL'25]</b> AntiLeakBench: Preventing Data Contamination by Automatically Constructing Benchmarks with Updated Real-World Knowledge. (Oral and SAC Highlight Award)<br>Xiaobao Wu, Liangming Pan, Yuxi Xie, Ruiwen Zhou, Shuai Zhao, Yubo Ma, Mingzhe Du, Rui Mao, Anh Tuan Luu, William Yang Wang."
+    - "<b>[ICML'25]</b> Current Model Licensing Practices are Dragging Us into a Quagmire of Legal Noncompliance. (Oral)<br>Moming Duan*, Mingzhe Du*, Rui Zhao, Mengying Wang, Yinghui Wu, Nigel Shadbolt, Bingsheng He."
+    - "<b>[AAAI'25]</b> Towards Verifiable Text Generation with Generative Agent. (Oral)<br>Bin Ji, Huijun Liu, Mingzhe Du, Shasha Li, Xiaodong Liu, Jun Ma, Jie Yu, See-Kiong Ng."
+    - "<b>[SAC'25]</b> Curriculum Demonstration Selection for In-Context Learning.<br>Duc Anh Vu, Cong-Duy Nguyen, Xiaobao Wu, Nhat Hoang, Mingzhe Du, Thong Nguyen, Anh Tuan Luu."
+    - "<b>[JMIR'25]</b> Unraveling Online Mental Health Through the Lens of Early Maladaptive Schemas: AI-Enabled Content Analysis of Online Mental Health Communities.<br>Beng Heng Ang, Sujatha Das Gollapalli, Mingzhe Du, See-Kiong Ng."
+    - "<b>[AAAI'24]</b> From Static to Dynamic: Knowledge Metabolism for Large Language Models.<br>Mingzhe Du, Anh Tuan Luu, Bin Ji, See-Kiong Ng."
+    - "<b>[AAAI'24]</b> Chain-of-Thought Improves Text Generation with Citations in Large Language Models.<br>Bin Ji, Huijun Liu, Mingzhe Du, See-Kiong Ng."
+    - "<b>[ECAI'24]</b> Counseling Responses for Mental Health Forum Questions with Maladaptive Schema Prediction.<br>Sujatha Das Gollapalli, Beng Heng Ang, Mingzhe Du, See-Kiong Ng."
+    - "<b>[TLDK'23]</b> Constituency-Informed and Constituency-Constrained Extractive Question Answering with Heterogeneous Graph Transformer.<br>Mingzhe Du, Mouad Hakam, See-Kiong Ng, Stephane Bressan."
+    - "<b>[WWW'23]</b> Identifying Checkworthy Cure Claims on Twitter.<br>Sujatha Das Gollapalli, Mingzhe Du, See-Kiong Ng."
+    - "<b>[AAAI'23]</b> Generating Reflective Questions for Engaging Gallery Visitors in ArtMuse.<br>Sujatha Das Gollapalli, Mingzhe Du, See-Kiong Ng."
+    - "<b>[CLEF'22]</b> NUS-IDS at CheckThat! 2022: Identifying Check-worthiness of Tweets using CheckthaT5.<br>Mingzhe Du, Sujatha Das Gollapalli, See-Kiong Ng."
+    - "<i>Note: + Corresponding Author, * Equal Contribution.</i>"
+
+- title: Awards & Honors
+  type: list
+  contents:
+    - "NVIDIA Academic Grant: Predicting and Optimizing LLVM Compiler Pass Order in a Unified Model."
+    - "Thinking Machines Lab Research Grant: Scaling Reinforcement Learning for Efficient Code Generation."
+    - "NVIDIA Academic Grant: Scaling Laws of Reinforcement Learning for Code Efficiency Optimization."
+    - "Staff Research Award at Institute of Data Science, National University of Singapore, 2025."
+    - "Google Academic Research Award: SafeCodeX: Security-Aware Code Generation with LLMs, 2025."
+    - "First Runner-Up Award at the Singapore Healthcare AI Datathon: Identifying ICU Patient with Central Lines at Risk of CLABSI, 2024."
+    - "First Prize at Catalyst: A Path Recommendation System based on Data Aggregation and Analysis, 2019."
+    - "First Prize at Codebrew: After Dark: Finding Safe and Fast Routes for Pedestrians at Night, 2019."
+    - "Technology Pioneer Award at the Cybersecurity Talent Development and Entrepreneurship Forum, 2015."
+    - "First Prize at the Mathematical Contest in Modeling: Study on the Wreckage Position of Malaysia Airlines Flight MH370, 2014."
 
 - title: Miscellaneous
   type: map
@@ -127,3 +151,5 @@
       value: <a href="https://www.github.com/elfsong" target="_blank">elfsong</a>
     - name: WeChat
       value: spirit_song
+    - name: Last Updated
+      value: 27 June, 2026
