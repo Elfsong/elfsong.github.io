@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastermind: Strategy-grounded Learning for Repository-Scale Vulnerability Reproduction</title>
+  <meta name="description" content="Paper intro page for Mastermind, a strategy-level learning framework for repository-scale vulnerability reproduction.">
+  <style>
+    :root {
+      --ink: #16202a;
+      --muted: #5f6b78;
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --line: #d9dee4;
+      --navy: #12355b;
+      --cyan: #147ca3;
+      --rose: #b1135d;
+      --mint: #2e8f74;
+      --amber: #be6b11;
+      --shadow: 0 18px 45px rgba(18, 53, 91, 0.12);
+      --max: 1140px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(18, 53, 91, 0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(18, 53, 91, 0.035) 1px, transparent 1px),
+        var(--paper);
+      background-size: 48px 48px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(22, 32, 42, 0.1);
+      background: rgba(251, 250, 247, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(100% - 32px, var(--max));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--navy);
+      border-radius: 50%;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .brand-mark::before {
+      width: 10px;
+      height: 10px;
+      left: 8px;
+      top: 8px;
+      background: var(--rose);
+    }
+
+    .brand-mark::after {
+      width: 6px;
+      height: 6px;
+      right: 4px;
+      bottom: 4px;
+      background: var(--cyan);
+    }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .navlinks a {
+      padding: 8px 10px;
+      text-decoration: none;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 650;
+    }
+
+    .navlinks a:hover,
+    .navlinks a.active {
+      color: var(--navy);
+      background: rgba(20, 124, 163, 0.09);
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .hero {
+      width: min(100% - 32px, var(--max));
+      min-height: calc(100vh - 64px);
+      margin: 0 auto;
+      padding: clamp(38px, 6vw, 78px) 0 42px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
+      align-items: center;
+      gap: clamp(32px, 5vw, 66px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--rose);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: var(--rose);
+      display: block;
+    }
+
+    h1 {
+      margin: 18px 0 18px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 5.2rem;
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 1.18rem;
+    }
+
+    .authors {
+      margin: 24px 0 0;
+      color: var(--ink);
+      font-size: 0.98rem;
+      font-weight: 650;
+    }
+
+    .affiliations {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 15px;
+      border: 1px solid var(--navy);
+      border-radius: 6px;
+      background: var(--navy);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.9rem;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: #0b2949;
+    }
+
+    .btn.secondary {
+      color: var(--navy);
+      background: transparent;
+    }
+
+    .btn.secondary:hover {
+      background: rgba(18, 53, 91, 0.08);
+    }
+
+    .btn svg {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.2;
+      flex: 0 0 auto;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 32px -18px 18px 18px;
+      border: 1px solid rgba(18, 53, 91, 0.14);
+      background: rgba(255, 255, 255, 0.52);
+      box-shadow: var(--shadow);
+      transform: rotate(1.5deg);
+      border-radius: var(--radius);
+    }
+
+    .loop-board {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 520px);
+      padding: 24px;
+      border: 1px solid rgba(18, 53, 91, 0.14);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 14px 36px rgba(22, 32, 42, 0.08);
+    }
+
+    .loop-code {
+      margin: 0 0 22px;
+      padding: 18px;
+      border-radius: 8px;
+      background: #111b26;
+      color: #ecf6ff;
+      font: 0.86rem/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      overflow: auto;
+    }
+
+    .loop-code .blue {
+      color: #5ac8f5;
+    }
+
+    .loop-code .pink {
+      color: #ff6fb4;
+    }
+
+    .loop-code .mint {
+      color: #78d6b3;
+    }
+
+    .diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .node {
+      min-height: 86px;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--cyan);
+      border-radius: 8px;
+      padding: 13px 13px 12px;
+      background: #fff;
+    }
+
+    .node:nth-child(2) {
+      border-left-color: var(--rose);
+    }
+
+    .node:nth-child(3) {
+      border-left-color: var(--amber);
+    }
+
+    .node:nth-child(4) {
+      border-left-color: var(--mint);
+    }
+
+    .node .label {
+      display: block;
+      color: var(--ink);
+      font-weight: 850;
+      line-height: 1.2;
+    }
+
+    .node .text {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .loop-caption {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .stats-strip {
+      width: min(100% - 32px, var(--max));
+      margin: -18px auto 64px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      min-height: 120px;
+      padding: 20px;
+      border: 1px solid rgba(18, 53, 91, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 8px 24px rgba(18, 53, 91, 0.07);
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--navy);
+      font-size: 2.55rem;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .band {
+      padding: 72px 0;
+    }
+
+    .band.white {
+      background: rgba(255, 255, 255, 0.68);
+      border-top: 1px solid rgba(22, 32, 42, 0.08);
+      border-bottom: 1px solid rgba(22, 32, 42, 0.08);
+    }
+
+    .wrap {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.68fr) minmax(280px, 0.32fr);
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 3rem;
+      line-height: 1.06;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .section-kicker {
+      color: var(--rose);
+      font-weight: 850;
+      font-size: 0.76rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .abstract-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(270px, 0.32fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    .abstract-text {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.14rem;
+    }
+
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(18, 53, 91, 0.14);
+      background: #fff;
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .problem-copy p,
+    .contribution-copy p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .callout {
+      padding: 18px 20px;
+      border-left: 5px solid var(--rose);
+      background: rgba(177, 19, 93, 0.06);
+      border-radius: 0 8px 8px 0;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border: 1px solid rgba(18, 53, 91, 0.12);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy);
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .role {
+      min-height: 230px;
+      padding: 20px;
+      border: 1px solid rgba(18, 53, 91, 0.13);
+      border-top: 5px solid var(--cyan);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(22, 32, 42, 0.05);
+    }
+
+    .role:nth-child(2) {
+      border-top-color: var(--rose);
+    }
+
+    .role:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .role:nth-child(4) {
+      border-top-color: var(--mint);
+    }
+
+    .role h3 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 1.15rem;
+    }
+
+    .role p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .results-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.66fr) minmax(280px, 0.34fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    .chart-card {
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(18, 53, 91, 0.13);
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(22, 32, 42, 0.05);
+    }
+
+    .chart-card h3 {
+      margin: 0 0 16px;
+      color: var(--ink);
+      font-size: 1.08rem;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(132px, 0.45fr) minmax(0, 1fr) 64px;
+      gap: 12px;
+      align-items: center;
+      margin: 13px 0;
+      font-size: 0.91rem;
+    }
+
+    .bar-label {
+      color: var(--ink);
+      font-weight: 740;
+    }
+
+    .bar-track {
+      height: 16px;
+      border-radius: 999px;
+      background: #e8edf1;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--cyan);
+    }
+
+    .bar-fill.rose {
+      background: var(--rose);
+    }
+
+    .bar-fill.navy {
+      background: var(--navy);
+    }
+
+    .bar-fill.mint {
+      background: var(--mint);
+    }
+
+    .bar-value {
+      color: var(--navy);
+      font-weight: 850;
+      text-align: right;
+    }
+
+    .caption {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #fff;
+      border: 1px solid rgba(18, 53, 91, 0.13);
+      font-size: 0.91rem;
+    }
+
+    .mini-table th,
+    .mini-table td {
+      padding: 12px 13px;
+      border-bottom: 1px solid rgba(18, 53, 91, 0.1);
+      text-align: left;
+    }
+
+    .mini-table th {
+      color: var(--navy);
+      background: rgba(20, 124, 163, 0.08);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .mini-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mini-table td:last-child,
+    .mini-table th:last-child {
+      text-align: right;
+      font-weight: 800;
+    }
+
+    .contrib-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .contrib {
+      padding: 22px;
+      min-height: 210px;
+      border: 1px solid rgba(18, 53, 91, 0.13);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(22, 32, 42, 0.05);
+    }
+
+    .contrib small {
+      display: block;
+      color: var(--rose);
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .contrib h3 {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-size: 1.08rem;
+    }
+
+    .contrib p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    footer {
+      padding: 34px 0 46px;
+      border-top: 1px solid rgba(22, 32, 42, 0.1);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--navy);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    @media (max-width: 920px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+        gap: 10px;
+      }
+
+      .navlinks {
+        justify-content: flex-start;
+      }
+
+      .hero,
+      .section-head,
+      .abstract-grid,
+      .split,
+      .results-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-visual {
+        min-height: auto;
+      }
+
+      .stats-strip,
+      .architecture,
+      .contrib-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .navlinks {
+        gap: 0;
+      }
+
+      .navlinks a {
+        padding: 7px 8px;
+        font-size: 0.8rem;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+      }
+
+      .subtitle,
+      .abstract-text {
+        font-size: 1.02rem;
+      }
+
+      .stat-card strong {
+        font-size: 2.2rem;
+      }
+
+      .hero {
+        padding-top: 30px;
+      }
+
+      .loop-board {
+        padding: 16px;
+      }
+
+      .diagram,
+      .stats-strip,
+      .architecture,
+      .contrib-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bar-row {
+        grid-template-columns: 1fr 58px;
+      }
+
+      .bar-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+
+      .bar-value {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .mini-table {
+        font-size: 0.82rem;
+      }
+
+      .mini-table th,
+      .mini-table td {
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Mastermind home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Mastermind</span>
+      </a>
+      <div class="navlinks">
+        <a href="#abstract">Abstract</a>
+        <a href="#problem">Problem</a>
+        <a href="#framework">Framework</a>
+        <a href="#results">Results</a>
+        <a href="#contributions">Contributions</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="paper-title">
+      <div>
+        <div class="eyebrow">arXiv:2607.01764v1</div>
+        <h1 id="paper-title">Mastermind: Strategy-grounded Learning for Repository-Scale Vulnerability Reproduction</h1>
+        <p class="subtitle">A dual-loop framework that learns reusable vulnerability-reproduction strategies while preserving task-local evidence across attempts.</p>
+        <p class="authors">Mingzhe Du, Luu Anh Tuan, Tianyi Wu, Renyang Liu, Zhijiang Guo, Dong Huang, See-Kiong Ng</p>
+        <p class="affiliations">National University of Singapore &middot; Nanyang Technological University &middot; The Hong Kong University of Science and Technology (Guangzhou)</p>
+        <div class="actions">
+          <a class="btn" href="../pdf/mastermind.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 15h6"/><path d="M9 18h6"/><path d="M9 12h2"/></svg>
+            Paper PDF
+          </a>
+          <a class="btn secondary" href="https://arxiv.org/abs/2607.01764" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"/></svg>
+            arXiv
+          </a>
+          <a class="btn secondary" href="https://github.com/Elfsong/ICSE-Mastermind-preprint" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Preprint Repo
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Mastermind dual-loop visual">
+        <div class="loop-board">
+          <pre class="loop-code"><code>def <span class="blue">mastermind</span>(task):
+    while not converge:
+        experience = curator.<span class="blue">activate</span>(task)
+        strategy = planner.<span class="pink">generate</span>(experience)
+        rollout = executor.execute(strategy)
+        result = verifier.<span class="mint">validate</span>(rollout)
+        curator.<span class="blue">accumulate</span>(result)
+        planner.<span class="pink">calibrate</span>(result)</code></pre>
+          <div class="diagram">
+            <div class="node"><span class="label">Curator</span><span class="text">Stores task-local facts, failed hypotheses, milestones, and reusable evidence.</span></div>
+            <div class="node"><span class="label">Planner</span><span class="text">Learns compact natural-language strategies instead of full trajectories.</span></div>
+            <div class="node"><span class="label">Executor</span><span class="text">Runs repository actions with a frozen acting model and submits PoC rollouts.</span></div>
+            <div class="node"><span class="label">Verifier</span><span class="text">Scores each rollout through CyberGym execution feedback and milestone signals.</span></div>
+          </div>
+          <p class="loop-caption">Verified rollouts close two loops: an experience loop for this task, and a policy loop for transferable strategy learning.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats-strip" aria-label="Headline paper results">
+      <div class="stat-card"><strong>84.5%</strong><span>GPT-5.5 pass rate</span></div>
+      <div class="stat-card"><strong>260</strong><span>training tasks</span></div>
+      <div class="stat-card"><strong>200</strong><span>held-out tasks</span></div>
+      <div class="stat-card"><strong>560</strong><span>GPT-5.5 rollouts</span></div>
+    </div>
+
+    <section id="abstract" class="band white" aria-labelledby="abstract-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Abstract</div>
+            <h2 id="abstract-title">Strategy, not trajectory, is the learning unit.</h2>
+          </div>
+          <p class="lede">Repository-scale vulnerability reproduction requires an agent to inspect code, infer an input grammar, construct a proof-of-concept, and verify that the patched build no longer crashes.</p>
+        </div>
+        <div class="abstract-grid">
+          <p class="abstract-text">Mastermind argues that these agents often fail because they choose the wrong investigation strategy, even when they can execute commands, edit files, and submit PoCs. The framework separates planning from acting: a trainable Planner learns reusable vulnerability-reproduction strategies through SFT and milestone-based GRPO, while a Curator preserves task-local experience across sequential attempts. The Planner is trained independently of the frozen Executor, so strategy learning can improve multiple action backbones without changing their command-generation capability.</p>
+          <div class="keyword-list" aria-label="Keywords">
+            <span class="tag">Repository-scale SE agents</span>
+            <span class="tag">Vulnerability reproduction</span>
+            <span class="tag">Strategy-level RL</span>
+            <span class="tag">CyberGym</span>
+            <span class="tag">Planner-executor systems</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem" class="band" aria-labelledby="problem-title">
+      <div class="wrap split">
+        <div class="problem-copy">
+          <div class="section-kicker">Problem Characterization</div>
+          <h2 id="problem-title">Execution is stronger than the investigation plan.</h2>
+          <p>Modern LLM agents can navigate repositories and run long software-engineering workflows, but vulnerability reproduction is judged by executable evidence. The agent must decide where to inspect, what input structure to infer, when to exploit, and how to revise after verifier feedback.</p>
+          <p>CyberGym exposes the gap. With a fixed GPT-5.5 executor, one-shot Level-1 attempts solve 23.5% of held-out tasks, independent Best-of-8 reaches 63.0%, and sequential task-local strategy revision reaches 77.0%.</p>
+          <div class="callout">The bottleneck is strategic: deciding what to try next, not merely executing commands.</div>
+        </div>
+        <div class="timeline" aria-label="Mastermind task flow">
+          <div class="step"><div class="step-num">1</div><div><h3>Inspect the repository</h3><p>Locate relevant source, parsers, fixtures, and vulnerable paths.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div><h3>Infer an input grammar</h3><p>Turn partial evidence into a concrete PoC construction strategy.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div><h3>Validate the crash</h3><p>Use dual-build feedback to distinguish target reproduction from wrong crashes.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div><h3>Revise with evidence</h3><p>Carry task-local findings forward instead of resampling from scratch.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="framework" class="band white" aria-labelledby="framework-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Dual-loop Framework</div>
+            <h2 id="framework-title">Two substrates for two kinds of knowledge.</h2>
+          </div>
+          <p class="lede">Transferable strategy instincts belong in Planner weights. Volatile facts about one repository belong in Curator experience.</p>
+        </div>
+        <div class="architecture">
+          <article class="role">
+            <h3>Curator</h3>
+            <p>Maintains task-local strategy records, verifier outcomes, failed inputs, file locations, and milestones. Before each attempt, it activates the evidence most relevant to the current vulnerability.</p>
+          </article>
+          <article class="role">
+            <h3>Planner</h3>
+            <p>Emits a compact strategy that tells the executor where to inspect, what vulnerability mechanism to test, and how to validate the PoC. It learns through SFT and milestone-based GRPO.</p>
+          </article>
+          <article class="role">
+            <h3>Executor</h3>
+            <p>Instantiates the strategy as repository actions, shell commands, file edits, and PoC submissions. The executor stays frozen, isolating gains from better planning.</p>
+          </article>
+          <article class="role">
+            <h3>Verifier</h3>
+            <p>Provides execution-grounded feedback using CyberGym milestones, then routes the result back to Curator and Planner so both loops improve the next attempt.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="band" aria-labelledby="results-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Main Results</div>
+            <h2 id="results-title">Learned planning transfers across frozen executors.</h2>
+          </div>
+          <p class="lede">The same planner trained on GPT-5.4 mini trajectories improves GPT-5.4 mini, GPT-5.5, and GLM 5.1 without executor-specific retraining.</p>
+        </div>
+        <div class="results-layout">
+          <div class="chart-card">
+            <h3>GPT-5.5 held-out pass rate</h3>
+            <div class="bar-row"><div class="bar-label">Best-of-8</div><div class="bar-track"><div class="bar-fill" style="width:63%"></div></div><div class="bar-value">63.0%</div></div>
+            <div class="bar-row"><div class="bar-label">PAGENT + Best-of-8</div><div class="bar-track"><div class="bar-fill mint" style="width:70.5%"></div></div><div class="bar-value">70.5%</div></div>
+            <div class="bar-row"><div class="bar-label">Iterative</div><div class="bar-track"><div class="bar-fill navy" style="width:77%"></div></div><div class="bar-value">77.0%</div></div>
+            <div class="bar-row"><div class="bar-label">Base Planner</div><div class="bar-track"><div class="bar-fill" style="width:72.5%"></div></div><div class="bar-value">72.5%</div></div>
+            <div class="bar-row"><div class="bar-label">Mastermind</div><div class="bar-track"><div class="bar-fill rose" style="width:84.5%"></div></div><div class="bar-value">84.5%</div></div>
+            <p class="caption">Strict milestone-7 pass rates on the 200-task CyberGym held-out split. Mastermind solves 169/200 tasks with 560 GPT-5.5 executor rollouts.</p>
+          </div>
+
+          <table class="mini-table" aria-label="Mastermind pass rates by executor">
+            <thead>
+              <tr><th>Frozen executor</th><th>Base</th><th>Mastermind</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GPT-5.4 mini</td><td>45.0%</td><td>60.0%</td></tr>
+              <tr><td>GPT-5.5</td><td>72.5%</td><td>84.5%</td></tr>
+              <tr><td>GLM 5.1</td><td>58.5%</td><td>71.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="contributions" class="band white" aria-labelledby="contributions-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Contributions</div>
+            <h2 id="contributions-title">What the paper adds.</h2>
+          </div>
+          <p class="lede">Mastermind reframes repository-scale vulnerability reproduction as strategy selection and iterative strategy refinement.</p>
+        </div>
+        <div class="contrib-grid">
+          <article class="contrib">
+            <small>01</small>
+            <h3>Strategy Bottleneck</h3>
+            <p>Identifies high-level strategy selection as a primary failure mode, supported by strategy-sensitivity, Best-of-N, and iterative-experience analyses.</p>
+          </article>
+          <article class="contrib">
+            <small>02</small>
+            <h3>Efficient Training</h3>
+            <p>Trains over compact natural-language strategies instead of full repository trajectories, making reinforcement learning practical for long-horizon SE agents.</p>
+          </article>
+          <article class="contrib">
+            <small>03</small>
+            <h3>Effective Inference</h3>
+            <p>Improves multiple frozen executors and outperforms independent sampling, static-analysis guidance, richer context, and task-local iteration baselines.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Mastermind: Strategy-grounded Learning for Repository-Scale Vulnerability Reproduction.</span>
+      <span><a href="../pdf/mastermind.pdf" target="_blank" rel="noopener">Open PDF</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const sections = Array.from(document.querySelectorAll("main section[id]"));
+    const links = Array.from(document.querySelectorAll(".navlinks a"));
+
+    const setActive = () => {
+      const y = window.scrollY + 120;
+      let current = sections[0]?.id;
+      for (const section of sections) {
+        if (section.offsetTop <= y) current = section.id;
+      }
+      links.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
+      });
+    };
+
+    setActive();
+    window.addEventListener("scroll", setActive, { passive: true });
+  </script>
+</body>
+</html>
