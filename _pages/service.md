@@ -10,25 +10,18 @@ horizontal: false
 
 ## Conference Reviewers
 
-- Senior Program Committee, CIKM 2026
-- Reviewer, ICML 2026
-- Reviewer, AISTATS 2026
-- Reviewer, ICLR 2026
-- Program Committee, AISI 2026
-- Program Committee, AAAI 2026
-- Ethics Reviewer, NeurIPS 2025
-- Reviewer, ECAI 2025
-- Senior Program Committee, CIKM 2025
-- Reviewer, ACL Rolling Review
-- Reviewer, NeurIPS 2025
-- Reviewer, AISTATS 2025
-- Reviewer, ICLR 2025
-- Reviewer, NAACL 2025
-- Reviewer, ICML 2025
-- Reviewer, ICLR 2024
-- Reviewer, ECAI 2024
-- Reviewer, NeurIPS 2024
-- Reviewer, AISTATS 2024
+- Senior Program Committee, **CIKM** 2025, 2026
+- Program Committee, **AISI** 2026
+- Program Committee, **AAAI** 2026, 2027
+- Reviewer, **AISTATS** 2026
+- Reviewer, **ICML** 2025, 2026
+- Reviewer, **ICLR** 2024, 2025, 2026
+- Reviewer, **NeurIPS** 2024, 2025, 2026
+- Ethics Reviewer, **NeurIPS** 2025, 2026
+- Reviewer, **AISTATS** 2024, 2025
+- Reviewer, **NAACL** 2025
+- Reviewer, **ECAI** 2024, 2025
+- Reviewer, **ACL Rolling Review**
 
 ## Consultation
 
@@ -38,10 +31,9 @@ horizontal: false
 ## Volunteer
 
 - Conferences
-    - AAAI 2026 · NeurIPS 2025 · ACL 2025 · EMNLP 2024 · WWW 2024 · AAAI 2023
+    - **AAAI** 2026 · **NeurIPS** 2025 · **ACL** 2025 · **EMNLP** 2024 · **WWW** 2024 · **AAAI** 2023
 
 - Community (long-term)
     - [Be My Eyes](https://www.bemyeyes.com/) &mdash; remote visual assistance for blind and low-vision users
     - [CDAC 华社自助理事会](https://www.cl.cdac.org.sg/) &mdash; educational support programmes in Singapore
-
 
