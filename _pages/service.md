@@ -13,12 +13,11 @@ horizontal: false
 - Senior Program Committee, **CIKM** 2025, 2026
 - Program Committee, **AISI** 2026, 2027
 - Program Committee, **AAAI** 2026, 2027
-- Reviewer, **AISTATS** 2026
 - Reviewer, **ICML** 2025, 2026
 - Reviewer, **ICLR** 2024, 2025, 2026
 - Reviewer, **NeurIPS** 2024, 2025, 2026
 - Ethics Reviewer, **NeurIPS** 2025, 2026
-- Reviewer, **AISTATS** 2024, 2025
+- Reviewer, **AISTATS** 2024, 2025, 2026
 - Reviewer, **NAACL** 2025
 - Reviewer, **ECAI** 2024, 2025
 - Reviewer, **ACL Rolling Review**
