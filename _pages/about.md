@@ -2,7 +2,8 @@
 layout: about
 title: About
 permalink: /
-subtitle: <strong>PhD Candidate @ <a href='https://www.ntu.edu.sg/computing'>NTU CCDS</a> / Research Associate @ <a href='https://ids.nus.edu.sg/'>NUS IDS</a> / Research Engineer @ <a href='https://cisco-nus.nus.edu.sg/'>CISCO NUS</a></strong>
+subtitle: <strong>Researcher @ <a href='https://lifeattiktok.com/search/7392819411893963034'>TikTok AI Innovation Center</a>/ <strong>PhD Candidate @ <a href='https://www.ntu.edu.sg/computing'>NTU CCDS</a> 
+# Research Associate @ <a href='https://ids.nus.edu.sg/'>NUS IDS</a> / Research Engineer @ <a href='https://cisco-nus.nus.edu.sg/'>CISCO NUS</a></strong>
 
 profile:
   align: right
