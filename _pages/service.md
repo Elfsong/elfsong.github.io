@@ -11,7 +11,7 @@ horizontal: false
 ## Conference Reviewers
 
 - Senior Program Committee, **CIKM** 2025, 2026
-- Program Committee, **AISI** 2026
+- Program Committee, **AISI** 2026, 2027
 - Program Committee, **AAAI** 2026, 2027
 - Reviewer, **AISTATS** 2026
 - Reviewer, **ICML** 2025, 2026
