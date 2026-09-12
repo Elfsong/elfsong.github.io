@@ -51,7 +51,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-resillience",
+        },{id: "post-measuring-the-checker",
+      
+        title: "Measuring the Checker",
+      
+      description: "Mutation Analysis for GPU-Kernel Benchmark Oracles",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/kernel_mutation/";
+        
+      },
+    },{id: "post-mastermind",
+      
+        title: "Mastermind",
+      
+      description: "Strategy-grounded Learning for Repository-Scale Vulnerability Reproduction",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/mastermind/";
+        
+      },
+    },{id: "post-resillience",
       
         title: "Resillience",
       
