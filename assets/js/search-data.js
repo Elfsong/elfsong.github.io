@@ -51,7 +51,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-measuring-the-checker",
+        },{id: "post-does-background-music-matter-to-speech-in-language-models",
+      
+        title: "Does Background Music Matter to Speech in Language Models",
+      
+      description: "The same spoken question, a different soundtrack, and answers that change beneath a nearly flat average.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/does-background-music-matter/";
+        
+      },
+    },{id: "post-measuring-the-checker",
       
         title: "Measuring the Checker",
       
@@ -4327,6 +4338,9 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "news-i-will-serve-as-a-reviewer-for-aistats-27",
           title: 'I will serve as a reviewer for AISTATS’27.',
+          description: "",
+          section: "News",},{id: "news-we-release-our-new-technical-report-does-background-music-matter-to-speech-in-language-models",
+          title: 'We release our new technical report “Does Background Music Matter to Speech in...',
           description: "",
           section: "News",},{id: "news-our-paper-codescaler-scaling-code-llm-training-and-test-time-inference-via-reward-models-has-been-accepted-to-neurips-26",
           title: 'Our paper “CodeScaler: Scaling Code LLM Training and Test-Time Inference via Reward Models”...',
