@@ -20,7 +20,7 @@ horizontal: false
 - Reviewer, **AISTATS** 2024, 2025, 2026, 2027
 - Reviewer, **NAACL** 2025
 - Reviewer, **ECAI** 2024, 2025
-- Reviewer, **ACL Rolling Review**
+- Area Chair, **ACL Rolling Review**
 
 ## Consultation
 
