@@ -8,7 +8,7 @@ nav_order: 5
 horizontal: false
 ---
 
-## Conference Reviewers
+## Conference Service
 
 - Senior Program Committee, **CIKM** 2025, 2026
 - Program Committee, **AISI** 2026, 2027
@@ -24,8 +24,8 @@ horizontal: false
 
 ## Consultation
 
-- Research Engineer, Cisco Systems, Inc., 2022 - Present
 - STEM Mentor, University of Melbourne, 2020 - Present
+- Research Engineer, Cisco Systems, Inc., 2022 - 2026
 
 ## Volunteer
 
