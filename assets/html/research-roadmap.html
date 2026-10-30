@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="Mingzhe Du's research roadmap as a mind map: 32 papers across AI for Software Engineering, Knowledge and Adaptation, Trustworthy and Responsible AI, and AI Applications.">
+    <title>Research Roadmap · Mingzhe Du</title>
+    <style>
+      :root {
+        --ink: #18181b;
+        --muted: #71717a;
+        --faint: #a1a1aa;
+        --line: #d4d4d8;
+        --bg: #ffffff;
+        --root-w: 176px;
+        --area-w: 216px;
+        --gap: 36px;
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      .software     { --c: #5b3fcf; --c-soft: rgba(91, 63, 207, .45); }
+      .knowledge    { --c: #0f766e; --c-soft: rgba(15, 118, 110, .45); }
+      .trust        { --c: #b45309; --c-soft: rgba(180, 83, 9, .45); }
+      .applications { --c: #be185d; --c-soft: rgba(190, 24, 93, .45); }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 14.5px/1.5 var(--sans); }
+      a { color: inherit; text-decoration: none; }
+      a:hover { text-decoration: underline; text-underline-offset: 3px; }
+      :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+      ul { margin: 0; padding: 0; list-style: none; }
+      p { margin: 0; }
+
+      .map { max-width: 1120px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+
+      /* ---- Tree skeleton: every <li> is a row [node | children] ---- */
+      .tree > li, .areas > li, .papers > li { position: relative; display: flex; align-items: center; }
+      .tree > li { align-items: stretch; }
+      .node { position: relative; flex: none; }
+      .areas, .papers { flex: 1 1 auto; min-width: 0; margin-left: var(--gap); padding-left: var(--gap); }
+
+      /* horizontal stub from the spine to each child */
+      .areas > li::before, .papers > li::before {
+        content: ""; position: absolute; left: calc(-1 * var(--gap)); top: 50%; width: var(--gap); height: 0;
+        border-top: 1px solid var(--c-soft, var(--line));
+      }
+      /* vertical spine, drawn piecewise by each child */
+      .areas > li::after, .papers > li::after {
+        content: ""; position: absolute; left: calc(-1 * var(--gap)); top: 0; bottom: 0; width: 0;
+        border-left: 1px solid var(--c-soft, var(--line));
+      }
+      .papers > li:first-child::after { top: 50%; }
+      .papers > li:last-child::after { bottom: 50%; }
+      /* the trunk runs full height so the sticky root always meets it */
+      .areas > li::after { border-left-color: var(--line); }
+
+      /* ---- Root ---- */
+      .root {
+        position: sticky; top: calc(50vh - 3.5rem); align-self: flex-start;
+        width: var(--root-w); padding: .25rem 0;
+      }
+      .root::after {
+        content: ""; position: absolute; left: 100%; top: 50%; width: var(--gap); height: 0;
+        border-top: 1px solid var(--line);
+      }
+      .root .name { display: block; font-size: 1.15rem; font-weight: 650; letter-spacing: -.01em; line-height: 1.25; }
+      .root .what { display: block; margin-top: .15rem; color: var(--muted); font-size: .95rem; }
+      .root .meta { display: block; margin-top: .6rem; color: var(--faint); font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; }
+
+      /* ---- Area nodes ---- */
+      .area { width: var(--area-w); padding: .75rem 1rem .75rem 1.1rem; }
+      .area::after {
+        content: ""; position: absolute; left: 100%; top: 50%; width: var(--gap); height: 0;
+        border-top: 1px solid var(--c-soft);
+      }
+      .area::before {
+        content: ""; position: absolute; left: -4.5px; top: 50%; width: 9px; height: 9px; margin-top: -4.5px;
+        border-radius: 50%; background: var(--c);
+      }
+      .area .idx { display: block; color: var(--c); font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .08em; }
+      .area .title { display: block; margin-top: .1rem; font-size: 1rem; font-weight: 650; line-height: 1.25; letter-spacing: -.005em; }
+      .area .meta { display: block; margin-top: .3rem; color: var(--muted); font-size: .78rem; }
+
+      /* ---- Paper leaves ---- */
+      .areas > li { padding: .9rem 0; }
+      .paper { flex: 1 1 auto; min-width: 0; width: auto; padding: .5rem 0 .5rem 1rem; }
+      .paper::before {
+        content: ""; position: absolute; left: -3px; top: 50%; width: 6px; height: 6px; margin-top: -3px;
+        border-radius: 50%; background: var(--c);
+      }
+      .paper .venue { display: block; color: var(--c); font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .03em; }
+      .paper .venue small { color: var(--faint); font-weight: 500; }
+      .paper .title { display: inline; font-weight: 550; line-height: 1.4; }
+      .paper .brief { margin-top: .1rem; color: var(--muted); font-size: .84rem; line-height: 1.45; }
+
+      /* ---- Footer ---- */
+      .foot { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; color: var(--faint); font-size: .78rem; }
+      .foot a { color: var(--muted); }
+
+      /* ---- Narrow screens: fold into an indented outline ---- */
+      @media (max-width: 1000px) {
+        :root { --root-w: 150px; --area-w: 180px; --gap: 26px; }
+      }
+      @media (max-width: 740px) {
+        .map { padding: 1.5rem 1rem 2rem; }
+        .tree > li, .areas > li, .papers > li { display: block; }
+        .root { position: static; width: auto; padding: 0 0 .5rem; }
+        .root::after, .area::after { display: none; }
+        .areas, .papers { margin-left: .45rem; padding-left: 1.2rem; }
+        .areas > li::before, .papers > li::before { left: -1.2rem; width: 1.2rem; }
+        .areas > li::after, .papers > li::after { left: -1.2rem; }
+        .areas > li { padding: .6rem 0 .4rem; }
+        .areas > li::before { top: 1.75rem; }
+        .areas > li:first-child::after { top: 0; }
+        .areas > li:last-child::after { bottom: auto; height: 1.75rem; }
+        .area { width: auto; padding: .5rem 0 .4rem .6rem; }
+        .area::before { top: 1.75rem; }
+        .papers > li::before { top: 1.05rem; }
+        .papers > li:first-child::after { top: 0; }
+        .papers > li:last-child::after { bottom: auto; height: 1.05rem; }
+        .paper { padding: .55rem 0 .55rem .7rem; }
+        .paper::before { top: 1.05rem; }
+      }
+      @media print {
+        .root { position: static; align-self: center; }
+        a[href]::after { content: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="map">
+      <ul class="tree" aria-label="Research roadmap mind map">
+        <li>
+          <div class="node root">
+            <a class="name" href="/">Mingzhe Du</a>
+            <span class="what">Research Roadmap</span>
+            <span class="meta">32 papers · 4 areas · Oct 2026</span>
+          </div>
+
+          <ul class="areas">
+
+            <!-- 01 -->
+            <li class="software">
+              <div class="node area" id="software">
+                <span class="idx">01</span>
+                <span class="title">AI for Software Engineering</span>
+                <span class="meta">Current focus · 14 papers</span>
+              </div>
+              <ul class="papers">
+                <li><div class="node paper">
+                  <span class="venue">NeurIPS 2025</span>
+                  <a class="title" href="https://arxiv.org/abs/2505.23387" target="_blank" rel="noopener noreferrer">Afterburner: Reinforcement Learning Facilitates Self-Improving Code Efficiency Optimization</a>
+                  <p class="brief">Reinforcement learning on execution feedback makes generated code progressively faster without losing correctness.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ICML 2026</span>
+                  <a class="title" href="https://arxiv.org/abs/2507.12415" target="_blank" rel="noopener noreferrer">SWE-Perf: Can Language Models Optimize Code Performance on Real-World Repositories?</a>
+                  <p class="brief">Benchmarks whether coding agents can deliver measurable performance gains on real-world repositories.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">NeurIPS 2025</span>
+                  <a class="title" href="https://arxiv.org/abs/2505.13004" target="_blank" rel="noopener noreferrer">EffiBench-X: A Multi-Language Benchmark for Measuring Efficiency of LLM-Generated Code</a>
+                  <p class="brief">Measures the efficiency of LLM-generated code across six languages against human expert solutions.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">NeurIPS 2024</span>
+                  <a class="title" href="https://arxiv.org/abs/2402.07844" target="_blank" rel="noopener noreferrer">Mercury: A Code Efficiency Benchmark for Code Large Language Models</a>
+                  <p class="brief">Scores generated solutions on both correctness and runtime with a distribution-aware efficiency metric.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">Preprint <small>· arXiv 2026</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2608.24473" target="_blank" rel="noopener noreferrer">Ockhamareto: Pareto-Gated Segment-Level Credit Assignment for Concise Unit-Test Generation with Reinforcement Learning</a>
+                  <p class="brief">Rewards fault detection and brevity together so models generate smaller, more effective unit-test suites.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">Preprint <small>· arXiv 2026</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2609.22220" target="_blank" rel="noopener noreferrer">Measuring the Checker: Mutation Analysis for GPU-Kernel Benchmark Oracles</a>
+                  <p class="brief">Injects known GPU-kernel faults to reveal which bugs benchmark correctness checkers fail to catch.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">DL4C @ ICML 2026 <small>· Workshop</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2510.26423" target="_blank" rel="noopener noreferrer">Nexus: Execution-Grounded Multi-Agent Test Oracle Synthesis</a>
+                  <p class="brief">Coordinates specialist agents with sandboxed execution to synthesize and refine test oracles.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">TOSEM 2026</span>
+                  <a class="title" href="https://arxiv.org/abs/2508.00408" target="_blank" rel="noopener noreferrer">Benchmarking LLMs for Unit Test Generation from Real-World Functions</a>
+                  <p class="brief">A contamination-aware benchmark of unit-test generation built from complex real-world functions.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ICSE 2026</span>
+                  <a class="title" href="https://conf.researchr.org/details/icse-2026/icse-2026-research-track/15/Measuring-the-Influence-of-Incorrect-Code-on-Test-Generation" target="_blank" rel="noopener noreferrer">Measuring the Influence of Incorrect Code on Test Generation</a>
+                  <p class="brief">Faulty code in the prompt degrades generated tests, and natural-language descriptions help recover.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">Preprint <small>· arXiv 2026</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2607.01764" target="_blank" rel="noopener noreferrer">Mastermind: Strategy-Level Learning for Repository-Scale Vulnerability Reproduction</a>
+                  <p class="brief">Teaches agents reusable investigation strategies for reproducing and verifying repository-scale vulnerabilities.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">Preprint <small>· arXiv 2026</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2602.07422" target="_blank" rel="noopener noreferrer">Secure Code Generation via Online Reinforcement Learning with Vulnerability Reward Model</a>
+                  <p class="brief">A vulnerability-aware reward trains code models to produce secure code without losing functionality.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ACL 2026 <small>· Oral · Best Paper nomination</small></span>
+                  <a class="title" href="https://aclanthology.org/2026.acl-long.1481/" target="_blank" rel="noopener noreferrer">SeCuRepair: Semantics-Aligned, Curriculum-Driven, and Reasoning-Enhanced Vulnerability Repair Framework</a>
+                  <p class="brief">Reason-then-edit vulnerability repair trained with semantic rewards and a difficulty curriculum.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">NeurIPS 2026</span>
+                  <a class="title" href="https://arxiv.org/abs/2602.17684" target="_blank" rel="noopener noreferrer">CodeScaler: Scaling Code LLM Training and Test-Time Inference via Execution-Free Reward Models</a>
+                  <p class="brief">An execution-free reward model scales code-model training and ranks candidate solutions at inference time.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ACL 2025</span>
+                  <a class="title" href="https://arxiv.org/abs/2503.01295" target="_blank" rel="noopener noreferrer">CodeArena: A Collective Evaluation Platform for LLM Code Generation</a>
+                  <p class="brief">A collective, continuously refreshed evaluation platform that limits benchmark leakage in code generation.</p>
+                </div></li>
+              </ul>
+            </li>
+
+            <!-- 02 -->
+            <li class="knowledge">
+              <div class="node area" id="knowledge">
+                <span class="idx">02</span>
+                <span class="title">Knowledge and Adaptation</span>
+                <span class="meta">Foundation · 4 papers</span>
+              </div>
+              <ul class="papers">
+                <li><div class="node paper">
+                  <span class="venue">AAAI 2024</span>
+                  <a class="title" href="https://ojs.aaai.org/index.php/AAAI/article/view/30564" target="_blank" rel="noopener noreferrer">From Static to Dynamic: Knowledge Metabolism for Large Language Models</a>
+                  <p class="brief">Refreshes model knowledge at inference time through external memory to avoid answers built on stale facts.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">TLDK 2023</span>
+                  <a class="title" href="https://doi.org/10.1007/978-3-662-66863-4_4" target="_blank" rel="noopener noreferrer">Constituency-Informed and Constituency-Constrained Extractive Question Answering with Heterogeneous Graph Transformer</a>
+                  <p class="brief">Guides and constrains extractive answers with constituency trees and a heterogeneous graph transformer.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">AMIYA / VarDial 2026 <small>· Workshop</small></span>
+                  <a class="title" href="https://aclanthology.org/2026.vardial-1.30/" target="_blank" rel="noopener noreferrer">NUS-IDS at AMIYA/VarDial 2026: Improving Arabic Dialectness in LLMs with Reinforcement Learning</a>
+                  <p class="brief">Builds dialect-aware preferences for reinforcement learning to improve Arabic dialectal fidelity.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">SAC 2025</span>
+                  <a class="title" href="https://arxiv.org/abs/2411.18126" target="_blank" rel="noopener noreferrer">Curriculum Demonstration Selection for In-Context Learning</a>
+                  <p class="brief">Orders in-context examples from easy to hard so models can tackle more difficult tasks.</p>
+                </div></li>
+              </ul>
+            </li>
+
+            <!-- 03 -->
+            <li class="trust">
+              <div class="node area" id="trust">
+                <span class="idx">03</span>
+                <span class="title">Trustworthy and Responsible AI</span>
+                <span class="meta">Assurance · 6 papers</span>
+              </div>
+              <ul class="papers">
+                <li><div class="node paper">
+                  <span class="venue">AAAI 2025 <small>· Oral</small></span>
+                  <a class="title" href="https://ojs.aaai.org/index.php/AAAI/article/view/34599" target="_blank" rel="noopener noreferrer">Towards Verifiable Text Generation with Generative Agent</a>
+                  <p class="brief">Combines retrieval, memory, and reflection to produce more accurate answers with better citations.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">AAAI 2024</span>
+                  <a class="title" href="https://ojs.aaai.org/index.php/AAAI/article/view/29794" target="_blank" rel="noopener noreferrer">Chain-of-Thought Improves Text Generation with Citations in Large Language Models</a>
+                  <p class="brief">Reasoning prompts and citation checks improve answer correctness and source attribution.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ICLR 2026 <small>· Oral</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2508.06361" target="_blank" rel="noopener noreferrer">Beyond Prompt-Induced Lies: Investigating LLM Deception on Benign Prompts</a>
+                  <p class="brief">Measures self-initiated deception on benign prompts without assigning models a hidden objective.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">NeurIPS 2025</span>
+                  <a class="title" href="https://arxiv.org/abs/2505.11049" target="_blank" rel="noopener noreferrer">GuardReasoner-VL: Safeguarding VLMs via Reinforced Reasoning</a>
+                  <p class="brief">Trains a vision-language safety guard to reason before making moderation decisions.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ACL 2025 <small>· Oral · SAC Highlight Award</small></span>
+                  <a class="title" href="https://aclanthology.org/2025.acl-long.901/" target="_blank" rel="noopener noreferrer">AntiLeakBench: Preventing Data Contamination by Automatically Constructing Benchmarks with Updated Real-World Knowledge</a>
+                  <p class="brief">Automatically builds benchmarks around genuinely new knowledge to keep evaluation free of contamination.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ICML 2025 <small>· Position paper · Oral</small></span>
+                  <a class="title" href="https://proceedings.mlr.press/v267/duan25d.html" target="_blank" rel="noopener noreferrer">Position: Current Model Licensing Practices are Dragging Us into a Quagmire of Legal Noncompliance</a>
+                  <p class="brief">Analyzes the legal risks in current model licenses and proposes clearer licensing practices.</p>
+                </div></li>
+              </ul>
+            </li>
+
+            <!-- 04 -->
+            <li class="applications">
+              <div class="node area" id="applications">
+                <span class="idx">04</span>
+                <span class="title">AI Applications</span>
+                <span class="meta">Practice · 8 papers</span>
+              </div>
+              <ul class="papers">
+                <li><div class="node paper">
+                  <span class="venue">CIKM 2026 <small>· Oral · Best Paper nomination</small></span>
+                  <a class="title" href="https://arxiv.org/abs/2604.04562" target="_blank" rel="noopener noreferrer">Paper Espresso: From Paper Overload to Research Insight</a>
+                  <p class="brief">Continuously collects, summarizes, and tracks research papers to surface emerging topics and trends.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">EACL 2026 <small>· Demo</small></span>
+                  <a class="title" href="https://aclanthology.org/2026.eacl-demo.4/" target="_blank" rel="noopener noreferrer">Pro-QuEST: A Prompt-chain based Quiz Engine for testing Specialized Technical Product Knowledge</a>
+                  <p class="brief">Generates specialized product-knowledge quizzes from technical materials through prompt chaining.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">EMNLP 2025 <small>· Industry track</small></span>
+                  <a class="title" href="https://aclanthology.org/2025.emnlp-industry.76/" target="_blank" rel="noopener noreferrer">On Assigning Product and Software Codes to Customer Service Requests with Large Language Models</a>
+                  <p class="brief">Maps service requests to product and software-version labels with a cost-aware LLM pipeline.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">JMIR 2025</span>
+                  <a class="title" href="https://www.jmir.org/2025/1/e59524/" target="_blank" rel="noopener noreferrer">Unraveling Online Mental Health Through the Lens of Early Maladaptive Schemas: AI-Enabled Content Analysis of Online Mental Health Communities</a>
+                  <p class="brief">AI content analysis links early maladaptive schemas with concerns raised in online mental-health communities.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">ECAI 2024</span>
+                  <a class="title" href="https://doi.org/10.3233/FAIA240785" target="_blank" rel="noopener noreferrer">Counseling Responses for Mental Health Forum Questions with Early Maladaptive Schema Prediction</a>
+                  <p class="brief">Grounds generated counseling replies in predicted schemas and principles from Schema Therapy.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">WWW 2023</span>
+                  <a class="title" href="https://doi.org/10.1145/3543507.3583870" target="_blank" rel="noopener noreferrer">Identifying Checkworthy Cure Claims on Twitter</a>
+                  <p class="brief">Detects health-related claims in tweets that merit fact-checking.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">AAAI 2023 <small>· Demo</small></span>
+                  <a class="title" href="https://ojs.aaai.org/index.php/AAAI/article/view/27070" target="_blank" rel="noopener noreferrer">Generating Reflective Questions for Engaging Gallery Visitors in ArtMuse</a>
+                  <p class="brief">Asks painting-specific reflective questions to deepen visitor engagement and informal learning.</p>
+                </div></li>
+                <li><div class="node paper">
+                  <span class="venue">CLEF 2022 <small>· CheckThat! lab</small></span>
+                  <a class="title" href="https://ceur-ws.org/Vol-3180/paper-36.pdf" target="_blank" rel="noopener noreferrer">NUS-IDS at CheckThat! 2022: Identifying Check-worthiness of Tweets using CheckthaT5</a>
+                  <p class="brief">Adapts a multilingual sequence-to-sequence model to rank check-worthy social-media posts.</p>
+                </div></li>
+              </ul>
+            </li>
+
+          </ul>
+        </li>
+      </ul>
+    </main>
+
+    <footer class="foot">
+      32 papers · Updated October 2026 · <a href="/publications/">Full publication list</a> · <a href="/">Home</a>
+    </footer>
+  </body>
+</html>
