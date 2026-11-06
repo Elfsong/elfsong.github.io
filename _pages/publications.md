@@ -2,7 +2,7 @@
 layout: page
 permalink: /publications/
 title: Publications
-description: For the recent publications, please go to my Google Scholar directly.
+description: Research papers and preprints.
 years: [2026, 2025, 2024, 2023, 2022]
 nav: true
 nav_order: 3
@@ -13,6 +13,8 @@ nav_order: 3
 <!-- Bibsearch Feature -->
 
 <!-- {% include bib_search.liquid %} -->
+
+<p><sup>†</sup> Corresponding author; <sup>*</sup> Equal contribution.</p>
 
 ## Preprints
 
