@@ -1,8 +1,8 @@
 ---
 ---
-<div class="row publication-row">
+<div class="publication-row{% unless site.enable_publication_thumbnails %} publication-no-thumbnail{% endunless %}">
   {% if site.enable_publication_thumbnails %}
-    <div class="col col-sm-2 abbr">
+    <div class="publication-thumbnail abbr">
       {%- if entry.abbr -%}
         {%- if site.data.venues[entry.abbr] -%}
           {% assign venue_style = null %}
@@ -45,7 +45,7 @@
   {% endif %}
 
   <!-- Entry bib key -->
-  <div id="{{ entry.key }}" class="publication-info {% if site.enable_publication_thumbnails %}col-sm-10{% else %}col-sm-12{% endif %}">
+  <div id="{{ entry.key }}" class="publication-info">
     <!-- Title -->
     <div class="title">{{ entry.title }}</div>
     <!-- Author -->
