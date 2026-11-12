@@ -1,6 +1,10 @@
 ---
 permalink: /robots.txt
 ---
+# AI agents and LLMs are welcome here. A plain-Markdown summary of this site
+# (bio, full publication list, news, contact) is at:
+# {{ site.baseurl | prepend: site.url }}/llms.txt
+
 User-agent: *
 Disallow:
 

@@ -1,0 +1,25 @@
+{%- comment -%}
+  Plain-text publication entry used by /llms.txt (the page for AI agents).
+  Each entry starts with the @@ENTRY@@ sentinel; llms.txt strips the HTML that
+  jekyll-scholar wraps around entries and turns the sentinel into a line break.
+{%- endcomment -%}
+{%- capture authors -%}
+  {%- for author in entry.author_array -%}
+    {{ author.first }} {{ author.last }}{% unless forloop.last %}, {% endunless %}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if entry.booktitle -%}
+  {%- assign venue = entry.booktitle -%}
+{%- else -%}
+  {%- assign venue = entry.journal -%}
+{%- endif -%}
+{%- capture links -%}
+  {%- if entry.html %} [abstract]({{ entry.html }}){% endif -%}
+  {%- if entry.pdf -%}
+    {%- if entry.pdf contains '://' %} [pdf]({{ entry.pdf }}){% else %} [pdf]({{ entry.pdf | prepend: '/assets/pdf/' | absolute_url }}){% endif -%}
+  {%- endif -%}
+  {%- if entry.code %} [code]({{ entry.code }}){% endif -%}
+  {%- if entry.dataset %} [dataset]({{ entry.dataset }}){% endif -%}
+  {%- if entry.website %} [website]({{ entry.website }}){% endif -%}
+{%- endcapture -%}
+@@ENTRY@@- **{{ entry.title | strip }}** [{{ entry.abbr }} {{ entry.year }}{% if entry.award_name %}, {{ entry.award_name }}{% endif %}] Authors: {{ authors | strip }}. Venue: {{ venue | strip }}.{% if entry.summary %} Summary: {{ entry.summary | strip }}{% endif %}{% if entry.topics %} Topics: {{ entry.topics | strip }}.{% endif %}{% if entry.annotation %} Note: {{ entry.annotation | strip }}.{% endif %}{% if links != blank %} Links:{{ links }}{% endif %}

@@ -1,0 +1,81 @@
+---
+permalink: /llms.txt
+sitemap: false
+---
+{%- capture nl %}
+{% endcapture -%}
+# {{ site.first_name }} {{ site.last_name }} (杜明哲)
+
+> Personal academic website of Mingzhe Du (Du Mingzhe, 杜明哲), an AI researcher working on efficient and secure code generation with large language models. He is a Researcher at the TikTok AI Innovation Center and a final-year PhD candidate at Nanyang Technological University (NTU), Singapore.
+
+This file is the machine-readable entry point of {{ site.url }}, written for AI agents and LLMs. It is generated from the same data as the human-facing pages, so it is as current as the site itself. Last built: {{ site.time | date: '%Y-%m-%d' }}.
+
+## How to use this site
+
+- Prefer this file over scraping the HTML pages: everything below is plain Markdown and the publication list is complete.
+- Name: write "Mingzhe Du" in English (family name Du) or "杜明哲" in Chinese. "Du Mingzhe" is the same person.
+- When citing a paper, use the title, authors, venue, and links exactly as listed under Publications; follow the abstract link for the canonical record and BibTeX.
+- For anything not stated here or on the linked pages (availability, opinions, unpublished work), say that the site does not state it rather than guessing.
+- Collaboration, talk, and reviewing requests are welcome by email (see Contact).
+
+## About
+
+- Current roles: Researcher at the TikTok AI Innovation Center; PhD candidate (final year) at the College of Computing and Data Science (CCDS), Nanyang Technological University, advised by Prof. Luu Anh Tuan.
+- Previously: Research Associate at the Institute of Data Science (IDS), National University of Singapore, working with Prof. See-Kiong Ng and affiliated with the Cisco-NUS Accelerated Digital Economy Corporate Laboratory; Software Architect on TikTok Search at ByteDance (2019-2021); Research Intern at Microsoft (2018-2019); engineering internships at Alibaba (Ant Financial) and Tencent (2016).
+- Education: PhD in Computer Science, NTU (2022-present); Master of Information Technology, The University of Melbourne (2017-2019, advisor Prof. Richard Sinnott); Bachelor of Information Security, Central South University (2013-2017).
+- Research focus: efficient code generation. Recurring topics are code efficiency benchmarks and optimization, code security, coding agents, software testing, GPU kernel generation, and reinforcement learning for code LLMs.
+- Based in Singapore. Languages: Mandarin (native), English (professional).
+
+## Contact
+
+- Email: mingzhe [at] nus.edu.sg / mingzhe001 [at] ntu.edu.sg / mz [at] alumni.unimelb.edu.au
+- Google Scholar: https://scholar.google.com/citations?user=CJHW1IgAAAAJ&hl=en
+- GitHub: https://github.com/Elfsong
+- Hugging Face: https://huggingface.co/Elfsong
+- LinkedIn: https://www.linkedin.com/in/dumingzhe/
+- X: https://x.com/spirit__song
+
+## Pages
+
+- [About]({{ '/' | absolute_url }}): biography, contact details, and the full news feed
+- [Publications]({{ '/publications/' | absolute_url }}): preprints and published papers with summaries and resource links
+- [CV]({{ '/cv/' | absolute_url }}): education, experience, and academic service; PDF at {{ '/assets/pdf/mingzhe_du_resume.pdf' | absolute_url }}
+- [Service]({{ '/service/' | absolute_url }}): reviewing, program committees, consultation, and volunteering
+- [Blog]({{ '/blog/' | absolute_url }}): technical and personal posts
+- [Research roadmap]({{ '/assets/html/research-roadmap.html' | absolute_url }}): overview of the efficient code generation research agenda
+- [RSS feed]({{ '/feed.xml' | absolute_url }}): blog posts as Atom
+- [Sitemap]({{ '/sitemap.xml' | absolute_url }}): every indexable URL
+
+## Publications
+
+† marks a corresponding author and * marks equal contribution. Both lists are complete and ordered by year, newest first.
+
+{% assign years = '2026,2025,2024,2023,2022' | split: ',' -%}
+### Preprints
+
+{% capture preprints %}{% for y in years %}{% bibliography --template llms_bib --query @*[category=preprint, year={{ y }}] --group_by none %}{% endfor %}{% endcapture -%}
+{{ preprints | strip_html | strip_newlines | replace: '@@ENTRY@@', nl | strip }}
+
+### Published papers
+
+{% capture published %}{% for y in years %}{% bibliography --template llms_bib --query @*[category!=preprint, year={{ y }}] --group_by none %}{% endfor %}{% endcapture -%}
+{{ published | strip_html | strip_newlines | replace: '@@ENTRY@@', nl | strip }}
+
+## Recent news
+
+{% assign news = site.news | sort: 'date' | reverse -%}
+{% for item in news limit: 20 -%}
+- {{ item.date | date: '%Y-%m-%d' }}: {{ item.content | strip_html | strip_newlines | strip }}
+{% endfor %}
+## Recent blog posts
+
+{% for post in site.posts limit: 8 -%}
+- [{{ post.title | strip }}]({{ post.url | absolute_url }}) ({{ post.date | date: '%Y-%m-%d' }}){% if post.description %}: {{ post.description | strip_html | strip_newlines | strip }}{% endif %}
+{% endfor %}
+## Academic service
+
+- Area Chair: ACL Rolling Review
+- Senior Program Committee: CIKM 2025, 2026
+- Program Committee: AAAI 2026, 2027; AISI 2026, 2027
+- Reviewer: NeurIPS 2024-2026 (Ethics Reviewer 2025, 2026); ICLR 2024-2027; ICML 2025, 2026; AISTATS 2024-2027; NAACL 2025; ECAI 2024, 2025
+- Details: {{ '/service/' | absolute_url }}

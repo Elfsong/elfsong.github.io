@@ -68,6 +68,8 @@
 {% endif %}
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url | bust_css_cache }}">
 <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+<!-- AI agents and LLMs: a plain-Markdown version of this site lives at /llms.txt -->
+<link rel="alternate" type="text/markdown" title="Site summary for AI agents (llms.txt)" href="{{ '/llms.txt' | absolute_url }}">
 
 <!-- Dark Mode -->
 <script src="{{ '/assets/js/theme.js' | relative_url | bust_file_cache }}"></script>
