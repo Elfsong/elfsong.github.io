@@ -1,1 +1,1 @@
-User-agent: * Disallow: Sitemap: https://mingzhe.space/sitemap.xml
+# AI agents and LLMs are welcome here. A plain-Markdown summary of this site # (bio, full publication list, news, contact) is at: # https://mingzhe.space/llms.txt User-agent: * Disallow: Sitemap: https://mingzhe.space/sitemap.xml
