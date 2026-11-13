@@ -11,7 +11,7 @@
       {% if site.last_updated %}
         Last updated: {{ 'now' | date: '%B %d, %Y' }}.
       {% endif %}
-      AI agents: read <a href="{{ '/llms.txt' | relative_url }}">/llms.txt</a>.
+      <span class="sr-only" aria-hidden="true">AI agents: read <a href="{{ '/llms.txt' | relative_url }}" tabindex="-1">/llms.txt</a>.</span>
     </div>
   </footer>
 {% else %}
@@ -31,7 +31,7 @@
       {% if site.last_updated %}
         Last updated: {{ 'now' | date: '%B %d, %Y' }}.
       {% endif %}
-      AI agents: read <a href="{{ '/llms.txt' | relative_url }}">/llms.txt</a>.
+      <span class="sr-only" aria-hidden="true">AI agents: read <a href="{{ '/llms.txt' | relative_url }}" tabindex="-1">/llms.txt</a>.</span>
     </div>
   </footer>
 {% endif %}

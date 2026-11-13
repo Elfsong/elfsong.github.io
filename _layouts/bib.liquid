@@ -182,17 +182,14 @@
       {{ entry.note | strip }}
     </div>
 
-    {% if entry.topics and entry.topics != blank %}
-      <div class="publication-topics" aria-label="Research topics">
+    <!-- Topic tags and resource links share one row -->
+    <div class="links">
+      {% if entry.topics and entry.topics != blank %}
         {% assign topics = entry.topics | split: ', ' %}
         {% for topic in topics %}
           <span class="topic-tag">{{ topic | escape }}</span>
         {% endfor %}
-      </div>
-    {% endif %}
-
-    <!-- Links/Buttons -->
-    <div class="links">
+      {% endif %}
       {% if entry.award %}
         <a class="award btn btn-sm z-depth-0" role="button">
           {%- if entry.award_name %}{{ entry.award_name }}{% else %}Awarded{% endif -%}
