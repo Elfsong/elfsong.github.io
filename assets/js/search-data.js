@@ -4366,6 +4366,11 @@ ninja.data = [{
           description: "A Field Guide to the Brain&#39;s Neurons",
           section: "Projects",handler: () => {
               window.location.href = "/projects/neuron-atlas/";
+            },},{id: "projects-paper-espresso",
+          title: 'Paper Espresso',
+          description: "From Paper Overload to Research Insight",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/paper-espresso/";
             },},{id: "projects-photograph",
           title: 'Photograph',
           description: "The Best of Times",
