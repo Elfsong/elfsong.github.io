@@ -4361,6 +4361,11 @@ ninja.data = [{
           description: "Gastronomic Delight",
           section: "Projects",handler: () => {
               window.location.href = "/projects/food/";
+            },},{id: "projects-neuron-atlas",
+          title: 'Neuron Atlas',
+          description: "A Field Guide to the Brain&#39;s Neurons",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/neuron-atlas/";
             },},{id: "projects-photograph",
           title: 'Photograph',
           description: "The Best of Times",
