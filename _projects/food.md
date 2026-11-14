@@ -6,6 +6,9 @@ img: assets/img/food.jpg
 importance: 3
 category: fun
 _styles: >
+  .post-header {
+    display: none;
+  }
   .food-hero figure {
     margin: 0;
   }
@@ -19,7 +22,7 @@ _styles: >
     border-radius: 14px;
   }
   .food-intro {
-    max-width: 34rem;
+    text-wrap: balance;
     margin: 2.5rem 0 0.75rem;
     font-family: "Roboto Slab", Georgia, serif;
     font-weight: 300;
