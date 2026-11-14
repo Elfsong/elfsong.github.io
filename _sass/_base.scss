@@ -851,36 +851,42 @@ footer.sticky-bottom {
         gap: 0.35rem;
         margin-top: 0.4rem;
 
-        // Topics: theme-colored pills. Resources: neutral outlined buttons.
+        // Topics and resources share one pill shape; only the color differs.
         .topic-tag,
         a.btn {
+          --pill-color: var(--global-theme-color);
           margin: 0;
           padding: 0.1rem 0.6rem;
           font-size: 0.75rem;
+          font-weight: 400;
           line-height: 1.5;
+          letter-spacing: normal;
+          text-transform: none;
+          border: 1px solid transparent;
+          border-radius: 1rem;
+          box-shadow: none;
+          background-color: color-mix(in srgb, var(--pill-color) 12%, transparent);
+          color: var(--pill-color);
         }
 
         .topic-tag {
-          border: 1px solid transparent;
-          border-radius: 1rem;
-          background-color: color-mix(in srgb, var(--global-theme-color) 12%, transparent);
-          color: var(--global-theme-color);
           white-space: nowrap;
         }
 
+        // Resources: neutral pills that pick up the theme color on hover.
         a.btn {
+          --pill-color: var(--global-text-color);
           max-width: 100%;
           white-space: normal;
-          color: var(--global-text-color);
-          border: 1px solid var(--global-text-color);
+          background-color: color-mix(in srgb, var(--pill-color) 8%, transparent);
 
           &:hover {
-            color: var(--global-theme-color);
-            border-color: var(--global-theme-color);
+            --pill-color: var(--global-theme-color);
+            background-color: color-mix(in srgb, var(--pill-color) 12%, transparent);
           }
         }
         a.award.btn {
-          border-color: var(--global-highlight-color);
+          --pill-color: var(--global-highlight-color);
         }
       }
 
