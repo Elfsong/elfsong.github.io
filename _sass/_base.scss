@@ -670,10 +670,17 @@ footer.sticky-bottom {
     img {
       width: 100%;
     }
+
+    // Crop every cover to the same shape so cards in a row line up.
+    img.card-img-top {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
   }
 
+  // Match the horizontal gutter so rows are spaced like columns.
   .col {
-    padding-bottom: 1rem;
+    padding-bottom: 30px;
   }
 
   .grid-sizer,
