@@ -21,7 +21,7 @@ service:
       - { name: AISTATS, detail: Reviewer, when: 2024–2027 }
       - { name: NAACL, detail: Reviewer, when: "2025" }
       - { name: ECAI, detail: Reviewer, when: 2024–2025 }
-      - { name: ACL Rolling Review, detail: Area Chair }
+      - { name: ACL Rolling Review, detail: Area Chair, when: "2026" }
   - title: Consultation
     rows:
       - { name: University of Melbourne, detail: STEM Mentor, when: 2020–Present }
