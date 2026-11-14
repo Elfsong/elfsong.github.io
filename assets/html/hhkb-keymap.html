@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="Mingzhe Du's HHKB keymap: every layer on one page.">
+    <title>HHKB Keymap · Mingzhe Du</title>
+    <style>
+      :root {
+        --bg: #f6f4ef;
+        --panel: #ffffff;
+        --ink: #1f1e1b;
+        --muted: #6f6c64;
+        --line: #dedad0;
+        --chip: #f1eee6;
+        --l0: #6b6f72;
+        --l1: #d2541c;
+        --l2: #1f6fb2;
+        --l3: #a27400;
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #17181a;
+          --panel: #202225;
+          --ink: #ecebe6;
+          --muted: #9c9a93;
+          --line: #34373b;
+          --chip: #2a2d31;
+          --l0: #a3a7aa;
+          --l1: #ff8a3d;
+          --l2: #5db0ff;
+          --l3: #f2c94c;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 16px 64px;
+      }
+      a {
+        color: inherit;
+      }
+      .back {
+        color: var(--muted);
+        font-size: 13px;
+        text-decoration: none;
+      }
+      .back:hover {
+        color: var(--ink);
+      }
+      h1 {
+        margin: 10px 0 4px;
+        font-size: 28px;
+        letter-spacing: -0.01em;
+      }
+      .lede {
+        margin: 0 0 20px;
+        color: var(--muted);
+      }
+
+      /* Layer switcher */
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--ink);
+        font: inherit;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .tab i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--c, var(--muted));
+      }
+      .tab kbd {
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 11px;
+      }
+      .tab[aria-pressed="true"] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--bg);
+      }
+      .tab[aria-pressed="true"] kbd {
+        color: inherit;
+        opacity: 0.6;
+      }
+      .tab:focus-visible,
+      .key:focus-visible {
+        outline: 2px solid var(--l2);
+        outline-offset: 2px;
+      }
+
+      /* Board */
+      .board-wrap {
+        overflow-x: auto;
+        border-radius: 16px;
+      }
+      .board-wrap svg {
+        display: block;
+        width: 100%;
+        min-width: 720px;
+        height: auto;
+      }
+      .key {
+        cursor: pointer;
+        outline: none;
+      }
+      .key .halo {
+        opacity: 0;
+      }
+      .key:hover .halo,
+      .key:focus-visible .halo,
+      .key.hl .halo,
+      .key.pinned .halo {
+        opacity: 1;
+      }
+      .key.ghost.hl,
+      .key.ghost:hover {
+        opacity: 0.8;
+      }
+
+      /* Key detail strip */
+      .detail {
+        display: grid;
+        grid-template-columns: 150px repeat(4, 1fr);
+        gap: 1px;
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--line);
+        overflow: hidden;
+      }
+      .detail > div {
+        min-height: 62px;
+        padding: 9px 12px;
+        background: var(--panel);
+      }
+      .detail .lbl {
+        display: block;
+        color: var(--c, var(--muted));
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .detail .val {
+        font-weight: 600;
+      }
+      .detail .val.pass {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .detail .keyname {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .hint {
+        margin: 8px 2px 0;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+
+      /* Per-layer cheat list */
+      .layers {
+        display: grid;
+        gap: 14px;
+        margin-top: 22px;
+      }
+      .layer {
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--c);
+        border-radius: 12px;
+        background: var(--panel);
+      }
+      .layer h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .layer h2 span {
+        color: var(--c);
+      }
+      .layer .how {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
+      .layer h3 {
+        margin: 14px 0 6px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 8px;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: var(--chip);
+        color: var(--ink);
+        font: inherit;
+        font-size: 13.5px;
+        text-align: left;
+        cursor: default;
+      }
+      .chip:hover,
+      .chip:focus-visible {
+        border-color: var(--c);
+        outline: none;
+      }
+      .chip kbd {
+        color: var(--c);
+        font-family: var(--mono);
+        font-size: 12.5px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      kbd.k {
+        padding: 1px 6px;
+        border: 1px solid var(--line);
+        border-bottom-width: 2px;
+        border-radius: 5px;
+        background: var(--chip);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+      @media (max-width: 720px) {
+        .detail {
+          grid-template-columns: 1fr 1fr;
+        }
+        .detail > div:first-child {
+          grid-column: 1 / -1;
+          min-height: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="/personal/">← Personal</a>
+      <h1>HHKB Keymap</h1>
+      <p class="lede">Four layers on sixty keys — mostly here so I stop forgetting what lives behind Fn.</p>
+
+      <div class="tabs" id="tabs" role="group" aria-label="Layer"></div>
+      <div class="board-wrap" id="board"></div>
+      <div class="detail" id="detail" aria-live="polite"></div>
+      <p class="hint">
+        Hover a key to see what it does on every layer; click to pin it. Press <kbd class="k">0</kbd>–<kbd class="k">3</kbd> to jump
+        to a layer, <kbd class="k">←</kbd> <kbd class="k">→</kbd> to step through.
+      </p>
+
+      <div class="layers" id="layers"></div>
+    </main>
+
+    <script>
+      /* ---------- Physical layout (HHKB, 60 keys) ---------- */
+      // token = id[:width[:kind]] ; kind m = dark modifier cap, x = orange accent cap, "_" = gap
+      var ROWS = [
+        'esc:1:x 1 2 3 4 5 6 7 8 9 0 minus equal bslash grave:1:m',
+        'tab:1.5:m q w e r t y u i o p lbrack rbrack bksp:1.5',
+        'ctrl:1.75:m a s d f g h j k l semi quote enter:2.25:x',
+        'lshift:2.25:m z x c v b n m comma dot slash rshift:1.75:m fn:1:m',
+        '_:1.5 lalt:1:m lmeta:1.5:m space:6 rmeta:1.5:m ralt:1:m',
+      ].map(function (row) {
+        return row.split(' ').map(function (tok) {
+          var p = tok.split(':');
+          return { id: p[0], w: p[1] ? parseFloat(p[1]) : 1, kind: p[2] === 'm' ? 'mod' : p[2] === 'x' ? 'accent' : 'alpha' };
+        });
+      });
+
+      /* ---------- Keymap ---------- */
+      // legend: t = main label, s = shifted label, d = description, o = compact label for the all-layers view
+      function L(t, s, d, o) {
+        return { t: t, s: s || '', d: d || '', o: o || t };
+      }
+      var LETTERS = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+      var SHIFT = { 1: '!', 2: '@', 3: '#', 4: '$', 5: '%', 6: '^', 7: '&', 8: '*', 9: '(', 0: ')' };
+      var SYM = {
+        minus: L('-', '_'),
+        equal: L('=', '+'),
+        bslash: L('\\', '|'),
+        grave: L('`', '~'),
+        lbrack: L('[', '{'),
+        rbrack: L(']', '}'),
+        semi: L(';', ':'),
+        quote: L("'", '"'),
+        comma: L(',', '<'),
+        dot: L('.', '>'),
+        slash: L('/', '?'),
+      };
+      function num(n) {
+        return L(String(n), SHIFT[n]);
+      }
+
+      var L0 = {
+        esc: L('esc', '', 'Escape'),
+        tab: L('tab', '', 'Tab'),
+        bksp: L('delete', '', 'Delete (backspace)'),
+        ctrl: L('cmd ⌘', '', 'Command — in the stock Control position'),
+        enter: L('return', '', 'Return'),
+        lshift: L('shift', '', 'Left Shift'),
+        rshift: L('shift', '', 'Right Shift'),
+        fn: L('Fn', '', 'Hold for Layer 1'),
+        lalt: L('opt', '', 'Option'),
+        lmeta: L('control', '', 'Control'),
+        space: L('space', '', 'Space'),
+        rmeta: L('PWR', '', 'System power (the “OFF” key)'),
+        ralt: L('LT2', '', 'Toggle Layer 2 (numpad)'),
+      };
+      LETTERS.forEach(function (c) {
+        L0[c] = L(c.toUpperCase());
+      });
+      Object.keys(SHIFT).forEach(function (n) {
+        L0[n] = num(n);
+      });
+      Object.keys(SYM).forEach(function (k) {
+        L0[k] = SYM[k];
+      });
+
+      var L1 = {
+        esc: L('LOCK', '', 'Lock mode'),
+        bslash: L('HELP', '', 'Help'),
+        grave: L('DEL ⌦', '', 'Forward delete'),
+        q: L('BRT −', '', 'Brightness down', 'BRT−'),
+        w: L('BRT +', '', 'Brightness up', 'BRT+'),
+        e: L('BATT', '', 'Battery level'),
+        p: L('BT', '', 'Bluetooth on / off'),
+        lbrack: L('↑', '', 'Arrow up'),
+        rbrack: L('BT CLR', '', 'Clear Bluetooth pairing'),
+        bksp: L('RESET', '', 'Reset the keyboard'),
+        a: L('VOL −', '', 'Volume down', 'VOL−'),
+        s: L('VOL +', '', 'Volume up', 'VOL+'),
+        d: L('MUTE', '', 'Mute'),
+        l: L('PG UP', '', 'Page up'),
+        semi: L('←', '', 'Arrow left'),
+        quote: L('→', '', 'Arrow right'),
+        z: L('PREV', '', 'Previous track'),
+        x: L('NEXT', '', 'Next track'),
+        dot: L('PG DN', '', 'Page down'),
+        slash: L('↓', '', 'Arrow down'),
+        rshift: L('CAPS', '', 'Caps Lock'),
+        rmeta: L('SLEEP', '', 'Sleep'),
+        ralt: L('LT3', '', 'Toggle Layer 3 (A–Z layout)'),
+      };
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'minus', 'equal'].forEach(function (id, i) {
+        L1[id] = L('F' + (i + 1));
+      });
+
+      var L2 = {
+        q: L('7'),
+        w: L('8'),
+        e: L('9'),
+        r: L('0'),
+        t: L('CLEAR', '', 'Numpad Clear', 'CLR'),
+        a: L('4'),
+        s: L('5'),
+        d: L('6'),
+        f: L('+', '', 'Numpad +'),
+        g: L('*', '', 'Numpad *'),
+        z: L('1'),
+        x: L('2'),
+        c: L('3'),
+        v: L('−', '', 'Numpad −'),
+        b: L('/', '', 'Numpad /'),
+      };
+
+      // Layer 3: letters in alphabetical order. Explicit keys only; the rest fall through.
+      var L3 = {};
+      ['esc', 'tab', 'bksp', 'ctrl', 'enter', 'lshift', 'rshift', 'fn', 'lalt', 'lmeta', 'rmeta'].forEach(function (id) {
+        L3[id] = L0[id];
+      });
+      // The number row really does skip 3 on this layer.
+      [
+        ['1', num(1)],
+        ['2', num(2)],
+        ['3', num(4)],
+        ['4', num(5)],
+        ['5', num(6)],
+        ['6', num(7)],
+        ['7', num(8)],
+        ['8', num(9)],
+        ['9', num(0)],
+        ['0', SYM.comma],
+        ['minus', SYM.dot],
+        ['equal', SYM.lbrack],
+        ['bslash', SYM.rbrack],
+        ['v', SYM.grave],
+        ['b', SYM.minus],
+        ['n', SYM.equal],
+        ['m', SYM.semi],
+        ['comma', SYM.quote],
+        ['dot', SYM.slash],
+        ['slash', SYM.bslash],
+      ].forEach(function (p) {
+        L3[p[0]] = p[1];
+      });
+      var ABC_ORDER = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'lbrack', 'rbrack', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'semi', 'quote', 'z', 'x', 'c'];
+      ABC_ORDER.forEach(function (id, i) {
+        L3[id] = L(String.fromCharCode(65 + i));
+      });
+
+      var LAYERS = [
+        { n: 0, name: 'Base', map: L0, how: 'Always on.', hold: [] },
+        { n: 1, name: 'Fn', map: L1, how: 'Hold <kbd class="k">Fn</kbd>. The red LED lights while it is active.', hold: ['fn'] },
+        {
+          n: 2,
+          name: 'Numpad',
+          map: L2,
+          how: 'Tap <kbd class="k">LT2</kbd> (bottom-right key) to toggle; tap again to leave.',
+          hold: ['ralt'],
+        },
+        {
+          n: 3,
+          name: 'A–Z',
+          map: L3,
+          how: 'Tap <kbd class="k">Fn</kbd> + <kbd class="k">LT3</kbd> to toggle; same combo to leave. The yellow LED lights while it is active.',
+          hold: [],
+        },
+      ];
+
+      // Cheat-list groups. ids = keys to highlight, k = what to press, d = what you get.
+      function auto(layer, ids) {
+        return ids.map(function (id) {
+          var lg = LAYERS[layer].map[id];
+          return { ids: [id], k: L0[id].t, d: lg.d || lg.t };
+        });
+      }
+      var GROUPS = [
+        [
+          {
+            title: 'Different from a stock HHKB',
+            chips: [
+              { ids: ['ctrl'], k: 'Control position', d: '⌘ Command' },
+              { ids: ['lmeta'], k: 'Left ◇', d: 'Control' },
+              { ids: ['lalt'], k: 'Left Alt', d: 'Option' },
+              { ids: ['rmeta'], k: 'Right ◇', d: 'System power' },
+              { ids: ['ralt'], k: 'Right Alt', d: 'LT2 — toggle the numpad layer' },
+              { ids: ['fn'], k: 'Fn', d: 'Hold for Layer 1' },
+            ],
+          },
+        ],
+        [
+          { title: 'Arrows & paging', chips: auto(1, ['lbrack', 'semi', 'quote', 'slash', 'l', 'dot']) },
+          { title: 'Media', chips: auto(1, ['a', 's', 'd', 'z', 'x']) },
+          {
+            title: 'Function row',
+            chips: [{ ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'minus', 'equal'], k: '1 … =', d: 'F1 … F12' }],
+          },
+          { title: 'Editing', chips: auto(1, ['grave', 'rshift', 'bslash']) },
+          { title: 'Display & power', chips: auto(1, ['q', 'w', 'rmeta', 'e']) },
+          { title: 'Bluetooth & keyboard', chips: auto(1, ['p', 'rbrack', 'esc', 'bksp']) },
+          { title: 'Layers', chips: auto(1, ['ralt']) },
+        ],
+        [
+          {
+            title: 'Left-hand numpad',
+            chips: [
+              { ids: ['q', 'w', 'e'], k: 'Q W E', d: '7 8 9' },
+              { ids: ['a', 's', 'd'], k: 'A S D', d: '4 5 6' },
+              { ids: ['z', 'x', 'c'], k: 'Z X C', d: '1 2 3' },
+              { ids: ['r'], k: 'R', d: '0' },
+              { ids: ['f', 'g', 'v', 'b'], k: 'F G V B', d: '+ * − /' },
+              { ids: ['t'], k: 'T', d: 'Clear' },
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Letters in alphabetical order',
+            chips: [
+              { ids: ABC_ORDER.slice(0, 12), k: 'Q → ]', d: 'A B C D E F G H I J K L' },
+              { ids: ABC_ORDER.slice(12, 23), k: 'A → \'', d: 'M N O P Q R S T U V W' },
+              { ids: ABC_ORDER.slice(23), k: 'Z X C', d: 'X Y Z' },
+            ],
+          },
+          {
+            title: 'Punctuation moves',
+            chips: [
+              { ids: ['v', 'b', 'n', 'm', 'comma', 'dot', 'slash'], k: 'V B N M , . /', d: '`  -  =  ;  \'  /  \\' },
+              { ids: ['0', 'minus', 'equal', 'bslash'], k: '0 - = \\', d: ',  .  [  ]' },
+              { ids: ['3', '4', '5', '6', '7', '8', '9'], k: '3 … 9', d: '4 … 0 (shifted one left — there is no 3)' },
+            ],
+          },
+        ],
+      ];
+
+      /* ---------- Board rendering (pure: returns an SVG string) ---------- */
+      var U = 64;
+      var PAD = 22;
+      var TOP = 30;
+      var BOARD_W = 15 * U + PAD * 2;
+      var BOARD_H = TOP + 5 * U + PAD;
+      var CAP = {
+        alpha: { side: '#cfc6b0', face: '#ece5d3', ink: '#34332f' },
+        mod: { side: '#3f4244', face: '#5d6163', ink: '#f39a4f' },
+        accent: { side: '#c2581c', face: '#ea7a35', ink: '#4a1f04' },
+      };
+      // layer legend colours per cap kind (index = layer)
+      var TINT = {
+        alpha: [null, '#c9480f', '#1763a6', '#8a6200'],
+        mod: [null, '#ff9d5c', '#86c5ff', '#f5cf5e'],
+        accent: [null, '#ffffff', '#0b3157', '#4a3300'],
+      };
+      var RING = [null, '#ff8a3d', '#5db0ff', '#f2c94c'];
+      var FONT = '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif';
+
+      function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+      function text(x, y, size, fill, str, extra) {
+        return (
+          '<text x="' + x + '" y="' + y + '" font-size="' + size + '" fill="' + fill + '" ' + (extra || '') + '>' + esc(str) + '</text>'
+        );
+      }
+      // Main legend, drawn the way it is printed on the cap.
+      function mainLegend(lg, x, y, ink, small) {
+        if (lg.s) {
+          if (small) return text(x + 11, y + 24, 14, ink, lg.t, 'font-weight="700"');
+          return text(x + 13, y + 23, 12, ink, lg.s, 'font-weight="600"') + text(x + 13, y + 44, 14.5, ink, lg.t, 'font-weight="700"');
+        }
+        if (lg.t.length === 1) return text(x + (small ? 11 : 13), y + (small ? 24 : 30), small ? 14 : 18, ink, lg.t, 'font-weight="700"');
+        return text(x + (small ? 11 : 12), y + (small ? 20 : 22), small ? 9 : 10.5, ink, lg.t, 'font-weight="700" letter-spacing=".02em"');
+      }
+      function same(a, b) {
+        return !!a && !!b && a.t === b.t && a.s === b.s;
+      }
+
+      // view: 'all' or 0..3
+      function boardSVG(view) {
+        var out = [];
+        out.push(
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + BOARD_W + ' ' + BOARD_H + '" font-family="' + FONT + '" role="img" aria-label="HHKB keymap, ' + (view === 'all' ? 'all layers' : 'layer ' + view) + '">'
+        );
+        out.push('<rect width="' + BOARD_W + '" height="' + BOARD_H + '" rx="16" fill="#4b4e50"/>');
+        out.push('<rect x="8" y="8" width="' + (BOARD_W - 16) + '" height="' + (BOARD_H - 16) + '" rx="11" fill="#56595b"/>');
+        out.push('<rect x="' + (PAD - 4) + '" y="' + (TOP - 4) + '" width="' + (15 * U + 8) + '" height="' + (5 * U + 8) + '" rx="8" fill="#3a3c3e"/>');
+
+        // LEDs: 1 = Layer 1, 2 = Layer 3, 3 = working mode
+        var leds = [
+          { on: view === 1, c: '#ff4a3d' },
+          { on: view === 3, c: '#f2c94c' },
+          { on: false, c: '#4cd964' },
+        ];
+        leds.forEach(function (led, i) {
+          var cx = PAD + 9.6 * U + i * 70;
+          out.push('<circle cx="' + cx + '" cy="15" r="5.5" fill="#2b2d2e"/>');
+          out.push('<circle cx="' + cx + '" cy="15" r="4" fill="' + led.c + '" opacity="' + (led.on ? 1 : 0.28) + '"/>');
+          if (led.on) out.push('<circle cx="' + cx + '" cy="15" r="9" fill="' + led.c + '" opacity=".25"/>');
+        });
+
+        // Blank corners of the bottom row
+        var by = TOP + 4 * U;
+        out.push(text(PAD + 12.7 * U, by + 30, 13, '#b9b4a6', 'Happy Hacking', 'font-weight="700" letter-spacing=".04em"'));
+        out.push(text(PAD + 12.7 * U, by + 47, 10.5, '#8e8b82', view === 'all' ? 'all layers' : 'layer ' + view + ' · ' + LAYERS[view].name, ''));
+
+        ROWS.forEach(function (row, r) {
+          var cx = PAD;
+          row.forEach(function (k) {
+            var x = cx;
+            var y = TOP + r * U;
+            var w = k.w * U;
+            cx += w;
+            if (k.id === '_') return;
+
+            var cap = CAP[k.kind];
+            var base = L0[k.id];
+            var g = [];
+            var cls = 'key';
+            var ring = '';
+            var body = '';
+
+            if (view === 'all') {
+              body += mainLegend(base, x, y, cap.ink, true);
+              [1, 2, 3].forEach(function (n) {
+                var lg = LAYERS[n].map[k.id];
+                if (!lg || same(lg, base)) return;
+                var right = n !== 2;
+                var tx = right ? x + w - 11 : x + 12;
+                var ty = n === 1 ? y + 20 : y + 48;
+                var size = lg.o.length === 1 ? 12.5 : 8.5;
+                body += text(tx, ty, size, TINT[k.kind][n], lg.o, 'font-weight="700"' + (right ? ' text-anchor="end"' : ''));
+              });
+            } else {
+              var own = LAYERS[view].map[k.id];
+              if (own) {
+                body += mainLegend(own, x, y, cap.ink, false);
+                if (view > 0 && !same(own, base)) ring = RING[view];
+              } else {
+                body += mainLegend(base, x, y, cap.ink, false);
+                if (LAYERS[view].hold.indexOf(k.id) === -1) cls += ' ghost';
+              }
+              if (LAYERS[view].hold.indexOf(k.id) !== -1) ring = '#ffffff';
+            }
+
+            g.push('<rect class="cap" x="' + (x + 3) + '" y="' + (y + 3) + '" width="' + (w - 6) + '" height="' + (U - 6) + '" rx="7" fill="' + cap.side + '"/>');
+            g.push('<rect x="' + (x + 7) + '" y="' + (y + 5) + '" width="' + (w - 14) + '" height="' + (U - 16) + '" rx="5" fill="' + cap.face + '"/>');
+            if (ring) {
+              g.push('<rect x="' + (x + 3) + '" y="' + (y + 3) + '" width="' + (w - 6) + '" height="' + (U - 6) + '" rx="7" fill="none" stroke="' + ring + '" stroke-width="2.5"' + (ring === '#ffffff' ? ' stroke-dasharray="5 4"' : '') + '/>');
+            }
+            g.push(body);
+            g.push('<rect class="halo" opacity="0" x="' + (x + 1.5) + '" y="' + (y + 1.5) + '" width="' + (w - 3) + '" height="' + (U - 3) + '" rx="8.5" fill="#ffffff" fill-opacity=".14" stroke="#ffffff" stroke-width="2"/>');
+
+            out.push(
+              '<g class="' + cls + '" data-id="' + k.id + '" tabindex="0"' + (cls.indexOf('ghost') !== -1 ? ' opacity=".34"' : '') + '>' + g.join('') + '</g>'
+            );
+          });
+        });
+        out.push('</svg>');
+        return out.join('');
+      }
+
+      /* ---------- Panels ---------- */
+      function describe(lg) {
+        if (lg.d) return lg.d;
+        return lg.s ? lg.t + '  ' + lg.s : lg.t;
+      }
+      function detailHTML(id) {
+        if (!id) {
+          return (
+            '<div><span class="lbl">Key</span><span class="val pass">Hover or tap a key</span></div>' +
+            LAYERS.map(function (ly) {
+              return '<div style="--c:var(--l' + ly.n + ')"><span class="lbl">L' + ly.n + ' · ' + esc(ly.name) + '</span><span class="val pass">—</span></div>';
+            }).join('')
+          );
+        }
+        var html = '<div><span class="lbl">Key</span><span class="keyname">' + esc(L0[id].t) + '</span></div>';
+        LAYERS.forEach(function (ly) {
+          var lg = ly.map[id];
+          html +=
+            '<div style="--c:var(--l' + ly.n + ')"><span class="lbl">L' + ly.n + ' · ' + esc(ly.name) + '</span>' +
+            (lg ? '<span class="val">' + esc(describe(lg)) + '</span>' : '<span class="val pass">passes through</span>') +
+            '</div>';
+        });
+        return html;
+      }
+      function layersHTML(view) {
+        var list = view === 'all' ? [1, 2, 3, 0] : [view];
+        return list
+          .map(function (n) {
+            var ly = LAYERS[n];
+            var html = '<section class="layer" style="--c:var(--l' + n + ')"><h2><span>Layer ' + n + '</span> · ' + esc(ly.name) + '</h2><p class="how">' + ly.how + '</p>';
+            GROUPS[n].forEach(function (grp) {
+              html += '<h3>' + esc(grp.title) + '</h3><div class="chips">';
+              grp.chips.forEach(function (c) {
+                html += '<button type="button" class="chip" data-ids="' + c.ids.join(' ') + '"><kbd>' + esc(c.k) + '</kbd><span>' + esc(c.d) + '</span></button>';
+              });
+              html += '</div>';
+            });
+            return html + '</section>';
+          })
+          .join('');
+      }
+
+      /* ---------- Page wiring ---------- */
+      if (typeof document !== 'undefined') {
+        (function () {
+          var VIEWS = ['all', 0, 1, 2, 3];
+          var state = { view: 'all', pinned: null };
+          var $tabs = document.getElementById('tabs');
+          var $board = document.getElementById('board');
+          var $detail = document.getElementById('detail');
+          var $layers = document.getElementById('layers');
+
+          $tabs.innerHTML = VIEWS.map(function (v) {
+            var label = v === 'all' ? 'All layers' : 'Layer ' + v + ' · ' + LAYERS[v].name;
+            var dot = v === 'all' ? '' : '<i style="--c:var(--l' + v + ')"></i>';
+            var key = v === 'all' ? '' : '<kbd>' + v + '</kbd>';
+            return '<button type="button" class="tab" data-view="' + v + '">' + dot + label + key + '</button>';
+          }).join('');
+
+          function keyEl(id) {
+            return $board.querySelector('.key[data-id="' + id + '"]');
+          }
+          function showKey(id) {
+            $detail.innerHTML = detailHTML(id);
+          }
+          function render() {
+            $board.innerHTML = boardSVG(state.view);
+            $layers.innerHTML = layersHTML(state.view);
+            Array.prototype.forEach.call($tabs.children, function (b) {
+              b.setAttribute('aria-pressed', String(b.getAttribute('data-view') === String(state.view)));
+            });
+            if (state.pinned && keyEl(state.pinned)) keyEl(state.pinned).classList.add('pinned');
+            showKey(state.pinned);
+          }
+          function setView(v) {
+            state.view = v;
+            try {
+              history.replaceState(null, '', v === 'all' ? '#all' : '#l' + v);
+            } catch (e) {}
+            render();
+          }
+          function highlight(ids, on) {
+            ids.forEach(function (id) {
+              var el = keyEl(id);
+              if (el) el.classList.toggle('hl', on);
+            });
+          }
+          function keyFrom(target) {
+            return target && target.closest ? target.closest('.key') : null;
+          }
+
+          $tabs.addEventListener('click', function (e) {
+            var b = e.target.closest('.tab');
+            if (!b) return;
+            var v = b.getAttribute('data-view');
+            setView(v === 'all' ? 'all' : Number(v));
+          });
+
+          $board.addEventListener('mouseover', function (e) {
+            var k = keyFrom(e.target);
+            if (k) showKey(k.getAttribute('data-id'));
+          });
+          $board.addEventListener('focusin', function (e) {
+            var k = keyFrom(e.target);
+            if (k) showKey(k.getAttribute('data-id'));
+          });
+          $board.addEventListener('mouseleave', function () {
+            showKey(state.pinned);
+          });
+          $board.addEventListener('click', function (e) {
+            var k = keyFrom(e.target);
+            if (!k) return;
+            var id = k.getAttribute('data-id');
+            if (state.pinned && keyEl(state.pinned)) keyEl(state.pinned).classList.remove('pinned');
+            state.pinned = state.pinned === id ? null : id;
+            if (state.pinned) k.classList.add('pinned');
+            showKey(state.pinned || id);
+          });
+
+          function chipFrom(e) {
+            return e.target.closest ? e.target.closest('.chip') : null;
+          }
+          ['mouseover', 'focusin'].forEach(function (type) {
+            $layers.addEventListener(type, function (e) {
+              var c = chipFrom(e);
+              if (c) highlight(c.getAttribute('data-ids').split(' '), true);
+            });
+          });
+          ['mouseout', 'focusout'].forEach(function (type) {
+            $layers.addEventListener(type, function (e) {
+              var c = chipFrom(e);
+              if (c) highlight(c.getAttribute('data-ids').split(' '), false);
+            });
+          });
+
+          document.addEventListener('keydown', function (e) {
+            if (e.metaKey || e.ctrlKey || e.altKey) return;
+            if (/^[0-3]$/.test(e.key)) {
+              setView(Number(e.key));
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+              var i = VIEWS.indexOf(state.view) + (e.key === 'ArrowRight' ? 1 : -1);
+              setView(VIEWS[(i + VIEWS.length) % VIEWS.length]);
+              e.preventDefault();
+            }
+          });
+
+          var m = /^#l([0-3])$/.exec(location.hash);
+          state.view = m ? Number(m[1]) : 'all';
+          render();
+        })();
+      }
+      if (typeof module !== 'undefined') {
+        module.exports = { boardSVG: boardSVG, detailHTML: detailHTML, layersHTML: layersHTML, LAYERS: LAYERS, ROWS: ROWS, L0: L0, BOARD_W: BOARD_W, BOARD_H: BOARD_H };
+      }
+    </script>
+  </body>
+</html>

@@ -4361,6 +4361,11 @@ ninja.data = [{
           description: "Gastronomic Delight",
           section: "Projects",handler: () => {
               window.location.href = "/projects/food/";
+            },},{id: "projects-hhkb-keymap",
+          title: 'HHKB Keymap',
+          description: "Sixty Keys, Four Layers",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/hhkb-keymap/";
             },},{id: "projects-neuron-atlas",
           title: 'Neuron Atlas',
           description: "A Field Guide to the Brain&#39;s Neurons",
