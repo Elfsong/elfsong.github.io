@@ -349,6 +349,12 @@ ul.timeline li::before {
 
   .resume-pub-authors {
     font-style: italic;
+
+    // The theme sets body to weight 300 and <strong> to "bolder"/500, which
+    // resolves to the regular face here, so bold has to be asked for explicitly.
+    strong {
+      font-weight: 700;
+    }
   }
 
   .resume-updated {
