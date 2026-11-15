@@ -9,15 +9,21 @@ display_categories: [work, fun]
 horizontal: false
 
 _styles: >
-  .post-description {
-    margin-bottom: 3rem;
+  .post-header {
+    display: none;
+  }
+  .pp-motto {
+    margin: 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--global-divider-color);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+    color: var(--global-text-color-light);
   }
   .pp-section {
     padding: 1.5rem 0 3rem;
     border-top: 1px solid var(--global-text-color);
-  }
-  .pp-section:last-child {
-    padding-bottom: 1rem;
   }
   .pp-head {
     display: flex;
@@ -144,4 +150,5 @@ _styles: >
 </div>
 </section>
 {%- endfor %}
+<p class="pp-motto">{{ page.description }}</p>
 </div>
