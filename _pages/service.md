@@ -66,6 +66,10 @@ _styles: >
     padding: 1.5rem 0 2.5rem;
     border-top: 1px solid var(--global-text-color);
   }
+  .svc-section:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
   .svc-section h2 {
     margin: 0.2rem 0 0;
     font-size: 0.8rem;
