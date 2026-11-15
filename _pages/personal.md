@@ -25,6 +25,10 @@ _styles: >
     padding: 1.5rem 0 3rem;
     border-top: 1px solid var(--global-text-color);
   }
+  .pp-section:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
   .pp-head {
     display: flex;
     align-items: baseline;
@@ -39,11 +43,6 @@ _styles: >
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--global-text-color);
-  }
-  .pp-count {
-    font-size: 0.8rem;
-    font-variant-numeric: tabular-nums;
-    color: var(--global-text-color-light);
   }
   .pp-grid {
     display: grid;
@@ -129,7 +128,6 @@ _styles: >
 <section class="pp-section" id="{{ category }}">
 <div class="pp-head">
 <h2>{{ category }}</h2>
-<span class="pp-count">{{ projects | size }}</span>
 </div>
 <div class="pp-grid">
 {%- for project in projects %}
