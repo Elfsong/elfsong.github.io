@@ -47,8 +47,17 @@ service:
             when: Long-term
 
 _styles: >
-  .post-description {
-    margin-bottom: 3rem;
+  .post-header {
+    display: none;
+  }
+  .svc-motto {
+    margin: 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--global-divider-color);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+    color: var(--global-text-color-light);
   }
   .svc-section {
     display: grid;
@@ -184,4 +193,5 @@ _styles: >
 </div>
 </section>
 {%- endfor %}
+<p class="svc-motto">{{ page.description }}</p>
 </div>
