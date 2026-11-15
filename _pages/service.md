@@ -11,18 +11,18 @@ horizontal: false
 service:
   - title: Conference Service
     rows:
-      - { name: CIKM, detail: Senior Program Committee, when: "2025, 2026" }
-      - { name: AISI, detail: Program Committee, when: "2026, 2027" }
       - { name: AAAI, detail: Program Committee, when: "2026, 2027" }
-      - { name: ICML, detail: Reviewer, when: "2025, 2026" }
+      - { name: ACL Rolling Review, detail: Area Chair, when: "2026" }
+      - { name: AISI, detail: Program Committee, when: "2026, 2027" }
+      - { name: AISTATS, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
+      - { name: CIKM, detail: Senior Program Committee, when: "2025, 2026" }
+      - { name: CVPR, detail: Reviewer, when: "2027" }
+      - { name: ECAI, detail: Reviewer, when: "2024, 2025" }
       - { name: ICLR, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
+      - { name: ICML, detail: Reviewer, when: "2025, 2026" }
+      - { name: NAACL, detail: Reviewer, when: "2025" }
       - { name: NeurIPS, detail: Reviewer, when: "2024, 2025, 2026" }
       - { name: NeurIPS, detail: Ethics Reviewer, when: "2025, 2026" }
-      - { name: AISTATS, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
-      - { name: CVPR, detail: Reviewer, when: "2027" }
-      - { name: NAACL, detail: Reviewer, when: "2025" }
-      - { name: ECAI, detail: Reviewer, when: "2024, 2025" }
-      - { name: ACL Rolling Review, detail: Area Chair, when: "2026" }
   - title: Consultation
     rows:
       - { name: University of Melbourne, detail: STEM Mentor, when: 2020–Present }
