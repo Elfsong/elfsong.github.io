@@ -146,6 +146,18 @@
       .key.ghost:hover {
         opacity: 0.8;
       }
+      /* Physically held down right now */
+      .key.down {
+        transform: translateY(2px);
+        opacity: 1;
+      }
+      .key.down .halo {
+        opacity: 1;
+        fill: #ff8a3d;
+        fill-opacity: 0.38;
+        stroke: #ff8a3d;
+        stroke-width: 3;
+      }
 
       /* Key detail strip */
       .detail {
@@ -283,8 +295,8 @@
       <div class="board-wrap" id="board"></div>
       <div class="detail" id="detail" aria-live="polite"></div>
       <p class="hint">
-        Hover a key to see what it does on every layer; click to pin it. Press <kbd class="k">0</kbd>–<kbd class="k">3</kbd> to jump
-        to a layer, <kbd class="k">←</kbd> <kbd class="k">→</kbd> to step through.
+        Type on your keyboard and the keys light up here — Fn-layer keys such as arrows or <kbd class="k">F1</kbd> light up together
+        with <kbd class="k">Fn</kbd>. Hover a key to see what it does on every layer; click to pin it.
       </p>
 
       <div class="layers" id="layers"></div>
@@ -702,7 +714,7 @@
           $tabs.innerHTML = VIEWS.map(function (v) {
             var label = v === 'all' ? 'All layers' : 'Layer ' + v + ' · ' + LAYERS[v].name;
             var dot = v === 'all' ? '' : '<i style="--c:var(--l' + v + ')"></i>';
-            var key = v === 'all' ? '' : '<kbd>' + v + '</kbd>';
+            var key = '';
             return '<button type="button" class="tab" data-view="' + v + '">' + dot + label + key + '</button>';
           }).join('');
 
@@ -720,6 +732,7 @@
             });
             if (state.pinned && keyEl(state.pinned)) keyEl(state.pinned).classList.add('pinned');
             showKey(state.pinned);
+            paintDown();
           }
           function setView(v) {
             state.view = v;
@@ -782,16 +795,90 @@
             });
           });
 
+          /* ----- Live typing: mirror the physical keyboard on the board ----- */
+          // The browser only sees what the firmware sends, so Fn/numpad-layer output is mapped back to the keys that produce it.
+          var CODE0 = {
+            Minus: 'minus', Equal: 'equal', Backslash: 'bslash', Backquote: 'grave', BracketLeft: 'lbrack', BracketRight: 'rbrack',
+            Semicolon: 'semi', Quote: 'quote', Comma: 'comma', Period: 'dot', Slash: 'slash',
+            Escape: 'esc', Tab: 'tab', Backspace: 'bksp', Enter: 'enter', ShiftLeft: 'lshift', ShiftRight: 'rshift', Space: 'space',
+            // Remapped modifiers: Command sits in the Control position, Control and Option on the bottom row.
+            MetaLeft: 'ctrl', MetaRight: 'ctrl', ControlLeft: 'lmeta', ControlRight: 'lmeta', AltLeft: 'lalt', AltRight: 'lalt',
+          };
+          var CODE1 = {
+            ArrowUp: 'lbrack', ArrowLeft: 'semi', ArrowRight: 'quote', ArrowDown: 'slash', PageUp: 'l', PageDown: 'dot',
+            Delete: 'grave', CapsLock: 'rshift', Help: 'bslash', Insert: 'bslash',
+            AudioVolumeDown: 'a', VolumeDown: 'a', AudioVolumeUp: 's', VolumeUp: 's', AudioVolumeMute: 'd', VolumeMute: 'd',
+            MediaTrackPrevious: 'z', MediaTrackNext: 'x',
+          };
+          var CODE2 = {
+            Numpad7: 'q', Numpad8: 'w', Numpad9: 'e', Numpad0: 'r', NumLock: 't', Numpad4: 'a', Numpad5: 's', Numpad6: 'd',
+            NumpadAdd: 'f', NumpadMultiply: 'g', Numpad1: 'z', Numpad2: 'x', Numpad3: 'c', NumpadSubtract: 'v', NumpadDivide: 'b',
+          };
+          // Keys whose browser default (scrolling, quick-find, history back, clicking the focused button) would get in the way.
+          var SWALLOW = /^(Space|Arrow\w+|Page\w+|Quote|Slash|Backspace|Enter)$/;
+          var held = {}; // event.code -> [key ids]
+
+          function idsFor(code) {
+            var m;
+            if ((m = /^Key([A-Z])$/.exec(code))) return [fromLayer3(m[1].toLowerCase())];
+            if ((m = /^Digit(\d)$/.exec(code))) return [fromLayer3(m[1])];
+            if ((m = /^F(\d|1[0-2])$/.exec(code))) return ['fn', ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'minus', 'equal'][m[1] - 1]];
+            if (CODE0[code]) return [fromLayer3(CODE0[code])];
+            if (CODE1[code]) return ['fn', CODE1[code]];
+            if (CODE2[code]) return [CODE2[code]];
+            return null;
+          }
+          // While the A–Z layer is on screen, assume it is active on the keyboard too and find the key that produced the character.
+          function fromLayer3(id) {
+            if (state.view !== 3) return id;
+            for (var k in L3) if (same(L3[k], L0[id])) return k;
+            return id;
+          }
+          function paintDown() {
+            var on = {};
+            Object.keys(held).forEach(function (c) {
+              held[c].forEach(function (id) {
+                on[id] = true;
+              });
+            });
+            Array.prototype.forEach.call($board.querySelectorAll('.key'), function (el) {
+              el.classList.toggle('down', !!on[el.getAttribute('data-id')]);
+            });
+          }
+          function release(code) {
+            if (!held[code]) return;
+            delete held[code];
+            paintDown();
+          }
+          function releaseAll() {
+            held = {};
+            paintDown();
+          }
+
           document.addEventListener('keydown', function (e) {
-            if (e.metaKey || e.ctrlKey || e.altKey) return;
-            if (/^[0-3]$/.test(e.key)) {
-              setView(Number(e.key));
-            } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-              var i = VIEWS.indexOf(state.view) + (e.key === 'ArrowRight' ? 1 : -1);
-              setView(VIEWS[(i + VIEWS.length) % VIEWS.length]);
-              e.preventDefault();
+            var ids = idsFor(e.code);
+            if (!ids) return;
+            if (!e.metaKey && !e.ctrlKey && !e.altKey && SWALLOW.test(e.code)) e.preventDefault();
+            if (e.repeat && held[e.code]) return;
+            held[e.code] = ids;
+            paintDown();
+            showKey(ids[ids.length - 1]);
+            // Caps Lock (and media keys on some systems) never send a matching keyup.
+            if (CODE1[e.code] && !/^(Arrow|Page|Delete)/.test(e.code)) {
+              var code = e.code;
+              setTimeout(function () {
+                release(code);
+              }, 250);
             }
           });
+          document.addEventListener('keyup', function (e) {
+            if (SWALLOW.test(e.code)) e.preventDefault();
+            // macOS swallows the keyup of anything released while Command is held, so letting go of Command clears the board.
+            if (e.key === 'Meta') releaseAll();
+            else release(e.code);
+          });
+          window.addEventListener('blur', releaseAll);
+          document.addEventListener('visibilitychange', releaseAll);
 
           var m = /^#l([0-3])$/.exec(location.hash);
           state.view = m ? Number(m[1]) : 'all';
