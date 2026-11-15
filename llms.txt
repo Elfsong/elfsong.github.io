@@ -77,5 +77,5 @@ This file is the machine-readable entry point of {{ site.url }}, written for AI 
 - Area Chair: ACL Rolling Review 2026
 - Senior Program Committee: CIKM 2025, 2026
 - Program Committee: AAAI 2026, 2027; AISI 2026, 2027
-- Reviewer: NeurIPS 2024-2026 (Ethics Reviewer 2025, 2026); ICLR 2024-2027; ICML 2025, 2026; AISTATS 2024-2027; NAACL 2025; ECAI 2024, 2025
+- Reviewer: NeurIPS 2024-2026 (Ethics Reviewer 2025, 2026); ICLR 2024-2027; ICML 2025, 2026; AISTATS 2024-2027; CVPR 2027; NAACL 2025; ECAI 2024, 2025
 - Details: {{ '/service/' | absolute_url }}
