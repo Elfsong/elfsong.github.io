@@ -7,15 +7,15 @@ nav: true
 nav_order: 5
 horizontal: false
 
-# Page content. Each row is: name | detail | when. `url` is optional; `highlight: true` shows the detail in the theme colour.
+# Page content. Each row is: name | detail | when. `url` is optional.
 service:
   - title: Conference Service
     rows:
       - { name: AAAI, detail: Program Committee, when: "2026, 2027" }
-      - { name: ACL Rolling Review, detail: Area Chair, when: "2026", highlight: true }
+      - { name: ACL Rolling Review, detail: Area Chair, when: "2026" }
       - { name: AISI, detail: Program Committee, when: "2026, 2027" }
       - { name: AISTATS, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
-      - { name: CIKM, detail: Senior Program Committee, when: "2025, 2026", highlight: true }
+      - { name: CIKM, detail: Senior Program Committee, when: "2025, 2026" }
       - { name: CVPR, detail: Reviewer, when: "2027" }
       - { name: ECAI, detail: Reviewer, when: "2024, 2025" }
       - { name: ICLR, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
@@ -134,10 +134,6 @@ _styles: >
     line-height: 1.5;
     color: var(--global-text-color-light);
   }
-  .svc-detail.svc-key {
-    font-weight: 500;
-    color: var(--global-theme-color);
-  }
   .svc-when {
     font-size: 0.9rem;
     font-variant-numeric: tabular-nums;
@@ -192,7 +188,7 @@ _styles: >
 {%- else %}
 <span class="svc-name">{{ row.name }}</span>
 {%- endif %}
-<span class="svc-detail{% if row.highlight %} svc-key{% endif %}">{{ row.detail }}</span>
+<span class="svc-detail">{{ row.detail }}</span>
 <span class="svc-when">{{ row.when }}</span>
 </li>
 {%- endfor %}
