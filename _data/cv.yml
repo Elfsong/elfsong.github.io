@@ -20,13 +20,13 @@ sections:
         degree: PhD Candidate in Computer Science, College of Computing and Data Science
         date: Aug. 2022 – Feb. 2027 (Expected)
         details:
-          - "Advisor: <em>Prof. Anh Tuan Luu</em>"
+          - "Advisor: <a href='https://tuanluu.github.io/'><em>Prof. Anh Tuan Luu</em></a>"
       - institution: The University of Melbourne
         location: Melbourne, Australia
         degree: Master of Information Technology, Faculty of Engineering
         date: Oct. 2017 – Dec. 2019
         details:
-          - "Advisor: <em>Prof. Richard O. Sinnott</em>"
+          - "Advisor: <a href='https://findanexpert.unimelb.edu.au/profile/342078-richard-sinnott'><em>Prof. Richard O. Sinnott</em></a>"
       - institution: Central South University
         location: Changsha, China
         degree: Bachelor of Information Security, School of Computer Science and Engineering
@@ -49,10 +49,10 @@ sections:
         unit: Institute of Data Science
         date: Aug. 2021 – May 2026
         details:
-          - "Research Associate (Advisor: <em>Prof. See-Kiong Ng</em>)"
-          - "<strong>Benchmarks &amp; Evaluation:</strong> Established an independent research agenda on the efficiency of LLM-generated code: built benchmarks from function to repository level (<em>Mercury</em>, <em>EffiBench-X</em>, <em>PortBench</em>, <em>SWE-Perf</em>, <em>CodeArena</em>)."
-          - "<strong>Code Self-Evolution:</strong> Designed reinforcement learning methods to drive code-model self-evolution (<em>Afterburner</em>, <em>Mastermind</em>), and trained execution-free reward models to remove the RL rollout bottleneck (<em>CodeScaler</em>)."
-          - "<strong>Test Generation:</strong> Led a software-testing research line on the robust evaluation of generated code, spanning mutation analysis for CPU and GPU programs and compact, high-quality test generation (<em>ULT</em>, <em>Nexus</em>, ICSE’25)."
+          - "Research Associate (Advisor: <a href='https://www.comp.nus.edu.sg/~ngsk/'><em>Prof. See-Kiong Ng</em></a>)"
+          - "<strong>Benchmarks &amp; Evaluation:</strong> Established an independent research agenda on the efficiency of LLM-generated code: built benchmarks from function to repository level (<a href='https://proceedings.neurips.cc/paper_files/paper/2024/hash/1df1df43b58845650b8dada00fca9772-Abstract-Datasets_and_Benchmarks_Track.html'><em>Mercury</em></a>, <a href='https://arxiv.org/abs/2505.13004'><em>EffiBench-X</em></a>, <a href='/assets/pdf/portbench.pdf'><em>PortBench</em></a>, <a href='https://arxiv.org/abs/2507.12415'><em>SWE-Perf</em></a>, <a href='https://aclanthology.org/2025.acl-demo.48/'><em>CodeArena</em></a>)."
+          - "<strong>Code Self-Evolution:</strong> Designed reinforcement learning methods to drive code-model self-evolution (<a href='https://arxiv.org/abs/2505.23387'><em>Afterburner</em></a>, <a href='https://arxiv.org/abs/2607.01764'><em>Mastermind</em></a>), and trained execution-free reward models to remove the RL rollout bottleneck (<a href='https://arxiv.org/abs/2602.17684'><em>CodeScaler</em></a>)."
+          - "<strong>Test Generation:</strong> Led a software-testing research line on the robust evaluation of generated code, spanning mutation analysis for CPU and GPU programs and compact, high-quality test generation (<a href='https://arxiv.org/abs/2508.00408'><em>ULT</em></a>, <a href='https://arxiv.org/abs/2510.26423'><em>Nexus</em></a>, <a href='https://arxiv.org/abs/2409.09464'>ICSE’25</a>)."
           - "<strong>Industry Collaboration:</strong> Affiliated with the Cisco–NUS Accelerated Digital Economy Corporate Laboratory, translating research into internal Cisco products; funded by Cisco, Google, NVIDIA and Thinking Machines Lab."
       - organization: ByteDance
         unit: TikTok Search, Beijing
