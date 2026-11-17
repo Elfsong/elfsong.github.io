@@ -29,6 +29,7 @@ service:
   - title: Volunteer
     groups:
       - label: Conferences
+        compact: true
         rows:
           - { name: AAAI, when: "2023, 2026" }
           - { name: NeurIPS, when: "2025" }
@@ -52,18 +53,18 @@ _styles: >
   }
   .svc-motto {
     margin: 0;
-    padding-top: 1.5rem;
+    padding-top: 0.7rem;
     border-top: 1px solid var(--global-divider-color);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-align: center;
     color: var(--global-text-color-light);
   }
   .svc-section {
     display: grid;
-    grid-template-columns: 12rem 1fr;
-    column-gap: 2rem;
-    padding: 1.5rem 0 2.5rem;
+    grid-template-columns: 11rem 1fr;
+    column-gap: 1.5rem;
+    padding: 0.7rem 0 0.9rem;
     border-top: 1px solid var(--global-text-color);
   }
   .svc-section:first-child {
@@ -71,7 +72,7 @@ _styles: >
     border-top: 0;
   }
   .svc-section h2 {
-    margin: 0.2rem 0 0;
+    margin: 0.1rem 0 0;
     font-size: 0.8rem;
     font-weight: 500;
     line-height: 1.6;
@@ -80,15 +81,15 @@ _styles: >
     color: var(--global-theme-color);
   }
   .svc-label {
-    margin: 2rem 0 0.25rem;
-    font-size: 0.75rem;
+    margin: 0.6rem 0 0.1rem;
+    font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--global-text-color-light);
   }
   .svc-label:first-child {
-    margin-top: 0.25rem;
+    margin-top: 0.15rem;
   }
   .svc-rows {
     list-style: none;
@@ -100,20 +101,30 @@ _styles: >
     grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
     column-gap: 1.5rem;
     align-items: baseline;
-    padding: 0.7rem 0;
+    padding: 0.15rem 0;
     border-bottom: 1px solid var(--global-divider-color);
-  }
-  .svc-rows li:first-child {
-    padding-top: 0;
   }
   .svc-rows li:last-child {
     border-bottom: 0;
   }
+  .svc-rows--compact {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+  .svc-rows--compact li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 1rem;
+    border-bottom: 0;
+  }
+  .svc-rows--compact .svc-detail {
+    display: none;
+  }
   .svc-name {
     font-family: "Roboto Slab", Georgia, serif;
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.4;
+    line-height: 1.35;
     color: var(--global-text-color);
   }
   a.svc-name {
@@ -130,12 +141,12 @@ _styles: >
     color: var(--global-text-color-light);
   }
   .svc-detail {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    line-height: 1.35;
     color: var(--global-text-color-light);
   }
   .svc-when {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
     text-align: right;
@@ -144,8 +155,12 @@ _styles: >
   @media (max-width: 768px) {
     .svc-section {
       grid-template-columns: 1fr;
-      row-gap: 1.25rem;
-      padding-bottom: 2rem;
+      row-gap: 0.5rem;
+      padding-bottom: 1rem;
+    }
+    .svc-rows--compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1.5rem;
     }
     .svc-rows li {
       grid-template-columns: minmax(0, 1fr) auto;
@@ -180,7 +195,7 @@ _styles: >
 {%- if group.label %}
 <p class="svc-label">{{ group.label }}</p>
 {%- endif %}
-<ul class="svc-rows">
+<ul class="svc-rows{% if group.compact %} svc-rows--compact{% endif %}">
 {%- for row in group.rows %}
 <li>
 {%- if row.url %}
