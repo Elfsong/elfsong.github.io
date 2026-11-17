@@ -53,7 +53,7 @@ _styles: >
   }
   .svc-motto {
     margin: 0;
-    padding-top: 1.25rem;
+    padding-top: 0.9rem;
     border-top: 1px solid var(--global-divider-color);
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -64,11 +64,14 @@ _styles: >
     display: grid;
     grid-template-columns: 12rem 1fr;
     column-gap: 1.5rem;
-    padding: 1.4rem 0 1.5rem;
+    padding: 1.1rem 0 1.15rem;
     border-top: 1px solid var(--global-divider-color);
   }
+  .svc {
+    margin-top: -1.25rem;
+  }
   .svc-section:first-child {
-    padding-top: 0.5rem;
+    padding-top: 0;
     border-top: 0;
   }
   .svc-section h2 {
@@ -82,7 +85,7 @@ _styles: >
     color: var(--global-theme-color);
   }
   .svc-label {
-    margin: 1.2rem 0 0.5rem;
+    margin: 0.9rem 0 0.4rem;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -102,7 +105,7 @@ _styles: >
     grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
     column-gap: 1.5rem;
     align-items: baseline;
-    padding: 0.35rem 0;
+    padding: 0.25rem 0;
     border-bottom: 1px solid var(--global-divider-color);
   }
   .svc-rows li:first-child {
@@ -121,7 +124,7 @@ _styles: >
     display: inline-flex;
     align-items: baseline;
     column-gap: 0.6rem;
-    padding: 0.3rem 0.9rem;
+    padding: 0.2rem 0.85rem;
     border: 1px solid var(--global-divider-color);
     border-radius: 999px;
   }
