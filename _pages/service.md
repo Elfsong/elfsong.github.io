@@ -53,7 +53,7 @@ _styles: >
   }
   .svc-motto {
     margin: 0;
-    padding-top: 0.7rem;
+    padding-top: 1.75rem;
     border-top: 1px solid var(--global-divider-color);
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -62,17 +62,17 @@ _styles: >
   }
   .svc-section {
     display: grid;
-    grid-template-columns: 11rem 1fr;
-    column-gap: 1.5rem;
-    padding: 0.7rem 0 0.9rem;
-    border-top: 1px solid var(--global-text-color);
+    grid-template-columns: 10rem 1fr;
+    column-gap: 2rem;
+    padding: 2rem 0 2.25rem;
+    border-top: 1px solid var(--global-divider-color);
   }
   .svc-section:first-child {
-    padding-top: 0;
+    padding-top: 0.5rem;
     border-top: 0;
   }
   .svc-section h2 {
-    margin: 0.1rem 0 0;
+    margin: 0.15rem 0 0;
     font-size: 0.8rem;
     font-weight: 500;
     line-height: 1.6;
@@ -81,7 +81,7 @@ _styles: >
     color: var(--global-theme-color);
   }
   .svc-label {
-    margin: 0.6rem 0 0.1rem;
+    margin: 1.75rem 0 0.6rem;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -89,7 +89,7 @@ _styles: >
     color: var(--global-text-color-light);
   }
   .svc-label:first-child {
-    margin-top: 0.15rem;
+    margin-top: 0.25rem;
   }
   .svc-rows {
     list-style: none;
@@ -98,33 +98,46 @@ _styles: >
   }
   .svc-rows li {
     display: grid;
-    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
     column-gap: 1.5rem;
     align-items: baseline;
-    padding: 0.15rem 0;
+    padding: 0.55rem 0;
     border-bottom: 1px solid var(--global-divider-color);
   }
+  .svc-rows li:first-child {
+    padding-top: 0;
+  }
   .svc-rows li:last-child {
+    padding-bottom: 0;
     border-bottom: 0;
   }
-  .svc-rows--compact {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 2rem;
+  .svc-rows.svc-rows--compact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.6rem;
   }
-  .svc-rows--compact li {
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 1rem;
-    border-bottom: 0;
+  .svc-rows.svc-rows--compact li {
+    display: inline-flex;
+    align-items: baseline;
+    column-gap: 0.6rem;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 999px;
   }
   .svc-rows--compact .svc-detail {
     display: none;
   }
+  .svc-rows--compact .svc-name {
+    font-size: 0.95rem;
+  }
+  .svc-rows--compact .svc-when {
+    font-size: 0.8rem;
+  }
   .svc-name {
     font-family: "Roboto Slab", Georgia, serif;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 400;
-    line-height: 1.35;
+    line-height: 1.4;
     color: var(--global-text-color);
   }
   a.svc-name {
@@ -141,8 +154,8 @@ _styles: >
     color: var(--global-text-color-light);
   }
   .svc-detail {
-    font-size: 0.85rem;
-    line-height: 1.35;
+    font-size: 0.9rem;
+    line-height: 1.4;
     color: var(--global-text-color-light);
   }
   .svc-when {
@@ -155,12 +168,8 @@ _styles: >
   @media (max-width: 768px) {
     .svc-section {
       grid-template-columns: 1fr;
-      row-gap: 0.5rem;
-      padding-bottom: 1rem;
-    }
-    .svc-rows--compact {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 1.5rem;
+      row-gap: 1rem;
+      padding: 1.5rem 0 1.75rem;
     }
     .svc-rows li {
       grid-template-columns: minmax(0, 1fr) auto;
