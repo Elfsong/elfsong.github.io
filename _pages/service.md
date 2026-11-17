@@ -53,7 +53,7 @@ _styles: >
   }
   .svc-motto {
     margin: 0;
-    padding-top: 1.75rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--global-divider-color);
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -62,9 +62,9 @@ _styles: >
   }
   .svc-section {
     display: grid;
-    grid-template-columns: 10rem 1fr;
-    column-gap: 2rem;
-    padding: 2rem 0 2.25rem;
+    grid-template-columns: 12rem 1fr;
+    column-gap: 1.5rem;
+    padding: 1.4rem 0 1.5rem;
     border-top: 1px solid var(--global-divider-color);
   }
   .svc-section:first-child {
@@ -78,10 +78,11 @@ _styles: >
     line-height: 1.6;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    white-space: nowrap;
     color: var(--global-theme-color);
   }
   .svc-label {
-    margin: 1.75rem 0 0.6rem;
+    margin: 1.2rem 0 0.5rem;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -101,7 +102,7 @@ _styles: >
     grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
     column-gap: 1.5rem;
     align-items: baseline;
-    padding: 0.55rem 0;
+    padding: 0.35rem 0;
     border-bottom: 1px solid var(--global-divider-color);
   }
   .svc-rows li:first-child {
