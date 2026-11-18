@@ -52,8 +52,9 @@ _styles: >
     display: none;
   }
   .svc-motto {
+    flex: 0 0 auto;
     margin: 0;
-    padding-top: 0.9rem;
+    padding-top: clamp(0.7rem, 1.7vh, 1.6rem);
     border-top: 1px solid var(--global-divider-color);
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -64,11 +65,24 @@ _styles: >
     display: grid;
     grid-template-columns: 12rem 1fr;
     column-gap: 1.5rem;
-    padding: 1.1rem 0 1.15rem;
+    flex: 1 1 auto;
+    padding: clamp(0.7rem, 1.7vh, 1.6rem) 0;
     border-top: 1px solid var(--global-divider-color);
   }
   .svc {
+    display: flex;
+    flex-direction: column;
     margin-top: -1.25rem;
+  }
+  @media (min-width: 769px) {
+    .svc {
+      min-height: min(calc(100vh - 160px), 62rem);
+    }
+  }
+  .svc-section > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
   .svc-section:first-child {
     padding-top: 0;
@@ -85,7 +99,7 @@ _styles: >
     color: var(--global-theme-color);
   }
   .svc-label {
-    margin: 0.9rem 0 0.4rem;
+    margin: clamp(0.5rem, 1.4vh, 1.2rem) 0 0.35rem;
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -96,6 +110,9 @@ _styles: >
     margin-top: 0.25rem;
   }
   .svc-rows {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -104,24 +121,32 @@ _styles: >
     display: grid;
     grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
     column-gap: 1.5rem;
+    flex: 1 1 auto;
+    align-content: center;
     align-items: baseline;
-    padding: 0.25rem 0;
+    padding: 0.15rem 0;
     border-bottom: 1px solid var(--global-divider-color);
   }
   .svc-rows li:first-child {
+    flex-grow: 0.5;
+    align-content: start;
     padding-top: 0;
   }
   .svc-rows li:last-child {
+    flex-grow: 0.5;
+    align-content: end;
     padding-bottom: 0;
     border-bottom: 0;
   }
   .svc-rows.svc-rows--compact {
-    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 0.55rem 0.6rem;
   }
   .svc-rows.svc-rows--compact li {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: baseline;
     column-gap: 0.6rem;
     padding: 0.2rem 0.85rem;
@@ -141,7 +166,7 @@ _styles: >
     font-family: "Roboto Slab", Georgia, serif;
     font-size: 1.05rem;
     font-weight: 400;
-    line-height: 1.4;
+    line-height: 1.3;
     color: var(--global-text-color);
   }
   a.svc-name {
@@ -159,7 +184,7 @@ _styles: >
   }
   .svc-detail {
     font-size: 0.9rem;
-    line-height: 1.4;
+    line-height: 1.3;
     color: var(--global-text-color-light);
   }
   .svc-when {
@@ -196,14 +221,20 @@ _styles: >
 
 <div class="svc">
 {%- for section in page.service %}
-<section class="svc-section">
-<h2>{{ section.title }}</h2>
-<div>
 {%- if section.groups -%}
   {%- assign groups = section.groups -%}
 {%- else -%}
   {%- assign groups = "" | split: "" | push: section -%}
 {%- endif -%}
+{%- assign gaps = 0 -%}
+{%- for group in groups -%}
+  {%- unless group.compact -%}
+    {%- assign gaps = gaps | plus: group.rows.size | minus: 1 -%}
+  {%- endunless -%}
+{%- endfor %}
+<section class="svc-section" style="flex-grow: {{ gaps }}">
+<h2>{{ section.title }}</h2>
+<div>
 {%- for group in groups %}
 {%- if group.label %}
 <p class="svc-label">{{ group.label }}</p>
