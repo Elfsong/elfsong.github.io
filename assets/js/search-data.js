@@ -51,7 +51,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-does-background-music-matter-to-speech-in-language-models",
+        },{id: "post-把-inkling-2-mini-拆开看",
+      
+        title: "把 Inkling 2 Mini 拆开看",
+      
+      description: "一个可以拖拽、单步播放的 3D 架构图解：24 层物理层如何靠循环 Core 跑出 48 层前向。",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/inkling2-mini-3d/";
+        
+      },
+    },{id: "post-does-background-music-matter-to-speech-in-language-models",
       
         title: "Does Background Music Matter to Speech in Language Models",
       
