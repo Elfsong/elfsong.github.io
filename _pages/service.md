@@ -19,7 +19,7 @@ service:
       - { name: CVPR, detail: Reviewer, when: "2027" }
       - { name: ECAI, detail: Reviewer, when: "2024, 2025" }
       - { name: ICLR, detail: Reviewer, when: "2024, 2025, 2026, 2027" }
-      - { name: ICML, detail: Reviewer, when: "2025, 2026" }
+      - { name: ICML, detail: Reviewer, when: "2025, 2026, 2027" }
       - { name: NeurIPS, detail: Reviewer, when: "2024, 2025, 2026" }
       - { name: NeurIPS, detail: Ethics Reviewer, when: "2025, 2026" }
   - title: Consultation
