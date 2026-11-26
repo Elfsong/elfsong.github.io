@@ -1,0 +1,3286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inkling 2 Mini · 3D 架构图解</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --ui-bg: var(--background, #f4f4f2);
+      --ui-card: var(--card, #ffffff);
+      --ui-content: var(--content, #f0f1f4);
+      --ui-fg: var(--foreground, #1a1d24);
+      --ui-muted: var(--muted-foreground, #626977);
+      --ui-border: var(--border, #d5d9e2);
+      --ui-card-border: var(--card-border, #e1e4ec);
+      --ui-code-fg: var(--code-foreground, #1a1d24);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not(.light) {
+        --ui-bg: var(--background, #111318);
+        --ui-card: var(--card, #181c24);
+        --ui-content: var(--content, #13161e);
+        --ui-fg: var(--foreground, #eceff4);
+        --ui-muted: var(--muted-foreground, #8e96a6);
+        --ui-border: var(--border, #2c3342);
+        --ui-card-border: var(--card-border, #232936);
+        --ui-code-fg: var(--code-foreground, #e2e8f0);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      background: var(--ui-bg);
+      color: var(--ui-fg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .panel {
+      background: var(--ui-card);
+      border: 1px solid var(--ui-border);
+      border-radius: 10px;
+    }
+
+    .inset {
+      background: var(--ui-content);
+      border: 1px solid var(--ui-card-border);
+      border-radius: 8px;
+    }
+
+    .hud-chip {
+      background: color-mix(in srgb, var(--ui-card) 90%, transparent);
+      border: 1px solid var(--ui-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 18px;
+      font-weight: 500;
+      border: 1px solid var(--ui-card-border);
+      background: var(--ui-content);
+      color: var(--ui-muted);
+      white-space: nowrap;
+    }
+
+    .ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--ui-border);
+      background: var(--ui-card);
+      color: var(--ui-fg);
+      cursor: pointer;
+      transition: background-color 0.14s ease, border-color 0.14s ease;
+      user-select: none;
+    }
+    .ctrl-btn:hover {
+      border-color: var(--ui-fg);
+      background: var(--ui-content);
+    }
+    .ctrl-btn.primary {
+      background: var(--ui-fg);
+      color: var(--ui-bg);
+      border-color: var(--ui-fg);
+    }
+    .ctrl-btn.primary:hover { opacity: 0.88; }
+
+    .seg {
+      display: inline-flex;
+      flex-wrap: wrap;
+      padding: 2px;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--ui-fg) 5%, var(--ui-card));
+      border: 1px solid var(--ui-border);
+      gap: 2px;
+    }
+    .seg-item {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ui-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: color 0.14s ease, background-color 0.14s ease, border-color 0.14s ease;
+      white-space: nowrap;
+    }
+    .seg-item:hover:not(.active) { color: var(--ui-fg); }
+    .seg-item.active {
+      background: var(--ui-card);
+      color: var(--ui-fg);
+      border-color: var(--ui-border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px 4px 10px;
+      border-radius: 8px;
+      border: 1px dashed var(--ui-border);
+      background: color-mix(in srgb, var(--ui-fg) 3%, var(--ui-card));
+    }
+    .nav-group-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ui-muted);
+      white-space: nowrap;
+      padding-right: 2px;
+    }
+
+    .scene-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--ui-border);
+      background: var(--ui-card);
+      color: var(--ui-muted);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+      white-space: nowrap;
+    }
+    .scene-tab:hover { border-color: var(--ui-fg); color: var(--ui-fg); }
+    .scene-tab.active {
+      border-color: var(--ui-fg);
+      background: var(--ui-fg);
+      color: var(--ui-bg);
+    }
+
+    .tok-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      border: 1px solid var(--ui-card-border);
+      background: var(--ui-content);
+      color: var(--ui-muted);
+      cursor: pointer;
+      transition: all 0.14s ease;
+      user-select: none;
+    }
+    .tok-btn:hover { color: var(--ui-fg); border-color: var(--ui-muted); }
+    .tok-btn.active {
+      color: var(--ui-fg);
+      border-color: var(--ui-fg);
+      background: var(--ui-card);
+      font-weight: 600;
+    }
+
+    #canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--ui-card-border);
+      background: var(--ui-content);
+      cursor: grab;
+      touch-action: none;
+    }
+    #canvas-wrap:active { cursor: grabbing; }
+    #stage-canvas { width: 100%; height: 100%; display: block; }
+
+    #hover-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 30;
+      max-width: 320px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--ui-fg);
+      display: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+    }
+
+    input[type="range"] { accent-color: var(--ui-fg); }
+
+    .math-block {
+      color: var(--ui-fg);
+    }
+    .math-block math {
+      font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
+      font-size: 15px;
+    }
+    .math-block mtd { padding: 3px 0; }
+    .math-block mtd:first-child { text-align: right; padding-right: 4px; }
+    .math-block mtd:nth-child(2) { text-align: center; padding: 3px 4px; }
+    .math-block mtd:last-child { text-align: left; padding-left: 2px; }
+  </style>
+</head>
+<body class="antialiased">
+  <div class="max-w-[1480px] mx-auto px-4 py-3 space-y-2.5">
+
+    <!-- Header -->
+    <header class="panel px-4 py-3 space-y-2.5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h1 class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Inkling 2 Mini</h1>
+        <span class="text-xs font-mono text-[var(--ui-muted)]" id="hdr-active">24 层 · Core 3×（共 48 层前向）· 激活 ~5.4B / 26.4B</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 border-t border-[var(--ui-border)]">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">推理阶段</span>
+          <div class="seg" id="exec-group">
+            <button class="seg-item active" data-exec="prefill">Prefill</button>
+            <button class="seg-item" data-exec="decode">Decode</button>
+            <button class="seg-item" data-exec="dspark">DSpark</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">Core 循环</span>
+          <div class="seg" id="loop-group">
+            <button class="seg-item" data-k="1">1×</button>
+            <button class="seg-item" data-k="2">2×</button>
+            <button class="seg-item active" data-k="3">3×</button>
+            <button class="seg-item" data-k="4">4×</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">输入示例</span>
+          <div class="seg" id="scenario-group">
+            <button class="seg-item active" data-scenario="math">17×13</button>
+            <button class="seg-item" data-scenario="code">代码</button>
+            <button class="seg-item" data-scenario="coref">指代</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 3-Level Hierarchical Architecture View Map: Overview ▸ 单层内部 ▸ (GQA Attention → MoE) | Memory -->
+    <nav class="panel px-3 py-2 flex flex-wrap items-center gap-2" id="scene-selector">
+      <button class="scene-tab active" data-scene="overview">
+        <span class="text-xs font-semibold">Overview</span>
+      </button>
+
+      <span class="text-xs text-[var(--ui-muted)] select-none">▸</span>
+
+      <div class="nav-group">
+        <button class="scene-tab" data-scene="layer">
+          <span class="text-xs font-semibold" id="nav-layer-btn">单层内部 (L9)</span>
+        </button>
+        <span class="text-xs text-[var(--ui-muted)] select-none">▸</span>
+        <button class="scene-tab" data-scene="rmsnorm">
+          <span class="text-xs font-semibold">RMSNorm</span>
+        </button>
+        <span class="text-xs text-[var(--ui-muted)] select-none">→</span>
+        <button class="scene-tab" data-scene="multihead">
+          <span class="text-xs font-semibold">① GQA Attention</span>
+          <span class="text-xs font-mono opacity-70">24Q:8KV</span>
+        </button>
+        <span class="text-xs text-[var(--ui-muted)] select-none">→</span>
+        <button class="scene-tab" data-scene="moe">
+          <span class="text-xs font-semibold">② MoE</span>
+          <span class="text-xs font-mono opacity-70">Top-8/128</span>
+        </button>
+      </div>
+
+      <div class="nav-group">
+        <span class="nav-group-label">记忆</span>
+        <button class="scene-tab" data-scene="spacetime">
+          <span class="text-xs font-semibold">KV Cache &amp; Block AttnRes</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Stage + Compact Spec Column -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-3.5 items-start">
+
+      <!-- Left: 3D Stage (8 cols) -->
+      <section class="xl:col-span-8 panel p-3 space-y-2.5">
+        <!-- Step-by-Step Playback Bar -->
+        <div class="inset px-2.5 py-2 space-y-2">
+          <div class="flex flex-col lg:flex-row lg:items-center gap-2">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button id="btn-prev" class="ctrl-btn">上一步</button>
+              <button id="btn-play" class="ctrl-btn primary min-w-[60px]">播放</button>
+              <button id="btn-next" class="ctrl-btn">下一步</button>
+              <button id="btn-autoreg" class="ctrl-btn">+1 Token</button>
+            </div>
+
+            <div class="flex-1 flex items-center gap-2 min-w-[140px]">
+              <input id="step-scrubber" type="range" min="0" max="50" value="22" class="w-full cursor-pointer" />
+              <span id="step-label" class="text-xs font-mono font-semibold tabular-nums whitespace-nowrap text-[var(--ui-fg)] text-right">
+                22 / 50
+              </span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1" id="quick-jumps"></div>
+          </div>
+
+          <!-- Context Filter Row (Only shown when scene has interactive filters) -->
+          <div id="scene-subcontrols" class="hidden flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs"></div>
+        </div>
+
+        <!-- 3D Viewport -->
+        <div id="canvas-wrap">
+          <canvas id="stage-canvas"></canvas>
+          <div id="hover-tooltip" class="hud-chip"></div>
+
+          <!-- Top-Left Minimal Status + Schematic Origin Locator -->
+          <div class="hud-chip absolute top-3 left-3 px-2.5 py-1.5 rounded-lg max-w-[74%] flex items-center gap-2.5">
+            <div id="hud-minimap" class="hidden shrink-0"></div>
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span id="hud-stage-pill" class="font-mono font-semibold text-[var(--ui-fg)]">Core Pass 2 · L9</span>
+                <span class="text-[var(--ui-muted)]">·</span>
+                <span id="hud-tensor-x" class="font-mono text-[var(--ui-muted)]">X [B, 5, 2304]</span>
+              </div>
+              <div id="hud-unfold-bar" class="flex flex-wrap items-center gap-1.5 text-xs"></div>
+            </div>
+          </div>
+
+          <!-- Top-Right Camera Controls -->
+          <div class="hud-chip absolute top-3 right-3 px-1.5 py-1 rounded-lg flex items-center gap-1">
+            <button id="btn-zoom-in" class="seg-item" title="放大">+</button>
+            <button id="btn-zoom-out" class="seg-item" title="缩小">−</button>
+            <button id="btn-cam-reset" class="seg-item" title="重置视角 (R)">重置</button>
+          </div>
+
+          <!-- Bottom-Left Scene-Specific Color Key -->
+          <div class="hud-chip absolute bottom-3 left-3 px-2.5 py-1 rounded-md pointer-events-none text-xs text-[var(--ui-muted)] flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5">
+              <span id="swatch-a" class="w-2.5 h-2.5 rounded-sm inline-block"></span>
+              <span id="legend-a">Active</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <span id="swatch-b" class="w-2.5 h-2.5 rounded-sm inline-block"></span>
+              <span id="legend-b">Loop</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Token Filter Bar -->
+        <div id="token-bar" class="flex flex-wrap items-center gap-1.5 pt-0.5"></div>
+      </section>
+
+      <!-- Right: Compact Spec Column (4 cols) -->
+      <aside class="xl:col-span-4 space-y-3">
+
+        <!-- Pinned Selected 3D Block Inspector (appears when clicking any block) -->
+        <div id="inspector-card" class="hidden panel p-3.5 space-y-2 border-[var(--ui-fg)]">
+          <div class="flex items-start justify-between gap-2">
+            <h2 id="insp-title" class="text-xs font-semibold text-[var(--ui-fg)] leading-snug">—</h2>
+            <button id="btn-close-insp" class="text-xs text-[var(--ui-muted)] hover:text-[var(--ui-fg)] px-1 cursor-pointer" title="关闭">×</button>
+          </div>
+          <div class="inset px-2.5 py-1.5 font-mono text-xs text-[var(--ui-fg)] break-words">
+            <span class="text-[var(--ui-muted)]">尺寸：</span><span id="insp-shape">—</span>
+          </div>
+          <p id="insp-role" class="text-xs text-[var(--ui-muted)] leading-relaxed"></p>
+        </div>
+
+        <div class="panel p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h2 id="panel-title" class="text-sm font-semibold text-[var(--ui-fg)]">Overview</h2>
+            <span id="panel-phase-badge" class="tag font-mono">Core P2</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="inset p-2">
+              <div class="text-xs text-[var(--ui-muted)]">Layer</div>
+              <div id="stat-layer" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+            </div>
+            <div class="inset p-2">
+              <div class="text-xs text-[var(--ui-muted)]">Attention</div>
+              <div id="stat-attn" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+            </div>
+            <div class="inset p-2">
+              <div class="text-xs text-[var(--ui-muted)]">Rank-64 Gate</div>
+              <div id="stat-gate" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+            </div>
+            <div class="inset p-2">
+              <div class="text-xs text-[var(--ui-muted)]">Precision / MoE</div>
+              <div id="stat-quant" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-3.5 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="detail-heading" class="text-sm font-semibold text-[var(--ui-fg)]">Block AttnRes &amp; Gate</h3>
+            <span id="detail-tag" class="tag font-mono">—</span>
+          </div>
+          <div id="detail-body" class="space-y-1.5 text-xs"></div>
+        </div>
+
+        <div class="panel p-3.5 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-semibold text-[var(--ui-fg)]">Coda-Lens</h3>
+            <span id="coda-badge" class="tag font-mono">Core P2</span>
+          </div>
+          <div id="coda-bars" class="space-y-1.5"></div>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer class="text-xs text-[var(--ui-muted)] flex flex-wrap items-center justify-between gap-2 px-1 pb-1">
+      <span>1–6 切换视图 · ←/→ 单步 · Space 播放 · R 重置视角</span>
+      <span class="font-mono">Inkling 2 Mini (simulated weights)</span>
+    </footer>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. Scenarios & Architectural Specs
+    // =========================================================================
+    const SCENARIOS = {
+      math: {
+        prompt: ["计算", "17", "×", "13", "="],
+        outputs: [
+          {
+            tok: "221",
+            note: "Pass 1 估算量级 (~210)；Pass 2 隐式拆解 17×10+17×3；Pass 3 进位收敛锁定 221。",
+            attn: [0.07, 0.32, 0.17, 0.34, 0.10],
+            stages: {
+              prelude: [["200", 0.34], ["210", 0.25], ["221", 0.18], ["191", 0.12]],
+              pass1:   [["211", 0.34], ["221", 0.31], ["210", 0.19], ["231", 0.09]],
+              pass2:   [["221", 0.68], ["211", 0.16], ["231", 0.09], ["220", 0.04]],
+              pass3:   [["221", 0.94], ["211", 0.03], ["231", 0.02], ["220", 0.01]],
+              pass4:   [["221", 0.97], ["211", 0.01], ["231", 0.01], ["220", 0.01]],
+              coda:    [["221", 0.96], ["211", 0.02], ["231", 0.01], ["220", 0.01]]
+            }
+          },
+          {
+            tok: "。",
+            note: "已输出完整结果 221，Core 确认语义闭合后由 Coda 输出句号。",
+            attn: [0.06, 0.12, 0.08, 0.12, 0.22, 0.40],
+            stages: {
+              prelude: [["。", 0.44], ["\\n", 0.27], ["（", 0.15], ["，", 0.08]],
+              pass1:   [["。", 0.63], ["\\n", 0.20], ["（", 0.09], ["，", 0.04]],
+              pass2:   [["。", 0.82], ["\\n", 0.11], ["（", 0.04], ["，", 0.02]],
+              pass3:   [["。", 0.93], ["\\n", 0.04], ["（", 0.02], ["，", 0.01]],
+              pass4:   [["。", 0.95], ["\\n", 0.03], ["（", 0.01], ["，", 0.01]],
+              coda:    [["。", 0.94], ["\\n", 0.04], ["（", 0.01], ["，", 0.01]]
+            }
+          }
+        ]
+      },
+      code: {
+        prompt: ["def", "fib(n):", "return", "fib(n-1)", "+", "fib(n-2)", "#bug:"],
+        outputs: [
+          {
+            tok: "missing",
+            note: "SWA 捕获局部递归调用，Full Attn 回看 def fib(n):，Pass 2–3 定位缺少终止分支。",
+            attn: [0.06, 0.24, 0.13, 0.20, 0.05, 0.18, 0.14],
+            stages: {
+              prelude: [["slow", 0.34], ["infinite", 0.26], ["missing", 0.22], ["syntax", 0.10]],
+              pass1:   [["infinite", 0.36], ["missing", 0.33], ["slow", 0.19], ["stack", 0.08]],
+              pass2:   [["missing", 0.65], ["infinite", 0.21], ["no", 0.08], ["slow", 0.03]],
+              pass3:   [["missing", 0.90], ["no", 0.05], ["infinite", 0.03], ["stack", 0.01]],
+              pass4:   [["missing", 0.94], ["no", 0.03], ["infinite", 0.02], ["stack", 0.01]],
+              coda:    [["missing", 0.92], ["no", 0.04], ["infinite", 0.03], ["stack", 0.01]]
+            }
+          },
+          {
+            tok: "base_case",
+            note: "延续 missing，Pass 2/3 对齐常见递归诊断术语输出 base_case。",
+            attn: [0.04, 0.15, 0.10, 0.19, 0.04, 0.17, 0.09, 0.22],
+            stages: {
+              prelude: [["return", 0.31], ["base_case", 0.30], ["check", 0.19], ["if", 0.12]],
+              pass1:   [["base_case", 0.55], ["check", 0.20], ["if", 0.14], ["return", 0.06]],
+              pass2:   [["base_case", 0.83], ["check", 0.09], ["if", 0.05], ["guard", 0.02]],
+              pass3:   [["base_case", 0.95], ["check", 0.02], ["if", 0.02], ["guard", 0.01]],
+              pass4:   [["base_case", 0.97], ["check", 0.01], ["if", 0.01], ["guard", 0.01]],
+              coda:    [["base_case", 0.96], ["check", 0.02], ["if", 0.01], ["guard", 0.01]]
+            }
+          }
+        ]
+      },
+      coref: {
+        prompt: ["Alice", "把金钥匙给了", "Bob", "随后", "他", "打开了"],
+        outputs: [
+          {
+            tok: "保险箱",
+            note: "Pass 1 偏向高频搭配「门」；Pass 2 经 Full Attn 绑定「他→Bob」与「金钥匙」；Pass 3 收敛至「保险箱」。",
+            attn: [0.08, 0.36, 0.18, 0.07, 0.17, 0.14],
+            stages: {
+              prelude: [["门", 0.43], ["盒子", 0.22], ["保险箱", 0.17], ["窗户", 0.10]],
+              pass1:   [["门", 0.37], ["保险箱", 0.35], ["盒子", 0.16], ["锁", 0.07]],
+              pass2:   [["保险箱", 0.69], ["门", 0.18], ["宝箱", 0.08], ["盒子", 0.03]],
+              pass3:   [["保险箱", 0.88], ["宝箱", 0.06], ["门", 0.04], ["盒子", 0.01]],
+              pass4:   [["保险箱", 0.92], ["宝箱", 0.04], ["门", 0.03], ["盒子", 0.01]],
+              coda:    [["保险箱", 0.90], ["宝箱", 0.05], ["门", 0.04], ["盒子", 0.01]]
+            }
+          },
+          {
+            tok: "。",
+            note: "事件语义闭环，输出句号。",
+            attn: [0.06, 0.15, 0.10, 0.05, 0.12, 0.20, 0.32],
+            stages: {
+              prelude: [["。", 0.48], ["，", 0.31], ["的", 0.11], ["里面", 0.06]],
+              pass1:   [["。", 0.65], ["，", 0.22], ["里面", 0.08], ["的", 0.03]],
+              pass2:   [["。", 0.81], ["，", 0.12], ["里面", 0.04], ["！", 0.02]],
+              pass3:   [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]],
+              pass4:   [["。", 0.93], ["，", 0.04], ["！", 0.02], ["里面", 0.01]],
+              coda:    [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]]
+            }
+          }
+        ]
+      }
+    };
+
+    // Architectural 3/4 Isometric Camera Presets (yaw strictly bounded so Left->Right NEVER flips!)
+    // Right-handed: +X Right, +Y Up, +Z Front (Toward Viewer). Negative yaw views slightly from front-left!
+    const SCENE_PRESETS = {
+      overview:  { yaw: -0.24, pitch: 0.42, dist: 1240, panX: 0, panY: 12 },
+      layer:     { yaw: -0.20, pitch: 0.44, dist: 1210, panX: 0, panY: 16 },
+      rmsnorm:   { yaw: -0.22, pitch: 0.44, dist: 1190, panX: 0, panY: 16 },
+      multihead: { yaw: -0.26, pitch: 0.46, dist: 1180, panX: 0, panY: 18 },
+      moe:       { yaw: -0.18, pitch: 0.56, dist: 1140, panX: 0, panY: 22 },
+      spacetime: { yaw: -0.14, pitch: 0.28, dist: 1220, panX: 0, panY: 20 }
+    };
+
+    const state = {
+      scene: "overview",
+      execMode: "prefill",
+      scenario: "math",
+      K: 3,
+      generated: 0,
+      stepIdx: 22,
+      focusToken: -1,
+      focusGqaGroup: 2,     // Default highlight Group 2 so user immediately sees 3 Query -> 1 KV clarity!
+      forceFullAttn: null,
+      rmsSlot: "attn",      // "attn" (Pre-Attention) or "moe" (Pre-MoE)
+      rmsScale: 1,          // 1 (Normal) or 3 (3x Spike scale-invariance demo!)
+      playing: false,
+      animTime: 0,
+      lastStepAdvance: 0,
+      stepIntervalMs: 420,
+      // Smooth mechanical spring states for carrier slab & 128 MoE pistons
+      carrierX: -20,
+      carrierY: 0,
+      moeHeights: new Float32Array(128).fill(5),
+      cam: { ...SCENE_PRESETS.overview },
+      targetCam: { ...SCENE_PRESETS.overview },
+      dragging: false,
+      dragMode: "orbit",
+      lastMouseX: 0,
+      lastMouseY: 0,
+      mouseX: -999,
+      mouseY: -999,
+      hoveredHit: null,
+      selectedHit: null,
+      previewScene: null
+    };
+
+    function seeded(seed) {
+      const x = Math.sin(seed * 9301 + 49297) * 233280;
+      return x - Math.floor(x);
+    }
+
+    function buildTimeline(K) {
+      const steps = [{
+        idx: 0, kind: "embed", section: "embed", phys: null, logical: null,
+        pass: 0, blockIdx: -1, isFull: false, quant: "BF16"
+      }];
+      let logi = 1;
+      for (let l = 0; l < 6; l++) {
+        steps.push({
+          idx: steps.length, kind: "layer", section: "prelude", phys: l,
+          logical: logi++, pass: 0, blockIdx: 0, isFull: l === 5, quant: "NVFP4"
+        });
+      }
+      for (let p = 1; p <= K; p++) {
+        for (let l = 6; l < 18; l++) {
+          steps.push({
+            idx: steps.length, kind: "layer", section: "core", phys: l,
+            logical: logi++, pass: p, blockIdx: 1 + (p - 1) * 2 + (l >= 12 ? 1 : 0),
+            isFull: l === 11 || l === 17, quant: "NVFP4"
+          });
+        }
+      }
+      for (let l = 18; l < 24; l++) {
+        steps.push({
+          idx: steps.length, kind: "layer", section: "coda", phys: l,
+          logical: logi++, pass: K + 1, blockIdx: 1 + 2 * K,
+          isFull: l === 23, quant: l >= 20 ? "MXFP8" : "NVFP4"
+        });
+      }
+      steps.push({
+        idx: steps.length, kind: "lmhead", section: "lmhead", phys: null, logical: null,
+        pass: K + 2, blockIdx: 2 + 2 * K, isFull: false, quant: "BF16/FP32"
+      });
+      return steps;
+    }
+
+    function getTokens() {
+      const sc = SCENARIOS[state.scenario];
+      const arr = sc.prompt.map((t, i) => ({ text: t, kind: "input", idx: i }));
+      for (let g = 0; g < state.generated; g++) {
+        arr.push({ text: sc.outputs[g].tok, kind: "output", idx: arr.length });
+      }
+      if (state.execMode === "dspark") {
+        const drafts = state.generated < sc.outputs.length
+          ? [sc.outputs[state.generated].tok, sc.outputs[Math.min(sc.outputs.length - 1, state.generated + 1)].tok]
+          : ["↵", "EOS"];
+        arr.push({ text: drafts[0] + "?", kind: "draft", idx: arr.length });
+        arr.push({ text: drafts[1] + "?", kind: "draft", idx: arr.length });
+      }
+      return arr;
+    }
+
+    function getActiveTokenRange(tokens) {
+      const promptLen = SCENARIOS[state.scenario].prompt.length;
+      if (state.execMode === "prefill") return { start: 0, end: promptLen - 1, sIn: promptLen, tTotal: promptLen };
+      if (state.execMode === "dspark") {
+        const end = tokens.length - 1;
+        const start = Math.max(0, end - 2);
+        return { start, end, sIn: end - start + 1, tTotal: tokens.length };
+      }
+      const end = tokens.length - 1;
+      return { start: end, end, sIn: 1, tTotal: tokens.length };
+    }
+
+    function getTop8Experts(scenarioKey, tokenIdx, physLayer, passNum) {
+      const scHash = scenarioKey === "math" ? 13 : (scenarioKey === "code" ? 31 : 59);
+      const chosen = [];
+      const set = new Set();
+      for (let a = 0; a < 2; a++) {
+        const id = Math.floor(seeded(scHash * 101 + tokenIdx * 19 + physLayer * 37 + a * 11) * 128);
+        if (!set.has(id)) {
+          set.add(id);
+          chosen.push({ id, w: 0.14 + seeded(id * 7 + passNum) * 0.08 });
+        }
+      }
+      let salt = 1;
+      while (chosen.length < 8) {
+        const id = Math.floor(seeded(scHash * 137 + tokenIdx * 29 + physLayer * 53 + passNum * 211 + salt * 17) * 128);
+        if (!set.has(id)) {
+          set.add(id);
+          chosen.push({ id, w: 0.06 + seeded(id * 13 + passNum * 3 + salt) * 0.16 });
+        }
+        salt++;
+      }
+      const sum = chosen.reduce((acc, c) => acc + c.w, 0);
+      return chosen.map(c => ({ id: c.id, w: c.w / sum })).sort((a, b) => b.w - a.w);
+    }
+
+    function stageName(step) {
+      if (step.section === "embed") return "Embedding";
+      if (step.section === "prelude") return "Prelude · L" + step.phys;
+      if (step.section === "core") return `Core Pass ${step.pass} · L${step.phys}`;
+      if (step.section === "coda") return "Coda · L" + step.phys;
+      return "LM Head → Output";
+    }
+
+    // =========================================================================
+    // 2. Restrained Architectural Palette (90% Matte Stone/Graphite + 2 Accents)
+    // =========================================================================
+    const probeCanvas = typeof document !== "undefined" && document.createElement ? document.createElement("canvas") : null;
+    if (probeCanvas) { probeCanvas.width = 1; probeCanvas.height = 1; }
+    const probeCtx = probeCanvas && probeCanvas.getContext ? probeCanvas.getContext("2d", { willReadFrequently: true }) : null;
+
+    function cssToRgb(cssStr, fallback) {
+      if (!cssStr) return fallback;
+      const hex = cssStr.match(/^#([0-9a-f]{6})$/i);
+      if (hex) {
+        const n = parseInt(hex[1], 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+      }
+      const rgbm = cssStr.match(/rgba?\(\s*([\d.]+)\s*[,\s]\s*([\d.]+)\s*[,\s]\s*([\d.]+)/i);
+      if (rgbm) return [Math.round(+rgbm[1]), Math.round(+rgbm[2]), Math.round(+rgbm[3])];
+      if (probeCtx && probeCtx.getImageData) {
+        try {
+          probeCtx.clearRect(0, 0, 1, 1);
+          probeCtx.fillStyle = "#000000";
+          probeCtx.fillStyle = cssStr;
+          probeCtx.fillRect(0, 0, 1, 1);
+          const d = probeCtx.getImageData(0, 0, 1, 1).data;
+          if (d[3] > 0) return [d[0], d[1], d[2]];
+        } catch (_) {}
+      }
+      return fallback;
+    }
+
+    function rgba(rgb, a) {
+      return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${Math.max(0, Math.min(1, a)).toFixed(3)})`;
+    }
+
+    function mixRgb(a, b, t) {
+      const k = Math.max(0, Math.min(1, t));
+      return [
+        Math.round(a[0] + (b[0] - a[0]) * k),
+        Math.round(a[1] + (b[1] - a[1]) * k),
+        Math.round(a[2] + (b[2] - a[2]) * k)
+      ];
+    }
+
+    let PAL = {};
+    function refreshPalette() {
+      const cs = getComputedStyle(document.documentElement);
+      const bgVar = cs.getPropertyValue("--ui-bg").trim() || cs.getPropertyValue("--background").trim();
+      const bgRgb = cssToRgb(bgVar, [245, 245, 243]);
+      const lum = bgRgb[0] * 0.299 + bgRgb[1] * 0.587 + bgRgb[2] * 0.114;
+      const isLight = document.documentElement.classList.contains("light") || lum > 140;
+
+      if (isLight) {
+        PAL = {
+          isLight: true,
+          paper:    cssToRgb(cs.getPropertyValue("--ui-content").trim(), [245, 245, 242]),
+          card:     cssToRgb(cs.getPropertyValue("--ui-card").trim(), [255, 255, 255]),
+          ink:      [26, 29, 36],
+          mutedInk: [108, 114, 126],
+          hairline: [198, 202, 210],
+          ceramic:  [237, 238, 241],    // Clean matte white-stone block
+          stone:    [220, 223, 230],    // Slightly deeper stone
+          darkStone:[188, 193, 204],
+          shadow:   [28, 32, 44],
+          accentA:  [44, 96, 174],      // Restrained Klein / Cobalt Blue
+          accentALt:[192, 210, 238],    // Soft blueprint tint
+          accentB:  [194, 88, 58],      // Muted Vermilion / Terracotta
+          accentBLt:[238, 204, 192]     // Soft clay tint
+        };
+      } else {
+        PAL = {
+          isLight: false,
+          paper:    cssToRgb(cs.getPropertyValue("--ui-content").trim(), [18, 20, 26]),
+          card:     cssToRgb(cs.getPropertyValue("--ui-card").trim(), [25, 28, 36]),
+          ink:      [236, 239, 244],
+          mutedInk: [134, 141, 156],
+          hairline: [60, 67, 82],
+          ceramic:  [42, 46, 58],       // Matte anodized titanium
+          stone:    [52, 58, 72],       // Brushed slate
+          darkStone:[72, 79, 96],
+          shadow:   [4, 6, 10],
+          accentA:  [116, 162, 230],    // Calm Ice Cobalt
+          accentALt:[56, 78, 114],
+          accentB:  [216, 124, 90],     // Warm Copper Clay
+          accentBLt:[102, 62, 48]
+        };
+      }
+      const swA = document.getElementById("swatch-a");
+      const swB = document.getElementById("swatch-b");
+      if (swA) swA.style.background = rgba(PAL.accentA, 1);
+      if (swB) swB.style.background = rgba(PAL.accentB, 1);
+    }
+
+    // =========================================================================
+    // 3. Solid-Matte Architectural 3D Engine (True Right-Handed Depth + Horizon Table!)
+    // =========================================================================
+    const canvas = document.getElementById("stage-canvas");
+    const ctx = canvas.getContext("2d");
+    const wrap = document.getElementById("canvas-wrap");
+    const tooltip = document.getElementById("hover-tooltip");
+
+    let viewW = 900, viewH = 500, dpr = 1;
+    function resizeCanvas() {
+      const rect = wrap.getBoundingClientRect();
+      viewW = Math.max(320, rect.width);
+      viewH = Math.max(360, rect.height);
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(viewW * dpr);
+      canvas.height = Math.round(viewH * dpr);
+    }
+
+    // Right-handed world space: +X Right, +Y Up, +Z Front (Toward Viewer at z = +dist)
+    function toCam(x, y, z) {
+      const cy = Math.cos(state.cam.yaw), sy = Math.sin(state.cam.yaw);
+      const cp = Math.cos(state.cam.pitch), sp = Math.sin(state.cam.pitch);
+      const x1 = x * cy + z * sy;
+      const z1 = -x * sy + z * cy;
+      const y2 = y * cp - z1 * sp;
+      const z2 = y * sp + z1 * cp;
+      return [x1, y2, z2];
+    }
+
+    function project3D(x, y, z) {
+      const [cx, cy, cz] = toCam(x, y, z);
+      const fov = 1320;
+      // Camera is at +dist looking toward 0 -> distance from camera = dist - cz!
+      // Therefore: +Z (Front) has SMALLER depth (closer, larger scale, drawn ON TOP);
+      //            -Z (Rear)  has LARGER  depth (farther, smaller scale, drawn BEHIND)!
+      const depth = state.cam.dist - cz;
+      const safeD = Math.max(140, depth);
+      const scale = fov / safeD;
+      return {
+        sx: viewW * 0.5 + state.cam.panX + cx * scale,
+        sy: viewH * 0.5 + state.cam.panY - cy * scale,
+        depth,
+        scale,
+        visible: depth > 160
+      };
+    }
+
+    // Studio key light from upper-left-front (viewer is at +Z!)
+    const KEY_LIGHT = [-0.36, 0.80, 0.48];
+    let drawQueue = [];
+    let labelQueue = [];
+    let hitTargets = [];
+
+    function pushDraw(depth, fn) { drawQueue.push({ depth, fn }); }
+    function addHit(sx, sy, r, meta) { hitTargets.push({ sx, sy, r, meta }); }
+
+    // Unmistakable Ground Plane, Architectural Tabletop Plinth, Horizon Rule & Etched Zone Bays!
+    function queueTableFloor(y, spanX, spanZ, step, bays = []) {
+      pushDraw(99999, () => {
+        ctx.save();
+        // 1. Subtle Horizon Band across viewport aligned with back edge of stage table!
+        const backMid = project3D(0, y, -spanZ);
+        if (backMid.visible) {
+          const hy = Math.max(40, Math.min(viewH - 80, backMid.sy - 6));
+          // Ground zone slightly warmer/deeper than sky above horizon
+          ctx.fillStyle = rgba(PAL.stone, PAL.isLight ? 0.24 : 0.16);
+          ctx.fillRect(0, hy, viewW, viewH - hy);
+          // Crisp architectural horizon hairline + small "HORIZON / 地平线" marker at far right
+          ctx.strokeStyle = rgba(PAL.hairline, PAL.isLight ? 0.92 : 0.72);
+          ctx.lineWidth = 1.0;
+          ctx.setLineDash([6, 4]);
+          ctx.beginPath();
+          ctx.moveTo(0, hy);
+          ctx.lineTo(viewW, hy);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // 2. Solid 3D Architectural Tabletop Deck (with 8px physical edge thickness!)
+        const cBL = project3D(-spanX, y,  spanZ);
+        const cBR = project3D( spanX, y,  spanZ);
+        const cTR = project3D( spanX, y, -spanZ);
+        const cTL = project3D(-spanX, y, -spanZ);
+        const dBL = project3D(-spanX, y - 9,  spanZ);
+        const dBR = project3D( spanX, y - 9,  spanZ);
+        const dTR = project3D( spanX, y - 9, -spanZ);
+        const dTL = project3D(-spanX, y - 9, -spanZ);
+
+        if (cBL.visible && cBR.visible && cTR.visible && cTL.visible) {
+          // Tabletop surface
+          ctx.fillStyle = rgba(PAL.card, PAL.isLight ? 0.94 : 0.88);
+          ctx.beginPath();
+          ctx.moveTo(cBL.sx, cBL.sy); ctx.lineTo(cBR.sx, cBR.sy);
+          ctx.lineTo(cTR.sx, cTR.sy); ctx.lineTo(cTL.sx, cTL.sy);
+          ctx.closePath();
+          ctx.fill();
+
+          // Front vertical thickness lip (+Z)
+          if (dBL.visible && dBR.visible) {
+            ctx.fillStyle = rgba(PAL.darkStone, PAL.isLight ? 0.75 : 0.85);
+            ctx.beginPath();
+            ctx.moveTo(cBL.sx, cBL.sy); ctx.lineTo(cBR.sx, cBR.sy);
+            ctx.lineTo(dBR.sx, dBR.sy); ctx.lineTo(dBL.sx, dBL.sy);
+            ctx.closePath();
+            ctx.fill();
+          }
+          // Visible side lip (right if yaw < 0, left if yaw > 0)
+          if (state.cam.yaw < 0 && dBR.visible && dTR.visible) {
+            ctx.fillStyle = rgba(PAL.stone, PAL.isLight ? 0.90 : 0.92);
+            ctx.beginPath();
+            ctx.moveTo(cBR.sx, cBR.sy); ctx.lineTo(cTR.sx, cTR.sy);
+            ctx.lineTo(dTR.sx, dTR.sy); ctx.lineTo(dBR.sx, dBR.sy);
+            ctx.closePath();
+            ctx.fill();
+          } else if (state.cam.yaw >= 0 && dBL.visible && dTL.visible) {
+            ctx.fillStyle = rgba(PAL.stone, PAL.isLight ? 0.90 : 0.92);
+            ctx.beginPath();
+            ctx.moveTo(cBL.sx, cBL.sy); ctx.lineTo(cTL.sx, cTL.sy);
+            ctx.lineTo(dTL.sx, dTL.sy); ctx.lineTo(dBL.sx, dBL.sy);
+            ctx.closePath();
+            ctx.fill();
+          }
+
+          // Crisp Tabletop Grid Lines
+          ctx.lineWidth = 0.8;
+          ctx.strokeStyle = rgba(PAL.hairline, PAL.isLight ? 0.52 : 0.42);
+          for (let x = -spanX + step; x < spanX; x += step) {
+            const a = project3D(x, y, -spanZ), b = project3D(x, y, spanZ);
+            if (a.visible && b.visible) {
+              ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+            }
+          }
+          for (let z = -spanZ + step; z < spanZ; z += step) {
+            const a = project3D(-spanX, y, z), b = project3D(spanX, y, z);
+            if (a.visible && b.visible) {
+              ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+            }
+          }
+
+          // Crisp Outer Deck Border
+          ctx.strokeStyle = rgba(PAL.mutedInk, PAL.isLight ? 0.55 : 0.58);
+          ctx.lineWidth = 1.25;
+          ctx.beginPath();
+          ctx.moveTo(cBL.sx, cBL.sy); ctx.lineTo(cBR.sx, cBR.sy);
+          ctx.lineTo(cTR.sx, cTR.sy); ctx.lineTo(cTL.sx, cTL.sy);
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        // 3. Etched Stage Zone Bays directly on the 3D tabletop!
+        for (let i = 0; i < bays.length; i++) {
+          const bay = bays[i];
+          const p0 = project3D(bay.x0, y + 0.4, bay.z1);
+          const p1 = project3D(bay.x1, y + 0.4, bay.z1);
+          const p2 = project3D(bay.x1, y + 0.4, bay.z0);
+          const p3 = project3D(bay.x0, y + 0.4, bay.z0);
+          if (p0.visible && p1.visible && p2.visible && p3.visible) {
+            ctx.fillStyle = rgba(bay.rgb || PAL.accentA, bay.active ? (PAL.isLight ? 0.12 : 0.18) : (PAL.isLight ? 0.045 : 0.06));
+            ctx.beginPath();
+            ctx.moveTo(p0.sx, p0.sy); ctx.lineTo(p1.sx, p1.sy);
+            ctx.lineTo(p2.sx, p2.sy); ctx.lineTo(p3.sx, p3.sy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = rgba(bay.rgb || PAL.mutedInk, bay.active ? 0.78 : 0.36);
+            ctx.lineWidth = bay.active ? 1.4 : 0.9;
+            if (bay.dashed) ctx.setLineDash([4, 3]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+        ctx.restore();
+      });
+    }
+
+    // Solid Matte Ceramic 3D Block with Exact Analytical Backface Culling (nz > 0)
+    function queueSolidBlock(cx, cy, cz, wx, wy, wz, opts = {}) {
+      const hx = wx * 0.5, hy = wy * 0.5, hz = wz * 0.5;
+      const corners = [
+        [cx - hx, cy - hy, cz - hz], [cx + hx, cy - hy, cz - hz],
+        [cx + hx, cy + hy, cz - hz], [cx - hx, cy + hy, cz - hz],
+        [cx - hx, cy - hy, cz + hz], [cx + hx, cy - hy, cz + hz],
+        [cx + hx, cy + hy, cz + hz], [cx - hx, cy + hy, cz + hz]
+      ].map(([x, y, z]) => project3D(x, y, z));
+
+      if (corners.some(p => !p.visible)) return null;
+      const centerP = project3D(cx, cy, cz);
+
+      const baseRgb = opts.rgb || PAL.ceramic;
+      const alpha = opts.alpha !== undefined ? opts.alpha : 0.96;
+      const edgeRgb = opts.edgeRgb || (opts.accent ? mixRgb(baseRgb, PAL.ink, 0.30) : PAL.hairline);
+      const edgeAlpha = opts.edgeAlpha !== undefined ? opts.edgeAlpha : 0.82;
+      const lw = opts.lw || 0.9;
+
+      const faceDefs = [
+        { idx: [4, 5, 6, 7], n: [ 0,  0,  1] }, // +Z Front
+        { idx: [1, 0, 3, 2], n: [ 0,  0, -1] }, // -Z Back
+        { idx: [3, 2, 6, 7], n: [ 0,  1,  0] }, // +Y Top
+        { idx: [0, 1, 5, 4], n: [ 0, -1,  0] }, // -Y Bottom
+        { idx: [1, 5, 6, 2], n: [ 1,  0,  0] }, // +X Right
+        { idx: [4, 0, 3, 7], n: [-1,  0,  0] }  // -X Left
+      ];
+
+      const faces = faceDefs.map(f => {
+        const p = f.idx.map(i => corners[i]);
+        const avgD = (p[0].depth + p[1].depth + p[2].depth + p[3].depth) * 0.25;
+        const [nx, ny, nz] = toCam(f.n[0], f.n[1], f.n[2]);
+        const ndotl = Math.max(0, nx * KEY_LIGHT[0] + ny * KEY_LIGHT[1] + nz * KEY_LIGHT[2]);
+        return { p, avgD, nz, ndotl, isTop: f.n[1] === 1 };
+      }).sort((a, b) => b.avgD - a.avgD);
+
+      // Grounded footprint shadow on tabletop
+      if (opts.shadowY !== undefined) {
+        const sp = [
+          project3D(cx - hx - 2, opts.shadowY + 0.6, cz - hz - 2),
+          project3D(cx + hx + 2, opts.shadowY + 0.6, cz - hz - 2),
+          project3D(cx + hx + 2, opts.shadowY + 0.6, cz + hz + 2),
+          project3D(cx - hx - 2, opts.shadowY + 0.6, cz + hz + 2)
+        ];
+        if (sp.every(p => p.visible)) {
+          pushDraw(99990, () => {
+            ctx.save();
+            ctx.fillStyle = rgba(PAL.shadow, PAL.isLight ? 0.09 : 0.30);
+            ctx.beginPath();
+            ctx.moveTo(sp[0].sx, sp[0].sy); ctx.lineTo(sp[1].sx, sp[1].sy);
+            ctx.lineTo(sp[2].sx, sp[2].sy); ctx.lineTo(sp[3].sx, sp[3].sy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+          });
+        }
+      }
+
+      pushDraw(centerP.depth + (opts.depthBias || 0), () => {
+        ctx.save();
+        for (let i = 0; i < faces.length; i++) {
+          const f = faces[i];
+          // Analytical backface culling: draw only faces whose camera-space normal points toward viewer (nz > 0)!
+          if (f.nz <= 0 && alpha >= 0.45) continue;
+
+          ctx.beginPath();
+          ctx.moveTo(f.p[0].sx, f.p[0].sy); ctx.lineTo(f.p[1].sx, f.p[1].sy);
+          ctx.lineTo(f.p[2].sx, f.p[2].sy); ctx.lineTo(f.p[3].sx, f.p[3].sy);
+          ctx.closePath();
+
+          let faceRgb;
+          if (PAL.isLight) {
+            faceRgb = f.isTop
+              ? mixRgb(baseRgb, [255, 255, 255], 0.28)
+              : mixRgb(baseRgb, [42, 48, 62], (1 - f.ndotl) * 0.24);
+          } else {
+            faceRgb = f.isTop
+              ? mixRgb(baseRgb, [255, 255, 255], 0.16)
+              : mixRgb(baseRgb, [6, 8, 12], (1 - f.ndotl) * 0.44);
+          }
+          ctx.fillStyle = rgba(faceRgb, f.nz > 0 ? alpha : alpha * 0.25);
+          ctx.fill();
+
+          if (f.nz > 0) {
+            ctx.strokeStyle = rgba(edgeRgb, edgeAlpha);
+            ctx.lineWidth = lw;
+            ctx.stroke();
+          }
+        }
+
+        // Crisp etched layer floor seams on visible Front (+Z) and Right (+X) / Left (-X) faces
+        if (opts.seams && opts.seams > 1) {
+          ctx.strokeStyle = rgba(edgeRgb, edgeAlpha * 0.52);
+          ctx.lineWidth = 0.75;
+          const sideX = state.cam.yaw < 0 ? (cx + hx) : (cx - hx);
+          for (let s = 1; s < opts.seams; s++) {
+            const sy = cy - hy + (s / opts.seams) * wy;
+            const a = project3D(cx - hx, sy, cz + hz);
+            const b = project3D(cx + hx, sy, cz + hz);
+            const c = project3D(sideX, sy, cz - hz);
+            const cornerFront = state.cam.yaw < 0 ? b : a;
+            if (a.visible && b.visible && c.visible) {
+              ctx.beginPath();
+              ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy);
+              ctx.moveTo(cornerFront.sx, cornerFront.sy); ctx.lineTo(c.sx, c.sy);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.restore();
+      });
+
+      if (opts.hitMeta) {
+        const rad = Math.max(12, Math.min(38, Math.max(wx, wy, wz) * centerP.scale * 0.46));
+        addHit(centerP.sx, centerP.sy, rad, opts.hitMeta);
+      }
+      return centerP;
+    }
+
+    // Crisp Architectural Path / Arrow (optional single calm gliding bead)
+    function queueArchLine(points3D, opts = {}) {
+      const proj = points3D.map(([x, y, z]) => project3D(x, y, z));
+      if (proj.some(p => !p.visible)) return;
+      const avgD = proj.reduce((a, p) => a + p.depth, 0) / proj.length;
+      const rgb = opts.rgb || PAL.accentA;
+      const alpha = opts.alpha !== undefined ? opts.alpha : 0.75;
+      const width = opts.width || 1.4;
+      const dashed = opts.dashed || false;
+
+      pushDraw(avgD + (opts.depthBias || 0), () => {
+        ctx.save();
+        ctx.strokeStyle = rgba(rgb, alpha);
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        if (dashed) ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(proj[0].sx, proj[0].sy);
+        if (proj.length === 3 && opts.curved) {
+          ctx.quadraticCurveTo(proj[1].sx, proj[1].sy, proj[2].sx, proj[2].sy);
+        } else {
+          for (let i = 1; i < proj.length; i++) ctx.lineTo(proj[i].sx, proj[i].sy);
+        }
+        ctx.stroke();
+
+        // Crisp minimalist arrowhead at end
+        if (opts.arrow) {
+          ctx.setLineDash([]);
+          const pPrev = proj[proj.length - 2], pEnd = proj[proj.length - 1];
+          const ang = Math.atan2(pEnd.sy - pPrev.sy, pEnd.sx - pPrev.sx);
+          const ah = 6.5;
+          ctx.fillStyle = rgba(rgb, alpha);
+          ctx.beginPath();
+          ctx.moveTo(pEnd.sx, pEnd.sy);
+          ctx.lineTo(pEnd.sx - ah * Math.cos(ang - 0.42), pEnd.sy - ah * Math.sin(ang - 0.42));
+          ctx.lineTo(pEnd.sx - ah * Math.cos(ang + 0.42), pEnd.sy - ah * Math.sin(ang + 0.42));
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Single calm bead traveling smoothly along path
+        if (opts.pulse) {
+          ctx.setLineDash([]);
+          const t = ((state.animTime * (opts.speed || 0.32) + (opts.phase || 0)) % 1 + 1) % 1;
+          let pt;
+          if (points3D.length === 3 && opts.curved) {
+            const o = 1 - t;
+            pt = [
+              o*o*points3D[0][0] + 2*o*t*points3D[1][0] + t*t*points3D[2][0],
+              o*o*points3D[0][1] + 2*o*t*points3D[1][1] + t*t*points3D[2][1],
+              o*o*points3D[0][2] + 2*o*t*points3D[1][2] + t*t*points3D[2][2]
+            ];
+          } else {
+            const segs = points3D.length - 1;
+            const scaled = t * segs;
+            const idx = Math.min(segs - 1, Math.floor(scaled));
+            const lt = scaled - idx;
+            pt = [
+              points3D[idx][0] + (points3D[idx + 1][0] - points3D[idx][0]) * lt,
+              points3D[idx][1] + (points3D[idx + 1][1] - points3D[idx][1]) * lt,
+              points3D[idx][2] + (points3D[idx + 1][2] - points3D[idx][2]) * lt
+            ];
+          }
+          const sp = project3D(pt[0], pt[1], pt[2]);
+          if (sp.visible) {
+            ctx.fillStyle = rgba(rgb, 0.96);
+            ctx.strokeStyle = rgba(PAL.card, 0.95);
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.arc(sp.sx, sp.sy, 3.2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
+      });
+    }
+
+    // Clean Non-Overlapping Label Placed Strictly Outside Boxes (with optional hairline leader!)
+    function queueCleanLabel(x, y, z, text, opts = {}) {
+      const p = project3D(x, y, z);
+      if (!p.visible) return null;
+      const ox = opts.ox || 0, oy = opts.oy || 0;
+      const lx = p.sx + ox, ly = p.sy + oy;
+      labelQueue.push({
+        ax: p.sx, ay: p.sy, lx, ly,
+        text,
+        sub: opts.sub || "",
+        rgb: opts.rgb || PAL.ink,
+        bold: !!opts.bold,
+        leader: !!opts.leader,
+        pill: opts.pill !== false
+      });
+      return { lx, ly };
+    }
+
+    function flushLabels() {
+      ctx.save();
+      for (let i = 0; i < labelQueue.length; i++) {
+        const L = labelQueue[i];
+        if (L.leader) {
+          ctx.strokeStyle = rgba(PAL.hairline, 0.85);
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.moveTo(L.ax, L.ay);
+          ctx.lineTo(L.lx, L.ly);
+          ctx.stroke();
+          ctx.fillStyle = rgba(L.rgb, 0.85);
+          ctx.beginPath();
+          ctx.arc(L.ax, L.ay, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.font = `${L.bold ? "600" : "500"} 12px ui-monospace, SFMono-Regular, system-ui, sans-serif`;
+        const w1 = ctx.measureText(L.text).width;
+        const w2 = L.sub ? ctx.measureText(L.sub).width : 0;
+        const bw = Math.max(w1, w2) + 14;
+        const bh = L.sub ? 34 : 22;
+
+        if (L.pill) {
+          ctx.fillStyle = rgba(PAL.card, 0.92);
+          ctx.strokeStyle = rgba(PAL.hairline, 0.78);
+          ctx.lineWidth = 0.85;
+          roundRect(ctx, L.lx - bw * 0.5, L.ly - bh * 0.5, bw, bh, 5);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.fillStyle = rgba(L.rgb, 0.95);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        if (L.sub) {
+          ctx.fillText(L.text, L.lx, L.ly - 7);
+          ctx.font = `400 12px ui-monospace, SFMono-Regular, system-ui, sans-serif`;
+          ctx.fillStyle = rgba(PAL.mutedInk, 0.95);
+          ctx.fillText(L.sub, L.lx, L.ly + 8);
+        } else {
+          ctx.fillText(L.text, L.lx, L.ly + 0.5);
+        }
+      }
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    // =========================================================================
+    // 4. Scene 01: Clean Left-to-Right 3D Looped Pipeline Maquette
+    // =========================================================================
+    function getCarrierTarget(step) {
+      if (step.section === "embed") return [-258, -26];
+      if (step.section === "prelude") return [-176, -56 + (step.phys / 5) * 62];
+      if (step.section === "core") {
+        if (step.phys < 12) return [-58, -58 + ((step.phys - 6) / 5) * 76];
+        return [38, -58 + ((step.phys - 12) / 5) * 76];
+      }
+      if (step.section === "coda") return [148, -56 + ((step.phys - 18) / 5) * 62];
+      return [248, -24];
+    }
+
+    // Stack 6 true physical 3D layers (bottom-to-top) so active layers illuminate IN-PLACE with exact 3D occlusion!
+    function queueLayerTower(cx, floorY, startLayer, opts) {
+      const { wx, wz, layerH, gapY, activeLayer, baseRgb, activeRgb, activeTint, sectionStepBase, sectionName, previewMode, hlLayer, sIn, K } = opts;
+      const pitchStep = layerH + gapY;
+      const dimRgb = mixRgb(PAL.ceramic, PAL.paper, 0.62);
+      const dimEdge = mixRgb(PAL.hairline, PAL.paper, 0.55);
+
+      for (let s = 0; s < 6; s++) {
+        const physL = startLayer + s;
+        const cy = floorY + layerH * 0.5 + s * pitchStep;
+        const isAct = activeLayer === physL;
+        const isDone = activeLayer !== null && activeLayer > physL;
+        const isFullL = s === 5;
+        const attnKind = isFullL ? "Full Attn (1M)" : "SWA-1024";
+        const quantKind = physL >= 20 ? "MXFP8" : "NVFP4";
+        const stageRole = sectionName === "Prelude"
+          ? `仅运行 1 次，编码输入初始表示；内部依次做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`
+          : sectionName === "Core"
+            ? `循环核心层（共享权重跑 ${K} 轮）；内部依次做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`
+            : `仅运行 1 次，将隐藏状态解码回词表预测表示；内部做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`;
+        const hitMeta = {
+          type: "layer",
+          stepIdx: sectionStepBase + s,
+          title: `${sectionName} · L${physL}`,
+          shape: `[B, ${sIn}, 2304] → [B, ${sIn}, 2304]`,
+          role: stageRole
+        };
+
+        // True hover highlight on a single layer:
+        //   - previewMode === "layer" / "rmsnorm": illuminate the WHOLE layer slab and nudge forward
+        //   - previewMode === "multihead" / "moe": split into left (Attention) & right (MoE) halves
+        if ((previewMode === "layer" || previewMode === "rmsnorm") && physL === hlLayer) {
+          queueSolidBlock(cx, cy + 1, 7, wx + 2, layerH + 2, wz + 6, {
+            rgb: PAL.accentA,
+            accent: true,
+            edgeRgb: mixRgb(PAL.accentA, PAL.ink, 0.35),
+            edgeAlpha: 1.0,
+            lw: 1.55,
+            shadowY: s === 0 ? floorY : undefined,
+            hitMeta
+          });
+          continue;
+        }
+        if ((previewMode === "multihead" || previewMode === "moe") && physL === hlLayer) {
+          const isAttn = previewMode === "multihead";
+          const halfW = wx * 0.5 - 1.5;
+          const leftX = cx - wx * 0.25 - 0.5;
+          const rightX = cx + wx * 0.25 + 0.5;
+
+          // Left half = ① GQA Attention
+          queueSolidBlock(leftX, cy + (isAttn ? 1 : 0), isAttn ? 7 : 0, halfW, layerH + (isAttn ? 2 : 0), wz + (isAttn ? 6 : 0), {
+            rgb: isAttn ? PAL.accentA : PAL.stone,
+            accent: isAttn,
+            edgeRgb: isAttn ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.mutedInk,
+            edgeAlpha: isAttn ? 1.0 : 0.72,
+            lw: isAttn ? 1.55 : 0.9,
+            shadowY: s === 0 ? floorY : undefined,
+            hitMeta
+          });
+          // Right half = ② MoE
+          queueSolidBlock(rightX, cy + (!isAttn ? 1 : 0), !isAttn ? 7 : 0, halfW, layerH + (!isAttn ? 2 : 0), wz + (!isAttn ? 6 : 0), {
+            rgb: !isAttn ? PAL.accentA : PAL.stone,
+            accent: !isAttn,
+            edgeRgb: !isAttn ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.mutedInk,
+            edgeAlpha: !isAttn ? 1.0 : 0.72,
+            lw: !isAttn ? 1.55 : 0.9,
+            shadowY: s === 0 ? floorY : undefined,
+            hitMeta
+          });
+          continue;
+        }
+
+        const isDimmed = previewMode !== null;
+        const rgb = isDimmed ? dimRgb : (isAct ? activeRgb : (isDone ? activeTint : baseRgb));
+        queueSolidBlock(cx, cy, 0, wx, layerH, wz, {
+          rgb,
+          alpha: isDimmed ? 0.62 : 0.96,
+          accent: !isDimmed && isAct,
+          edgeRgb: isDimmed ? dimEdge : (isAct ? mixRgb(activeRgb, PAL.ink, 0.34) : (isFullL ? PAL.mutedInk : PAL.hairline)),
+          edgeAlpha: isDimmed ? 0.36 : (isAct ? 0.96 : (isFullL ? 0.84 : 0.72)),
+          lw: isDimmed ? 0.65 : (isAct ? 1.25 : 0.8),
+          shadowY: s === 0 ? floorY : undefined,
+          hitMeta
+        });
+      }
+      return floorY + 6 * pitchStep - gapY;
+    }
+
+    function buildSceneOverview(timeline, step, tokens, range) {
+      const floorY = -96;
+      const K = state.K;
+      const isCore = step.section === "core";
+      const isP2 = isCore && step.pass >= 2;
+      const preAct = step.section === "prelude";
+      const codaAct = step.section === "coda";
+      const coreTint = isP2 ? PAL.accentBLt : PAL.accentALt;
+      const coreEdge = isP2 ? PAL.accentB : PAL.accentA;
+
+      const prev = state.previewScene;
+      const prevMem = prev === "spacetime";
+      const prevLayer = prev === "layer" || prev === "rmsnorm" || prev === "multihead" || prev === "moe";
+      const dimPipe = prevLayer || prevMem;
+      const hlLayer = prevLayer ? (step.phys !== null ? step.phys : 6) : null;
+      const dimRgb = mixRgb(PAL.ceramic, PAL.paper, 0.62);
+      const dimEdge = mixRgb(PAL.hairline, PAL.paper, 0.55);
+
+      // Etched architectural stage zone bays on the 3D tabletop
+      const bays = [
+        { x0: -286, x1: -230, z0: -70,  z1: 70,  rgb: PAL.accentA, active: !dimPipe && step.section === "embed" },
+        { x0: -206, x1: -146, z0: -68,  z1: 68,  rgb: PAL.accentA, active: !dimPipe && preAct },
+        { x0: -92,  x1:  72,  z0: -72,  z1: 72,  rgb: coreEdge,    active: !dimPipe && isCore, dashed: true },
+        { x0:  118, x1:  178, z0: -68,  z1: 68,  rgb: PAL.accentA, active: !dimPipe && codaAct },
+        { x0:  220, x1:  280, z0: -70,  z1: 70,  rgb: PAL.accentA, active: !dimPipe && step.section === "lmhead" },
+        // Front bay: Block AttnRes
+        { x0: -126, x1:  94,  z0:  96,  z1: 146, rgb: PAL.accentB, active: prevMem || (!prevLayer && step.idx >= 7), dashed: !prevMem },
+        // Rear bay: Pass-Specific KV Cache
+        { x0: -108, x1:  90,  z0: -158, z1: -106, rgb: PAL.accentA, active: prevMem || (!prevLayer && isCore), dashed: !prevMem }
+      ];
+      queueTableFloor(floorY, 315, 178, 40, bays);
+
+      const sCount = tokens.length;
+      const zSpan = Math.min(104, Math.max(54, (sCount - 1) * 22));
+      const tokZ = (i) => sCount === 1 ? 0 : zSpan * 0.5 - (i / (sCount - 1)) * zSpan;
+
+      // ── STAGE 1 (x = -258): Input Token Matrix [S × 2304] ───────────────────
+      for (let i = 0; i < sCount; i++) {
+        const z = tokZ(i);
+        const inBatch = i >= range.start && i <= range.end;
+        const solo = state.focusToken === -1 || state.focusToken === i;
+        const hi = inBatch && solo;
+        queueSolidBlock(-258, floorY + 26, z, 28, 52, 16, {
+          rgb: dimPipe ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
+          alpha: dimPipe ? 0.60 : (hi ? 0.95 : 0.72),
+          edgeRgb: dimPipe ? dimEdge : undefined,
+          edgeAlpha: dimPipe ? 0.34 : 0.82,
+          accent: !dimPipe && hi,
+          shadowY: floorY,
+          hitMeta: {
+            type: "token", id: i,
+            title: `输入向量 t${i}「${tokens[i].text}」`,
+            shape: `单位置 [1, 2304] · 本步整批 [B, ${range.sIn}, 2304]`,
+            role: inBatch
+              ? `本步送入 L0 的输入嵌入向量，多个位置打包为连续张量并行计算。`
+              : `历史上下文 token，其 KV 已缓存在后排，本步无需重算。`
+          }
+        });
+      }
+      queueCleanLabel(-258, floorY - 4, zSpan * 0.5 + 24, `Input`, {
+        sub: `[B, ${range.sIn}, 2304]`, bold: !dimPipe, rgb: dimPipe ? PAL.mutedInk : PAL.ink, oy: 12
+      });
+
+      // Entry Conduit: Input -> Prelude L0 (bottom)
+      queueArchLine([[-242, floorY + 7, 44], [-201, floorY + 7, 44]], {
+        rgb: dimPipe ? PAL.hairline : PAL.accentA, alpha: dimPipe ? 0.22 : (step.idx >= 1 ? 0.90 : 0.40), width: 2.0, arrow: true, pulse: !dimPipe && (step.section === "embed" || preAct), depthBias: -10
+      });
+
+      // ── STAGE 2 (x = -176): Block 1 · Prelude (6 true stacked layers L0..L5) ─
+      const preTop = queueLayerTower(-176, floorY, 0, {
+        wx: 46, wz: 102, layerH: 14, gapY: 2,
+        activeLayer: preAct ? step.phys : null,
+        baseRgb: PAL.ceramic, activeRgb: PAL.accentA, activeTint: PAL.accentALt,
+        sectionStepBase: 1, sectionName: "Prelude",
+        previewMode: prev ? (prevMem ? "dim" : prev) : null, hlLayer, sIn: range.sIn, K
+      });
+      queueCleanLabel(-176, preTop + 14, 0, "Prelude", { sub: "L0–L5", bold: !dimPipe && preAct, rgb: dimPipe ? PAL.mutedInk : (preAct ? PAL.accentA : PAL.ink), oy: -12 });
+
+      // Conduit: Prelude L5 (top) -> Core Block 2 L6 (bottom)
+      queueArchLine(
+        [[-153, preTop - 7, 44], [-132, preTop - 7, 44], [-132, floorY + 5, 44], [-84, floorY + 5, 44]],
+        { rgb: dimPipe ? PAL.hairline : (step.idx >= 7 ? PAL.accentA : PAL.hairline), alpha: dimPipe ? 0.22 : 0.90, width: 2.0, arrow: true, pulse: !dimPipe && (step.idx === 6 || step.idx === 7), depthBias: -10 }
+      );
+      // Floor summary tap: Prelude -> B0
+      queueArchLine([[-153, floorY + 3, 48], [-116, floorY + 3, 114]], {
+        rgb: prevMem ? PAL.accentB : (dimPipe ? PAL.hairline : (step.idx >= 7 ? PAL.accentB : PAL.hairline)), alpha: prevMem ? 0.90 : (dimPipe ? 0.18 : 0.55), width: prevMem ? 1.8 : 1.2, dashed: true
+      });
+
+      // ── STAGE 3 (x = -58 & +38): Looped Core (6+6 true stacked layers L6..L17) ─
+      const b2Act = isCore && step.phys < 12;
+      const b3Act = isCore && step.phys >= 12;
+      const corePassBase = 7 + ((isCore ? step.pass : 1) - 1) * 12;
+
+      const b2Top = queueLayerTower(-58, floorY, 6, {
+        wx: 48, wz: 106, layerH: 16, gapY: 2,
+        activeLayer: b2Act ? step.phys : null,
+        baseRgb: PAL.ceramic, activeRgb: coreEdge, activeTint: coreTint,
+        sectionStepBase: corePassBase, sectionName: "Core",
+        previewMode: prev ? (prevMem ? "dim" : prev) : null, hlLayer, sIn: range.sIn, K
+      });
+
+      // Conduit: Core L11 (top) -> Core L12 (bottom)
+      queueArchLine(
+        [[-34, b2Top - 8, 54], [-10, b2Top - 8, 54], [-10, floorY + 8, 54], [12, floorY + 8, 54]],
+        { rgb: dimPipe ? PAL.hairline : (isCore ? coreEdge : PAL.hairline), alpha: dimPipe ? 0.20 : 0.90, width: 2.0, arrow: true, pulse: !dimPipe && b2Act && step.phys === 11, depthBias: -12 }
+      );
+
+      const b3Top = queueLayerTower(38, floorY, 12, {
+        wx: 48, wz: 106, layerH: 16, gapY: 2,
+        activeLayer: b3Act ? step.phys : null,
+        baseRgb: PAL.ceramic, activeRgb: coreEdge, activeTint: coreTint,
+        sectionStepBase: corePassBase + 6, sectionName: "Core",
+        previewMode: prev ? (prevMem ? "dim" : prev) : null, hlLayer, sIn: range.sIn, K
+      });
+
+      // ── CLEAN PLANAR OVERHEAD LOOP ARCH (z = +36) ──
+      const archY = b3Top + 42;
+      const archZ = 36;
+      const gateCX = -10;
+      const gateW = 44;
+      const loopRgb = dimPipe ? PAL.hairline : (isP2 ? PAL.accentB : (isCore ? PAL.accentA : PAL.hairline));
+      const loopAlpha = dimPipe ? 0.20 : (isCore ? 0.94 : 0.48);
+      const loopW = dimPipe ? 1.3 : (isP2 ? 2.2 : 1.6);
+
+      queueArchLine(
+        [[38, b3Top + 1, archZ], [38, archY, archZ], [gateCX + gateW * 0.5 + 1, archY, archZ]],
+        { rgb: loopRgb, alpha: loopAlpha, width: loopW, pulse: !dimPipe && isCore, speed: 0.34, phase: 0, depthBias: -10 }
+      );
+
+      queueSolidBlock(gateCX, archY, archZ, gateW, 18, 24, {
+        rgb: dimPipe ? dimRgb : (isP2 ? PAL.accentB : PAL.stone),
+        accent: !dimPipe && isP2,
+        alpha: dimPipe ? 0.58 : 0.96,
+        edgeRgb: dimPipe ? dimEdge : undefined,
+        edgeAlpha: dimPipe ? 0.34 : 0.82,
+        hitMeta: {
+          type: "info",
+          title: `Rank-64 Tanh Gate（${isP2 ? `Pass ${step.pass} 开启` : "Pass 1 关闭"}）`,
+          shape: `[B, ${range.sIn}, 4608] → 64 维瓶颈 → [B, ${range.sIn}, 2304]`,
+          role: `Pass ≥ 2 时开启：读取前排 Block AttnRes 摘要，按通道调节送入下一轮 Core 的 Q/K/V 与 MoE 输入。`
+        }
+      });
+
+      queueArchLine(
+        [
+          [gateCX - gateW * 0.5 - 1, archY, archZ],
+          [-104, archY, archZ],
+          [-104, floorY + 13, archZ],
+          [-84, floorY + 13, archZ]
+        ],
+        { rgb: loopRgb, alpha: loopAlpha, width: loopW, arrow: true, pulse: !dimPipe && isCore, speed: 0.34, phase: 0.5, depthBias: -14 }
+      );
+
+      queueCleanLabel(gateCX, archY + 36, archZ, `Core ×${K} (L6–L17)`, {
+        sub: isP2 ? `Pass ${step.pass}/${K} · Rank-64 Gate` : `Shared weights`,
+        rgb: dimPipe ? PAL.mutedInk : (isP2 ? PAL.accentB : PAL.ink), bold: !dimPipe, oy: -18
+      });
+
+      // ── FOREGROUND BAY (z = +122): Block AttnRes (B0..B6) ───────────────────
+      const totalB = 1 + 2 * K;
+      const doneB = Math.min(totalB, Math.max(0, step.blockIdx));
+      for (let b = 0; b < totalB; b++) {
+        const bx = -104 + b * 29;
+        const done = b < doneB || step.section === "lmhead";
+        const building = step.kind === "layer" && step.blockIdx === b;
+        const baseH = done ? 20 : building ? 14 : 6;
+        const h = prevMem ? Math.max(18, baseH + 8) : baseH;
+        const tileRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentB : (building ? PAL.accentB : (done ? PAL.accentA : PAL.ceramic)));
+        queueSolidBlock(bx, floorY + h * 0.5 + (prevMem ? 3 : 0), 122, 22, h, 24, {
+          rgb: tileRgb,
+          accent: prevMem || (!prevLayer && (done || building)),
+          alpha: prevLayer ? 0.56 : (prevMem ? 0.98 : (done || building ? 0.95 : 0.58)),
+          edgeRgb: prevLayer ? dimEdge : (prevMem ? mixRgb(PAL.accentB, PAL.ink, 0.32) : undefined),
+          edgeAlpha: prevLayer ? 0.32 : (prevMem ? 0.98 : 0.82),
+          lw: prevMem ? 1.35 : 0.9,
+          shadowY: floorY,
+          hitMeta: {
+            type: "goto", scene: "spacetime",
+            title: `Block AttnRes · B${b}`,
+            shape: `[B, ${range.sIn}, 2304]（仅当前前向存活）`,
+            role: `把对应 6 层块内的残差输出求和存成 1 份摘要 <i>b</i><sub>${b}</sub>，供更深层按深度回看，输出 token 后释放。`
+          }
+        });
+      }
+      queueCleanLabel(-16, floorY - 4, 152, `Block AttnRes (B0..B${totalB - 1})`, {
+        rgb: prevMem ? PAL.accentB : PAL.mutedInk, bold: prevMem, oy: 12
+      });
+
+      // ── REAR BAY (z = -132): Pass-Specific KV Cache Racks ───────────────────
+      for (let p = 1; p <= K; p++) {
+        const kx = -68 + (p - 1) * (K === 4 ? 44 : 58);
+        const curP = isCore && step.pass === p;
+        const doneP = (isCore && step.pass > p) || codaAct || step.section === "lmhead";
+        const kRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentA : (curP ? (p >= 2 ? PAL.accentB : PAL.accentA) : (doneP ? PAL.stone : PAL.ceramic)));
+        const kH = prevMem ? 62 : 52;
+        queueSolidBlock(kx, floorY + kH * 0.5 + (prevMem ? 3 : 0), -132, 38, kH, 26, {
+          rgb: kRgb,
+          accent: prevMem || (!prevLayer && curP),
+          alpha: prevLayer ? 0.54 : (prevMem ? 0.98 : (curP ? 0.96 : doneP ? 0.82 : 0.55)),
+          edgeRgb: prevLayer ? dimEdge : (prevMem ? mixRgb(PAL.accentA, PAL.ink, 0.32) : undefined),
+          edgeAlpha: prevLayer ? 0.30 : (prevMem ? 0.98 : 0.82),
+          lw: prevMem ? 1.35 : 0.9,
+          seams: 4,
+          shadowY: floorY,
+          hitMeta: {
+            type: "goto", scene: "spacetime",
+            title: `Pass ${p} KV + Conv Cache`,
+            shape: `KV [12层, B, 8, T=${range.tTotal}, 128] + conv_state`,
+            role: `保存 Core 第 ${p} 轮全部 12 层的历史 K/V 与短卷积状态；与其它轮次严格隔离，跨生成步持久保留。`
+          }
+        });
+        if (curP && !prevLayer) {
+          queueArchLine([[step.phys < 12 ? -58 : 38, floorY + 28, -56], [kx, floorY + 28, -118]], {
+            rgb: prevMem ? PAL.accentA : kRgb, alpha: prevMem ? 0.95 : 0.90, width: 1.8, dashed: true, pulse: true, speed: 0.36
+          });
+        }
+      }
+      queueCleanLabel(66, floorY + 62, -132, `KV Cache (T=${range.tTotal})`, {
+        rgb: prevMem ? PAL.accentA : PAL.mutedInk, bold: prevMem, oy: -48, ox: 44, leader: true
+      });
+
+      // ── STAGE 4 (x = +148): Block 4 · Coda (6 true stacked layers L18..L23) ──
+      queueArchLine(
+        [[62, b3Top - 8, 44], [94, b3Top - 8, 44], [94, floorY + 7, 44], [123, floorY + 7, 44]],
+        {
+          rgb: dimPipe ? PAL.hairline : (codaAct || step.section === "lmhead" ? PAL.accentA : PAL.hairline),
+          alpha: dimPipe ? 0.22 : 0.90, width: 2.0, arrow: true, pulse: !dimPipe && codaAct, depthBias: -10
+        }
+      );
+
+      const codaTop = queueLayerTower(148, floorY, 18, {
+        wx: 46, wz: 102, layerH: 14, gapY: 2,
+        activeLayer: codaAct ? step.phys : null,
+        baseRgb: PAL.stone, activeRgb: PAL.accentA, activeTint: PAL.accentALt,
+        sectionStepBase: 7 + 12 * K, sectionName: "Coda",
+        previewMode: prev ? (prevMem ? "dim" : prev) : null, hlLayer, sIn: range.sIn, K
+      });
+      queueCleanLabel(148, codaTop + 14, 0, "Coda", { sub: "L18–L23", bold: !dimPipe && codaAct, rgb: dimPipe ? PAL.mutedInk : (codaAct ? PAL.accentA : PAL.ink), oy: -12 });
+
+      // ── STAGE 5 (x = +248): LM Head Output Probabilities ────────────────────
+      queueArchLine(
+        [[171, codaTop - 7, 44], [202, codaTop - 7, 44], [202, floorY + 24, 44], [232, floorY + 24, 44]],
+        {
+          rgb: dimPipe ? PAL.hairline : (step.section === "lmhead" ? PAL.accentA : PAL.hairline),
+          alpha: dimPipe ? 0.22 : 0.90, width: 2.0, arrow: true, pulse: !dimPipe && step.section === "lmhead", depthBias: -10
+        }
+      );
+
+      const sc = SCENARIOS[state.scenario];
+      const outObj = sc.outputs[Math.min(state.generated, sc.outputs.length - 1)];
+      const pKey = step.section === "embed" || step.section === "prelude" ? "prelude"
+        : step.section === "core" ? "pass" + Math.min(4, step.pass)
+        : (state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass4");
+      const probs = outObj.stages[pKey] || outObj.stages.coda;
+
+      probs.forEach(([tok, p], idx) => {
+        const pz = 42 - idx * 28;
+        const barH = Math.max(8, p * 98);
+        const isTop = idx === 0;
+        queueSolidBlock(248, floorY + barH * 0.5, pz, 28, barH, 18, {
+          rgb: dimPipe ? dimRgb : (isTop ? PAL.accentA : PAL.stone),
+          accent: !dimPipe && isTop,
+          alpha: dimPipe ? 0.58 : (isTop ? 0.96 : 0.72),
+          edgeRgb: dimPipe ? dimEdge : undefined,
+          edgeAlpha: dimPipe ? 0.34 : 0.82,
+          shadowY: floorY,
+          hitMeta: {
+            type: "layer", stepIdx: timeline.length - 1,
+            title: `LM Head · 候选「${tok}」(${Math.round(p * 100)}%)`,
+            shape: `[B, 1, 2304] → [B, 1, Vocab]（BF16/FP32）`,
+            role: `将末位 token 的最终隐藏状态投影到词表维，经 Softmax 采样输出下一个 token。`
+          }
+        });
+      });
+      queueCleanLabel(248, floorY - 4, 66, `Output「${probs[0][0]}」`, {
+        sub: `${Math.round(probs[0][1] * 100)}%`, bold: !dimPipe, rgb: dimPipe ? PAL.mutedInk : PAL.accentA, oy: 12
+      });
+
+      // Minimal pointer tag on the highlighted layer when hovering 单层内部 / Attention / MoE
+      if (prevLayer) {
+        let sx = -58, sIdx = 0, lh = 16, lw = 48, lz = 106;
+        if (hlLayer < 6) { sx = -176; sIdx = hlLayer; lh = 14; lw = 46; lz = 102; }
+        else if (hlLayer < 12) { sx = -58; sIdx = hlLayer - 6; lh = 16; lw = 48; lz = 106; }
+        else if (hlLayer < 18) { sx = 38; sIdx = hlLayer - 12; lh = 16; lw = 48; lz = 106; }
+        else { sx = 148; sIdx = hlLayer - 18; lh = 14; lw = 46; lz = 102; }
+        const cy = floorY + lh * 0.5 + sIdx * (lh + 2);
+        const lx = (prev === "layer" || prev === "rmsnorm") ? sx : (sx + (prev === "multihead" ? -lw * 0.25 : lw * 0.25));
+        const tagText = prev === "layer"
+          ? `L${hlLayer} · 单层内部`
+          : prev === "rmsnorm"
+            ? `L${hlLayer} · RMSNorm`
+            : `L${hlLayer} · ${prev === "multihead" ? "① GQA Attention" : "② MoE"}`;
+        queueCleanLabel(lx, cy + 2, lz * 0.5 + 10, tagText, {
+          rgb: PAL.accentA, bold: true, oy: -24, leader: true
+        });
+      }
+    }
+
+    // =========================================================================
+    // 4B. Scene 02 (Level 2): Single Transformer Layer Cutaway (Attention → MoE)
+    // =========================================================================
+    function buildSceneLayer(timeline, step, tokens, range) {
+      const floorY = -92;
+      const mainY = floorY + 28; // Exact spine height for all horizontal layer conduits
+      const phys = step.phys !== null ? step.phys : 9;
+      const isFull = step.kind === "layer" ? step.isFull : (phys === 5 || phys === 11 || phys === 17 || phys === 23);
+      const isP2 = step.section === "core" && step.pass >= 2;
+      const isFp8 = phys >= 20;
+
+      // Live hover spotlight from the 3-level nav bar!
+      const prev = state.previewScene;
+      const prevNorm = prev === "rmsnorm";
+      const prevAttn = prev === "multihead";
+      const prevMoe = prev === "moe";
+      const prevMem = prev === "spacetime";
+      const hasPrev = prevNorm || prevAttn || prevMoe || prevMem;
+      const normDim = hasPrev && !prevNorm;
+      const normLift = prevNorm ? 4 : 0;
+      const dimRgb = mixRgb(PAL.ceramic, PAL.paper, 0.62);
+      const dimEdge = mixRgb(PAL.hairline, PAL.paper, 0.55);
+
+      const bays = [
+        { x0: -142, x1: -34,  z0: -52,  z1: 52,  rgb: PAL.accentA, active: prevAttn || !hasPrev },
+        { x0:  80,  x1:  188, z0: -52,  z1: 52,  rgb: PAL.accentA, active: prevMoe  || !hasPrev },
+        { x0: -130, x1: -46,  z0: -144, z1: -96, rgb: PAL.accentA, active: prevMem, dashed: !prevMem },
+        { x0: -136, x1:  176, z0:  96,  z1: 140, rgb: PAL.accentB, active: prevMem || isP2, dashed: !prevMem }
+      ];
+      queueTableFloor(floorY, 315, 165, 40, bays);
+
+      const sCount = tokens.length;
+      const zSpan = Math.min(80, Math.max(44, (sCount - 1) * 18));
+      const tokZ = (i) => sCount === 1 ? 0 : zSpan * 0.5 - (i / (sCount - 1)) * zSpan;
+
+      // ── 1. Left (x = -266): Layer Input X [B, S_in, 2304] ────────────────────
+      for (let i = 0; i < sCount; i++) {
+        const z = tokZ(i);
+        const inB = i >= range.start && i <= range.end;
+        const solo = state.focusToken === -1 || state.focusToken === i;
+        const hi = inB && solo;
+        queueSolidBlock(-266, floorY + 24, z, 22, 48, 14, {
+          rgb: hasPrev ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
+          alpha: hasPrev ? 0.58 : (hi ? 0.99 : 0.78),
+          edgeRgb: hasPrev ? dimEdge : undefined,
+          edgeAlpha: hasPrev ? 0.34 : 0.85,
+          accent: !hasPrev && hi,
+          shadowY: floorY,
+          hitMeta: {
+            type: "token", id: i,
+            title: `层输入 X · 位置 t${i}「${tokens[i].text}」`,
+            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
+            role: `上一层（或 Embedding）传来的隐藏状态，作为本层 L${phys} 的输入。`
+          }
+        });
+      }
+      queueCleanLabel(-266, floorY - 4, zSpan * 0.5 + 22, "X", { sub: `[B,${range.sIn},2304]`, bold: !hasPrev, rgb: hasPrev ? PAL.mutedInk : PAL.ink, oy: 12 });
+
+      // ── 2. Pre-Norm 1 (+ Rank-64 Gate if Pass ≥ 2) at x = -190 (spans -199..-181) ─
+      queueArchLine([[-255, mainY, 0], [-200, mainY, 0]], {
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev
+      });
+      queueSolidBlock(-190, floorY + 28 + normLift, 0, 18, 56, 62, {
+        rgb: normDim ? dimRgb : (prevNorm ? PAL.accentA : PAL.stone),
+        accent: prevNorm,
+        alpha: normDim ? 0.58 : 0.99,
+        edgeRgb: normDim ? dimEdge : (prevNorm ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.hairline),
+        edgeAlpha: normDim ? 0.34 : (prevNorm ? 1.0 : 0.84),
+        lw: prevNorm ? 1.5 : 0.9,
+        shadowY: floorY,
+        hitMeta: {
+          type: "goto", scene: "rmsnorm", rmsSlot: "attn",
+          title: "RMSNorm（Attention 前归一化）",
+          shape: `[B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
+          role: `按均方根缩放每个位置的隐藏状态向量，稳定进入 Q/K/V 投影前的数值分布。`
+        }
+      });
+      queueCleanLabel(-190, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 18 });
+      if (isP2) {
+        queueSolidBlock(-190, floorY + 66, 0, 22, 16, 32, {
+          rgb: prevMem ? PAL.accentB : (hasPrev ? dimRgb : PAL.accentB),
+          accent: prevMem || !hasPrev,
+          alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
+          hitMeta: {
+            type: "info",
+            title: `Rank-64 Gate（Pre-Attention · Pass ${step.pass}）`,
+            shape: `[B, ${range.sIn}, 4608] → 64 维 → [B, ${range.sIn}, 2304]`,
+            role: `将前排 Block AttnRes 跨块摘要与当前隐状态做双路 tanh 门控融合，调制送入 Q/K/V 的输入。`
+          }
+        });
+        queueCleanLabel(-190, floorY + 76, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -24, ox: -16, leader: true });
+        // Crisp 90-degree orthogonal routing from Block AttnRes left face -> front of RMSNorm 1 -> front face of Gate #1!
+        queueArchLine(
+          [[-125, floorY + 10, 118], [-190, floorY + 10, 118], [-190, floorY + 10, 40], [-190, floorY + 66, 40], [-190, floorY + 66, 17]],
+          { rgb: prevMem ? PAL.accentB : (hasPrev ? PAL.hairline : PAL.accentB), alpha: (hasPrev && !prevMem) ? 0.22 : 0.88, width: 1.5, dashed: true, arrow: true, depthBias: -10 }
+        );
+      }
+      queueArchLine([[-181, mainY, 0], [-135, mainY, 0]], {
+        rgb: prevAttn ? PAL.accentA : (hasPrev ? PAL.hairline : PAL.accentA), alpha: (hasPrev && !prevAttn) ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev || prevAttn
+      });
+
+      // ── 3. Main Sublayer ①: GQA Attention (x = -88, spans -134..-42, wz = 76) ─
+      const attnDim = hasPrev && !prevAttn;
+      const attnLift = prevAttn ? 4 : 0;
+      const attnBaseRgb = attnDim ? dimRgb : (prevAttn ? PAL.accentA : PAL.accentALt);
+      const attnEdgeRgb = attnDim ? dimEdge : (prevAttn ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
+      const attnMeta = {
+        type: "goto", scene: "multihead",
+        title: `① GQA Attention（L${phys}）`,
+        shape: `[B, ${range.sIn}, 2304] → 24Q:8KV (<i>d</i><sub>h</sub>=128) → [B, ${range.sIn}, 2304]`,
+        role: `本层前半段：先过 Short-Conv，再与历史 KV Cache 做 ${isFull ? "Full Attn (1M)" : "SWA-1024"} 因果注意力交换上下文。`
+      };
+      queueSolidBlock(-88, floorY + 30 + attnLift, 0, 92, 60, 76, {
+        rgb: attnBaseRgb,
+        accent: prevAttn,
+        alpha: attnDim ? 0.58 : 0.99,
+        edgeRgb: attnEdgeRgb,
+        edgeAlpha: attnDim ? 0.34 : 0.95,
+        lw: prevAttn ? 1.55 : 1.15,
+        shadowY: floorY,
+        hitMeta: attnMeta
+      });
+      // Sculpted 4 mini head-group ribs on top of Attention block
+      for (let g = 0; g < 4; g++) {
+        const gz = -24 + g * 16;
+        queueSolidBlock(-88, floorY + 65 + attnLift, gz, 68, 10, 11, {
+          rgb: attnDim ? dimRgb : (g === 1 ? PAL.accentB : PAL.accentA),
+          accent: !attnDim,
+          alpha: attnDim ? 0.56 : 0.99,
+          edgeRgb: attnDim ? dimEdge : undefined,
+          edgeAlpha: attnDim ? 0.32 : 0.88,
+          hitMeta: attnMeta
+        });
+      }
+      queueCleanLabel(-88, floorY + 86 + attnLift, 0, "① GQA Attention", {
+        sub: `24Q:8KV · ${isFull ? "Full 1M" : "SWA-1024"}`,
+        bold: !attnDim, rgb: attnDim ? PAL.mutedInk : PAL.accentA, oy: -12
+      });
+
+      // Rear KV + Conv Cache block tied directly to Attention back face (z = -38 -> -106)
+      const memDim = hasPrev && !prevMem;
+      const memLift = prevMem ? 4 : 0;
+      queueSolidBlock(-88, floorY + 25 + memLift, -118, 74, 50, 24, {
+        rgb: memDim ? dimRgb : (prevMem ? PAL.accentA : PAL.stone),
+        accent: prevMem,
+        alpha: memDim ? 0.56 : 0.99,
+        edgeRgb: memDim ? dimEdge : (prevMem ? mixRgb(PAL.accentA, PAL.ink, 0.32) : PAL.hairline),
+        edgeAlpha: memDim ? 0.32 : 0.90,
+        lw: prevMem ? 1.45 : 0.95,
+        seams: 3,
+        shadowY: floorY,
+        hitMeta: {
+          type: "goto", scene: "spacetime",
+          title: `KV + Conv Cache（L${phys} · Pass ${Math.max(1, step.pass)}）`,
+          shape: `K/V 各 [B, 8, T=${range.tTotal}, 128] + conv_state`,
+          role: `持久保存本层当前轮次全部历史 token 的 K/V 与因果短卷积状态，供 GQA Attention 读取。`
+        }
+      });
+      queueArchLine([[-88, mainY, -38], [-88, mainY, -106]], {
+        rgb: memDim ? PAL.hairline : PAL.accentA, alpha: memDim ? 0.20 : 0.88, width: 1.8, dashed: true, pulse: !memDim
+      });
+      queueCleanLabel(-88, floorY + 54 + memLift, -118, `KV + Conv Cache`, {
+        sub: `T=${range.tTotal}`, rgb: prevMem ? PAL.accentA : PAL.mutedInk, bold: prevMem, oy: -46, ox: 24, leader: true
+      });
+
+      // ── 4. Residual Add #1 (x = 0, spans -11..+11) + Planar z=0 Skip Arc #1 ──
+      queueArchLine([[-42, mainY, 0], [-12, mainY, 0]], {
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true
+      });
+      // Skip Arc #1: taps cleanly off main wire at x=-226 (z=0), arches overhead, lands squarely on top of + #1 (0, floorY+40, 0)!
+      queueArchLine(
+        [[-226, mainY, 0], [-226, floorY + 108, 0], [0, floorY + 108, 0], [0, floorY + 40, 0]],
+        { rgb: hasPrev ? PAL.hairline : PAL.mutedInk, alpha: hasPrev ? 0.20 : 0.82, width: 1.6, arrow: true, depthBias: -10 }
+      );
+      queueSolidBlock(0, mainY, 0, 22, 22, 22, {
+        rgb: hasPrev ? dimRgb : PAL.ceramic,
+        alpha: hasPrev ? 0.58 : 0.99,
+        edgeRgb: hasPrev ? dimEdge : PAL.ink,
+        edgeAlpha: hasPrev ? 0.34 : 0.78,
+        shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: "残差相加（+）",
+          shape: `[B, ${range.sIn}, 2304] + [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
+          role: `将层输入 X 与 GQA Attention 的输出逐元素相加，保留主干信号并把增量送往下一半层。`
+        }
+      });
+      queueCleanLabel(0, mainY, 11, "+", { bold: true, rgb: hasPrev ? PAL.mutedInk : PAL.ink, pill: false });
+
+      // ── 5. Pre-Norm 2 (+ Rank-64 Gate if Pass ≥ 2) at x = +54 (spans +45..+63) ─
+      queueArchLine([[11, mainY, 0], [44, mainY, 0]], {
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true
+      });
+      queueSolidBlock(54, floorY + 28 + normLift, 0, 18, 56, 62, {
+        rgb: normDim ? dimRgb : (prevNorm ? PAL.accentA : PAL.stone),
+        accent: prevNorm,
+        alpha: normDim ? 0.58 : 0.99,
+        edgeRgb: normDim ? dimEdge : (prevNorm ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.hairline),
+        edgeAlpha: normDim ? 0.34 : (prevNorm ? 1.0 : 0.84),
+        lw: prevNorm ? 1.5 : 0.9,
+        shadowY: floorY,
+        hitMeta: {
+          type: "goto", scene: "rmsnorm", rmsSlot: "moe",
+          title: "RMSNorm（MoE 前归一化）",
+          shape: `[B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
+          role: `对融合了上下文的隐藏状态做均方根归一化，准备送入 MoE Router 与专家网络。`
+        }
+      });
+      queueCleanLabel(54, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 14 });
+      if (isP2) {
+        queueSolidBlock(54, floorY + 66, 0, 22, 16, 32, {
+          rgb: prevMem ? PAL.accentB : (hasPrev ? dimRgb : PAL.accentB),
+          accent: prevMem || !hasPrev,
+          alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
+          hitMeta: {
+            type: "info",
+            title: `Rank-64 Gate（Pre-MoE · Pass ${step.pass}）`,
+            shape: `[B, ${range.sIn}, 4608] → 64 维 → [B, ${range.sIn}, 2304]`,
+            role: `将 Block AttnRes 摘要门控注入 MoE 输入，使同一物理层在不同循环轮次激活不同专家组合。`
+          }
+        });
+        queueCleanLabel(54, floorY + 76, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -40, ox: -24, leader: true });
+        // Crisp 90-degree orthogonal routing from Block AttnRes back face -> front of RMSNorm 2 -> front face of Gate #2!
+        queueArchLine(
+          [[54, floorY + 10, 105], [54, floorY + 10, 40], [54, floorY + 66, 40], [54, floorY + 66, 17]],
+          { rgb: prevMem ? PAL.accentB : (hasPrev ? PAL.hairline : PAL.accentB), alpha: (hasPrev && !prevMem) ? 0.22 : 0.88, width: 1.5, dashed: true, arrow: true, depthBias: -10 }
+        );
+      }
+      queueArchLine([[63, mainY, 0], [87, mainY, 0]], {
+        rgb: prevMoe ? PAL.accentA : (hasPrev ? PAL.hairline : PAL.accentA), alpha: (hasPrev && !prevMoe) ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev || prevMoe
+      });
+
+      // ── 6. Main Sublayer ②: MoE (x = +134, spans +88..+180, wz = 76) ─────────
+      const moeDim = hasPrev && !prevMoe;
+      const moeLift = prevMoe ? 4 : 0;
+      const moeBaseRgb = moeDim ? dimRgb : (prevMoe ? PAL.accentA : PAL.accentALt);
+      const moeEdgeRgb = moeDim ? dimEdge : (prevMoe ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
+      const moeMeta = {
+        type: "goto", scene: "moe",
+        title: `② MoE（L${phys} · ${isFp8 ? "MXFP8" : "NVFP4"}）`,
+        shape: `[B, ${range.sIn}, 2304] → Top-8 / 128 专家 → [B, ${range.sIn}, 2304]`,
+        role: `本层后半段：逐位置经 BF16 Router 从 128 个专家里挑出权重最高的 8 个计算并加权求和。`
+      };
+      queueSolidBlock(134, floorY + 30 + moeLift, 0, 92, 60, 76, {
+        rgb: moeBaseRgb,
+        accent: prevMoe,
+        alpha: moeDim ? 0.58 : 0.99,
+        edgeRgb: moeEdgeRgb,
+        edgeAlpha: moeDim ? 0.34 : 0.95,
+        lw: prevMoe ? 1.55 : 1.15,
+        shadowY: floorY,
+        hitMeta: moeMeta
+      });
+      // Sculpted 4×2 miniature Top-8 expert pillars on top of MoE block
+      const miniH = [18, 12, 22, 14, 15, 24, 11, 17];
+      for (let e = 0; e < 8; e++) {
+        const mx = 110 + (e % 4) * 16;
+        const mz = e < 4 ? -14 : 14;
+        const mh = miniH[e];
+        const isShared = e === 2 || e === 5;
+        queueSolidBlock(mx, floorY + 60 + mh * 0.5 + moeLift, mz, 11, mh, 14, {
+          rgb: moeDim ? dimRgb : (isShared ? PAL.accentB : PAL.accentA),
+          accent: !moeDim,
+          alpha: moeDim ? 0.56 : 0.99,
+          edgeRgb: moeDim ? dimEdge : undefined,
+          edgeAlpha: moeDim ? 0.32 : 0.88,
+          hitMeta: moeMeta
+        });
+      }
+      queueCleanLabel(134, floorY + 94 + moeLift, 0, "② MoE", {
+        sub: `Top-8/128 · ${isFp8 ? "MXFP8" : "NVFP4"}`,
+        bold: !moeDim, rgb: moeDim ? PAL.mutedInk : PAL.accentA, oy: -12
+      });
+
+      // ── 7. Residual Add #2 (x = +214, spans +203..+225) + Planar z=0 Skip Arc #2 ─
+      queueArchLine([[180, mainY, 0], [202, mainY, 0]], {
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true
+      });
+      // Skip Arc #2: taps cleanly off main wire at x=+26 (z=0), arches overhead, lands squarely on top of + #2 (214, floorY+40, 0)!
+      queueArchLine(
+        [[26, mainY, 0], [26, floorY + 108, 0], [214, floorY + 108, 0], [214, floorY + 40, 0]],
+        { rgb: hasPrev ? PAL.hairline : PAL.mutedInk, alpha: hasPrev ? 0.20 : 0.82, width: 1.6, arrow: true, depthBias: -10 }
+      );
+      queueSolidBlock(214, mainY, 0, 22, 22, 22, {
+        rgb: hasPrev ? dimRgb : PAL.ceramic,
+        alpha: hasPrev ? 0.58 : 0.99,
+        edgeRgb: hasPrev ? dimEdge : PAL.ink,
+        edgeAlpha: hasPrev ? 0.34 : 0.78,
+        shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: "残差相加（+）",
+          shape: `[B, ${range.sIn}, 2304] + [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
+          role: `将 Attention 后的隐状态与 MoE 输出逐元素相加，得到本层 L${phys} 的最终输出 X'。`
+        }
+      });
+      queueCleanLabel(214, mainY, 11, "+", { bold: true, rgb: hasPrev ? PAL.mutedInk : PAL.ink, pill: false });
+
+      queueArchLine([[225, mainY, 0], [254, mainY, 0]], {
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev
+      });
+      for (let i = 0; i < sCount; i++) {
+        const z = tokZ(i);
+        const inB = i >= range.start && i <= range.end;
+        const solo = state.focusToken === -1 || state.focusToken === i;
+        const hi = inB && solo;
+        queueSolidBlock(266, floorY + 24, z, 22, 48, 14, {
+          rgb: hasPrev ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
+          alpha: hasPrev ? 0.58 : (hi ? 0.99 : 0.78),
+          edgeRgb: hasPrev ? dimEdge : undefined,
+          edgeAlpha: hasPrev ? 0.34 : 0.85,
+          accent: !hasPrev && hi,
+          shadowY: floorY,
+          hitMeta: {
+            type: "token", id: i,
+            title: `层输出 X' · 位置 t${i}「${tokens[i].text}」`,
+            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
+            role: `本层 L${phys} 计算完成后的隐藏状态，送往下一层 ${phys < 23 ? "L" + (phys + 1) : "LM Head"}。`
+          }
+        });
+      }
+      queueCleanLabel(266, floorY - 4, zSpan * 0.5 + 22, "X'", { sub: `→ ${phys < 23 ? "L" + (phys + 1) : "LM Head"}`, bold: !hasPrev, rgb: hasPrev ? PAL.mutedInk : PAL.ink, oy: 12 });
+
+      // ── 8. Front Bay (z = +118): Block AttnRes Accumulation Strip (x = -125..+165) ─
+      queueSolidBlock(20, floorY + 10 + memLift, 118, 290, 20, 26, {
+        rgb: memDim ? dimRgb : (prevMem ? PAL.accentB : PAL.accentBLt),
+        accent: prevMem,
+        alpha: memDim ? 0.56 : 0.99,
+        edgeRgb: memDim ? dimEdge : PAL.accentB,
+        edgeAlpha: memDim ? 0.32 : 0.92,
+        lw: prevMem ? 1.45 : 1.0,
+        shadowY: floorY,
+        hitMeta: {
+          type: "goto", scene: "spacetime",
+          title: `Block AttnRes（本块残差累加）`,
+          shape: `[B, ${range.sIn}, 2304]（每 6 层形成 1 块摘要）`,
+          role: `把本层 L${phys} 产生的残差 <i>f</i><sub>${phys}</sub>(<i>h</i><sub>${phys}</sub>) 累加进当前 6 层块的摘要，供后续层及 Pass ≥ 2 门控读取。`
+        }
+      });
+      // Orthogonal floor taps from visible front-bottom edge of + #1 & + #2 directly into Block AttnRes back/right faces!
+      queueArchLine([[0, floorY + 17, 11], [0, floorY + 8, 11], [0, floorY + 8, 105]], {
+        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.82, width: 1.5, dashed: true, arrow: true
+      });
+      queueArchLine([[214, floorY + 17, 11], [214, floorY + 8, 11], [214, floorY + 8, 118], [166, floorY + 8, 118]], {
+        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.82, width: 1.5, dashed: true, arrow: true
+      });
+      queueCleanLabel(20, floorY - 4, 146, `Block AttnRes (b += f(h))`, {
+        rgb: prevMem ? PAL.accentB : PAL.mutedInk, bold: prevMem, oy: 12
+      });
+    }
+
+    // =========================================================================
+    // 4C. Scene 03 (Level 3): RMSNorm Internals (Input x → x² & RMS → x̂ → γ⊙x̂)
+    // =========================================================================
+    function buildSceneRMSNorm(timeline, step, tokens, range) {
+      const floorY = -92;
+      const phys = step.phys !== null ? step.phys : 9;
+      const focusT = (state.focusToken >= 0 && state.focusToken < tokens.length) ? state.focusToken : range.end;
+      const focusTok = tokens[focusT];
+      const slot = state.rmsSlot; // "attn" or "moe"
+      const scale = state.rmsScale; // 1 or 3
+      const nextTarget = slot === "attn" ? "Q / K / V" : "MoE Router";
+
+      const bays = [
+        { x0: -282, x1: -206, z0: -116, z1: 116, rgb: PAL.accentA, active: true },
+        { x0: -162, x1: -36,  z0: -116, z1: 116, rgb: PAL.accentB, active: true, dashed: true },
+        { x0:  14,  x1:  94,  z0: -116, z1: 116, rgb: PAL.accentA, active: true },
+        { x0:  132, x1:  278, z0: -116, z1: 116, rgb: PAL.accentA, active: true }
+      ];
+      queueTableFloor(floorY, 315, 165, 40, bays);
+
+      // 8 deterministic representative channels across d = 2304 (with realistic spikes & signed values)
+      const chIds = [0, 128, 384, 768, 1152, 1536, 1920, 2303];
+      const basePattern = [1.85, -0.58, 3.12, 0.88, -2.64, 0.62, 1.44, -1.16];
+      const slotSalt = (slot === "moe" ? 41 : 17) + phys * 13 + focusT * 29;
+      const xVals = basePattern.map((v, i) => {
+        const jitter = 0.82 + seeded(slotSalt + i * 19) * 0.36;
+        return +(v * jitter * scale).toFixed(2);
+      });
+      const sqVals = xVals.map(v => v * v);
+      const meanSq = sqVals.reduce((a, b) => a + b, 0) / sqVals.length;
+      const rms = Math.sqrt(meanSq + 1e-6);
+      const normVals = xVals.map(v => v / rms);
+      const gammas = chIds.map((_, i) => +(0.74 + seeded((slot === "moe" ? 97 : 53) + phys * 7 + i * 23) * 0.72).toFixed(2));
+      const yVals = normVals.map((v, i) => v * gammas[i]);
+
+      const chZ = (i) => -98 + i * 28;
+      const pxPerUnit = 19; // Shared exact vertical scale for Input x & Normalized x̂ (proves 3× scale-invariance visually!)
+
+      // ── STAGE 1 (x = -244): Raw Input Vector x (jagged spikes at 1× / 3×!) ───
+      for (let i = 0; i < 8; i++) {
+        const z = chZ(i);
+        const v = xVals[i];
+        const h = Math.min(114, Math.max(8, Math.abs(v) * pxPerUnit));
+        const isPos = v >= 0;
+        queueSolidBlock(-244, floorY + h * 0.5, z, 26, h, 18, {
+          rgb: isPos ? PAL.accentA : PAL.stone,
+          accent: isPos,
+          edgeRgb: isPos ? mixRgb(PAL.accentA, PAL.ink, 0.30) : PAL.accentA,
+          shadowY: floorY,
+          hitMeta: {
+            type: "info",
+            title: `输入通道 x[${chIds[i]}]（t${focusT}「${focusTok.text}」）`,
+            shape: `单标量 · 整层输入 [B, ${range.sIn}, 2304]`,
+            role: `当前通道值 x = ${v > 0 ? "+" : ""}${v.toFixed(2)}（${scale}× 幅度），直接送入平方均值与归一化分支。`
+          }
+        });
+        // Short feed into Stage 2 (x²)
+        queueArchLine([[-229, floorY + 10, z], [-145, floorY + 10, z]], {
+          rgb: PAL.accentA, alpha: 0.45, width: 1.1, arrow: true
+        });
+      }
+      queueCleanLabel(-244, floorY - 4, 122, `Input x (t${focusT}「${focusTok.text}」)`, {
+        sub: `[B, ${range.sIn}, 2304] · ${scale}×`, bold: true, oy: 12
+      });
+
+      // ── STAGE 2 (x = -128 & x = -66): x_i² → Per-Token Scalar RMS(x) [B,S,1] ─
+      for (let i = 0; i < 8; i++) {
+        const z = chZ(i);
+        const sq = sqVals[i];
+        const h = Math.min(82, Math.max(6, Math.sqrt(sq) * 10));
+        queueSolidBlock(-128, floorY + h * 0.5, z, 18, h, 14, {
+          rgb: PAL.accentBLt,
+          edgeRgb: PAL.accentB,
+          edgeAlpha: 0.85,
+          shadowY: floorY,
+          hitMeta: {
+            type: "info",
+            title: `平方项 x[${chIds[i]}]²`,
+            shape: `单通道平方 · 整批 [B, ${range.sIn}, 2304]`,
+            role: `x² = ${sq.toFixed(2)}（全部非负）；RMSNorm 不减均值 μ，直接对 2304 个通道平方求平均。`
+          }
+        });
+        // Funnel lines from each x_i² into the central RMS(x) scalar block
+        queueArchLine([[-117, floorY + Math.min(20, h * 0.6), z], [-84, floorY + 16, 0]], {
+          rgb: PAL.accentB, alpha: 0.52, width: 1.05
+        });
+      }
+
+      // Focused Per-Token Scalar RMS(x) pillar at x = -66, z = 0
+      const rmsH = Math.min(108, Math.max(18, rms * 16));
+      queueSolidBlock(-66, floorY + rmsH * 0.5, 0, 32, rmsH, 32, {
+        rgb: PAL.accentB,
+        accent: true,
+        edgeRgb: mixRgb(PAL.accentB, PAL.ink, 0.32),
+        lw: 1.35,
+        shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: `RMS(x) 标量 · t${focusT}「${focusTok.text}」`,
+          shape: `单位置标量 [1] · 整批 [B, ${range.sIn}, 1]`,
+          role: `√(mean(x²) + ε) = ${rms.toFixed(2)}；仅由当前 token 自身 2304 维算出，不与其他 token 混合。`
+        }
+      });
+      // Neighboring per-token RMS scalar pills (proving [B, S, 1] is strictly per-token!)
+      const otherToks = [];
+      for (let t = range.start; t <= range.end; t++) if (t !== focusT) otherToks.push(t);
+      otherToks.slice(0, 4).forEach((tIdx, k) => {
+        const nz = k < 2 ? (-56 - k * 24) : (56 + (k - 2) * 24);
+        const oRms = rms * (0.86 + seeded(slotSalt + tIdx * 31) * 0.28);
+        const oh = Math.min(72, Math.max(14, oRms * 12));
+        queueSolidBlock(-66, floorY + oh * 0.5, nz, 18, oh, 16, {
+          rgb: PAL.stone,
+          alpha: 0.78,
+          edgeRgb: PAL.mutedInk,
+          shadowY: floorY,
+          hitMeta: {
+            type: "token", id: tIdx,
+            title: `RMS(x) 标量 · t${tIdx}「${tokens[tIdx].text}」`,
+            shape: `独立标量 [1]（属于 [B, ${range.sIn}, 1]）`,
+            role: `t${tIdx} 自己独立的 RMS = ${oRms.toFixed(2)}；点击切换到该 token 查看其通道归一化过程。`
+          }
+        });
+      });
+      queueCleanLabel(-66, floorY + rmsH + 22, 0, `RMS(x) = ${rms.toFixed(2)}`, {
+        sub: `[B, ${range.sIn}, 1] · 无均值减法`, rgb: PAL.accentB, bold: true, oy: -28
+      });
+
+      // Overhead bypass rail carrying raw x to Stage 3, plus Terracotta divisor arrow from RMS(x)
+      queueArchLine([[-244, floorY + 116, -98], [-244, floorY + 124, -98], [54, floorY + 124, -98], [54, floorY + 54, -98]], {
+        rgb: PAL.accentA, alpha: 0.65, width: 1.5, dashed: true, arrow: true
+      });
+      queueArchLine([[-48, floorY + Math.min(34, rmsH * 0.5), 0], [34, floorY + 24, 0]], {
+        rgb: PAL.accentB, alpha: 0.92, width: 2.0, arrow: true, pulse: true, speed: 0.36
+      });
+
+      // ── STAGE 3 (x = +54): Normalized Vector x̂ = x / RMS(x) (INVARIANT!) ─────
+      // Crisp horizontal Unit-RMS (1.0) reference wire across all 8 bars!
+      queueArchLine([[70, floorY + pxPerUnit, -108], [70, floorY + pxPerUnit, 108]], {
+        rgb: PAL.accentB, alpha: 0.85, width: 1.4, dashed: true, depthBias: -15
+      });
+      for (let i = 0; i < 8; i++) {
+        const z = chZ(i);
+        const nv = normVals[i];
+        const h = Math.min(96, Math.max(8, Math.abs(nv) * pxPerUnit));
+        const isPos = nv >= 0;
+        queueSolidBlock(54, floorY + h * 0.5, z, 26, h, 18, {
+          rgb: isPos ? PAL.accentA : PAL.stone,
+          accent: isPos,
+          edgeRgb: isPos ? mixRgb(PAL.accentA, PAL.ink, 0.30) : PAL.accentA,
+          shadowY: floorY,
+          hitMeta: {
+            type: "info",
+            title: `归一化通道 x̂[${chIds[i]}]`,
+            shape: `单标量 · 整层 [B, ${range.sIn}, 2304]`,
+            role: `x / RMS = ${xVals[i].toFixed(2)} / ${rms.toFixed(2)} = ${nv > 0 ? "+" : ""}${nv.toFixed(2)}；无论输入放大几倍，此处高度完全不变！`
+          }
+        });
+        queueArchLine([[69, floorY + 12, z], [146, floorY + 12, z]], {
+          rgb: PAL.accentA, alpha: 0.55, width: 1.2, arrow: true
+        });
+      }
+      queueCleanLabel(54, floorY - 4, 122, `x̂ = x / RMS(x)`, {
+        sub: `Unit RMS · [B,${range.sIn},2304]`, bold: true, rgb: PAL.accentA, oy: 12
+      });
+
+      // ── STAGE 4 (x = +160 & x = +242): Learnable γ [2304] ⊙ x̂ → Output y ────
+      for (let i = 0; i < 8; i++) {
+        const z = chZ(i);
+        const g = gammas[i];
+        const gh = Math.max(12, g * 24);
+        queueSolidBlock(160, floorY + gh * 0.5, z, 18, gh, 16, {
+          rgb: PAL.accentB,
+          accent: true,
+          edgeRgb: mixRgb(PAL.accentB, PAL.ink, 0.32),
+          shadowY: floorY,
+          hitMeta: {
+            type: "info",
+            title: `可学习缩放权重 γ[${chIds[i]}]`,
+            shape: `1D 参数向量 [2304]（BF16/FP32，所有 token 共享）`,
+            role: `训练学到的逐通道增益 γ = ${g.toFixed(2)}，用于恢复各特征通道所需的表达幅度（无偏置 β）。`
+          }
+        });
+        queueArchLine([[171, floorY + 12, z], [226, floorY + 12, z]], {
+          rgb: PAL.accentA, alpha: 0.65, width: 1.2, arrow: true
+        });
+
+        const yv = yVals[i];
+        const yh = Math.min(104, Math.max(8, Math.abs(yv) * pxPerUnit));
+        const isPos = yv >= 0;
+        queueSolidBlock(242, floorY + yh * 0.5, z, 26, yh, 18, {
+          rgb: isPos ? PAL.accentA : PAL.stone,
+          accent: isPos,
+          edgeRgb: isPos ? mixRgb(PAL.accentA, PAL.ink, 0.30) : PAL.accentA,
+          shadowY: floorY,
+          hitMeta: {
+            type: "info",
+            title: `输出通道 y[${chIds[i]}]`,
+            shape: `单标量 · 整层输出 [B, ${range.sIn}, 2304]`,
+            role: `y = x̂ × γ = ${normVals[i].toFixed(2)} × ${g.toFixed(2)} = ${yv > 0 ? "+" : ""}${yv.toFixed(2)}，直接送入 ${nextTarget}。`
+          }
+        });
+      }
+      queueCleanLabel(160, floorY + 54, 0, "γ [2304]", { sub: "Learnable gain", rgb: PAL.accentB, bold: true, oy: -20 });
+      queueCleanLabel(242, floorY - 4, 122, `Output y`, { sub: `→ ${nextTarget}`, bold: true, oy: 12 });
+    }
+
+    // =========================================================================
+    // 5. Scene 02: Multi-Head GQA Assembly Line (24Q = 8×3 Paired with 8 KV + 3D Attention Matrix)
+    // =========================================================================
+    function buildSceneMultiHead(timeline, step, tokens, range) {
+      const floorY = -98;
+      queueTableFloor(floorY, 310, 180, 40);
+
+      const isFull = state.forceFullAttn !== null ? state.forceFullAttn : (step.kind === "layer" ? step.isFull : false);
+      const nTok = tokens.length;
+      const queryPos = (state.focusToken >= 0 && state.focusToken < nTok) ? state.focusToken : range.end;
+      const zSpan = Math.min(130, Math.max(66, (nTok - 1) * 26));
+      const tokZ = (i) => nTok === 1 ? 0 : -zSpan * 0.5 + (i / (nTok - 1)) * zSpan;
+
+      // ── 1. Left (x = -246): Input Tensor X [S × 2304] + Short-Conv Bracket ──
+      for (let i = 0; i < nTok; i++) {
+        const z = tokZ(i);
+        const inB = i >= range.start && i <= range.end;
+        const hi = i === queryPos;
+        queueSolidBlock(-246, floorY + 28, z, 34, 56, 17, {
+          rgb: hi ? PAL.accentA : (inB ? PAL.accentALt : PAL.ceramic),
+          accent: hi,
+          shadowY: floorY,
+          hitMeta: {
+            type: "token", id: i,
+            title: `输入隐状态 X · t${i}「${tokens[i].text}」`,
+            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
+            role: `先经过因果短卷积（Short-Conv）提取局部邻近特征，再线性投影出 Q、K、V。`
+          }
+        });
+      }
+      queueCleanLabel(-246, floorY - 4, zSpan * 0.5 + 24, `X [B,${range.sIn},2304]`, { sub: "+ Short-Conv", bold: true, oy: 12 });
+
+      // ── 2. Mid-Left (x = -112): 8 GQA Decks (Each Deck = 3 Query Slices ABOVE 1 Shared KV Base!) ──
+      // Visually unmistakable 3:1 GQA grouping (24 Query Heads : 8 KV Heads)!
+      for (let g = 0; g < 8; g++) {
+        const gz = -112 + g * 32;
+        const isSel = state.focusGqaGroup === -1 || state.focusGqaGroup === g;
+        const isFocus = state.focusGqaGroup === g;
+        const lift = isFocus ? 14 : 0;
+
+        // 1 Shared KV Head Base Block (bottom)
+        queueSolidBlock(-112, floorY + 12 + lift, gz, 46, 18, 22, {
+          rgb: isFocus ? PAL.accentB : (isSel ? PAL.stone : PAL.ceramic),
+          accent: isFocus,
+          alpha: isSel ? 0.96 : 0.35,
+          shadowY: floorY,
+          hitMeta: {
+            type: "gqa", id: g,
+            title: `共享 KV 头 #${g}（<i>d</i><sub>h</sub> = 128）`,
+            shape: `K/V 各 [B, 1, T=${range.tTotal}, 128]（全层共 8 个 KV 头）`,
+            role: `由上方 Q${g * 3}、Q${g * 3 + 1}、Q${g * 3 + 2} 三个 Query 头共用，把 KV 显存压缩为 MHA 的 1/3。`
+          }
+        });
+
+        // 3 Stacked Query Head Slices directly above KV_g!
+        for (let q = 0; q < 3; q++) {
+          const qy = floorY + 30 + q * 13 + lift;
+          queueSolidBlock(-112, qy, gz, 42, 9, 20, {
+            rgb: isFocus ? PAL.accentA : (isSel ? PAL.accentALt : PAL.ceramic),
+            accent: isFocus,
+            alpha: isSel ? 0.95 : 0.30,
+            hitMeta: {
+              type: "gqa", id: g,
+              title: `Query 头 Q${g * 3 + q}（第 ${g} 组）`,
+              shape: `[B, 1, ${range.sIn}, 128]（全层 24 头 = 3072 维）`,
+              role: `与下方共享的 KV${g} 做点积并叠加相对位置偏置，计算当前位置的注意力分布。`
+            }
+          });
+        }
+      }
+      queueCleanLabel(-112, floorY + 96, 0, "GQA (24Q : 8KV)", {
+        sub: "8 × (3Q + 1KV)", bold: true, oy: -12
+      });
+
+      // Clean connection X -> Selected GQA Group -> 3D Causal Attention Matrix
+      const selGz = state.focusGqaGroup >= 0 ? (-112 + state.focusGqaGroup * 32) : 0;
+      queueArchLine([[-226, floorY + 32, tokZ(queryPos)], [-140, floorY + 42, selGz]], {
+        rgb: PAL.accentA, alpha: 0.85, width: 1.6, arrow: true, pulse: true
+      });
+      queueArchLine([[-84, floorY + 42, selGz], [-16, floorY + 42, 0]], {
+        rgb: PAL.accentA, alpha: 0.85, width: 1.6, arrow: true, pulse: true
+      });
+
+      // ── 3. Center-Right (x = +62): 3D Raised Causal Attention Score Matrix [S × T] ──
+      const cell = 24;
+      const gap = 4;
+      const stepC = cell + gap;
+      const scAttn = SCENARIOS[state.scenario].outputs[0].attn;
+      for (let r = 0; r < nTok; r++) {
+        for (let c = 0; c < nTok; c++) {
+          const cx = 62 + (c - (nTok - 1) * 0.5) * stepC;
+          const cz = (r - (nTok - 1) * 0.5) * stepC;
+          const masked = c > r;
+          const isSink = c === 0 && !masked;
+          const outWin = !isFull && !isSink && (r - c > 2);
+          const active = !masked && !outWin;
+
+          if (masked) {
+            // Flat etched square showing causal mask (future tokens blocked)
+            queueSolidBlock(cx, floorY + 2, cz, cell, 3, cell, {
+              rgb: PAL.ceramic, alpha: 0.25, edgeAlpha: 0.28, lw: 0.6,
+              hitMeta: {
+                type: "info",
+                title: `因果掩码屏蔽（t${r} ✕ t${c}）`,
+                shape: `Mask = −∞（Softmax 后权重为 0）`,
+                role: `屏蔽未来位置，确保位置 t${r} 只能看到自己和之前的上下文，不能偷看 t${c}。`
+              }
+            });
+          } else {
+            const rawW = (scAttn[c] || 0.16) * (0.75 + seeded((state.focusGqaGroup + 2) * 19 + r * 7 + c * 13) * 0.5);
+            const h = active ? Math.max(10, Math.min(72, rawW * 135)) : 5;
+            const isCurRow = r === queryPos;
+            queueSolidBlock(cx, floorY + h * 0.5, cz, cell, h, cell, {
+              rgb: isSink ? PAL.accentB : (active ? (isCurRow ? PAL.accentA : PAL.accentALt) : PAL.stone),
+              accent: active && (isSink || isCurRow),
+              alpha: active ? 0.95 : 0.35,
+              shadowY: floorY,
+              hitMeta: {
+                type: "info",
+                title: `注意力权重（t${r}「${tokens[r].text}」→ t${c}「${tokens[c].text}」）`,
+                shape: `单格标量 · 整层矩阵 [B, 24, ${range.sIn}, T=${range.tTotal}]`,
+                role: isSink
+                  ? `t0 位置的 Attention Sink 锚点（配相对位置偏置），吸收多余注意力以稳定 1M 长上下文。`
+                  : outWin
+                    ? `超出 SWA-1024 局部窗口被截断；切到 Full 1M 可恢复远距关注。`
+                    : `经 Softmax 后的因果注意力权重，决定 t${r} 从 t${c} 的 Value 向量中聚合多少信息。`
+              }
+            });
+          }
+        }
+      }
+      queueCleanLabel(62, floorY + 96, 0, `Causal Attention`, {
+        sub: isFull ? "Full (1M)" : "SWA-1024", bold: true, oy: -12
+      });
+
+      // ── 4. Far Right (x = +244): Gate + Concat(3072) -> W_o(2304) ───────────
+      queueArchLine([[62 + nTok * stepC * 0.5 + 8, floorY + 34, 0], [218, floorY + 34, 0]], {
+        rgb: PAL.accentA, alpha: 0.85, width: 1.6, arrow: true, pulse: true
+      });
+      queueSolidBlock(244, floorY + 46, 0, 44, 92, 126, {
+        rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: `Output Gate + <i>W</i><sub>o</sub> 输出投影`,
+          shape: `[B, ${range.sIn}, 24×128 = 3072] → [B, ${range.sIn}, 2304]`,
+          role: `把 24 个注意力头的 128 维结果拼接为 3072 维，经 Output Gate 调制后投影回模型隐藏维 2304。`
+        }
+      });
+      queueCleanLabel(244, floorY + 104, 0, "Concat → Output Proj", { sub: "3072 → 2304", bold: true, oy: -10 });
+    }
+
+    // =========================================================================
+    // 6. Scene 03: Zero-Occlusion 16 × 8 = 128 Mechanical Expert Keybed!
+    // =========================================================================
+    function buildSceneMoE(timeline, step, tokens, range, dt) {
+      const floorY = -92;
+      queueTableFloor(floorY, 320, 185, 40);
+
+      const phys = step.phys !== null ? step.phys : 10;
+      const curPass = step.section === "core" ? step.pass : 1;
+      const isFp8 = phys >= 20;
+
+      const activeIndices = [];
+      if (state.focusToken >= 0 && state.focusToken < tokens.length) activeIndices.push(state.focusToken);
+      else for (let i = range.start; i <= range.end; i++) activeIndices.push(i);
+
+      const expertHits = new Map();
+      const prevPassSet = new Set();
+      if (step.section === "core" && curPass >= 2) {
+        const refT = (state.focusToken >= 0 && state.focusToken < tokens.length) ? state.focusToken : range.end;
+        getTop8Experts(state.scenario, refT, phys, curPass - 1).forEach(e => prevPassSet.add(e.id));
+      }
+
+      activeIndices.forEach(tIdx => {
+        getTop8Experts(state.scenario, tIdx, phys, curPass).forEach(item => {
+          if (!expertHits.has(item.id)) expertHits.set(item.id, []);
+          expertHits.get(item.id).push({ tokIdx: tIdx, w: item.w });
+        });
+      });
+
+      // ── 1. Left Edge (x = -255): Active Tokens + BF16 Router Bar (x = -194) ──
+      const zSpan = Math.min(130, Math.max(40, (activeIndices.length - 1) * 28));
+      const tZ = (pos) => activeIndices.length === 1 ? 0 : -zSpan * 0.5 + (pos / (activeIndices.length - 1)) * zSpan;
+      activeIndices.forEach((tIdx, pos) => {
+        const z = tZ(pos);
+        queueSolidBlock(-256, floorY + 18, z, 28, 36, 18, {
+          rgb: PAL.accentA, accent: true, shadowY: floorY,
+          hitMeta: {
+            type: "token", id: tIdx,
+            title: `隐状态向量 <i>h</i><sub>${tIdx}</sub>（位置 t${tIdx}「${tokens[tIdx].text}」）`,
+            shape: `单位置 [1, 2304] · 整批 [B, ${activeIndices.length}, 2304]`,
+            role: `经过本层 Attention、残差相加与 RMSNorm 后的上下文隐状态，按位置独立送入 Router 选专家。`
+          }
+        });
+        queueArchLine([[-240, floorY + 18, z], [-208, floorY + 18, z]], { rgb: PAL.accentA, alpha: 0.72, width: 1.4, arrow: true });
+      });
+      queueCleanLabel(-256, floorY - 4, zSpan * 0.5 + 24, `Hidden H`, { sub: `[B,${activeIndices.length},2304]`, bold: true, oy: 12 });
+
+      // BF16 Router Bar
+      queueSolidBlock(-194, floorY + 26, 0, 22, 52, 174, {
+        rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: `MoE Router（BF16）`,
+          shape: `权重 [2304, 128] · 路由分数 [B, ${activeIndices.length}, 128] → Top-8`,
+          role: `对每个位置的 2304 维隐状态给 128 个专家打分，只选权重最高的 8 个并做归一化。`
+        }
+      });
+      queueCleanLabel(-194, floorY + 64, 0, "Router", { sub: "Top-8 / 128", bold: true, oy: -10 });
+
+      // ── 2. Center (x = -146 .. +154): 16 × 8 = 128 Mechanical Expert Grid ──
+      // Base tray — depthBias: 50000 guarantees it renders strictly beneath all 128 tiles
+      queueSolidBlock(4, floorY + 2, 0, 326, 4, 186, { rgb: PAL.stone, alpha: 0.98, shadowY: floorY, depthBias: 50000 });
+
+      const cols = 16, rows = 8;
+      const tileW = 16, tileD = 18, gapX = 3.5, gapZ = 4.2;
+      const boardW = cols * tileW + (cols - 1) * gapX;
+      const boardD = rows * tileD + (rows - 1) * gapZ;
+
+      const spring = Math.min(1, (dt || 0.016) * 9.5);
+      for (let e = 0; e < 128; e++) {
+        const c = e % cols;
+        const r = Math.floor(e / cols);
+        const ex = 4 - boardW * 0.5 + tileW * 0.5 + c * (tileW + gapX);
+        const ez = -boardD * 0.5 + tileD * 0.5 + r * (tileD + gapZ);
+
+        const hits = expertHits.get(e);
+        const wasPrev = prevPassSet.has(e);
+        const sumW = hits ? hits.reduce((a, h) => a + h.w, 0) : 0;
+        const targetH = hits ? (26 + Math.min(54, sumW * 190)) : (wasPrev ? 10 : 5);
+        state.moeHeights[e] += (targetH - state.moeHeights[e]) * spring;
+        const h = state.moeHeights[e];
+
+        const isShared = hits && hits.length >= 2;
+        const tileRgb = hits ? (isShared ? PAL.accentB : PAL.accentA) : (wasPrev ? PAL.accentBLt : PAL.ceramic);
+
+        queueSolidBlock(ex, floorY + 4 + h * 0.5, ez, tileW, h, tileD, {
+          rgb: tileRgb,
+          accent: !!hits,
+          edgeRgb: hits ? mixRgb(tileRgb, PAL.ink, 0.3) : (wasPrev ? PAL.accentB : PAL.hairline),
+          edgeAlpha: hits ? 0.96 : (wasPrev ? 0.85 : 0.48),
+          lw: hits ? 1.0 : 0.65,
+          hitMeta: {
+            type: "info",
+            title: `Expert #${e}（${isFp8 ? "MXFP8" : "NVFP4"}）`,
+            shape: `单专家 FFN：[1, 2304] → [1, 2304]（共 128 个）`,
+            role: hits
+              ? `本轮已激活：由 ${hits.map(x => `t${x.tokIdx}「${tokens[x.tokIdx].text}」(${Math.round(x.w * 100)}%)`).join("、")} 命中并计算特征变换。`
+              : (wasPrev ? `上一轮（Pass ${curPass - 1}）曾激活、本轮已切走，体现同层跨轮动态路由。` : `本步未被选中，不参与矩阵计算以节省算力。`)
+          }
+        });
+
+        // Clean minimal overhead routing arc ONLY for solo token or top-weighted shared hits (zero spaghetti!)
+        if (hits && (activeIndices.length === 1 || isShared || sumW > 0.165)) {
+          const lineRgb = isShared ? PAL.accentB : PAL.accentA;
+          queueArchLine(
+            [[-182, floorY + 34, ez * 0.65], [(-182 + ex) * 0.5, floorY + h + 38, ez], [ex, floorY + 6 + h, ez]],
+            { rgb: lineRgb, alpha: 0.66, width: isShared ? 1.5 : 1.0, curved: true, pulse: activeIndices.length === 1, speed: 0.32, depthBias: -18 }
+          );
+        }
+      }
+
+      queueCleanLabel(4, floorY + 104, 0, `128 Experts · L${phys} (${isFp8 ? "MXFP8" : "NVFP4"})`, {
+        sub: `${expertHits.size}/128 active`, bold: true, oy: -28
+      });
+
+      // ── 3. Right Edge (x = +224): Weighted Sum Combine Output ───────────────
+      queueArchLine([[172, floorY + 26, 0], [202, floorY + 26, 0]], {
+        rgb: PAL.accentA, alpha: 0.85, width: 1.8, arrow: true, pulse: true
+      });
+      queueSolidBlock(228, floorY + 32, 0, 38, 64, 152, {
+        rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
+        hitMeta: {
+          type: "info",
+          title: `Top-8 加权汇总`,
+          shape: `8 × [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
+          role: `把每个位置激活的 8 个专家输出按路由权重 ∑ <i>g</i><sub>i</sub> · Expert<sub>i</sub>(<i>x</i>) 加权相加，输出给残差相加。`
+        }
+      });
+      queueCleanLabel(228, floorY + 76, 0, "Weighted Sum", { sub: `[B,${range.sIn},2304]`, bold: true, oy: -10 });
+    }
+
+    // =========================================================================
+    // 7. Scene 04: Side-by-Side 4D Space-Time Dual Memory Shelves (Zero Clutter!)
+    // =========================================================================
+    function buildSceneSpaceTime(timeline, step, tokens, range) {
+      const floorY = -114;
+      const K = state.K;
+      const totalBlocks = 2 + 2 * K;
+      const nTok = tokens.length;
+
+      // Two cleanly separated wings on the tabletop:
+      //   LEFT  WING (x = -266 .. -54, center -160): Persistent 48-Layer KV Cache Shelf
+      //   CENTER AISLE (x = 0): Shared B0..B7 Depth Axis Ruler + Active Row Bridge
+      //   RIGHT WING (x =  +54 .. +266, center +160): Ephemeral Per-Step Block Summary Shelf
+      const wallW = 212;
+      const wallH = 196;
+      const leftCX = -162;
+      const rightCX = 162;
+
+      const bays = [
+        { x0: leftCX - wallW * 0.5 - 10,  x1: leftCX + wallW * 0.5 + 10,  z0: -38, z1: 38, rgb: PAL.accentA, active: true },
+        { x0: rightCX - wallW * 0.5 - 10, x1: rightCX + wallW * 0.5 + 10, z0: -38, z1: 38, rgb: PAL.accentB, active: true, dashed: true }
+      ];
+      queueTableFloor(floorY, 315, 118, 40, bays);
+
+      // Solid matte architectural backplates with etched block shelf seams (NO floating ghost cubes!)
+      queueSolidBlock(leftCX, floorY + wallH * 0.5, -14, wallW, wallH, 8, {
+        rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: totalBlocks, shadowY: floorY, depthBias: 1500,
+        hitMeta: {
+          type: "info",
+          title: `KV Cache 缓存墙（持久 · ${12 + 12 * K} 层）`,
+          shape: `[${12 + 12 * K}层, B, 8 KV头, T=${range.tTotal}, 128]`,
+          role: `跨 Decode 生成步持久保留全部历史 token 的 K/V；每一行对应 6 层块，各循环轮次严格隔离。`
+        }
+      });
+      queueSolidBlock(rightCX, floorY + wallH * 0.5, -14, wallW, wallH, 8, {
+        rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: totalBlocks, shadowY: floorY, depthBias: 1500,
+        hitMeta: {
+          type: "info",
+          title: `Block AttnRes 摘要墙（本步临时 · ${totalBlocks} 块）`,
+          shape: `[${totalBlocks}块, B, S=${range.sIn}, 2304]`,
+          role: `仅存当前步活跃 token 在各 6 层块的残差汇总，供深层按深度注意力回看，步末输出新 token 后清空。`
+        }
+      });
+
+      const slotSpan = wallW - 34;
+      const colX = (centerX, i) => nTok === 1 ? centerX : centerX - slotSpan * 0.5 + (i / (nTok - 1)) * slotSpan;
+      const rowH = wallH / totalBlocks;
+      const by = (b) => floorY + rowH * (b + 0.5);
+      const cellW = Math.min(26, Math.floor((slotSpan / Math.max(1, nTok)) * 0.72));
+
+      const bLabels = ["B0 Pre"];
+      for (let p = 1; p <= K; p++) bLabels.push(`B${1 + (p - 1) * 2} P${p}`, `B${2 + (p - 1) * 2} P${p}`);
+      bLabels.push(`B${totalBlocks - 1} Coda`);
+
+      const focusT = (state.focusToken >= 0 && state.focusToken < nTok) ? state.focusToken : range.end;
+
+      for (let b = 0; b < totalBlocks; b++) {
+        const y = by(b);
+        const isCurB = step.blockIdx === b;
+        const isDoneB = step.blockIdx > b || step.section === "lmhead";
+
+        // Center Aisle Depth Ruler (shared by BOTH shelves!)
+        if (isCurB || b === 0 || b === totalBlocks - 1 || b % 2 === 1) {
+          queueCleanLabel(0, y, 0, bLabels[b], {
+            rgb: isCurB ? PAL.ink : PAL.mutedInk, bold: isCurB, pill: isCurB
+          });
+        }
+
+        // Active Row Bridge across the center aisle linking Left KV <-> Right Block Summary
+        if (isCurB) {
+          queueArchLine([[leftCX + wallW * 0.5 + 4, y, 6], [rightCX - wallW * 0.5 - 4, y, 6]], {
+            rgb: PAL.ink, alpha: 0.55, width: 1.5, dashed: true, pulse: true, speed: 0.34
+          });
+        }
+
+        for (let t = 0; t < nTok; t++) {
+          const isPrior = t < range.start;
+          const isAct = t >= range.start && t <= range.end;
+
+          // ── LEFT SHELF: Persistent 48-Layer KV Cache (ONLY filled/active cells protrude!) ──
+          const lx = colX(leftCX, t);
+          const kvFilled = isPrior || (isAct && (isDoneB || isCurB));
+          if (kvFilled) {
+            const d = isCurB ? 18 : 11;
+            queueSolidBlock(lx, y, -10 + d * 0.5, cellW, Math.max(11, rowH - 7), d, {
+              rgb: isCurB ? PAL.accentA : PAL.stone,
+              accent: isCurB,
+              alpha: isCurB ? 0.96 : 0.85,
+              hitMeta: {
+                type: "info",
+                title: `KV Cache · ${bLabels[b]} · t${t}「${tokens[t].text}」`,
+                shape: `单块 [6层, B, 8, 1, 128] · 全模型 [${12 + 12 * K}层, B, 8, T=${range.tTotal}, 128]`,
+                role: `持久保存该位置在对应 6 层的历史 K/V 向量；同一深度的新 token 沿水平方向读取所有历史位置。`
+              }
+            });
+          }
+
+          // Horizontal Causal Attention Rail on the active Block row of Left KV Shelf!
+          if (isCurB && t === focusT && t > 0) {
+            queueArchLine([[colX(leftCX, 0), y, 12], [lx, y, 12]], {
+              rgb: PAL.accentA, alpha: 0.92, width: 2.0, arrow: true, pulse: true, speed: 0.36
+            });
+          }
+
+          // ── RIGHT SHELF: Ephemeral Block AttnRes Summaries (ONLY active batch columns & done/cur rows!) ──
+          const rx = colX(rightCX, t);
+          if (isAct && (isDoneB || isCurB)) {
+            const d = isCurB ? 18 : 11;
+            queueSolidBlock(rx, y, -10 + d * 0.5, cellW, Math.max(11, rowH - 7), d, {
+              rgb: isCurB ? PAL.accentB : PAL.accentBLt,
+              accent: isCurB,
+              alpha: 0.96,
+              hitMeta: {
+                type: "token", id: t,
+                title: `Block AttnRes · ${bLabels[b]} · t${t}「${tokens[t].text}」`,
+                shape: `单块 [B, 1, 2304] · 全深度 [${totalBlocks}块, B, S=${range.sIn}, 2304]`,
+                role: `汇总该位置在当前 6 层块的残差输出，沿垂直深度供后续层回看，本次前向结束即释放。`
+              }
+            });
+          }
+
+          // Single clean vertical AttnRes depth arc on the focused active token column of Right Shelf!
+          if (isCurB && isAct && t === focusT && b > 0) {
+            queueArchLine([[rx, by(0), 12], [rx, (by(0) + y) * 0.5, 36], [rx, y, 12]], {
+              rgb: PAL.accentB, alpha: 0.88, width: 1.8, curved: true, arrow: true, pulse: true, speed: 0.34
+            });
+          }
+        }
+      }
+
+      // Clean Token Axis Labels directly along the floor front of BOTH Left & Right Shelves
+      for (let t = 0; t < nTok; t++) {
+        const isAct = t >= range.start && t <= range.end;
+        queueCleanLabel(colX(leftCX, t), floorY - 4, 28, `t${t}`, { rgb: PAL.ink, pill: false, oy: 10 });
+        queueCleanLabel(colX(rightCX, t), floorY - 4, 28, `t${t}`, { rgb: isAct ? PAL.accentB : PAL.mutedInk, bold: isAct, pill: false, oy: 10 });
+      }
+
+      // Two completely separated, non-overlapping Wing Titles
+      queueCleanLabel(leftCX, floorY + wallH + 22, -10, `KV Cache (${12 + 12 * K}L · Persistent)`, {
+        sub: `[B, 8, T=${range.tTotal}, 128]`, rgb: PAL.accentA, bold: true, oy: -12
+      });
+      queueCleanLabel(rightCX, floorY + wallH + 22, -10, `Block AttnRes (Per-Step)`, {
+        sub: `[N, B, ${range.sIn}, 2304]`, rgb: PAL.accentB, bold: true, oy: -12
+      });
+    }
+
+    // =========================================================================
+    // 8. 60fps Mechanical Render Loop
+    // =========================================================================
+    function renderCanvasFrame(now) {
+      if (!renderCanvasFrame.lastNow) renderCanvasFrame.lastNow = now;
+      const dt = Math.min(0.05, (now - renderCanvasFrame.lastNow) / 1000);
+      renderCanvasFrame.lastNow = now;
+      state.animTime += dt;
+
+      if (state.playing && now - state.lastStepAdvance >= state.stepIntervalMs) {
+        state.lastStepAdvance = now;
+        const tl = buildTimeline(state.K);
+        if (state.stepIdx < tl.length - 1) { state.stepIdx++; syncUI(); }
+        else { state.playing = false; syncUI(); }
+      }
+
+      const ease = Math.min(1, dt * 8.0);
+      state.cam.yaw   += (state.targetCam.yaw   - state.cam.yaw)   * ease;
+      state.cam.pitch += (state.targetCam.pitch - state.cam.pitch) * ease;
+      state.cam.dist  += (state.targetCam.dist  - state.cam.dist)  * ease;
+      state.cam.panX  += (state.targetCam.panX  - state.cam.panX)  * ease;
+      state.cam.panY  += (state.targetCam.panY  - state.cam.panY)  * ease;
+
+      const timeline = buildTimeline(state.K);
+      if (state.stepIdx >= timeline.length) state.stepIdx = timeline.length - 1;
+      const step = timeline[state.stepIdx];
+      const tokens = getTokens();
+      if (state.focusToken >= tokens.length) state.focusToken = -1;
+      const range = getActiveTokenRange(tokens);
+
+      const [tx, ty] = getCarrierTarget(step);
+      state.carrierX += (tx - state.carrierX) * Math.min(1, dt * 10);
+      state.carrierY += (ty - state.carrierY) * Math.min(1, dt * 10);
+
+      drawQueue = [];
+      labelQueue = [];
+      hitTargets = [];
+
+      if (state.scene === "overview") buildSceneOverview(timeline, step, tokens, range);
+      else if (state.scene === "layer") buildSceneLayer(timeline, step, tokens, range);
+      else if (state.scene === "rmsnorm") buildSceneRMSNorm(timeline, step, tokens, range);
+      else if (state.scene === "multihead") buildSceneMultiHead(timeline, step, tokens, range);
+      else if (state.scene === "moe") buildSceneMoE(timeline, step, tokens, range, dt);
+      else buildSceneSpaceTime(timeline, step, tokens, range);
+
+      ctx.save();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = rgba(PAL.paper, 1);
+      ctx.fillRect(0, 0, viewW, viewH);
+
+      drawQueue.sort((a, b) => b.depth - a.depth);
+      for (let i = 0; i < drawQueue.length; i++) drawQueue[i].fn();
+      flushLabels();
+      ctx.restore();
+
+      updateHoverTooltip();
+      requestAnimationFrame(renderCanvasFrame);
+    }
+
+    function updateHoverTooltip() {
+      if (state.dragging || state.mouseX < 0) {
+        tooltip.style.display = "none"; state.hoveredHit = null; return;
+      }
+      let best = null, bestDist = 9999;
+      for (let i = hitTargets.length - 1; i >= 0; i--) {
+        const h = hitTargets[i];
+        const d = Math.hypot(state.mouseX - h.sx, state.mouseY - h.sy);
+        if (d <= h.r && d < bestDist) { bestDist = d; best = h; }
+      }
+      state.hoveredHit = best;
+      if (best && best.meta) {
+        const m = best.meta;
+        const shapeLine = m.shape ? `<div class="font-mono text-[var(--ui-fg)] bg-[var(--ui-content)] border border-[var(--ui-card-border)] rounded px-1.5 py-0.5 my-1 break-words"><span class="text-[var(--ui-muted)]">尺寸 </span>${m.shape}</div>` : "";
+        const roleText = m.role || m.body || "";
+        const clickHint = m.type === "goto" ? "点击进入视图" : m.type === "layer" ? "点击定位到此层" : m.type === "token" ? "点击聚焦此位置" : m.type === "gqa" ? "点击独显此头组" : "点击固定详情";
+        tooltip.style.display = "block";
+        tooltip.innerHTML = `
+          <div class="font-semibold text-[var(--ui-fg)]">${m.title}</div>
+          ${shapeLine}
+          <div class="text-[var(--ui-muted)] leading-snug">${roleText}</div>
+          <div class="text-[var(--ui-muted)] opacity-75 mt-1 pt-1 border-t border-[var(--ui-card-border)]">${clickHint}</div>
+        `;
+        tooltip.style.left = Math.min(viewW - 332, Math.max(12, state.mouseX + 14)) + "px";
+        tooltip.style.top = Math.min(viewH - 138, Math.max(12, state.mouseY - 12)) + "px";
+        wrap.style.cursor = "pointer";
+      } else {
+        tooltip.style.display = "none";
+        wrap.style.cursor = state.dragging ? "grabbing" : "grab";
+      }
+    }
+
+    function renderInspectorCard() {
+      const card = document.getElementById("inspector-card");
+      if (!state.selectedHit) {
+        card.className = "hidden";
+        return;
+      }
+      card.className = "panel p-3.5 space-y-2 border-[var(--ui-fg)]";
+      document.getElementById("insp-title").innerHTML = state.selectedHit.title;
+      document.getElementById("insp-shape").innerHTML = state.selectedHit.shape || "—";
+      document.getElementById("insp-role").innerHTML = state.selectedHit.role || state.selectedHit.body || "";
+    }
+
+    // =========================================================================
+    // 9. UI Synchronization
+    // =========================================================================
+    function syncUI() {
+      const K = state.K;
+      const timeline = buildTimeline(K);
+      if (state.stepIdx >= timeline.length) state.stepIdx = timeline.length - 1;
+      const step = timeline[state.stepIdx];
+      const tokens = getTokens();
+      if (state.focusToken >= tokens.length) state.focusToken = -1;
+      const range = getActiveTokenRange(tokens);
+      const logicalTotal = 12 + 12 * K;
+
+      const activeB = (3.4 + (K - 1) * 1.0).toFixed(1);
+      document.getElementById("hdr-active").textContent = `24 层 · Core ${K}×（共 ${logicalTotal} 层前向）· 激活 ~${activeB}B / 26.4B`;
+      const scrubber = document.getElementById("step-scrubber");
+      scrubber.max = timeline.length - 1;
+      scrubber.value = state.stepIdx;
+      document.getElementById("step-label").textContent = `${state.stepIdx} / ${timeline.length - 1}`;
+      document.getElementById("btn-play").textContent = state.playing ? "暂停" : "播放";
+
+      const qJumps = [{ lbl: "Pre", s: 1, act: step.section === "prelude" }];
+      for (let p = 1; p <= K; p++) qJumps.push({ lbl: `P${p}`, s: 7 + (p - 1) * 12, act: step.section === "core" && step.pass === p });
+      qJumps.push({ lbl: "Coda", s: 7 + 12 * K, act: step.section === "coda" });
+      qJumps.push({ lbl: "Out", s: timeline.length - 1, act: step.section === "lmhead" });
+      document.getElementById("quick-jumps").innerHTML = qJumps.map(j => `
+        <button class="ctrl-btn ${j.act ? "primary" : ""}" data-jump="${j.s}" style="padding: 4px 8px;">${j.lbl}</button>
+      `).join("");
+
+      document.querySelectorAll("#scene-selector .scene-tab").forEach(b => b.classList.toggle("active", b.dataset.scene === state.scene));
+      document.querySelectorAll("#exec-group .seg-item").forEach(b => b.classList.toggle("active", b.dataset.exec === state.execMode));
+      document.querySelectorAll("#scenario-group .seg-item").forEach(b => b.classList.toggle("active", b.dataset.scenario === state.scenario));
+      document.querySelectorAll("#loop-group .seg-item").forEach(b => b.classList.toggle("active", Number(b.dataset.k) === state.K));
+
+      document.getElementById("hud-stage-pill").textContent = stageName(step);
+      document.getElementById("hud-tensor-x").textContent = `X [B, ${range.sIn}, 2304]`;
+
+      const curLName = step.phys !== null ? `L${step.phys}` : "L0–L23";
+      document.getElementById("nav-layer-btn").textContent = `单层内部 (${curLName})`;
+
+      // Compact Architectural Origin Mini-Map + 3-Level Path Breadcrumb
+      const mm = document.getElementById("hud-minimap");
+      const unfoldBar = document.getElementById("hud-unfold-bar");
+      const cA = rgba(PAL.accentA, 1);
+      const cB = rgba(PAL.accentB, 1);
+      const cM = rgba(PAL.mutedInk, 0.35);
+      const cBorder = rgba(PAL.mutedInk, 0.7);
+
+      if (state.scene === "overview") {
+        const preA = step.section === "prelude";
+        const b2A = step.section === "core" && step.phys < 12;
+        const b3A = step.section === "core" && step.phys >= 12;
+        const codaA = step.section === "coda";
+        const isP2 = step.section === "core" && step.pass >= 2;
+        const coreC = isP2 ? cB : cA;
+        const cSolid = rgba(PAL.ink, 0.72);
+        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.innerHTML = `
+          <svg width="52" height="30" viewBox="0 0 52 30" aria-hidden="true">
+            <rect x="8"  y="2"    width="36" height="4.5" rx="1" fill="${rgba(PAL.accentA, step.section === "core" ? 0.55 : 0.28)}"/>
+            <path d="M 31.5 11 L 31.5 8.5 L 19.5 8.5 L 19.5 11" fill="none" stroke="${isP2 ? cB : cBorder}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="4"  y="12"   width="8"  height="8"   rx="1.2" fill="${preA ? cA : cSolid}"/>
+            <rect x="15" y="11"   width="9"  height="9"   rx="1.2" fill="${b2A ? coreC : cSolid}"/>
+            <rect x="27" y="11"   width="9"  height="9"   rx="1.2" fill="${b3A ? coreC : cSolid}"/>
+            <rect x="39" y="12"   width="8"  height="8"   rx="1.2" fill="${codaA ? cA : cSolid}"/>
+            <rect x="8"  y="23.5" width="36" height="4.5" rx="1" fill="${rgba(PAL.accentB, step.idx >= 7 ? 0.55 : 0.28)}"/>
+          </svg>
+        `;
+        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
+        unfoldBar.innerHTML = `<span class="text-[var(--ui-muted)]">Overview · Prelude → Core ×${K} → Coda</span>`;
+      } else if (state.scene === "layer" || state.scene === "rmsnorm" || state.scene === "multihead" || state.scene === "moe") {
+        const isWholeLayer = state.scene === "layer";
+        const isNorm = state.scene === "rmsnorm";
+        const isAttn = state.scene === "multihead";
+        const isMoe = state.scene === "moe";
+        const activeTowerIdx = step.section === "prelude" ? 0 : step.section === "coda" ? 3 : (step.phys !== null && step.phys >= 12 ? 2 : 1);
+        const tx = [3, 12, 21, 30][activeTowerIdx];
+        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.innerHTML = `
+          <svg width="84" height="30" viewBox="0 0 84 30" aria-hidden="true">
+            <rect x="3"  y="7" width="6" height="16" rx="1" fill="${cM}"/>
+            <rect x="12" y="4" width="6" height="19" rx="1" fill="${cM}"/>
+            <rect x="21" y="4" width="6" height="19" rx="1" fill="${cM}"/>
+            <rect x="30" y="7" width="6" height="16" rx="1" fill="${cM}"/>
+            <rect x="${tx - 1}" y="12" width="8" height="3.5" rx="0.8" fill="${cA}"/>
+            <line x1="${tx + 7}" y1="12" x2="45" y2="5"  stroke="${cBorder}" stroke-width="0.9" stroke-dasharray="2 1.5"/>
+            <line x1="${tx + 7}" y1="15.5" x2="45" y2="25" stroke="${cBorder}" stroke-width="0.9" stroke-dasharray="2 1.5"/>
+            <rect x="46" y="5" width="4"  height="20" rx="1" fill="${isWholeLayer || isNorm ? cA : "none"}" stroke="${isWholeLayer || isNorm ? cA : cBorder}" stroke-width="1.1"/>
+            <rect x="52" y="5" width="14" height="20" rx="2" fill="${isWholeLayer || isAttn ? cA : "none"}" stroke="${isWholeLayer || isAttn ? cA : cBorder}" stroke-width="1.2"/>
+            <rect x="68" y="5" width="14" height="20" rx="2" fill="${isWholeLayer || isMoe  ? cA : "none"}" stroke="${isWholeLayer || isMoe  ? cA : cBorder}" stroke-width="1.2"/>
+          </svg>
+        `;
+        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
+        if (isWholeLayer) {
+          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">← Overview</button><span class="text-[var(--ui-muted)]">▸ ${curLName} 单层内部 ▸</span><button class="tok-btn" data-goto-scene="rmsnorm">RMSNorm →</button><button class="tok-btn" data-goto-scene="multihead">① Attention →</button><button class="tok-btn" data-goto-scene="moe">② MoE →</button>`;
+        } else if (isNorm) {
+          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><span class="text-[var(--ui-muted)]">▸ RMSNorm</span><button class="tok-btn" data-goto-scene="multihead">① Attention →</button>`;
+        } else if (isAttn) {
+          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><button class="tok-btn" data-goto-scene="rmsnorm">← RMSNorm</button><span class="text-[var(--ui-muted)]">▸ ① Attention</span><button class="tok-btn" data-goto-scene="moe">② MoE →</button>`;
+        } else {
+          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><button class="tok-btn" data-goto-scene="multihead">← ① Attention</button><span class="text-[var(--ui-muted)]">▸ ② MoE</span>`;
+        }
+      } else {
+        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.innerHTML = `
+          <svg width="52" height="30" viewBox="0 0 52 30" aria-hidden="true">
+            <rect x="8"  y="2"  width="36" height="6" rx="1.2" fill="${cA}"/>
+            <rect x="4"  y="12" width="8"  height="6" rx="1" fill="${cM}"/>
+            <rect x="15" y="12" width="9"  height="6" rx="1" fill="${cM}"/>
+            <rect x="27" y="12" width="9"  height="6" rx="1" fill="${cM}"/>
+            <rect x="39" y="12" width="8"  height="6" rx="1" fill="${cM}"/>
+            <rect x="8"  y="22" width="36" height="6" rx="1.2" fill="${cB}"/>
+          </svg>
+        `;
+        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
+        unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">← Overview</button><span class="text-[var(--ui-muted)]">▸ KV Cache &amp; Block AttnRes（${logicalTotal} 层）</span>`;
+      }
+
+      // Scene-specific minimal 2-item color key
+      const legends = {
+        overview:  ["Active layer", "Pass ≥ 2 loop"],
+        layer:     ["Compute / KV Cache", "Block AttnRes / Gate"],
+        rmsnorm:   ["Feature channels (+/−)", "RMS(x) / Learnable γ"],
+        multihead: ["Active Query", "Shared KV / t0 Sink"],
+        moe:       ["Single-token expert", "Multi-token shared"],
+        spacetime: ["KV Cache", "Block AttnRes"]
+      };
+      const [legA, legB] = legends[state.scene];
+      document.getElementById("legend-a").textContent = legA;
+      document.getElementById("legend-b").textContent = legB;
+
+      renderSceneSubcontrols(step, range);
+
+      const tokBar = document.getElementById("token-bar");
+      tokBar.innerHTML = `
+        <button class="tok-btn ${state.focusToken === -1 ? "active" : ""}" data-focus-tok="-1">All (${range.sIn})</button>
+      ` + tokens.map((t, i) => {
+        const inR = i >= range.start && i <= range.end;
+        return `
+          <button class="tok-btn ${state.focusToken === i ? "active" : ""} ${!inR ? "opacity-60" : ""}" data-focus-tok="${i}">
+            <span class="font-mono">t${i}</span>
+            <span class="font-mono">${escapeHtml(t.text)}</span>
+            ${t.kind === "draft" ? `<span>draft</span>` : t.kind === "output" ? `<span>out</span>` : ""}
+          </button>
+        `;
+      }).join("");
+
+      const isFullNow = state.forceFullAttn !== null && state.scene === "multihead" ? state.forceFullAttn : step.isFull;
+      document.getElementById("stat-layer").textContent = step.phys !== null ? `L${step.phys} (${step.logical}/${logicalTotal})` : stageName(step);
+      document.getElementById("stat-attn").textContent = step.kind === "layer" ? (isFullNow ? "Full + Conv" : "SWA-1024 + Conv") : "—";
+      document.getElementById("stat-gate").textContent = (step.section === "core" && step.pass >= 2) ? `ON · B0..B${step.blockIdx - 1}` : `OFF`;
+      document.getElementById("stat-quant").textContent = `${step.quant} · Top-8/128`;
+      document.getElementById("panel-phase-badge").textContent = stageName(step);
+
+      renderInspectorCard();
+      renderSideBreakdown(step, tokens, range, logicalTotal);
+      renderCodaLens(step);
+    }
+
+    function renderSceneSubcontrols(step, range) {
+      const box = document.getElementById("scene-subcontrols");
+      if (state.scene === "rmsnorm") {
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-medium text-[var(--ui-muted)]">位置</span>
+            <div class="seg">
+              <button class="seg-item ${state.rmsSlot === "attn" ? "active" : ""}" data-rms-slot="attn">Pre-Attention</button>
+              <button class="seg-item ${state.rmsSlot === "moe" ? "active" : ""}" data-rms-slot="moe">Pre-MoE</button>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-medium text-[var(--ui-muted)]">输入幅度测试</span>
+            <div class="seg">
+              <button class="seg-item ${state.rmsScale === 1 ? "active" : ""}" data-rms-scale="1">1×</button>
+              <button class="seg-item ${state.rmsScale === 3 ? "active" : ""}" data-rms-scale="3">3× 尖峰</button>
+            </div>
+          </div>
+        `;
+      } else if (state.scene === "multihead") {
+        const isFull = state.forceFullAttn !== null ? state.forceFullAttn : step.isFull;
+        let gBtns = `<button class="seg-item ${state.focusGqaGroup === -1 ? "active" : ""}" data-gqa="-1">All</button>`;
+        for (let g = 0; g < 8; g++) gBtns += `<button class="seg-item ${state.focusGqaGroup === g ? "active" : ""}" data-gqa="${g}">G${g}</button>`;
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-medium text-[var(--ui-muted)]">GQA</span>
+            <div class="seg">${gBtns}</div>
+          </div>
+          <div class="seg">
+            <button class="seg-item ${!isFull ? "active" : ""}" data-attn-override="swa">SWA-1024</button>
+            <button class="seg-item ${isFull ? "active" : ""}" data-attn-override="full">Full 1M</button>
+          </div>
+        `;
+      } else if (state.scene === "moe") {
+        const phys = Math.min(17, Math.max(6, step.phys !== null ? step.phys : 10));
+        const curPass = step.section === "core" ? step.pass : 1;
+        let pBtns = "";
+        for (let p = 1; p <= state.K; p++) {
+          pBtns += `<button class="seg-item ${step.section === "core" && curPass === p ? "active" : ""}" data-jump="${7 + (p - 1) * 12 + (phys - 6)}">Pass ${p}</button>`;
+        }
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-mono font-medium text-[var(--ui-muted)]">L${phys}</span>
+            <div class="seg">${pBtns}</div>
+          </div>
+        `;
+      } else {
+        box.className = "hidden";
+        box.innerHTML = "";
+      }
+    }
+
+    function renderSideBreakdown(step, tokens, range, logicalTotal) {
+      const titleEl = document.getElementById("panel-title");
+      const dHead = document.getElementById("detail-heading");
+      const dTag = document.getElementById("detail-tag");
+      const dBody = document.getElementById("detail-body");
+
+      if (state.scene === "overview") {
+        titleEl.textContent = "Overview";
+        dHead.textContent = "Block AttnRes & Rank-64 Gate";
+        dTag.textContent = `d = 2304`;
+        dBody.innerHTML = `
+          <div class="inset px-3 py-2.5 math-block overflow-x-auto">
+            <math display="block" style="display: block; text-align: left;">
+              <mtable>
+                <mtr>
+                  <mtd><msub><mi>b</mi><mi>n</mi></msub></mtd>
+                  <mtd><mo>=</mo></mtd>
+                  <mtd displaystyle="true">
+                    <munder>
+                      <mo largeop="true">∑</mo>
+                      <mrow><mi>j</mi><mo>∈</mo><msub><mi>B</mi><mi>n</mi></msub></mrow>
+                    </munder>
+                    <mspace width="0.18em"/>
+                    <msub><mi>f</mi><mi>j</mi></msub><mo>(</mo><msub><mi>h</mi><mi>j</mi></msub><mo>)</mo>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd><mi>h</mi></mtd>
+                  <mtd><mo>=</mo></mtd>
+                  <mtd>
+                    <msub><mi>W</mi><mtext>down</mtext></msub>
+                    <mo>·</mo>
+                    <mo>[</mo><mi>rms</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>,</mo><mspace width="0.25em"/><mi>rms</mi><mo>(</mo><mi>m</mi><mo>)</mo><mo>]</mo>
+                  </mtd>
+                </mtr>
+                <mtr>
+                  <mtd><mi>y</mi></mtd>
+                  <mtd><mo>=</mo></mtd>
+                  <mtd>
+                    <mo>(</mo><mn>1</mn><mo>−</mo><mi>tanh</mi><mo>(</mo><msub><mi>W</mi><mtext>f</mtext></msub><mi>h</mi><mo>)</mo><mo>)</mo>
+                    <mo>⊙</mo><mi>x</mi>
+                    <mo>+</mo>
+                    <mi>tanh</mi><mo>(</mo><msub><mi>W</mi><mtext>g</mtext></msub><mi>h</mi><mo>)</mo>
+                    <mo>⊙</mo><mi>m</mi>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </math>
+          </div>
+        `;
+      } else if (state.scene === "layer") {
+        const phys = step.phys !== null ? step.phys : 9;
+        const isFull = step.kind === "layer" ? step.isFull : (phys === 5 || phys === 11 || phys === 17 || phys === 23);
+        const isP2 = step.section === "core" && step.pass >= 2;
+        titleEl.textContent = `单层内部 (L${phys})`;
+        dHead.textContent = "Layer Sublayers";
+        dTag.textContent = isP2 ? `Pass ${step.pass} · Gate ON` : `L${phys}`;
+        dBody.innerHTML = `
+          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-fg)]">
+            <div>1. RMSNorm${isP2 ? " + Rank-64 Gate" : ""}</div>
+            <div>2. ① GQA Attention (${isFull ? "Full 1M" : "SWA-1024"}) + Skip</div>
+            <div>3. RMSNorm${isP2 ? " + Rank-64 Gate" : ""}</div>
+            <div>4. ② MoE (Top-8/128 · ${phys >= 20 ? "MXFP8" : "NVFP4"}) + Skip</div>
+            <div>5. Residual → Block AttnRes (<i>b</i><sub>n</sub> += <i>f</i><sub>${phys}</sub>(<i>h</i><sub>${phys}</sub>))</div>
+          </div>
+        `;
+      } else if (state.scene === "rmsnorm") {
+        const phys = step.phys !== null ? step.phys : 9;
+        titleEl.textContent = `RMSNorm (L${phys} · ${state.rmsSlot === "attn" ? "Pre-Attn" : "Pre-MoE"})`;
+        dHead.textContent = "RMSNorm";
+        dTag.textContent = `d = 2304 · γ [2304]`;
+        dBody.innerHTML = `
+          <div class="inset px-3 py-2.5 math-block space-y-2.5 overflow-x-auto">
+            <math display="block" style="display: block; text-align: left;">
+              <mrow>
+                <mi>RMS</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+                <mo>=</mo>
+                <msqrt>
+                  <mfrac><mn>1</mn><mi>d</mi></mfrac>
+                  <munderover>
+                    <mo largeop="true">∑</mo>
+                    <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                    <mi>d</mi>
+                  </munderover>
+                  <msubsup><mi>x</mi><mi>i</mi><mn>2</mn></msubsup>
+                  <mo>+</mo><mi>ε</mi>
+                </msqrt>
+              </mrow>
+            </math>
+            <math display="block" style="display: block; text-align: left;">
+              <mrow>
+                <msub><mi>y</mi><mi>i</mi></msub>
+                <mo>=</mo>
+                <mfrac><msub><mi>x</mi><mi>i</mi></msub><mrow><mi>RMS</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfrac>
+                <mo>·</mo><msub><mi>γ</mi><mi>i</mi></msub>
+              </mrow>
+            </math>
+          </div>
+          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-muted)]">
+            <div><b class="text-[var(--ui-fg)]">Input / Output</b>: [B, ${range.sIn}, 2304]</div>
+            <div><b class="text-[var(--ui-fg)]">RMS scalar</b>: [B, ${range.sIn}, 1] (逐 token 独立)</div>
+            <div><b class="text-[var(--ui-fg)]">Weight γ</b>: [2304] (无均值减法 · 无偏置 β)</div>
+          </div>
+        `;
+      } else if (state.scene === "multihead") {
+        const isFull = state.forceFullAttn !== null ? state.forceFullAttn : step.isFull;
+        titleEl.textContent = "GQA Attention";
+        dHead.textContent = "Attention Sublayer";
+        dTag.textContent = isFull ? "Full 1M" : "SWA-1024";
+        dBody.innerHTML = `
+          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-fg)]">
+            <div>1. Short-Conv (conv_state)</div>
+            <div>2. GQA 24Q : 8KV (<i>d</i><sub>h</sub> = 128)</div>
+            <div>3. RelPos bias + t0 Sink</div>
+            <div>4. 5× SWA-1024 + 1× Full / block</div>
+            <div>5. Output Gate + <i>W</i><sub>o</sub> (3072 → 2304)</div>
+          </div>
+        `;
+      } else if (state.scene === "moe") {
+        const phys = step.phys !== null ? step.phys : 10;
+        const curPass = step.section === "core" ? step.pass : 1;
+        const refTok = (state.focusToken >= 0 && state.focusToken < tokens.length) ? state.focusToken : range.end;
+        const top8 = getTop8Experts(state.scenario, refTok, phys, curPass);
+        const prev8 = (step.section === "core" && curPass >= 2)
+          ? new Set(getTop8Experts(state.scenario, refTok, phys, curPass - 1).map(x => x.id))
+          : null;
+        const overlap = prev8 ? top8.filter(x => prev8.has(x.id)).length : null;
+
+        titleEl.textContent = "MoE (Top-8 / 128)";
+        dHead.textContent = `t${refTok}「${tokens[refTok].text}」Top-8 (L${phys} · P${curPass})`;
+        dTag.textContent = overlap !== null ? `${overlap}/8 overlap` : (phys >= 20 ? "MXFP8" : "NVFP4");
+        dBody.innerHTML = `
+          <div class="space-y-1.5">
+            ${top8.map(item => `
+              <div class="flex items-center gap-2 font-mono">
+                <span class="w-16 text-[var(--ui-fg)] font-medium">E#${item.id}</span>
+                <div class="flex-1 h-2.5 rounded-sm bg-[var(--ui-content)] border border-[var(--ui-card-border)] overflow-hidden">
+                  <div class="h-full" style="width: ${Math.min(100, Math.round(item.w * 280))}%; background: ${rgba(PAL.accentA, 0.85)};"></div>
+                </div>
+                <span class="w-10 text-right text-[var(--ui-muted)]">${Math.round(item.w * 100)}%</span>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      } else {
+        titleEl.textContent = "KV Cache & Block AttnRes";
+        dHead.textContent = "Tensor Shapes";
+        dTag.textContent = `${logicalTotal}L · T=${range.tTotal}`;
+        dBody.innerHTML = `
+          <div class="inset p-2.5 space-y-1">
+            <div class="font-semibold text-[var(--ui-fg)]">KV Cache (Persistent)</div>
+            <div class="font-mono text-[var(--ui-code-fg)]">[${logicalTotal}, B, 8, T=${range.tTotal}, 128]</div>
+          </div>
+          <div class="inset p-2.5 space-y-1">
+            <div class="font-semibold text-[var(--ui-fg)]">Block AttnRes (Per-Step)</div>
+            <div class="font-mono text-[var(--ui-code-fg)]">[N, B, S=${range.sIn}, 2304]</div>
+          </div>
+        `;
+      }
+    }
+
+    function renderCodaLens(step) {
+      const sc = SCENARIOS[state.scenario];
+      const outObj = sc.outputs[Math.min(state.generated, sc.outputs.length - 1)];
+      let key = "prelude";
+      if (step.section === "embed" || step.section === "prelude") key = "prelude";
+      else if (step.section === "core") key = "pass" + Math.min(4, step.pass);
+      else key = state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass4";
+
+      const bars = outObj.stages[key] || outObj.stages.coda;
+      document.getElementById("coda-badge").textContent = stageName(step);
+      document.getElementById("coda-bars").innerHTML = bars.map(([tok, p], i) => `
+        <div class="flex items-center gap-2 text-xs">
+          <span class="font-mono font-medium w-20 truncate text-right text-[var(--ui-fg)]">${escapeHtml(tok)}</span>
+          <div class="flex-1 h-3 rounded-sm bg-[var(--ui-content)] border border-[var(--ui-card-border)] overflow-hidden">
+            <div class="h-full transition-all duration-300" style="width: ${Math.round(p * 100)}%; background: ${i === 0 ? rgba(PAL.accentA, 0.9) : rgba(PAL.mutedInk, 0.30)};"></div>
+          </div>
+          <span class="font-mono tabular-nums w-9 text-right ${i === 0 ? "font-semibold text-[var(--ui-fg)]" : "text-[var(--ui-muted)]"}">${Math.round(p * 100)}%</span>
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // =========================================================================
+    // 10. Event Wiring (Clamped Architectural Orbit — Never Flips Backwards!)
+    // =========================================================================
+    function switchScene(sceneKey) {
+      state.scene = sceneKey;
+      state.previewScene = null;
+      state.selectedHit = null;
+      state.targetCam = { ...SCENE_PRESETS[sceneKey] };
+      if (sceneKey !== "multihead") state.forceFullAttn = null;
+      syncUI();
+    }
+
+    document.getElementById("btn-close-insp").addEventListener("click", () => {
+      state.selectedHit = null;
+      renderInspectorCard();
+    });
+
+    const sceneSelectorEl = document.getElementById("scene-selector");
+    sceneSelectorEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-scene]");
+      if (btn) switchScene(btn.dataset.scene);
+    });
+    sceneSelectorEl.addEventListener("pointerover", (e) => {
+      const btn = e.target.closest("[data-scene]");
+      state.previewScene = btn && btn.dataset.scene !== state.scene ? btn.dataset.scene : null;
+    });
+    sceneSelectorEl.addEventListener("pointerleave", () => { state.previewScene = null; });
+    document.getElementById("exec-group").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-exec]");
+      if (!btn) return;
+      state.execMode = btn.dataset.exec;
+      state.focusToken = -1;
+      syncUI();
+    });
+    document.getElementById("scenario-group").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-scenario]");
+      if (!btn) return;
+      state.scenario = btn.dataset.scenario;
+      state.generated = 0;
+      state.focusToken = -1;
+      syncUI();
+    });
+    document.getElementById("loop-group").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-k]");
+      if (!btn) return;
+      state.K = Number(btn.dataset.k);
+      state.stepIdx = Math.min(state.stepIdx, buildTimeline(state.K).length - 1);
+      syncUI();
+    });
+    document.getElementById("btn-play").addEventListener("click", () => {
+      const tl = buildTimeline(state.K);
+      if (!state.playing && state.stepIdx >= tl.length - 1) state.stepIdx = 0;
+      state.playing = !state.playing;
+      state.lastStepAdvance = performance.now();
+      syncUI();
+    });
+    document.getElementById("btn-prev").addEventListener("click", () => {
+      state.playing = false; state.stepIdx = Math.max(0, state.stepIdx - 1); syncUI();
+    });
+    document.getElementById("btn-next").addEventListener("click", () => {
+      state.playing = false; state.stepIdx = Math.min(buildTimeline(state.K).length - 1, state.stepIdx + 1); syncUI();
+    });
+    document.getElementById("btn-autoreg").addEventListener("click", () => {
+      const sc = SCENARIOS[state.scenario];
+      if (state.generated < sc.outputs.length) {
+        state.generated++; state.execMode = "decode"; state.focusToken = -1;
+        state.stepIdx = 0; state.playing = true; state.lastStepAdvance = performance.now();
+      } else {
+        state.generated = 0; state.execMode = "prefill"; state.focusToken = -1;
+        state.stepIdx = 0; state.playing = false;
+      }
+      syncUI();
+    });
+    document.getElementById("step-scrubber").addEventListener("input", (e) => {
+      state.playing = false; state.stepIdx = Number(e.target.value); syncUI();
+    });
+    document.getElementById("btn-zoom-in").addEventListener("click", () => { state.targetCam.dist = Math.max(660, state.targetCam.dist - 120); });
+    document.getElementById("btn-zoom-out").addEventListener("click", () => { state.targetCam.dist = Math.min(1680, state.targetCam.dist + 120); });
+    document.getElementById("btn-cam-reset").addEventListener("click", () => { state.targetCam = { ...SCENE_PRESETS[state.scene] }; });
+
+    document.addEventListener("click", (e) => {
+      const goScene = e.target.closest("[data-goto-scene]");
+      if (goScene) { switchScene(goScene.dataset.gotoScene); return; }
+      const jump = e.target.closest("[data-jump]");
+      if (jump) { state.playing = false; state.stepIdx = Number(jump.dataset.jump); syncUI(); return; }
+      const fTok = e.target.closest("[data-focus-tok]");
+      if (fTok) { state.focusToken = Number(fTok.dataset.focusTok); syncUI(); return; }
+      const gqa = e.target.closest("[data-gqa]");
+      if (gqa) { state.focusGqaGroup = Number(gqa.dataset.gqa); syncUI(); return; }
+      const ao = e.target.closest("[data-attn-override]");
+      if (ao) { state.forceFullAttn = ao.dataset.attnOverride === "full"; syncUI(); return; }
+      const rSlot = e.target.closest("[data-rms-slot]");
+      if (rSlot) { state.rmsSlot = rSlot.dataset.rmsSlot; syncUI(); return; }
+      const rScale = e.target.closest("[data-rms-scale]");
+      if (rScale) { state.rmsScale = Number(rScale.dataset.rmsScale); syncUI(); }
+    });
+
+    let downPos = { x: 0, y: 0 };
+    wrap.addEventListener("pointerdown", (e) => {
+      wrap.setPointerCapture(e.pointerId);
+      state.dragging = true;
+      state.dragMode = (e.button === 2 || e.shiftKey) ? "pan" : "orbit";
+      state.lastMouseX = e.clientX; state.lastMouseY = e.clientY;
+      downPos = { x: e.clientX, y: e.clientY };
+    });
+    wrap.addEventListener("pointermove", (e) => {
+      const rect = wrap.getBoundingClientRect();
+      state.mouseX = e.clientX - rect.left; state.mouseY = e.clientY - rect.top;
+      if (!state.dragging) return;
+      const dx = e.clientX - state.lastMouseX, dy = e.clientY - state.lastMouseY;
+      state.lastMouseX = e.clientX; state.lastMouseY = e.clientY;
+      if (state.dragMode === "pan") {
+        state.targetCam.panX = Math.max(-240, Math.min(240, state.targetCam.panX + dx));
+        state.targetCam.panY = Math.max(-200, Math.min(200, state.targetCam.panY + dy));
+      } else {
+        // Bounded architectural viewing cone: yaw in [-0.95, +0.95] keeps Left->Right order ALWAYS readable!
+        state.targetCam.yaw = Math.max(-0.95, Math.min(0.95, state.targetCam.yaw + dx * 0.0065));
+        state.targetCam.pitch = Math.max(0.06, Math.min(1.12, state.targetCam.pitch + dy * 0.006));
+      }
+    });
+    wrap.addEventListener("pointerup", (e) => {
+      const moved = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
+      state.dragging = false;
+      if (moved < 5 && state.hoveredHit && state.hoveredHit.meta) {
+        const meta = state.hoveredHit.meta;
+        state.selectedHit = { title: meta.title, shape: meta.shape, role: meta.role || meta.body };
+        if (meta.type === "layer" && meta.stepIdx !== undefined) { state.playing = false; state.stepIdx = meta.stepIdx; syncUI(); }
+        else if (meta.type === "token") { state.focusToken = state.focusToken === meta.id ? -1 : meta.id; syncUI(); }
+        else if (meta.type === "gqa") { state.focusGqaGroup = state.focusGqaGroup === meta.id ? -1 : meta.id; syncUI(); }
+        else if (meta.type === "goto" && meta.scene) {
+          if (meta.rmsSlot) state.rmsSlot = meta.rmsSlot;
+          switchScene(meta.scene);
+        }
+        else { renderInspectorCard(); }
+      }
+    });
+    wrap.addEventListener("pointerleave", () => { state.mouseX = -999; state.mouseY = -999; tooltip.style.display = "none"; });
+    wrap.addEventListener("contextmenu", (e) => e.preventDefault());
+    wrap.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      state.targetCam.dist = Math.max(660, Math.min(1680, state.targetCam.dist + e.deltaY * 0.7));
+    }, { passive: false });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT") return;
+      if (e.key === "1") switchScene("overview");
+      else if (e.key === "2") switchScene("layer");
+      else if (e.key === "3") switchScene("rmsnorm");
+      else if (e.key === "4") switchScene("multihead");
+      else if (e.key === "5") switchScene("moe");
+      else if (e.key === "6") switchScene("spacetime");
+      else if (e.key === "r" || e.key === "R") { state.targetCam = { ...SCENE_PRESETS[state.scene] }; }
+      else if (e.code === "ArrowRight") { e.preventDefault(); state.playing = false; state.stepIdx = Math.min(buildTimeline(state.K).length - 1, state.stepIdx + 1); syncUI(); }
+      else if (e.code === "ArrowLeft") { e.preventDefault(); state.playing = false; state.stepIdx = Math.max(0, state.stepIdx - 1); syncUI(); }
+      else if (e.code === "Space") { e.preventDefault(); state.playing = !state.playing; state.lastStepAdvance = performance.now(); syncUI(); }
+    });
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("themechange", () => { refreshPalette(); syncUI(); });
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { refreshPalette(); syncUI(); });
+    }
+
+    refreshPalette();
+    resizeCanvas();
+    const [ix, iy] = getCarrierTarget(buildTimeline(state.K)[state.stepIdx]);
+    state.carrierX = ix; state.carrierY = iy;
+    syncUI();
+    requestAnimationFrame(renderCanvasFrame);
+  </script>
+</body>
+</html>
