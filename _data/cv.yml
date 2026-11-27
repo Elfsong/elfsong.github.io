@@ -143,6 +143,10 @@ sections:
         title: "MatReplace: A Reference-Free Benchmark for Material Replacement in Interior Scenes."
         url: https://arxiv.org/abs/2608.24107
         authors: Mingzhe Du, Thong Thanh Nguyen, Cong-Duy T Nguyen, See-Kiong Ng, Anh Tuan Luu.
+      - venue: Preprint
+        title: "Lost in Translation, Not in Confidence: Benchmarking and Calibrating Multilingual Decision Models."
+        url: https://arxiv.org/abs/2611.33307
+        authors: Mingzhe Du, Thong Thanh Nguyen, Cong-Duy T Nguyen, See-Kiong Ng, Anh Tuan Luu.
       - venue: CIKM’26
         title: "Paper Espresso: From Paper Overload to Research Insight."
         note: Oral and Best Paper Nomination
