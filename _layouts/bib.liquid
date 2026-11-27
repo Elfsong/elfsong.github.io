@@ -6,6 +6,10 @@
 {%- if ccf_a_venues contains entry.abbr -%}
   {%- assign pub_ccf_a = true -%}
 {%- endif -%}
+{%- assign pub_preprint = false -%}
+{%- if entry.category == 'preprint' -%}
+  {%- assign pub_preprint = true -%}
+{%- endif -%}
 {%- assign pub_first = false -%}
 {%- assign pub_corr = false -%}
 {%- for author in entry.author_array -%}
@@ -27,6 +31,7 @@
 <div
   class="publication-row{% unless site.enable_publication_thumbnails %} publication-no-thumbnail{% endunless %}"
   data-ccf-a="{{ pub_ccf_a }}"
+  data-preprint="{{ pub_preprint }}"
   data-first="{{ pub_first }}"
   data-corr="{{ pub_corr }}"
 >

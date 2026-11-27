@@ -70,6 +70,7 @@ _styles: >
     <button type="button" data-filter="ccf-a" aria-pressed="false">CCF-A<span class="count"></span></button>
     <button type="button" data-filter="first" aria-pressed="false">First author<span class="count"></span></button>
     <button type="button" data-filter="first-corr" aria-pressed="false">First + corresponding author<span class="count"></span></button>
+    <button type="button" data-filter="preprint" aria-pressed="false">Preprint<span class="count"></span></button>
   </div>
   <p class="pub-legend"><span><sup>†</sup> Corresponding author</span><span><sup>*</sup> Equal contribution</span></p>
 </div>
@@ -98,6 +99,9 @@ _styles: >
       },
       "first-corr": function (d) {
         return d.first === "true" || d.corr === "true";
+      },
+      preprint: function (d) {
+        return d.preprint === "true";
       },
     };
     buttons.forEach(function (button) {
