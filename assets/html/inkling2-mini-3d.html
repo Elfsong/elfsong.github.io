@@ -7,25 +7,37 @@
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
-      --ui-bg: var(--background, #f4f4f2);
+      --ui-bg: var(--background, #f3f3f0);
       --ui-card: var(--card, #ffffff);
-      --ui-content: var(--content, #f0f1f4);
-      --ui-fg: var(--foreground, #1a1d24);
-      --ui-muted: var(--muted-foreground, #626977);
-      --ui-border: var(--border, #d5d9e2);
-      --ui-card-border: var(--card-border, #e1e4ec);
-      --ui-code-fg: var(--code-foreground, #1a1d24);
+      --ui-content: var(--content, #f6f7f9);
+      --ui-fg: var(--foreground, #17191f);
+      --ui-muted: var(--muted-foreground, #646b7a);
+      --ui-border: var(--border, #d8dce4);
+      --ui-card-border: var(--card-border, #e6e9ef);
+      --ui-code-fg: var(--code-foreground, #1e2330);
+      --ui-accent-a: #2c60ae;
+      --ui-accent-b: #c2583a;
+      --ui-subtle: color-mix(in srgb, var(--ui-fg) 3.5%, var(--ui-card));
+      --ui-hover: color-mix(in srgb, var(--ui-fg) 6%, var(--ui-card));
+      --ui-shadow-sm: 0 1px 2px rgba(15, 20, 30, 0.04);
+      --ui-shadow-hud: 0 6px 20px rgba(15, 20, 30, 0.08), 0 1px 2px rgba(15, 20, 30, 0.04);
     }
     @media (prefers-color-scheme: dark) {
       :root:not(.light) {
-        --ui-bg: var(--background, #111318);
-        --ui-card: var(--card, #181c24);
-        --ui-content: var(--content, #13161e);
+        --ui-bg: var(--background, #101217);
+        --ui-card: var(--card, #171a22);
+        --ui-content: var(--content, #12151c);
         --ui-fg: var(--foreground, #eceff4);
-        --ui-muted: var(--muted-foreground, #8e96a6);
-        --ui-border: var(--border, #2c3342);
-        --ui-card-border: var(--card-border, #232936);
-        --ui-code-fg: var(--code-foreground, #e2e8f0);
+        --ui-muted: var(--muted-foreground, #8c95a6);
+        --ui-border: var(--border, #2a3140);
+        --ui-card-border: var(--card-border, #222835);
+        --ui-code-fg: var(--code-foreground, #dfe5f0);
+        --ui-accent-a: #74a2e6;
+        --ui-accent-b: #d87c5a;
+        --ui-subtle: color-mix(in srgb, var(--ui-fg) 4.5%, var(--ui-card));
+        --ui-hover: color-mix(in srgb, var(--ui-fg) 8%, var(--ui-card));
+        --ui-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+        --ui-shadow-hud: 0 8px 24px rgba(0, 0, 0, 0.40);
       }
     }
 
@@ -36,60 +48,77 @@
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
       margin: 0;
       padding: 0;
+      font-feature-settings: "tnum" 1;
     }
 
     .panel {
       background: var(--ui-card);
-      border: 1px solid var(--ui-border);
-      border-radius: 10px;
+      border: 1px solid var(--ui-card-border);
+      border-radius: 12px;
+      box-shadow: var(--ui-shadow-sm);
     }
 
     .inset {
-      background: var(--ui-content);
+      background: var(--ui-subtle);
       border: 1px solid var(--ui-card-border);
       border-radius: 8px;
     }
 
     .hud-chip {
-      background: color-mix(in srgb, var(--ui-card) 90%, transparent);
-      border: 1px solid var(--ui-border);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--ui-card) 86%, transparent);
+      border: 1px solid color-mix(in srgb, var(--ui-border) 82%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--ui-shadow-hud);
     }
 
     .tag {
       display: inline-flex;
       align-items: center;
+      gap: 5px;
       padding: 2px 8px;
-      border-radius: 6px;
+      border-radius: 999px;
       font-size: 12px;
       line-height: 18px;
       font-weight: 500;
       border: 1px solid var(--ui-card-border);
-      background: var(--ui-content);
+      background: var(--ui-subtle);
       color: var(--ui-muted);
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .tag.accent-a {
+      color: var(--ui-accent-a);
+      border-color: color-mix(in srgb, var(--ui-accent-a) 30%, var(--ui-card-border));
+      background: color-mix(in srgb, var(--ui-accent-a) 8%, var(--ui-card));
+    }
+    .tag.accent-b {
+      color: var(--ui-accent-b);
+      border-color: color-mix(in srgb, var(--ui-accent-b) 32%, var(--ui-card-border));
+      background: color-mix(in srgb, var(--ui-accent-b) 9%, var(--ui-card));
     }
 
     .ctrl-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 5px 11px;
+      gap: 5px;
+      height: 28px;
+      padding: 0 10px;
       border-radius: 7px;
       font-size: 12px;
       font-weight: 500;
-      border: 1px solid var(--ui-border);
+      border: 1px solid var(--ui-card-border);
       background: var(--ui-card);
       color: var(--ui-fg);
       cursor: pointer;
-      transition: background-color 0.14s ease, border-color 0.14s ease;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, opacity 0.14s ease;
       user-select: none;
+      white-space: nowrap;
     }
     .ctrl-btn:hover {
-      border-color: var(--ui-fg);
-      background: var(--ui-content);
+      border-color: var(--ui-border);
+      background: var(--ui-hover);
     }
     .ctrl-btn.primary {
       background: var(--ui-fg);
@@ -97,18 +126,45 @@
       border-color: var(--ui-fg);
     }
     .ctrl-btn.primary:hover { opacity: 0.88; }
+    .ctrl-btn.icon-only {
+      width: 28px;
+      padding: 0;
+    }
+
+    .transport-pill {
+      display: inline-flex;
+      align-items: center;
+      background: var(--ui-subtle);
+      border: 1px solid var(--ui-card-border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .transport-pill .ctrl-btn {
+      height: 24px;
+      border-color: transparent;
+      background: transparent;
+      border-radius: 6px;
+    }
+    .transport-pill .ctrl-btn:hover { background: var(--ui-card); }
+    .transport-pill .ctrl-btn.primary {
+      background: var(--ui-fg);
+      color: var(--ui-bg);
+    }
 
     .seg {
       display: inline-flex;
       flex-wrap: wrap;
+      align-items: center;
       padding: 2px;
       border-radius: 8px;
-      background: color-mix(in srgb, var(--ui-fg) 5%, var(--ui-card));
-      border: 1px solid var(--ui-border);
+      background: var(--ui-subtle);
+      border: 1px solid var(--ui-card-border);
       gap: 2px;
     }
     .seg-item {
-      padding: 4px 10px;
+      height: 24px;
+      padding: 0 9px;
       border-radius: 6px;
       font-size: 12px;
       font-weight: 500;
@@ -116,110 +172,246 @@
       background: transparent;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: color 0.14s ease, background-color 0.14s ease, border-color 0.14s ease;
+      transition: color 0.14s ease, background-color 0.14s ease, box-shadow 0.14s ease;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-variant-numeric: tabular-nums;
     }
     .seg-item:hover:not(.active) { color: var(--ui-fg); }
     .seg-item.active {
       background: var(--ui-card);
       color: var(--ui-fg);
-      border-color: var(--ui-border);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      border-color: color-mix(in srgb, var(--ui-border) 80%, transparent);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     }
 
-    .nav-group {
+    .nav-cluster {
       display: inline-flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
-      padding: 4px 6px 4px 10px;
-      border-radius: 8px;
-      border: 1px dashed var(--ui-border);
-      background: color-mix(in srgb, var(--ui-fg) 3%, var(--ui-card));
+      gap: 3px;
+      padding: 3px;
+      border-radius: 9px;
+      background: var(--ui-subtle);
+      border: 1px solid var(--ui-card-border);
     }
-    .nav-group-label {
+    .nav-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--ui-card-border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    .nav-sep {
       font-size: 12px;
-      font-weight: 500;
       color: var(--ui-muted);
-      white-space: nowrap;
-      padding-right: 2px;
+      opacity: 0.55;
+      padding: 0 2px;
+      user-select: none;
     }
 
     .scene-tab {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 10px;
+      height: 28px;
+      padding: 0 10px;
       border-radius: 6px;
-      border: 1px solid var(--ui-border);
-      background: var(--ui-card);
+      border: 1px solid transparent;
+      background: transparent;
       color: var(--ui-muted);
       cursor: pointer;
       text-align: left;
-      transition: border-color 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+      transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
       white-space: nowrap;
     }
-    .scene-tab:hover { border-color: var(--ui-fg); color: var(--ui-fg); }
+    .scene-tab:hover:not(.active) {
+      color: var(--ui-fg);
+      background: var(--ui-hover);
+    }
     .scene-tab.active {
-      border-color: var(--ui-fg);
       background: var(--ui-fg);
       color: var(--ui-bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     }
+    .scene-tab .kbd-num {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      opacity: 0.48;
+      font-weight: 500;
+    }
+    .scene-tab.active .kbd-num { opacity: 0.65; }
+
+    .crumb-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      font-size: 12px;
+      color: var(--ui-muted);
+      cursor: pointer;
+      transition: color 0.12s ease;
+    }
+    .crumb-link:hover { color: var(--ui-fg); text-decoration: underline; text-underline-offset: 2px; }
 
     .tok-btn {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 3px 9px;
-      border-radius: 6px;
+      height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
       font-size: 12px;
       border: 1px solid var(--ui-card-border);
-      background: var(--ui-content);
+      background: var(--ui-subtle);
       color: var(--ui-muted);
       cursor: pointer;
       transition: all 0.14s ease;
       user-select: none;
     }
-    .tok-btn:hover { color: var(--ui-fg); border-color: var(--ui-muted); }
+    .tok-btn:hover { color: var(--ui-fg); border-color: var(--ui-border); background: var(--ui-card); }
     .tok-btn.active {
       color: var(--ui-fg);
       border-color: var(--ui-fg);
       background: var(--ui-card);
       font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .tok-btn.draft-tok {
+      border-style: dashed;
+      border-color: color-mix(in srgb, var(--ui-accent-b) 55%, var(--ui-card-border));
+    }
+
+    /* Hairline-divided 2x2 architectural stat grid (eliminates nested boxed clutter) */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border: 1px solid var(--ui-card-border);
+      border-radius: 9px;
+      overflow: hidden;
+      background: var(--ui-subtle);
+    }
+    .stat-cell {
+      padding: 9px 11px;
+      background: var(--ui-card);
+      border-right: 1px solid var(--ui-card-border);
+      border-bottom: 1px solid var(--ui-card-border);
+    }
+    .stat-cell:nth-child(2n) { border-right: none; }
+    .stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+    /* Precision architectural range scrubber */
+    input[type="range"].scrubber {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--ui-border);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].scrubber::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--ui-fg);
+      border: 2px solid var(--ui-card);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
+      transition: transform 0.12s ease;
+    }
+    input[type="range"].scrubber::-webkit-slider-thumb:hover {
+      transform: scale(1.16);
+    }
+    input[type="range"].scrubber::-moz-range-thumb {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--ui-fg);
+      border: 2px solid var(--ui-card);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24);
     }
 
     #canvas-wrap {
       position: relative;
       width: 100%;
-      height: 500px;
-      border-radius: 8px;
+      height: 480px;
+      border-radius: 9px;
       overflow: hidden;
       border: 1px solid var(--ui-card-border);
       background: var(--ui-content);
       cursor: grab;
       touch-action: none;
     }
+    @media (min-width: 1280px) {
+      #canvas-wrap {
+        height: auto;
+        flex: 1 1 0%;
+        min-height: 440px;
+      }
+    }
     #canvas-wrap:active { cursor: grabbing; }
-    #stage-canvas { width: 100%; height: 100%; display: block; }
+    #stage-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     #hover-tooltip {
       position: absolute;
       pointer-events: none;
       z-index: 30;
-      max-width: 320px;
-      padding: 9px 11px;
-      border-radius: 8px;
+      width: 296px;
+      max-width: calc(100% - 24px);
+      padding: 10px 12px;
+      border-radius: 10px;
       font-size: 12px;
       color: var(--ui-fg);
       display: none;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
     }
 
-    input[type="range"] { accent-color: var(--ui-fg); }
-
-    .math-block {
-      color: var(--ui-fg);
+    .step-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background-color 0.12s ease;
     }
+    .step-row.hl {
+      background: color-mix(in srgb, var(--ui-accent-a) 8%, transparent);
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 17px;
+      height: 17px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: var(--ui-subtle);
+      border: 1px solid var(--ui-card-border);
+      color: var(--ui-muted);
+      flex-shrink: 0;
+    }
+    .step-row.hl .step-num {
+      background: var(--ui-accent-a);
+      border-color: var(--ui-accent-a);
+      color: var(--ui-bg);
+    }
+
+    .inspector-accent.pinned {
+      border-color: color-mix(in srgb, var(--ui-accent-b) 45%, var(--ui-card-border));
+    }
+
+    .math-block { color: var(--ui-fg); }
     .math-block math {
       font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
       font-size: 15px;
@@ -231,18 +423,31 @@
   </style>
 </head>
 <body class="antialiased">
-  <div class="max-w-[1480px] mx-auto px-4 py-3 space-y-2.5">
+  <div class="max-w-[1480px] mx-auto px-4 py-3 space-y-3">
 
-    <!-- Header -->
-    <header class="panel px-4 py-3 space-y-2.5">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h1 class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Inkling 2 Mini</h1>
-        <span class="text-xs font-mono text-[var(--ui-muted)]" id="hdr-active">24 层 · Core 3×（共 48 层前向）· 激活 ~5.4B / 26.4B</span>
+    <!-- Unified Architectural Studio Header (Balanced Full-Width Bands) -->
+    <header class="panel overflow-hidden">
+      <!-- Band 1: Brand (Left) + Live Telemetry (Flush Right) -->
+      <div class="px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <!-- Minimalist Looped Architecture Glyph -->
+          <div class="w-7 h-7 rounded-lg bg-[var(--ui-subtle)] border border-[var(--ui-card-border)] flex items-center justify-center shrink-0" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="1.5" y="5" width="3" height="6" rx="0.8" fill="currentColor" opacity="0.45"/>
+              <rect x="6" y="4" width="4" height="8" rx="1" fill="var(--ui-accent-a)"/>
+              <rect x="11.5" y="5" width="3" height="6" rx="0.8" fill="currentColor" opacity="0.45"/>
+              <path d="M9.5 3.6V2.2C9.5 1.8 9.2 1.5 8.8 1.5H7.2C6.8 1.5 6.5 1.8 6.5 2.2V3.6" stroke="var(--ui-accent-b)" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h1 class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Inkling 2 Mini</h1>
+        </div>
+        <span class="text-xs font-mono text-[var(--ui-muted)] tabular-nums" id="hdr-active">24 层 · Core 3×（共 48 层前向）· 激活 ~5.4B / 26.4B</span>
       </div>
 
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 border-t border-[var(--ui-border)]">
+      <!-- Band 2: Global Controls (Evenly Distributed Across Full Width) -->
+      <div class="px-4 py-2 border-t border-[var(--ui-card-border)] flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <div class="flex items-center gap-2">
-          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">推理阶段</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">推理阶段</span>
           <div class="seg" id="exec-group">
             <button class="seg-item active" data-exec="prefill">Prefill</button>
             <button class="seg-item" data-exec="decode">Decode</button>
@@ -251,196 +456,225 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">Core 循环</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">Core 循环</span>
           <div class="seg" id="loop-group">
             <button class="seg-item" data-k="1">1×</button>
             <button class="seg-item" data-k="2">2×</button>
             <button class="seg-item active" data-k="3">3×</button>
             <button class="seg-item" data-k="4">4×</button>
+            <button class="seg-item" data-k="5">5×</button>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="text-xs font-medium text-[var(--ui-muted)] whitespace-nowrap">输入示例</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">示例场景</span>
           <div class="seg" id="scenario-group">
-            <button class="seg-item active" data-scenario="math">17×13</button>
-            <button class="seg-item" data-scenario="code">代码</button>
-            <button class="seg-item" data-scenario="coref">指代</button>
+            <button class="seg-item active" data-scenario="math" title="示例输入：计算 17 × 13 =">数学计算</button>
+            <button class="seg-item" data-scenario="code" title="示例输入：def fib(n): return fib(n-1) + fib(n-2) #bug:">代码排错</button>
+            <button class="seg-item" data-scenario="coref" title="示例输入：Alice 把金钥匙给了 Bob 随后 他 打开了">指代消解</button>
           </div>
         </div>
       </div>
-    </header>
 
-    <!-- 3-Level Hierarchical Architecture View Map: Overview ▸ 单层内部 ▸ (GQA Attention → MoE) | Memory -->
-    <nav class="panel px-3 py-2 flex flex-wrap items-center gap-2" id="scene-selector">
-      <button class="scene-tab active" data-scene="overview">
-        <span class="text-xs font-semibold">Overview</span>
-      </button>
+      <!-- Band 3: 3-Level Hierarchical Architecture Nav Rail -->
+      <nav class="px-4 py-2 border-t border-[var(--ui-card-border)] bg-[var(--ui-subtle)] flex flex-wrap items-center gap-1.5" id="scene-selector">
+        <button class="scene-tab active" data-scene="overview">
+          <span class="kbd-num">1</span>
+          <span class="text-xs font-semibold">Overview</span>
+        </button>
 
-      <span class="text-xs text-[var(--ui-muted)] select-none">▸</span>
+        <span class="nav-sep">›</span>
 
-      <div class="nav-group">
-        <button class="scene-tab" data-scene="layer">
-          <span class="text-xs font-semibold" id="nav-layer-btn">单层内部 (L9)</span>
-        </button>
-        <span class="text-xs text-[var(--ui-muted)] select-none">▸</span>
-        <button class="scene-tab" data-scene="rmsnorm">
-          <span class="text-xs font-semibold">RMSNorm</span>
-        </button>
-        <span class="text-xs text-[var(--ui-muted)] select-none">→</span>
-        <button class="scene-tab" data-scene="multihead">
-          <span class="text-xs font-semibold">① GQA Attention</span>
-          <span class="text-xs font-mono opacity-70">24Q:8KV</span>
-        </button>
-        <span class="text-xs text-[var(--ui-muted)] select-none">→</span>
-        <button class="scene-tab" data-scene="moe">
-          <span class="text-xs font-semibold">② MoE</span>
-          <span class="text-xs font-mono opacity-70">Top-8/128</span>
-        </button>
-      </div>
+        <div class="nav-cluster">
+          <button class="scene-tab" data-scene="layer">
+            <span class="kbd-num">2</span>
+            <span class="text-xs font-semibold" id="nav-layer-btn">单层内部 (L9)</span>
+          </button>
+          <span class="nav-sep">›</span>
+          <button class="scene-tab" data-scene="rmsnorm">
+            <span class="kbd-num">3</span>
+            <span class="text-xs font-semibold">RMSNorm</span>
+          </button>
+          <span class="nav-sep">→</span>
+          <button class="scene-tab" data-scene="multihead">
+            <span class="kbd-num">4</span>
+            <span class="text-xs font-semibold">① GQA Attention</span>
+            <span class="text-xs font-mono opacity-65">24Q:8KV</span>
+          </button>
+          <span class="nav-sep">→</span>
+          <button class="scene-tab" data-scene="moe">
+            <span class="kbd-num">5</span>
+            <span class="text-xs font-semibold">② MoE</span>
+            <span class="text-xs font-mono opacity-65">Top-8/128</span>
+          </button>
+        </div>
 
-      <div class="nav-group">
-        <span class="nav-group-label">记忆</span>
-        <button class="scene-tab" data-scene="spacetime">
+        <button class="scene-tab xl:ml-auto" data-scene="spacetime">
+          <span class="kbd-num">6</span>
           <span class="text-xs font-semibold">KV Cache &amp; Block AttnRes</span>
         </button>
-      </div>
-    </nav>
+      </nav>
+    </header>
 
-    <!-- Main Stage + Compact Spec Column -->
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-3.5 items-start">
+    <!-- Main Stage + Aligned Equal-Height Spec Column -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-3.5 xl:items-stretch">
 
-      <!-- Left: 3D Stage (8 cols) -->
-      <section class="xl:col-span-8 panel p-3 space-y-2.5">
-        <!-- Step-by-Step Playback Bar -->
-        <div class="inset px-2.5 py-2 space-y-2">
-          <div class="flex flex-col lg:flex-row lg:items-center gap-2">
-            <div class="flex flex-wrap items-center gap-1.5">
-              <button id="btn-prev" class="ctrl-btn">上一步</button>
-              <button id="btn-play" class="ctrl-btn primary min-w-[60px]">播放</button>
-              <button id="btn-next" class="ctrl-btn">下一步</button>
-              <button id="btn-autoreg" class="ctrl-btn">+1 Token</button>
+      <!-- Left: 3D Stage (8 cols, stretches cleanly to exact height of right column on xl+) -->
+      <section class="xl:col-span-8 panel overflow-hidden flex flex-col">
+        <!-- Flush Top Playback & Timeline Bar -->
+        <div class="px-3.5 py-2.5 border-b border-[var(--ui-card-border)] space-y-2 shrink-0">
+          <div class="flex flex-col lg:flex-row lg:items-center gap-2.5">
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="transport-pill">
+                <button id="btn-prev" class="ctrl-btn icon-only" title="上一步 (←)" aria-label="上一步">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.8 2.5L4.3 6L7.8 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button id="btn-play" class="ctrl-btn primary min-w-[64px]" title="播放 / 暂停 (Space)">播放</button>
+                <button id="btn-next" class="ctrl-btn icon-only" title="下一步 (→)" aria-label="下一步">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.2 2.5L7.7 6L4.2 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <button id="btn-autoreg" class="ctrl-btn" title="向后自回归生成 1 个新 token">+1 Token</button>
             </div>
 
-            <div class="flex-1 flex items-center gap-2 min-w-[140px]">
-              <input id="step-scrubber" type="range" min="0" max="50" value="22" class="w-full cursor-pointer" />
-              <span id="step-label" class="text-xs font-mono font-semibold tabular-nums whitespace-nowrap text-[var(--ui-fg)] text-right">
+            <div class="flex-1 flex items-center gap-2.5 min-w-[140px]">
+              <input id="step-scrubber" type="range" min="0" max="50" value="22" class="scrubber w-full" />
+              <span id="step-label" class="text-xs font-mono font-semibold tabular-nums whitespace-nowrap text-[var(--ui-fg)] min-w-[48px] text-right">
                 22 / 50
               </span>
             </div>
 
-            <div class="flex flex-wrap items-center gap-1" id="quick-jumps"></div>
+            <div class="seg shrink-0" id="quick-jumps"></div>
           </div>
 
           <!-- Context Filter Row (Only shown when scene has interactive filters) -->
-          <div id="scene-subcontrols" class="hidden flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs"></div>
+          <div id="scene-subcontrols" class="hidden flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs"></div>
         </div>
 
-        <!-- 3D Viewport -->
-        <div id="canvas-wrap">
-          <canvas id="stage-canvas"></canvas>
-          <div id="hover-tooltip" class="hud-chip"></div>
+        <!-- 3D Viewport Wrapper (flex-1 absorbs height difference so bottom edges align!) -->
+        <div class="p-3 pb-2.5 flex-1 flex flex-col min-h-0">
+          <div id="canvas-wrap">
+            <canvas id="stage-canvas"></canvas>
+            <div id="hover-tooltip" class="hud-chip"></div>
 
-          <!-- Top-Left Minimal Status + Schematic Origin Locator -->
-          <div class="hud-chip absolute top-3 left-3 px-2.5 py-1.5 rounded-lg max-w-[74%] flex items-center gap-2.5">
-            <div id="hud-minimap" class="hidden shrink-0"></div>
-            <div class="space-y-1">
-              <div class="flex flex-wrap items-center gap-2 text-xs">
-                <span id="hud-stage-pill" class="font-mono font-semibold text-[var(--ui-fg)]">Core Pass 2 · L9</span>
-                <span class="text-[var(--ui-muted)]">·</span>
-                <span id="hud-tensor-x" class="font-mono text-[var(--ui-muted)]">X [B, 5, 2304]</span>
+            <!-- Top-Left Compact Status + Schematic Origin Locator -->
+            <div class="hud-chip absolute top-3 left-3 px-2.5 py-1.5 rounded-xl max-w-[74%] flex items-center gap-2.5">
+              <div id="hud-minimap" class="hidden shrink-0"></div>
+              <div class="space-y-0.5 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                  <span id="hud-stage-dot" class="w-1.5 h-1.5 rounded-full inline-block shrink-0"></span>
+                  <span id="hud-stage-pill" class="font-mono font-semibold text-[var(--ui-fg)]">Core Pass 2 · L9</span>
+                  <span class="text-[var(--ui-muted)] opacity-50">·</span>
+                  <span id="hud-tensor-x" class="font-mono text-[var(--ui-muted)] tabular-nums">X [B, 5, 2304]</span>
+                </div>
+                <div id="hud-unfold-bar" class="flex flex-wrap items-center gap-1 text-xs"></div>
               </div>
-              <div id="hud-unfold-bar" class="flex flex-wrap items-center gap-1.5 text-xs"></div>
+            </div>
+
+            <!-- Top-Right Compact Camera Controls -->
+            <div class="hud-chip absolute top-3 right-3 p-0.5 rounded-lg flex items-center">
+              <button id="btn-zoom-in" class="seg-item px-2" title="放大">+</button>
+              <button id="btn-zoom-out" class="seg-item px-2" title="缩小">−</button>
+              <span class="w-px h-3.5 bg-[var(--ui-border)] mx-0.5"></span>
+              <button id="btn-cam-reset" class="seg-item px-2" title="重置视角 (R)">重置</button>
+            </div>
+
+            <!-- Bottom-Left Minimal 2-Swatch Legend -->
+            <div class="hud-chip absolute bottom-3 left-3 px-2.5 py-1 rounded-full pointer-events-none text-xs text-[var(--ui-muted)] flex items-center gap-3">
+              <span class="inline-flex items-center gap-1.5">
+                <span id="swatch-a" class="w-2 h-2 rounded-full inline-block"></span>
+                <span id="legend-a">Active</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span id="swatch-b" class="w-2 h-2 rounded-full inline-block"></span>
+                <span id="legend-b">Loop</span>
+              </span>
             </div>
           </div>
-
-          <!-- Top-Right Camera Controls -->
-          <div class="hud-chip absolute top-3 right-3 px-1.5 py-1 rounded-lg flex items-center gap-1">
-            <button id="btn-zoom-in" class="seg-item" title="放大">+</button>
-            <button id="btn-zoom-out" class="seg-item" title="缩小">−</button>
-            <button id="btn-cam-reset" class="seg-item" title="重置视角 (R)">重置</button>
-          </div>
-
-          <!-- Bottom-Left Scene-Specific Color Key -->
-          <div class="hud-chip absolute bottom-3 left-3 px-2.5 py-1 rounded-md pointer-events-none text-xs text-[var(--ui-muted)] flex items-center gap-3">
-            <span class="inline-flex items-center gap-1.5">
-              <span id="swatch-a" class="w-2.5 h-2.5 rounded-sm inline-block"></span>
-              <span id="legend-a">Active</span>
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <span id="swatch-b" class="w-2.5 h-2.5 rounded-sm inline-block"></span>
-              <span id="legend-b">Loop</span>
-            </span>
-          </div>
         </div>
 
-        <!-- Token Filter Bar -->
-        <div id="token-bar" class="flex flex-wrap items-center gap-1.5 pt-0.5"></div>
+        <!-- Flush Bottom Token Filter Strip -->
+        <div class="px-3.5 py-2 border-t border-[var(--ui-card-border)] bg-[var(--ui-subtle)] flex flex-wrap items-center gap-1.5 shrink-0">
+          <span class="text-xs font-medium text-[var(--ui-muted)] mr-1">Tokens</span>
+          <div id="token-bar" class="flex flex-wrap items-center gap-1.5"></div>
+        </div>
       </section>
 
-      <!-- Right: Compact Spec Column (4 cols) -->
-      <aside class="xl:col-span-4 space-y-3">
+      <!-- Right: Calm Architectural Spec Column (4 cols) -->
+      <aside class="xl:col-span-4 flex flex-col gap-3">
 
-        <!-- Pinned Selected 3D Block Inspector (appears when clicking any block) -->
-        <div id="inspector-card" class="hidden panel p-3.5 space-y-2 border-[var(--ui-fg)]">
-          <div class="flex items-start justify-between gap-2">
-            <h2 id="insp-title" class="text-xs font-semibold text-[var(--ui-fg)] leading-snug">—</h2>
-            <button id="btn-close-insp" class="text-xs text-[var(--ui-muted)] hover:text-[var(--ui-fg)] px-1 cursor-pointer" title="关闭">×</button>
-          </div>
-          <div class="inset px-2.5 py-1.5 font-mono text-xs text-[var(--ui-fg)] break-words">
-            <span class="text-[var(--ui-muted)]">尺寸：</span><span id="insp-shape">—</span>
-          </div>
-          <p id="insp-role" class="text-xs text-[var(--ui-muted)] leading-relaxed"></p>
-        </div>
-
+        <!-- Card 1: Telemetry & Active Stage Specs -->
         <div class="panel p-3.5 space-y-2.5">
           <div class="flex items-center justify-between gap-2">
-            <h2 id="panel-title" class="text-sm font-semibold text-[var(--ui-fg)]">Overview</h2>
+            <h2 id="panel-title" class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Overview</h2>
             <span id="panel-phase-badge" class="tag font-mono">Core P2</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div class="inset p-2">
+          <div class="stat-grid">
+            <div class="stat-cell">
               <div class="text-xs text-[var(--ui-muted)]">Layer</div>
-              <div id="stat-layer" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+              <div id="stat-layer" class="text-xs font-mono font-semibold tabular-nums text-[var(--ui-fg)] mt-0.5 truncate">—</div>
             </div>
-            <div class="inset p-2">
+            <div class="stat-cell">
               <div class="text-xs text-[var(--ui-muted)]">Attention</div>
-              <div id="stat-attn" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+              <div id="stat-attn" class="text-xs font-mono font-semibold tabular-nums text-[var(--ui-fg)] mt-0.5 truncate">—</div>
             </div>
-            <div class="inset p-2">
+            <div class="stat-cell">
               <div class="text-xs text-[var(--ui-muted)]">Rank-64 Gate</div>
-              <div id="stat-gate" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+              <div id="stat-gate" class="text-xs font-mono font-semibold tabular-nums text-[var(--ui-fg)] mt-0.5 truncate">—</div>
             </div>
-            <div class="inset p-2">
+            <div class="stat-cell">
               <div class="text-xs text-[var(--ui-muted)]">Precision / MoE</div>
-              <div id="stat-quant" class="text-xs font-mono font-semibold text-[var(--ui-fg)] mt-0.5">—</div>
+              <div id="stat-quant" class="text-xs font-mono font-semibold tabular-nums text-[var(--ui-fg)] mt-0.5 truncate">—</div>
             </div>
           </div>
         </div>
 
-        <div class="panel p-3.5 space-y-2">
+        <!-- Card 2: Always-Anchored Fixed-Height 3D Component Inspector (Zero Hover Shift) -->
+        <div id="inspector-card" class="panel p-3.5 flex flex-col gap-2 inspector-accent xl:h-[148px]">
+          <div class="flex items-center justify-between gap-2 shrink-0">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <h2 id="insp-title" class="text-xs font-semibold text-[var(--ui-fg)] truncate">3D 模块检视</h2>
+              <span id="insp-state-tag" class="tag text-xs">悬停预览</span>
+            </div>
+            <button id="btn-close-insp" class="hidden text-xs text-[var(--ui-muted)] hover:text-[var(--ui-fg)] px-1.5 py-0.5 rounded hover:bg-[var(--ui-subtle)] cursor-pointer shrink-0" title="取消固定">取消固定</button>
+          </div>
+          <div id="insp-empty" class="text-xs text-[var(--ui-muted)] leading-relaxed flex-1 flex items-center">
+            悬停画布中任意 3D 模块可实时预览其功能与张量尺寸，点击可下钻或固定在此处。
+          </div>
+          <div id="insp-content" class="hidden space-y-1.5 flex-1 min-h-0 overflow-y-auto">
+            <div class="inset px-2.5 py-1.5 font-mono text-xs text-[var(--ui-fg)] break-words">
+              <span class="text-[var(--ui-muted)]">尺寸 </span><span id="insp-shape">—</span>
+            </div>
+            <p id="insp-role" class="text-xs text-[var(--ui-muted)] leading-relaxed m-0"></p>
+          </div>
+        </div>
+
+        <!-- Card 3: Scene Architectural Formula / Breakdown -->
+        <div class="panel p-3.5 space-y-2.5">
           <div class="flex items-center justify-between gap-2">
-            <h3 id="detail-heading" class="text-sm font-semibold text-[var(--ui-fg)]">Block AttnRes &amp; Gate</h3>
+            <h3 id="detail-heading" class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Block AttnRes &amp; Gate</h3>
             <span id="detail-tag" class="tag font-mono">—</span>
           </div>
           <div id="detail-body" class="space-y-1.5 text-xs"></div>
         </div>
 
-        <div class="panel p-3.5 space-y-2">
+        <!-- Card 4: Coda-Lens Output Convergence -->
+        <div class="panel p-3.5 space-y-2.5 flex-1 flex flex-col">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="text-sm font-semibold text-[var(--ui-fg)]">Coda-Lens</h3>
+            <h3 class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Coda-Lens</h3>
             <span id="coda-badge" class="tag font-mono">Core P2</span>
           </div>
-          <div id="coda-bars" class="space-y-1.5"></div>
+          <div id="coda-bars" class="space-y-2"></div>
+          <p id="coda-note" class="text-xs text-[var(--ui-muted)] leading-relaxed pt-2 mt-auto border-t border-[var(--ui-card-border)] m-0"></p>
         </div>
 
       </aside>
     </div>
 
-    <footer class="text-xs text-[var(--ui-muted)] flex flex-wrap items-center justify-between gap-2 px-1 pb-1">
-      <span>1–6 切换视图 · ←/→ 单步 · Space 播放 · R 重置视角</span>
-      <span class="font-mono">Inkling 2 Mini (simulated weights)</span>
+    <footer class="text-xs text-[var(--ui-muted)] flex flex-wrap items-center justify-between gap-2 px-1 pb-1 opacity-80">
+      <span>1–6 切换视图 · ←/→ 单步 · Space 播放 · R 重置 · 拖拽旋转 · Shift 平移 · 滚轮缩放</span>
+      <span class="font-mono">Inkling 2 Mini / TML-d24-varloop-research (simulated weights)</span>
     </footer>
   </div>
 
@@ -461,7 +695,8 @@
               pass1:   [["211", 0.34], ["221", 0.31], ["210", 0.19], ["231", 0.09]],
               pass2:   [["221", 0.68], ["211", 0.16], ["231", 0.09], ["220", 0.04]],
               pass3:   [["221", 0.94], ["211", 0.03], ["231", 0.02], ["220", 0.01]],
-              pass4:   [["221", 0.97], ["211", 0.01], ["231", 0.01], ["220", 0.01]],
+              pass4:   [["221", 0.96], ["211", 0.02], ["231", 0.01], ["220", 0.01]],
+              pass5:   [["221", 0.97], ["211", 0.01], ["231", 0.01], ["220", 0.01]],
               coda:    [["221", 0.96], ["211", 0.02], ["231", 0.01], ["220", 0.01]]
             }
           },
@@ -475,6 +710,7 @@
               pass2:   [["。", 0.82], ["\\n", 0.11], ["（", 0.04], ["，", 0.02]],
               pass3:   [["。", 0.93], ["\\n", 0.04], ["（", 0.02], ["，", 0.01]],
               pass4:   [["。", 0.95], ["\\n", 0.03], ["（", 0.01], ["，", 0.01]],
+              pass5:   [["。", 0.95], ["\\n", 0.03], ["（", 0.01], ["，", 0.01]],
               coda:    [["。", 0.94], ["\\n", 0.04], ["（", 0.01], ["，", 0.01]]
             }
           }
@@ -492,7 +728,8 @@
               pass1:   [["infinite", 0.36], ["missing", 0.33], ["slow", 0.19], ["stack", 0.08]],
               pass2:   [["missing", 0.65], ["infinite", 0.21], ["no", 0.08], ["slow", 0.03]],
               pass3:   [["missing", 0.90], ["no", 0.05], ["infinite", 0.03], ["stack", 0.01]],
-              pass4:   [["missing", 0.94], ["no", 0.03], ["infinite", 0.02], ["stack", 0.01]],
+              pass4:   [["missing", 0.93], ["no", 0.04], ["infinite", 0.02], ["stack", 0.01]],
+              pass5:   [["missing", 0.94], ["no", 0.03], ["infinite", 0.02], ["stack", 0.01]],
               coda:    [["missing", 0.92], ["no", 0.04], ["infinite", 0.03], ["stack", 0.01]]
             }
           },
@@ -505,7 +742,8 @@
               pass1:   [["base_case", 0.55], ["check", 0.20], ["if", 0.14], ["return", 0.06]],
               pass2:   [["base_case", 0.83], ["check", 0.09], ["if", 0.05], ["guard", 0.02]],
               pass3:   [["base_case", 0.95], ["check", 0.02], ["if", 0.02], ["guard", 0.01]],
-              pass4:   [["base_case", 0.97], ["check", 0.01], ["if", 0.01], ["guard", 0.01]],
+              pass4:   [["base_case", 0.96], ["check", 0.02], ["if", 0.01], ["guard", 0.01]],
+              pass5:   [["base_case", 0.97], ["check", 0.01], ["if", 0.01], ["guard", 0.01]],
               coda:    [["base_case", 0.96], ["check", 0.02], ["if", 0.01], ["guard", 0.01]]
             }
           }
@@ -523,7 +761,8 @@
               pass1:   [["门", 0.37], ["保险箱", 0.35], ["盒子", 0.16], ["锁", 0.07]],
               pass2:   [["保险箱", 0.69], ["门", 0.18], ["宝箱", 0.08], ["盒子", 0.03]],
               pass3:   [["保险箱", 0.88], ["宝箱", 0.06], ["门", 0.04], ["盒子", 0.01]],
-              pass4:   [["保险箱", 0.92], ["宝箱", 0.04], ["门", 0.03], ["盒子", 0.01]],
+              pass4:   [["保险箱", 0.91], ["宝箱", 0.05], ["门", 0.03], ["盒子", 0.01]],
+              pass5:   [["保险箱", 0.92], ["宝箱", 0.04], ["门", 0.03], ["盒子", 0.01]],
               coda:    [["保险箱", 0.90], ["宝箱", 0.05], ["门", 0.04], ["盒子", 0.01]]
             }
           },
@@ -537,6 +776,7 @@
               pass2:   [["。", 0.81], ["，", 0.12], ["里面", 0.04], ["！", 0.02]],
               pass3:   [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]],
               pass4:   [["。", 0.93], ["，", 0.04], ["！", 0.02], ["里面", 0.01]],
+              pass5:   [["。", 0.93], ["，", 0.04], ["！", 0.02], ["里面", 0.01]],
               coda:    [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]]
             }
           }
@@ -567,6 +807,7 @@
       forceFullAttn: null,
       rmsSlot: "attn",      // "attn" (Pre-Attention) or "moe" (Pre-MoE)
       rmsScale: 1,          // 1 (Normal) or 3 (3x Spike scale-invariance demo!)
+      shareKV: false,       // loop_share_cache toggle (false = per-pass isolated KV, true = shared Core KV)
       playing: false,
       animTime: 0,
       lastStepAdvance: 0,
@@ -575,9 +816,17 @@
       carrierX: -20,
       carrierY: 0,
       moeHeights: new Float32Array(128).fill(5),
+      layerAttnH: new Float32Array(4).fill(10),
+      layerMoeH: new Float32Array(8).fill(16),
+      attnMatH: new Float32Array(256).fill(16),
+      rmsAnimX: new Float32Array(8).fill(30),
+      rmsAnimN: new Float32Array(8).fill(20),
+      rmsAnimY: new Float32Array(8).fill(20),
+      rmsAnimScalar: 30,
       cam: { ...SCENE_PRESETS.overview },
       targetCam: { ...SCENE_PRESETS.overview },
       dragging: false,
+      dragMoved: false,
       dragMode: "orbit",
       lastMouseX: 0,
       lastMouseY: 0,
@@ -585,6 +834,8 @@
       mouseY: -999,
       hoveredHit: null,
       selectedHit: null,
+      lastTooltipKey: "",
+      lastInspKey: "",
       previewScene: null
     };
 
@@ -793,8 +1044,12 @@
       viewW = Math.max(320, rect.width);
       viewH = Math.max(360, rect.height);
       dpr = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = Math.round(viewW * dpr);
-      canvas.height = Math.round(viewH * dpr);
+      const nw = Math.round(viewW * dpr);
+      const nh = Math.round(viewH * dpr);
+      if (canvas.width !== nw || canvas.height !== nh) {
+        canvas.width = nw;
+        canvas.height = nh;
+      }
     }
 
     // Right-handed world space: +X Right, +Y Up, +Z Front (Toward Viewer at z = +dist)
@@ -953,6 +1208,18 @@
       });
     }
 
+    // Exact 2D Point-in-Polygon (ray-casting, winding-agnostic) for pixel-accurate 3D block picking
+    function pointInPoly(px, py, pts) {
+      let inside = false;
+      for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+        const xi = pts[i].sx, yi = pts[i].sy, xj = pts[j].sx, yj = pts[j].sy;
+        if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / ((yj - yi) || 1e-9) + xi)) {
+          inside = !inside;
+        }
+      }
+      return inside;
+    }
+
     // Solid Matte Ceramic 3D Block with Exact Analytical Backface Culling (nz > 0)
     function queueSolidBlock(cx, cy, cz, wx, wy, wz, opts = {}) {
       const hx = wx * 0.5, hy = wy * 0.5, hz = wz * 0.5;
@@ -966,19 +1233,26 @@
       if (corners.some(p => !p.visible)) return null;
       const centerP = project3D(cx, cy, cz);
 
-      const baseRgb = opts.rgb || PAL.ceramic;
+      // Omit animated vertical cy from hitKey so spring-animated pillars never flicker or rebuild tooltip mid-motion
+      const hitKey = opts.hitMeta ? `${Math.round(cx)}_${Math.round(cz)}_${opts.hitMeta.title}` : null;
+      const isHovered = !!(hitKey && !state.dragging && state.hoveredHit && state.hoveredHit.hitKey === hitKey);
+
+      const rawBaseRgb = opts.rgb || PAL.ceramic;
+      const baseRgb = isHovered ? mixRgb(rawBaseRgb, PAL.accentA, PAL.isLight ? 0.22 : 0.28) : rawBaseRgb;
       const alpha = opts.alpha !== undefined ? opts.alpha : 0.96;
-      const edgeRgb = opts.edgeRgb || (opts.accent ? mixRgb(baseRgb, PAL.ink, 0.30) : PAL.hairline);
-      const edgeAlpha = opts.edgeAlpha !== undefined ? opts.edgeAlpha : 0.82;
-      const lw = opts.lw || 0.9;
+      const edgeRgb = isHovered
+        ? PAL.accentA
+        : (opts.edgeRgb || (opts.accent ? mixRgb(rawBaseRgb, PAL.ink, 0.30) : PAL.hairline));
+      const edgeAlpha = isHovered ? 1.0 : (opts.edgeAlpha !== undefined ? opts.edgeAlpha : 0.82);
+      const lw = isHovered ? Math.max(1.85, (opts.lw || 0.9) + 0.85) : (opts.lw || 0.9);
 
       const faceDefs = [
-        { idx: [4, 5, 6, 7], n: [ 0,  0,  1] }, // +Z Front
-        { idx: [1, 0, 3, 2], n: [ 0,  0, -1] }, // -Z Back
-        { idx: [3, 2, 6, 7], n: [ 0,  1,  0] }, // +Y Top
-        { idx: [0, 1, 5, 4], n: [ 0, -1,  0] }, // -Y Bottom
-        { idx: [1, 5, 6, 2], n: [ 1,  0,  0] }, // +X Right
-        { idx: [4, 0, 3, 7], n: [-1,  0,  0] }  // -X Left
+        { tag: "front",  idx: [4, 5, 6, 7], n: [ 0,  0,  1] }, // +Z Front
+        { tag: "back",   idx: [1, 0, 3, 2], n: [ 0,  0, -1] }, // -Z Back
+        { tag: "top",    idx: [3, 2, 6, 7], n: [ 0,  1,  0] }, // +Y Top
+        { tag: "bottom", idx: [0, 1, 5, 4], n: [ 0, -1,  0] }, // -Y Bottom
+        { tag: "right",  idx: [1, 5, 6, 2], n: [ 1,  0,  0] }, // +X Right
+        { tag: "left",   idx: [4, 0, 3, 7], n: [-1,  0,  0] }  // -X Left
       ];
 
       const faces = faceDefs.map(f => {
@@ -986,7 +1260,7 @@
         const avgD = (p[0].depth + p[1].depth + p[2].depth + p[3].depth) * 0.25;
         const [nx, ny, nz] = toCam(f.n[0], f.n[1], f.n[2]);
         const ndotl = Math.max(0, nx * KEY_LIGHT[0] + ny * KEY_LIGHT[1] + nz * KEY_LIGHT[2]);
-        return { p, avgD, nz, ndotl, isTop: f.n[1] === 1 };
+        return { tag: f.tag, p, avgD, nz, ndotl, isTop: f.n[1] === 1 };
       }).sort((a, b) => b.avgD - a.avgD);
 
       // Grounded footprint shadow on tabletop
@@ -1011,7 +1285,8 @@
         }
       }
 
-      pushDraw(centerP.depth + (opts.depthBias || 0), () => {
+      const sortDepth = centerP.depth + (opts.depthBias || 0);
+      pushDraw(sortDepth, () => {
         ctx.save();
         for (let i = 0; i < faces.length; i++) {
           const f = faces[i];
@@ -1066,8 +1341,37 @@
       });
 
       if (opts.hitMeta) {
-        const rad = Math.max(12, Math.min(38, Math.max(wx, wy, wz) * centerP.scale * 0.46));
-        addHit(centerP.sx, centerP.sy, rad, opts.hitMeta);
+        const visFaces = faces.filter(f => f.nz > 0);
+        const polys = visFaces.map(f => f.p);
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        for (let i = 0; i < polys.length; i++) {
+          const pts = polys[i];
+          for (let k = 0; k < pts.length; k++) {
+            if (pts[k].sx < minX) minX = pts[k].sx;
+            if (pts[k].sx > maxX) maxX = pts[k].sx;
+            if (pts[k].sy < minY) minY = pts[k].sy;
+            if (pts[k].sy > maxY) maxY = pts[k].sy;
+          }
+        }
+        // Anchor on the TRUE visible Front Face (+Z) for vertical blocks, or Top Face (+Y) for flat tiles!
+        const useTopAnchor = wy <= 11;
+        const anchorFace = visFaces.find(f => f.tag === (useTopAnchor ? "top" : "front")) || visFaces[0];
+        const anchorP = useTopAnchor ? project3D(cx, cy + hy, cz) : project3D(cx, cy, cz + hz);
+        const fPts = anchorFace ? anchorFace.p : corners;
+        const fMinX = Math.min(...fPts.map(p => p.sx));
+        const fMaxX = Math.max(...fPts.map(p => p.sx));
+        const fMidY = fPts.reduce((s, p) => s + p.sy, 0) / fPts.length;
+        hitTargets.push({
+          hitKey,
+          sx: anchorP.visible ? anchorP.sx : (fMinX + fMaxX) * 0.5,
+          sy: anchorP.visible ? anchorP.sy : fMidY,
+          rx: fMaxX,
+          lx: fMinX,
+          minX, maxX, minY, maxY,
+          depth: sortDepth,
+          polys,
+          meta: opts.hitMeta
+        });
       }
       return centerP;
     }
@@ -1192,11 +1496,19 @@
         const bh = L.sub ? 34 : 22;
 
         if (L.pill) {
-          ctx.fillStyle = rgba(PAL.card, 0.92);
+          ctx.save();
+          ctx.shadowColor = rgba(PAL.shadow, PAL.isLight ? 0.08 : 0.32);
+          ctx.shadowBlur = 8;
+          ctx.shadowOffsetY = 2;
+          ctx.fillStyle = rgba(PAL.card, 0.94);
           ctx.strokeStyle = rgba(PAL.hairline, 0.78);
           ctx.lineWidth = 0.85;
-          roundRect(ctx, L.lx - bw * 0.5, L.ly - bh * 0.5, bw, bh, 5);
+          roundRect(ctx, L.lx - bw * 0.5, L.ly - bh * 0.5, bw, bh, 6);
           ctx.fill();
+          ctx.restore();
+          ctx.strokeStyle = rgba(PAL.hairline, 0.78);
+          ctx.lineWidth = 0.85;
+          roundRect(ctx, L.lx - bw * 0.5, L.ly - bh * 0.5, bw, bh, 6);
           ctx.stroke();
         }
         ctx.fillStyle = rgba(L.rgb, 0.95);
@@ -1259,7 +1571,8 @@
             ? `循环核心层（共享权重跑 ${K} 轮）；内部依次做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`
             : `仅运行 1 次，将隐藏状态解码回词表预测表示；内部做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`;
         const hitMeta = {
-          type: "layer",
+          type: "goto",
+          scene: "layer",
           stepIdx: sectionStepBase + s,
           title: `${sectionName} · L${physL}`,
           shape: `[B, ${sIn}, 2304] → [B, ${sIn}, 2304]`,
@@ -1363,12 +1676,13 @@
       const tokZ = (i) => sCount === 1 ? 0 : zSpan * 0.5 - (i / (sCount - 1)) * zSpan;
 
       // ── STAGE 1 (x = -258): Input Token Matrix [S × 2304] ───────────────────
+      const ovTokWz = Math.min(16, Math.max(7, Math.floor((zSpan / Math.max(1, sCount - 1)) * 0.72)));
       for (let i = 0; i < sCount; i++) {
         const z = tokZ(i);
         const inBatch = i >= range.start && i <= range.end;
         const solo = state.focusToken === -1 || state.focusToken === i;
         const hi = inBatch && solo;
-        queueSolidBlock(-258, floorY + 26, z, 28, 52, 16, {
+        queueSolidBlock(-258, floorY + 26, z, 28, 52, ovTokWz, {
           rgb: dimPipe ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
           alpha: dimPipe ? 0.60 : (hi ? 0.95 : 0.72),
           edgeRgb: dimPipe ? dimEdge : undefined,
@@ -1484,17 +1798,19 @@
         rgb: dimPipe ? PAL.mutedInk : (isP2 ? PAL.accentB : PAL.ink), bold: !dimPipe, oy: -18
       });
 
-      // ── FOREGROUND BAY (z = +122): Block AttnRes (B0..B6) ───────────────────
+      // ── FOREGROUND BAY (z = +122): Block AttnRes (dynamically spaced for K = 1..5!) ─
       const totalB = 1 + 2 * K;
       const doneB = Math.min(totalB, Math.max(0, step.blockIdx));
+      const bSpan = Math.min(184, Math.max(60, (totalB - 1) * 29));
+      const bTileW = totalB <= 7 ? 22 : totalB <= 9 ? 18 : 15;
       for (let b = 0; b < totalB; b++) {
-        const bx = -104 + b * 29;
+        const bx = totalB === 1 ? -16 : (-16 - bSpan * 0.5 + (b / (totalB - 1)) * bSpan);
         const done = b < doneB || step.section === "lmhead";
         const building = step.kind === "layer" && step.blockIdx === b;
         const baseH = done ? 20 : building ? 14 : 6;
         const h = prevMem ? Math.max(18, baseH + 8) : baseH;
         const tileRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentB : (building ? PAL.accentB : (done ? PAL.accentA : PAL.ceramic)));
-        queueSolidBlock(bx, floorY + h * 0.5 + (prevMem ? 3 : 0), 122, 22, h, 24, {
+        queueSolidBlock(bx, floorY + h * 0.5 + (prevMem ? 3 : 0), 122, bTileW, h, 24, {
           rgb: tileRgb,
           accent: prevMem || (!prevLayer && (done || building)),
           alpha: prevLayer ? 0.56 : (prevMem ? 0.98 : (done || building ? 0.95 : 0.58)),
@@ -1514,17 +1830,14 @@
         rgb: prevMem ? PAL.accentB : PAL.mutedInk, bold: prevMem, oy: 12
       });
 
-      // ── REAR BAY (z = -132): Pass-Specific KV Cache Racks ───────────────────
-      for (let p = 1; p <= K; p++) {
-        const kx = -68 + (p - 1) * (K === 4 ? 44 : 58);
-        const curP = isCore && step.pass === p;
-        const doneP = (isCore && step.pass > p) || codaAct || step.section === "lmhead";
-        const kRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentA : (curP ? (p >= 2 ? PAL.accentB : PAL.accentA) : (doneP ? PAL.stone : PAL.ceramic)));
+      // ── REAR BAY (z = -132): Pass-Specific or Shared KV Cache Racks ─────────
+      if (state.shareKV) {
+        const kRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentA : (isCore ? (isP2 ? PAL.accentB : PAL.accentA) : PAL.stone));
         const kH = prevMem ? 62 : 52;
-        queueSolidBlock(kx, floorY + kH * 0.5 + (prevMem ? 3 : 0), -132, 38, kH, 26, {
+        queueSolidBlock(-10, floorY + kH * 0.5 + (prevMem ? 3 : 0), -132, 92, kH, 28, {
           rgb: kRgb,
-          accent: prevMem || (!prevLayer && curP),
-          alpha: prevLayer ? 0.54 : (prevMem ? 0.98 : (curP ? 0.96 : doneP ? 0.82 : 0.55)),
+          accent: prevMem || (!prevLayer && isCore),
+          alpha: prevLayer ? 0.54 : (prevMem ? 0.98 : (isCore ? 0.96 : 0.82)),
           edgeRgb: prevLayer ? dimEdge : (prevMem ? mixRgb(PAL.accentA, PAL.ink, 0.32) : undefined),
           edgeAlpha: prevLayer ? 0.30 : (prevMem ? 0.98 : 0.82),
           lw: prevMem ? 1.35 : 0.9,
@@ -1532,18 +1845,49 @@
           shadowY: floorY,
           hitMeta: {
             type: "goto", scene: "spacetime",
-            title: `Pass ${p} KV + Conv Cache`,
-            shape: `KV [12层, B, 8, T=${range.tTotal}, 128] + conv_state`,
-            role: `保存 Core 第 ${p} 轮全部 12 层的历史 K/V 与短卷积状态；与其它轮次严格隔离，跨生成步持久保留。`
+            title: `Shared Core KV Cache (loop_share_cache)`,
+            shape: `KV [12层共享, B, 8, T=${range.tTotal}, 128]（全模型 24 层 KV）`,
+            role: `开启 loop_share_cache 后，Core 全部 ${K} 轮循环共用同一份 12 层 KV Cache（后轮覆写前轮），大幅节省长上下文显存。`
           }
         });
-        if (curP && !prevLayer) {
-          queueArchLine([[step.phys < 12 ? -58 : 38, floorY + 28, -56], [kx, floorY + 28, -118]], {
+        if (isCore && !prevLayer) {
+          queueArchLine([[step.phys < 12 ? -58 : 38, floorY + 28, -56], [-10, floorY + 28, -118]], {
             rgb: prevMem ? PAL.accentA : kRgb, alpha: prevMem ? 0.95 : 0.90, width: 1.8, dashed: true, pulse: true, speed: 0.36
           });
         }
+      } else {
+        const rackW = K <= 3 ? 38 : K === 4 ? 32 : 27;
+        const rackSpan = K === 1 ? 0 : Math.min(144, (K - 1) * (K <= 3 ? 56 : K === 4 ? 44 : 35));
+        for (let p = 1; p <= K; p++) {
+          const kx = K === 1 ? -10 : (-10 - rackSpan * 0.5 + ((p - 1) / (K - 1)) * rackSpan);
+          const curP = isCore && step.pass === p;
+          const doneP = (isCore && step.pass > p) || codaAct || step.section === "lmhead";
+          const kRgb = prevLayer ? dimRgb : (prevMem ? PAL.accentA : (curP ? (p >= 2 ? PAL.accentB : PAL.accentA) : (doneP ? PAL.stone : PAL.ceramic)));
+          const kH = prevMem ? 62 : 52;
+          queueSolidBlock(kx, floorY + kH * 0.5 + (prevMem ? 3 : 0), -132, rackW, kH, 26, {
+            rgb: kRgb,
+            accent: prevMem || (!prevLayer && curP),
+            alpha: prevLayer ? 0.54 : (prevMem ? 0.98 : (curP ? 0.96 : doneP ? 0.82 : 0.55)),
+            edgeRgb: prevLayer ? dimEdge : (prevMem ? mixRgb(PAL.accentA, PAL.ink, 0.32) : undefined),
+            edgeAlpha: prevLayer ? 0.30 : (prevMem ? 0.98 : 0.82),
+            lw: prevMem ? 1.35 : 0.9,
+            seams: 4,
+            shadowY: floorY,
+            hitMeta: {
+              type: "goto", scene: "spacetime",
+              title: `Pass ${p} KV + Conv Cache`,
+              shape: `KV [12层, B, 8, T=${range.tTotal}, 128] + conv_state`,
+              role: `保存 Core 第 ${p} 轮全部 12 层的历史 K/V 与短卷积状态；与其它轮次严格隔离，跨生成步持久保留。`
+            }
+          });
+          if (curP && !prevLayer) {
+            queueArchLine([[step.phys < 12 ? -58 : 38, floorY + 28, -56], [kx, floorY + 28, -118]], {
+              rgb: prevMem ? PAL.accentA : kRgb, alpha: prevMem ? 0.95 : 0.90, width: 1.8, dashed: true, pulse: true, speed: 0.36
+            });
+          }
+        }
       }
-      queueCleanLabel(66, floorY + 62, -132, `KV Cache (T=${range.tTotal})`, {
+      queueCleanLabel(66, floorY + 62, -132, state.shareKV ? `KV Cache · Shared 24L` : `KV Cache (${12 + 12 * K}L · T=${range.tTotal})`, {
         rgb: prevMem ? PAL.accentA : PAL.mutedInk, bold: prevMem, oy: -48, ox: 44, leader: true
       });
 
@@ -1577,8 +1921,8 @@
       const sc = SCENARIOS[state.scenario];
       const outObj = sc.outputs[Math.min(state.generated, sc.outputs.length - 1)];
       const pKey = step.section === "embed" || step.section === "prelude" ? "prelude"
-        : step.section === "core" ? "pass" + Math.min(4, step.pass)
-        : (state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass4");
+        : step.section === "core" ? "pass" + Math.min(5, step.pass)
+        : (state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass" + Math.min(5, state.K));
       const probs = outObj.stages[pKey] || outObj.stages.coda;
 
       probs.forEach(([tok, p], idx) => {
@@ -1593,7 +1937,7 @@
           edgeAlpha: dimPipe ? 0.34 : 0.82,
           shadowY: floorY,
           hitMeta: {
-            type: "layer", stepIdx: timeline.length - 1,
+            type: "info",
             title: `LM Head · 候选「${tok}」(${Math.round(p * 100)}%)`,
             shape: `[B, 1, 2304] → [B, 1, Vocab]（BF16/FP32）`,
             role: `将末位 token 的最终隐藏状态投影到词表维，经 Softmax 采样输出下一个 token。`
@@ -1627,13 +1971,18 @@
     // =========================================================================
     // 4B. Scene 02 (Level 2): Single Transformer Layer Cutaway (Attention → MoE)
     // =========================================================================
-    function buildSceneLayer(timeline, step, tokens, range) {
+    function buildSceneLayer(timeline, step, tokens, range, dt) {
       const floorY = -92;
       const mainY = floorY + 28; // Exact spine height for all horizontal layer conduits
       const phys = step.phys !== null ? step.phys : 9;
+      const curPass = step.section === "core" ? step.pass : 1;
+      const blockStartL = Math.floor(phys / 6) * 6;
+      const posInBlock = phys - blockStartL; // 0..5 inside current 6-layer block!
+      const curBlockIdx = Math.max(0, step.blockIdx);
       const isFull = step.kind === "layer" ? step.isFull : (phys === 5 || phys === 11 || phys === 17 || phys === 23);
       const isP2 = step.section === "core" && step.pass >= 2;
       const isFp8 = phys >= 20;
+      const spring = Math.min(1, (dt || 0.016) * 10);
 
       // Live hover spotlight from the 3-level nav bar!
       const prev = state.previewScene;
@@ -1648,9 +1997,9 @@
       const dimEdge = mixRgb(PAL.hairline, PAL.paper, 0.55);
 
       const bays = [
-        { x0: -142, x1: -34,  z0: -52,  z1: 52,  rgb: PAL.accentA, active: prevAttn || !hasPrev },
+        { x0: -142, x1: -34,  z0: -52,  z1: 52,  rgb: PAL.accentA, active: prevAttn || isFull || !hasPrev },
         { x0:  80,  x1:  188, z0: -52,  z1: 52,  rgb: PAL.accentA, active: prevMoe  || !hasPrev },
-        { x0: -130, x1: -46,  z0: -144, z1: -96, rgb: PAL.accentA, active: prevMem, dashed: !prevMem },
+        { x0: -130, x1: -46,  z0: -144, z1: -96, rgb: isP2 ? PAL.accentB : PAL.accentA, active: prevMem || true, dashed: !prevMem },
         { x0: -136, x1:  176, z0:  96,  z1: 140, rgb: PAL.accentB, active: prevMem || isP2, dashed: !prevMem }
       ];
       queueTableFloor(floorY, 315, 165, 40, bays);
@@ -1659,13 +2008,15 @@
       const zSpan = Math.min(80, Math.max(44, (sCount - 1) * 18));
       const tokZ = (i) => sCount === 1 ? 0 : zSpan * 0.5 - (i / (sCount - 1)) * zSpan;
 
-      // ── 1. Left (x = -266): Layer Input X [B, S_in, 2304] ────────────────────
+      // ── 1. Left (x = -266): Layer Input X [B, S_in, 2304] (height evolves gently per layer!) ─
+      const layerTokWz = Math.min(14, Math.max(6, Math.floor((zSpan / Math.max(1, sCount - 1)) * 0.72)));
       for (let i = 0; i < sCount; i++) {
         const z = tokZ(i);
         const inB = i >= range.start && i <= range.end;
         const solo = state.focusToken === -1 || state.focusToken === i;
         const hi = inB && solo;
-        queueSolidBlock(-266, floorY + 24, z, 22, 48, 14, {
+        const th = 38 + Math.round(seeded(phys * 17 + curPass * 31 + i * 13) * 20);
+        queueSolidBlock(-266, floorY + th * 0.5, z, 22, th, layerTokWz, {
           rgb: hasPrev ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
           alpha: hasPrev ? 0.58 : (hi ? 0.99 : 0.78),
           edgeRgb: hasPrev ? dimEdge : undefined,
@@ -1703,7 +2054,8 @@
       });
       queueCleanLabel(-190, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 18 });
       if (isP2) {
-        queueSolidBlock(-190, floorY + 66, 0, 22, 16, 32, {
+        const g1H = 14 + Math.round(seeded(phys * 23 + curPass * 41) * 8);
+        queueSolidBlock(-190, floorY + 58 + g1H * 0.5, 0, 22, g1H, 32, {
           rgb: prevMem ? PAL.accentB : (hasPrev ? dimRgb : PAL.accentB),
           accent: prevMem || !hasPrev,
           alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
@@ -1714,10 +2066,9 @@
             role: `将前排 Block AttnRes 跨块摘要与当前隐状态做双路 tanh 门控融合，调制送入 Q/K/V 的输入。`
           }
         });
-        queueCleanLabel(-190, floorY + 76, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -24, ox: -16, leader: true });
-        // Crisp 90-degree orthogonal routing from Block AttnRes left face -> front of RMSNorm 1 -> front face of Gate #1!
+        queueCleanLabel(-190, floorY + 60 + g1H, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -24, ox: -16, leader: true });
         queueArchLine(
-          [[-125, floorY + 10, 118], [-190, floorY + 10, 118], [-190, floorY + 10, 40], [-190, floorY + 66, 40], [-190, floorY + 66, 17]],
+          [[-125, floorY + 10, 118], [-190, floorY + 10, 118], [-190, floorY + 10, 40], [-190, floorY + 58 + g1H * 0.5, 40], [-190, floorY + 58 + g1H * 0.5, 17]],
           { rgb: prevMem ? PAL.accentB : (hasPrev ? PAL.hairline : PAL.accentB), alpha: (hasPrev && !prevMem) ? 0.22 : 0.88, width: 1.5, dashed: true, arrow: true, depthBias: -10 }
         );
       }
@@ -1725,32 +2076,36 @@
         rgb: prevAttn ? PAL.accentA : (hasPrev ? PAL.hairline : PAL.accentA), alpha: (hasPrev && !prevAttn) ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev || prevAttn
       });
 
-      // ── 3. Main Sublayer ①: GQA Attention (x = -88, spans -134..-42, wz = 76) ─
+      // ── 3. Main Sublayer ①: GQA Attention (live animated GQA head ribs + Full-Attn highlight!) ─
       const attnDim = hasPrev && !prevAttn;
       const attnLift = prevAttn ? 4 : 0;
-      const attnBaseRgb = attnDim ? dimRgb : (prevAttn ? PAL.accentA : PAL.accentALt);
-      const attnEdgeRgb = attnDim ? dimEdge : (prevAttn ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
+      const attnBaseRgb = attnDim ? dimRgb : (prevAttn ? PAL.accentA : (isFull ? mixRgb(PAL.accentA, PAL.accentALt, 0.45) : PAL.accentALt));
+      const attnEdgeRgb = attnDim ? dimEdge : (prevAttn || isFull ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
       const attnMeta = {
         type: "goto", scene: "multihead",
-        title: `① GQA Attention（L${phys}）`,
+        title: `① GQA Attention（L${phys} · ${isFull ? "Full 1M" : "SWA-1024"}）`,
         shape: `[B, ${range.sIn}, 2304] → 24Q:8KV (<i>d</i><sub>h</sub>=128) → [B, ${range.sIn}, 2304]`,
-        role: `本层前半段：先过 Short-Conv，再与历史 KV Cache 做 ${isFull ? "Full Attn (1M)" : "SWA-1024"} 因果注意力交换上下文。`
+        role: `本层前半段：先过 Short-Conv，再与历史 KV Cache 做 ${isFull ? "Full Attn (1M) 全局注意力" : "SWA-1024 局部窗口注意力"} 交换上下文。`
       };
       queueSolidBlock(-88, floorY + 30 + attnLift, 0, 92, 60, 76, {
         rgb: attnBaseRgb,
-        accent: prevAttn,
+        accent: prevAttn || isFull,
         alpha: attnDim ? 0.58 : 0.99,
         edgeRgb: attnEdgeRgb,
-        edgeAlpha: attnDim ? 0.34 : 0.95,
-        lw: prevAttn ? 1.55 : 1.15,
+        edgeAlpha: attnDim ? 0.34 : 0.96,
+        lw: (prevAttn || isFull) ? 1.5 : 1.15,
         shadowY: floorY,
         hitMeta: attnMeta
       });
-      // Sculpted 4 mini head-group ribs on top of Attention block
+      // 4 live animated GQA head-group ribs reflecting current layer (phys, pass) & SWA vs Full!
+      const domGroup = (phys + curPass) % 4;
       for (let g = 0; g < 4; g++) {
         const gz = -24 + g * 16;
-        queueSolidBlock(-88, floorY + 65 + attnLift, gz, 68, 10, 11, {
-          rgb: attnDim ? dimRgb : (g === 1 ? PAL.accentB : PAL.accentA),
+        const targetH = (isFull ? 16 : 9) + seeded(phys * 31 + curPass * 53 + g * 17) * (isFull ? 14 : 11);
+        state.layerAttnH[g] += (targetH - state.layerAttnH[g]) * spring;
+        const rh = state.layerAttnH[g];
+        queueSolidBlock(-88, floorY + 60 + rh * 0.5 + attnLift, gz, isFull ? 76 : 64, rh, 11, {
+          rgb: attnDim ? dimRgb : (g === domGroup ? PAL.accentB : PAL.accentA),
           accent: !attnDim,
           alpha: attnDim ? 0.56 : 0.99,
           edgeRgb: attnDim ? dimEdge : undefined,
@@ -1758,42 +2113,49 @@
           hitMeta: attnMeta
         });
       }
-      queueCleanLabel(-88, floorY + 86 + attnLift, 0, "① GQA Attention", {
-        sub: `24Q:8KV · ${isFull ? "Full 1M" : "SWA-1024"}`,
+      queueCleanLabel(-88, floorY + 92 + attnLift, 0, "① GQA Attention", {
+        sub: `24Q:8KV · ${isFull ? "Full 1M ★" : "SWA-1024"}`,
         bold: !attnDim, rgb: attnDim ? PAL.mutedInk : PAL.accentA, oy: -12
       });
 
-      // Rear KV + Conv Cache block tied directly to Attention back face (z = -38 -> -106)
+      // Rear KV + Conv Cache: 6-Layer Stacked Rack showing live per-layer write progress (L{blockStartL}..L{blockStartL+5})!
       const memDim = hasPrev && !prevMem;
       const memLift = prevMem ? 4 : 0;
-      queueSolidBlock(-88, floorY + 25 + memLift, -118, 74, 50, 24, {
-        rgb: memDim ? dimRgb : (prevMem ? PAL.accentA : PAL.stone),
-        accent: prevMem,
-        alpha: memDim ? 0.56 : 0.99,
-        edgeRgb: memDim ? dimEdge : (prevMem ? mixRgb(PAL.accentA, PAL.ink, 0.32) : PAL.hairline),
-        edgeAlpha: memDim ? 0.32 : 0.90,
-        lw: prevMem ? 1.45 : 0.95,
-        seams: 3,
-        shadowY: floorY,
-        hitMeta: {
-          type: "goto", scene: "spacetime",
-          title: `KV + Conv Cache（L${phys} · Pass ${Math.max(1, step.pass)}）`,
-          shape: `K/V 各 [B, 8, T=${range.tTotal}, 128] + conv_state`,
-          role: `持久保存本层当前轮次全部历史 token 的 K/V 与因果短卷积状态，供 GQA Attention 读取。`
-        }
+      const kvPassColor = isP2 ? PAL.accentB : PAL.accentA;
+      for (let s = 0; s < 6; s++) {
+        const ly = floorY + 4 + s * 9 + memLift;
+        const isCurSlot = s === posInBlock;
+        const isDoneSlot = s < posInBlock;
+        const slotRgb = memDim ? dimRgb
+          : (prevMem ? PAL.accentA : (isCurSlot ? kvPassColor : (isDoneSlot ? PAL.stone : PAL.ceramic)));
+        queueSolidBlock(-88, ly, -118, isCurSlot ? 78 : 74, 7, isCurSlot ? 28 : 24, {
+          rgb: slotRgb,
+          accent: prevMem || (!memDim && isCurSlot),
+          alpha: memDim ? 0.54 : (isCurSlot || prevMem ? 0.99 : isDoneSlot ? 0.88 : 0.65),
+          edgeRgb: memDim ? dimEdge : (isCurSlot ? mixRgb(kvPassColor, PAL.ink, 0.32) : PAL.hairline),
+          edgeAlpha: memDim ? 0.30 : (isCurSlot ? 0.98 : 0.72),
+          lw: isCurSlot || prevMem ? 1.35 : 0.75,
+          shadowY: s === 0 ? floorY : undefined,
+          hitMeta: {
+            type: "goto", scene: "spacetime",
+            title: `KV + Conv Cache · L${blockStartL + s}（Pass ${curPass}${isCurSlot ? " · 正在写入" : isDoneSlot ? " · 已写入" : " · 待写入"}）`,
+            shape: `单层 K/V 各 [B, 8, T=${range.tTotal}, 128] + conv_state`,
+            role: `持久保存 L${blockStartL + s} 在第 ${curPass} 轮的历史 K/V 与短卷积状态，供 GQA Attention 读取。`
+          }
+        });
+      }
+      const kvWriteY = floorY + 4 + posInBlock * 9 + memLift;
+      queueArchLine([[-88, mainY, -38], [-88, mainY, -72], [-88, kvWriteY, -72], [-88, kvWriteY, -104]], {
+        rgb: memDim ? PAL.hairline : kvPassColor, alpha: memDim ? 0.20 : 0.92, width: isFull ? 2.2 : 1.8, dashed: true, pulse: !memDim, speed: 0.42
       });
-      queueArchLine([[-88, mainY, -38], [-88, mainY, -106]], {
-        rgb: memDim ? PAL.hairline : PAL.accentA, alpha: memDim ? 0.20 : 0.88, width: 1.8, dashed: true, pulse: !memDim
-      });
-      queueCleanLabel(-88, floorY + 54 + memLift, -118, `KV + Conv Cache`, {
-        sub: `T=${range.tTotal}`, rgb: prevMem ? PAL.accentA : PAL.mutedInk, bold: prevMem, oy: -46, ox: 24, leader: true
+      queueCleanLabel(-88, floorY + 60 + memLift, -118, `KV + Conv · L${phys}`, {
+        sub: `Pass ${curPass} · T=${range.tTotal}`, rgb: prevMem ? PAL.accentA : PAL.mutedInk, bold: prevMem, oy: -46, ox: 24, leader: true
       });
 
       // ── 4. Residual Add #1 (x = 0, spans -11..+11) + Planar z=0 Skip Arc #1 ──
       queueArchLine([[-42, mainY, 0], [-12, mainY, 0]], {
-        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev
       });
-      // Skip Arc #1: taps cleanly off main wire at x=-226 (z=0), arches overhead, lands squarely on top of + #1 (0, floorY+40, 0)!
       queueArchLine(
         [[-226, mainY, 0], [-226, floorY + 108, 0], [0, floorY + 108, 0], [0, floorY + 40, 0]],
         { rgb: hasPrev ? PAL.hairline : PAL.mutedInk, alpha: hasPrev ? 0.20 : 0.82, width: 1.6, arrow: true, depthBias: -10 }
@@ -1834,7 +2196,8 @@
       });
       queueCleanLabel(54, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 14 });
       if (isP2) {
-        queueSolidBlock(54, floorY + 66, 0, 22, 16, 32, {
+        const g2H = 14 + Math.round(seeded(phys * 29 + curPass * 47 + 7) * 8);
+        queueSolidBlock(54, floorY + 58 + g2H * 0.5, 0, 22, g2H, 32, {
           rgb: prevMem ? PAL.accentB : (hasPrev ? dimRgb : PAL.accentB),
           accent: prevMem || !hasPrev,
           alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
@@ -1845,10 +2208,9 @@
             role: `将 Block AttnRes 摘要门控注入 MoE 输入，使同一物理层在不同循环轮次激活不同专家组合。`
           }
         });
-        queueCleanLabel(54, floorY + 76, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -40, ox: -24, leader: true });
-        // Crisp 90-degree orthogonal routing from Block AttnRes back face -> front of RMSNorm 2 -> front face of Gate #2!
+        queueCleanLabel(54, floorY + 60 + g2H, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -40, ox: -24, leader: true });
         queueArchLine(
-          [[54, floorY + 10, 105], [54, floorY + 10, 40], [54, floorY + 66, 40], [54, floorY + 66, 17]],
+          [[54, floorY + 10, 105], [54, floorY + 10, 40], [54, floorY + 58 + g2H * 0.5, 40], [54, floorY + 58 + g2H * 0.5, 17]],
           { rgb: prevMem ? PAL.accentB : (hasPrev ? PAL.hairline : PAL.accentB), alpha: (hasPrev && !prevMem) ? 0.22 : 0.88, width: 1.5, dashed: true, arrow: true, depthBias: -10 }
         );
       }
@@ -1856,16 +2218,24 @@
         rgb: prevMoe ? PAL.accentA : (hasPrev ? PAL.hairline : PAL.accentA), alpha: (hasPrev && !prevMoe) ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev || prevMoe
       });
 
-      // ── 6. Main Sublayer ②: MoE (x = +134, spans +88..+180, wz = 76) ─────────
+      // ── 6. Main Sublayer ②: MoE (8 live animated Top-8 expert pillars from getTop8Experts!) ─
       const moeDim = hasPrev && !prevMoe;
       const moeLift = prevMoe ? 4 : 0;
-      const moeBaseRgb = moeDim ? dimRgb : (prevMoe ? PAL.accentA : PAL.accentALt);
+      const moeBaseRgb = moeDim ? dimRgb : (prevMoe ? PAL.accentA : (isFp8 ? PAL.stone : PAL.accentALt));
       const moeEdgeRgb = moeDim ? dimEdge : (prevMoe ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
+      const refTok = (state.focusToken >= 0 && state.focusToken < tokens.length) ? state.focusToken : range.end;
+      const liveTop8 = getTop8Experts(state.scenario, refTok, phys, curPass);
+      // Detect which of these Top-8 experts are shared by other active tokens in the batch!
+      const sharedIds = new Set();
+      for (let ti = range.start; ti <= range.end; ti++) {
+        if (ti === refTok) continue;
+        getTop8Experts(state.scenario, ti, phys, curPass).forEach(x => sharedIds.add(x.id));
+      }
       const moeMeta = {
         type: "goto", scene: "moe",
-        title: `② MoE（L${phys} · ${isFp8 ? "MXFP8" : "NVFP4"}）`,
+        title: `② MoE（L${phys} · Pass ${curPass} · ${isFp8 ? "MXFP8" : "NVFP4"}）`,
         shape: `[B, ${range.sIn}, 2304] → Top-8 / 128 专家 → [B, ${range.sIn}, 2304]`,
-        role: `本层后半段：逐位置经 BF16 Router 从 128 个专家里挑出权重最高的 8 个计算并加权求和。`
+        role: `本层后半段：t${refTok} 激活 Exp #${liveTop8.slice(0, 4).map(x => x.id).join(", #")} 等 8 个专家并加权求和。`
       };
       queueSolidBlock(134, floorY + 30 + moeLift, 0, 92, 60, 76, {
         rgb: moeBaseRgb,
@@ -1877,32 +2247,37 @@
         shadowY: floorY,
         hitMeta: moeMeta
       });
-      // Sculpted 4×2 miniature Top-8 expert pillars on top of MoE block
-      const miniH = [18, 12, 22, 14, 15, 24, 11, 17];
       for (let e = 0; e < 8; e++) {
+        const exp = liveTop8[e];
         const mx = 110 + (e % 4) * 16;
         const mz = e < 4 ? -14 : 14;
-        const mh = miniH[e];
-        const isShared = e === 2 || e === 5;
+        const targetH = 10 + Math.min(26, exp.w * 125);
+        state.layerMoeH[e] += (targetH - state.layerMoeH[e]) * spring;
+        const mh = state.layerMoeH[e];
+        const isShared = sharedIds.has(exp.id);
         queueSolidBlock(mx, floorY + 60 + mh * 0.5 + moeLift, mz, 11, mh, 14, {
           rgb: moeDim ? dimRgb : (isShared ? PAL.accentB : PAL.accentA),
           accent: !moeDim,
           alpha: moeDim ? 0.56 : 0.99,
           edgeRgb: moeDim ? dimEdge : undefined,
           edgeAlpha: moeDim ? 0.32 : 0.88,
-          hitMeta: moeMeta
+          hitMeta: {
+            type: "goto", scene: "moe",
+            title: `② MoE · Expert #${exp.id}（${Math.round(exp.w * 100)}%）`,
+            shape: `L${phys} · Pass ${curPass} · ${isFp8 ? "MXFP8" : "NVFP4"}`,
+            role: `当前步 Top-8 激活专家之一${isShared ? "（多 token 共同命中）" : ""}；点击进入 128 专家完整视图。`
+          }
         });
       }
-      queueCleanLabel(134, floorY + 94 + moeLift, 0, "② MoE", {
+      queueCleanLabel(134, floorY + 96 + moeLift, 0, "② MoE", {
         sub: `Top-8/128 · ${isFp8 ? "MXFP8" : "NVFP4"}`,
         bold: !moeDim, rgb: moeDim ? PAL.mutedInk : PAL.accentA, oy: -12
       });
 
       // ── 7. Residual Add #2 (x = +214, spans +203..+225) + Planar z=0 Skip Arc #2 ─
       queueArchLine([[180, mainY, 0], [202, mainY, 0]], {
-        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true
+        rgb: hasPrev ? PAL.hairline : PAL.accentA, alpha: hasPrev ? 0.22 : 0.88, width: 1.8, arrow: true, pulse: !hasPrev
       });
-      // Skip Arc #2: taps cleanly off main wire at x=+26 (z=0), arches overhead, lands squarely on top of + #2 (214, floorY+40, 0)!
       queueArchLine(
         [[26, mainY, 0], [26, floorY + 108, 0], [214, floorY + 108, 0], [214, floorY + 40, 0]],
         { rgb: hasPrev ? PAL.hairline : PAL.mutedInk, alpha: hasPrev ? 0.20 : 0.82, width: 1.6, arrow: true, depthBias: -10 }
@@ -1930,7 +2305,8 @@
         const inB = i >= range.start && i <= range.end;
         const solo = state.focusToken === -1 || state.focusToken === i;
         const hi = inB && solo;
-        queueSolidBlock(266, floorY + 24, z, 22, 48, 14, {
+        const th = 38 + Math.round(seeded((phys + 1) * 17 + curPass * 31 + i * 13) * 20);
+        queueSolidBlock(266, floorY + th * 0.5, z, 22, th, layerTokWz, {
           rgb: hasPrev ? dimRgb : (hi ? PAL.accentA : PAL.ceramic),
           alpha: hasPrev ? 0.58 : (hi ? 0.99 : 0.78),
           edgeRgb: hasPrev ? dimEdge : undefined,
@@ -1947,30 +2323,42 @@
       }
       queueCleanLabel(266, floorY - 4, zSpan * 0.5 + 22, "X'", { sub: `→ ${phys < 23 ? "L" + (phys + 1) : "LM Head"}`, bold: !hasPrev, rgb: hasPrev ? PAL.mutedInk : PAL.ink, oy: 12 });
 
-      // ── 8. Front Bay (z = +118): Block AttnRes Accumulation Strip (x = -125..+165) ─
-      queueSolidBlock(20, floorY + 10 + memLift, 118, 290, 20, 26, {
-        rgb: memDim ? dimRgb : (prevMem ? PAL.accentB : PAL.accentBLt),
-        accent: prevMem,
-        alpha: memDim ? 0.56 : 0.99,
-        edgeRgb: memDim ? dimEdge : PAL.accentB,
-        edgeAlpha: memDim ? 0.32 : 0.92,
-        lw: prevMem ? 1.45 : 1.0,
-        shadowY: floorY,
-        hitMeta: {
-          type: "goto", scene: "spacetime",
-          title: `Block AttnRes（本块残差累加）`,
-          shape: `[B, ${range.sIn}, 2304]（每 6 层形成 1 块摘要）`,
-          role: `把本层 L${phys} 产生的残差 <i>f</i><sub>${phys}</sub>(<i>h</i><sub>${phys}</sub>) 累加进当前 6 层块的摘要，供后续层及 Pass ≥ 2 门控读取。`
-        }
-      });
-      // Orthogonal floor taps from visible front-bottom edge of + #1 & + #2 directly into Block AttnRes back/right faces!
-      queueArchLine([[0, floorY + 17, 11], [0, floorY + 8, 11], [0, floorY + 8, 105]], {
-        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.82, width: 1.5, dashed: true, arrow: true
+      // ── 8. Front Bay (z = +118): Live 6-Slot Block AttnRes Intra-Block Accumulator! ─
+      // Shows exact progressive accumulation across the 6 layers of the current block (1/6 → 6/6)!
+      const slotX = (s) => -105 + s * 50; // spans -126..+166 cleanly across front bay!
+      for (let s = 0; s < 6; s++) {
+        const sx = slotX(s);
+        const lId = blockStartL + s;
+        const isCurS = s === posInBlock;
+        const isDoneS = s < posInBlock;
+        const sh = isCurS ? 26 : (isDoneS ? 16 : 6);
+        const sRgb = memDim ? dimRgb
+          : (prevMem ? PAL.accentB : (isCurS ? PAL.accentB : (isDoneS ? PAL.accentBLt : PAL.ceramic)));
+        queueSolidBlock(sx, floorY + sh * 0.5 + memLift, 118, 42, sh, 26, {
+          rgb: sRgb,
+          accent: prevMem || (!memDim && isCurS),
+          alpha: memDim ? 0.56 : (isCurS || prevMem ? 0.99 : isDoneS ? 0.94 : 0.65),
+          edgeRgb: memDim ? dimEdge : (isCurS || prevMem ? mixRgb(PAL.accentB, PAL.ink, 0.30) : (isDoneS ? PAL.accentB : PAL.hairline)),
+          edgeAlpha: memDim ? 0.32 : (isCurS ? 0.98 : 0.80),
+          lw: isCurS || prevMem ? 1.45 : 0.85,
+          shadowY: floorY,
+          hitMeta: {
+            type: "goto", scene: "spacetime",
+            title: `Block AttnRes · B${curBlockIdx} 槽 ${s + 1}/6（L${lId}${isCurS ? " · 本层累加中" : isDoneS ? " · 已累加" : " · 待到达"}）`,
+            shape: `[B, ${range.sIn}, 2304]（6 层求和 → B${curBlockIdx}）`,
+            role: `把 L${lId} 产生的残差 <i>f</i><sub>${lId}</sub>(<i>h</i><sub>${lId}</sub>) 累加进当前 6 层块摘要 B${curBlockIdx}，满 6 层后供后续块跨层读取。`
+          }
+        });
+      }
+      // Orthogonal floor taps from + #1 & + #2 routing directly into the ACTIVE slot of Block AttnRes!
+      const actSlotX = slotX(posInBlock);
+      queueArchLine([[0, floorY + 17, 11], [0, floorY + 8, 11], [0, floorY + 8, 96], [actSlotX, floorY + 8, 96], [actSlotX, floorY + 8, 105]], {
+        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.85, width: 1.5, dashed: true, arrow: true, pulse: !memDim
       });
       queueArchLine([[214, floorY + 17, 11], [214, floorY + 8, 11], [214, floorY + 8, 118], [166, floorY + 8, 118]], {
-        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.82, width: 1.5, dashed: true, arrow: true
+        rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.85, width: 1.5, dashed: true, arrow: true, pulse: !memDim
       });
-      queueCleanLabel(20, floorY - 4, 146, `Block AttnRes (b += f(h))`, {
+      queueCleanLabel(20, floorY - 4, 146, `Block AttnRes · B${curBlockIdx} (${posInBlock + 1}/6 累加)`, {
         rgb: prevMem ? PAL.accentB : PAL.mutedInk, bold: prevMem, oy: 12
       });
     }
@@ -1978,9 +2366,11 @@
     // =========================================================================
     // 4C. Scene 03 (Level 3): RMSNorm Internals (Input x → x² & RMS → x̂ → γ⊙x̂)
     // =========================================================================
-    function buildSceneRMSNorm(timeline, step, tokens, range) {
+    function buildSceneRMSNorm(timeline, step, tokens, range, dt) {
       const floorY = -92;
       const phys = step.phys !== null ? step.phys : 9;
+      const curPass = step.section === "core" ? step.pass : 1;
+      const spring = Math.min(1, (dt || 0.016) * 10);
       const focusT = (state.focusToken >= 0 && state.focusToken < tokens.length) ? state.focusToken : range.end;
       const focusTok = tokens[focusT];
       const slot = state.rmsSlot; // "attn" or "moe"
@@ -1995,12 +2385,12 @@
       ];
       queueTableFloor(floorY, 315, 165, 40, bays);
 
-      // 8 deterministic representative channels across d = 2304 (with realistic spikes & signed values)
+      // 8 deterministic representative channels across d = 2304 (evolves cleanly across phys & pass!)
       const chIds = [0, 128, 384, 768, 1152, 1536, 1920, 2303];
       const basePattern = [1.85, -0.58, 3.12, 0.88, -2.64, 0.62, 1.44, -1.16];
-      const slotSalt = (slot === "moe" ? 41 : 17) + phys * 13 + focusT * 29;
+      const slotSalt = (slot === "moe" ? 41 : 17) + phys * 13 + curPass * 37 + focusT * 29;
       const xVals = basePattern.map((v, i) => {
-        const jitter = 0.82 + seeded(slotSalt + i * 19) * 0.36;
+        const jitter = 0.65 + seeded(slotSalt + i * 19) * 0.72;
         return +(v * jitter * scale).toFixed(2);
       });
       const sqVals = xVals.map(v => v * v);
@@ -2013,11 +2403,13 @@
       const chZ = (i) => -98 + i * 28;
       const pxPerUnit = 19; // Shared exact vertical scale for Input x & Normalized x̂ (proves 3× scale-invariance visually!)
 
-      // ── STAGE 1 (x = -244): Raw Input Vector x (jagged spikes at 1× / 3×!) ───
+      // ── STAGE 1 (x = -244): Raw Input Vector x (smooth spring on step / 3× spike!) ───
       for (let i = 0; i < 8; i++) {
         const z = chZ(i);
         const v = xVals[i];
-        const h = Math.min(114, Math.max(8, Math.abs(v) * pxPerUnit));
+        const targetH = Math.min(114, Math.max(8, Math.abs(v) * pxPerUnit));
+        state.rmsAnimX[i] += (targetH - state.rmsAnimX[i]) * spring;
+        const h = state.rmsAnimX[i];
         const isPos = v >= 0;
         queueSolidBlock(-244, floorY + h * 0.5, z, 26, h, 18, {
           rgb: isPos ? PAL.accentA : PAL.stone,
@@ -2031,7 +2423,6 @@
             role: `当前通道值 x = ${v > 0 ? "+" : ""}${v.toFixed(2)}（${scale}× 幅度），直接送入平方均值与归一化分支。`
           }
         });
-        // Short feed into Stage 2 (x²)
         queueArchLine([[-229, floorY + 10, z], [-145, floorY + 10, z]], {
           rgb: PAL.accentA, alpha: 0.45, width: 1.1, arrow: true
         });
@@ -2057,14 +2448,15 @@
             role: `x² = ${sq.toFixed(2)}（全部非负）；RMSNorm 不减均值 μ，直接对 2304 个通道平方求平均。`
           }
         });
-        // Funnel lines from each x_i² into the central RMS(x) scalar block
         queueArchLine([[-117, floorY + Math.min(20, h * 0.6), z], [-84, floorY + 16, 0]], {
           rgb: PAL.accentB, alpha: 0.52, width: 1.05
         });
       }
 
       // Focused Per-Token Scalar RMS(x) pillar at x = -66, z = 0
-      const rmsH = Math.min(108, Math.max(18, rms * 16));
+      const targetRmsH = Math.min(108, Math.max(18, rms * 16));
+      state.rmsAnimScalar += (targetRmsH - state.rmsAnimScalar) * spring;
+      const rmsH = state.rmsAnimScalar;
       queueSolidBlock(-66, floorY + rmsH * 0.5, 0, 32, rmsH, 32, {
         rgb: PAL.accentB,
         accent: true,
@@ -2078,7 +2470,6 @@
           role: `√(mean(x²) + ε) = ${rms.toFixed(2)}；仅由当前 token 自身 2304 维算出，不与其他 token 混合。`
         }
       });
-      // Neighboring per-token RMS scalar pills (proving [B, S, 1] is strictly per-token!)
       const otherToks = [];
       for (let t = range.start; t <= range.end; t++) if (t !== focusT) otherToks.push(t);
       otherToks.slice(0, 4).forEach((tIdx, k) => {
@@ -2102,7 +2493,6 @@
         sub: `[B, ${range.sIn}, 1] · 无均值减法`, rgb: PAL.accentB, bold: true, oy: -28
       });
 
-      // Overhead bypass rail carrying raw x to Stage 3, plus Terracotta divisor arrow from RMS(x)
       queueArchLine([[-244, floorY + 116, -98], [-244, floorY + 124, -98], [54, floorY + 124, -98], [54, floorY + 54, -98]], {
         rgb: PAL.accentA, alpha: 0.65, width: 1.5, dashed: true, arrow: true
       });
@@ -2111,14 +2501,15 @@
       });
 
       // ── STAGE 3 (x = +54): Normalized Vector x̂ = x / RMS(x) (INVARIANT!) ─────
-      // Crisp horizontal Unit-RMS (1.0) reference wire across all 8 bars!
       queueArchLine([[70, floorY + pxPerUnit, -108], [70, floorY + pxPerUnit, 108]], {
         rgb: PAL.accentB, alpha: 0.85, width: 1.4, dashed: true, depthBias: -15
       });
       for (let i = 0; i < 8; i++) {
         const z = chZ(i);
         const nv = normVals[i];
-        const h = Math.min(96, Math.max(8, Math.abs(nv) * pxPerUnit));
+        const targetNH = Math.min(96, Math.max(8, Math.abs(nv) * pxPerUnit));
+        state.rmsAnimN[i] += (targetNH - state.rmsAnimN[i]) * spring;
+        const h = state.rmsAnimN[i];
         const isPos = nv >= 0;
         queueSolidBlock(54, floorY + h * 0.5, z, 26, h, 18, {
           rgb: isPos ? PAL.accentA : PAL.stone,
@@ -2162,7 +2553,9 @@
         });
 
         const yv = yVals[i];
-        const yh = Math.min(104, Math.max(8, Math.abs(yv) * pxPerUnit));
+        const targetYH = Math.min(104, Math.max(8, Math.abs(yv) * pxPerUnit));
+        state.rmsAnimY[i] += (targetYH - state.rmsAnimY[i]) * spring;
+        const yh = state.rmsAnimY[i];
         const isPos = yv >= 0;
         queueSolidBlock(242, floorY + yh * 0.5, z, 26, yh, 18, {
           rgb: isPos ? PAL.accentA : PAL.stone,
@@ -2184,10 +2577,13 @@
     // =========================================================================
     // 5. Scene 02: Multi-Head GQA Assembly Line (24Q = 8×3 Paired with 8 KV + 3D Attention Matrix)
     // =========================================================================
-    function buildSceneMultiHead(timeline, step, tokens, range) {
+    function buildSceneMultiHead(timeline, step, tokens, range, dt) {
       const floorY = -98;
       queueTableFloor(floorY, 310, 180, 40);
 
+      const phys = step.phys !== null ? step.phys : 9;
+      const curPass = step.section === "core" ? step.pass : 1;
+      const spring = Math.min(1, (dt || 0.016) * 10);
       const isFull = state.forceFullAttn !== null ? state.forceFullAttn : (step.kind === "layer" ? step.isFull : false);
       const nTok = tokens.length;
       const queryPos = (state.focusToken >= 0 && state.focusToken < nTok) ? state.focusToken : range.end;
@@ -2195,11 +2591,12 @@
       const tokZ = (i) => nTok === 1 ? 0 : -zSpan * 0.5 + (i / (nTok - 1)) * zSpan;
 
       // ── 1. Left (x = -246): Input Tensor X [S × 2304] + Short-Conv Bracket ──
+      const tokWz = Math.min(17, Math.max(8, Math.floor((zSpan / Math.max(1, nTok - 1)) * 0.72)));
       for (let i = 0; i < nTok; i++) {
         const z = tokZ(i);
         const inB = i >= range.start && i <= range.end;
         const hi = i === queryPos;
-        queueSolidBlock(-246, floorY + 28, z, 34, 56, 17, {
+        queueSolidBlock(-246, floorY + 28, z, 34, 56, tokWz, {
           rgb: hi ? PAL.accentA : (inB ? PAL.accentALt : PAL.ceramic),
           accent: hi,
           shadowY: floorY,
@@ -2265,9 +2662,10 @@
       });
 
       // ── 3. Center-Right (x = +62): 3D Raised Causal Attention Score Matrix [S × T] ──
-      const cell = 24;
-      const gap = 4;
-      const stepC = cell + gap;
+      // Dynamically sized so even 11 tokens (code + 2 outputs + 2 DSpark drafts) stay cleanly between GQA & Output Proj!
+      const stepC = Math.min(28, Math.floor(176 / Math.max(1, nTok)));
+      const gap = stepC >= 20 ? 4 : 2;
+      const cell = Math.max(10, stepC - gap);
       const scAttn = SCENARIOS[state.scenario].outputs[0].attn;
       for (let r = 0; r < nTok; r++) {
         for (let c = 0; c < nTok; c++) {
@@ -2290,8 +2688,13 @@
               }
             });
           } else {
-            const rawW = (scAttn[c] || 0.16) * (0.75 + seeded((state.focusGqaGroup + 2) * 19 + r * 7 + c * 13) * 0.5);
-            const h = active ? Math.max(10, Math.min(72, rawW * 135)) : 5;
+            const rawW = (scAttn[c] || 0.16) * (0.58 + seeded((state.focusGqaGroup + 2) * 19 + phys * 17 + curPass * 43 + r * 7 + c * 13) * 0.85);
+            const targetH = active ? Math.max(10, Math.min(74, rawW * 135)) : 5;
+            const cellIdx = r * 16 + c;
+            if (cellIdx < state.attnMatH.length) {
+              state.attnMatH[cellIdx] += (targetH - state.attnMatH[cellIdx]) * spring;
+            }
+            const h = cellIdx < state.attnMatH.length ? state.attnMatH[cellIdx] : targetH;
             const isCurRow = r === queryPos;
             queueSolidBlock(cx, floorY + h * 0.5, cz, cell, h, cell, {
               rgb: isSink ? PAL.accentB : (active ? (isCurRow ? PAL.accentA : PAL.accentALt) : PAL.stone),
@@ -2470,12 +2873,10 @@
       const floorY = -114;
       const K = state.K;
       const totalBlocks = 2 + 2 * K;
+      const kvRows = state.shareKV ? 4 : totalBlocks;
+      const kvLayers = state.shareKV ? 24 : (12 + 12 * K);
       const nTok = tokens.length;
 
-      // Two cleanly separated wings on the tabletop:
-      //   LEFT  WING (x = -266 .. -54, center -160): Persistent 48-Layer KV Cache Shelf
-      //   CENTER AISLE (x = 0): Shared B0..B7 Depth Axis Ruler + Active Row Bridge
-      //   RIGHT WING (x =  +54 .. +266, center +160): Ephemeral Per-Step Block Summary Shelf
       const wallW = 212;
       const wallH = 196;
       const leftCX = -162;
@@ -2487,14 +2888,16 @@
       ];
       queueTableFloor(floorY, 315, 118, 40, bays);
 
-      // Solid matte architectural backplates with etched block shelf seams (NO floating ghost cubes!)
+      // Solid matte architectural backplates with etched block shelf seams
       queueSolidBlock(leftCX, floorY + wallH * 0.5, -14, wallW, wallH, 8, {
-        rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: totalBlocks, shadowY: floorY, depthBias: 1500,
+        rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: kvRows, shadowY: floorY, depthBias: 1500,
         hitMeta: {
           type: "info",
-          title: `KV Cache 缓存墙（持久 · ${12 + 12 * K} 层）`,
-          shape: `[${12 + 12 * K}层, B, 8 KV头, T=${range.tTotal}, 128]`,
-          role: `跨 Decode 生成步持久保留全部历史 token 的 K/V；每一行对应 6 层块，各循环轮次严格隔离。`
+          title: state.shareKV ? `KV Cache 缓存墙（共享模式 · 24 层）` : `KV Cache 缓存墙（独立模式 · ${kvLayers} 层）`,
+          shape: `[${kvLayers}层, B, 8 KV头, T=${range.tTotal}, 128]`,
+          role: state.shareKV
+            ? `开启 loop_share_cache：Core 全部 ${K} 轮复用同一组 12 层 KV Cache（后轮覆写前轮），总 KV 显存锁定在 24 层。`
+            : `跨 Decode 生成步持久保留全部历史 token 的 K/V；每一行对应 6 层块，各循环轮次严格隔离。`
         }
       });
       queueSolidBlock(rightCX, floorY + wallH * 0.5, -14, wallW, wallH, 8, {
@@ -2511,67 +2914,90 @@
       const colX = (centerX, i) => nTok === 1 ? centerX : centerX - slotSpan * 0.5 + (i / (nTok - 1)) * slotSpan;
       const rowH = wallH / totalBlocks;
       const by = (b) => floorY + rowH * (b + 0.5);
+      const kvRowH = wallH / kvRows;
+      const kvy = (r) => floorY + kvRowH * (r + 0.5);
       const cellW = Math.min(26, Math.floor((slotSpan / Math.max(1, nTok)) * 0.72));
 
       const bLabels = ["B0 Pre"];
       for (let p = 1; p <= K; p++) bLabels.push(`B${1 + (p - 1) * 2} P${p}`, `B${2 + (p - 1) * 2} P${p}`);
       bLabels.push(`B${totalBlocks - 1} Coda`);
+      const kvLabels = state.shareKV
+        ? ["Pre L0–5", `Core L6–11 (P1..${K} 共享)`, `Core L12–17 (P1..${K} 共享)`, "Coda L18–23"]
+        : bLabels;
 
       const focusT = (state.focusToken >= 0 && state.focusToken < nTok) ? state.focusToken : range.end;
+      const curKvRow = !state.shareKV
+        ? step.blockIdx
+        : (step.section === "prelude" ? 0
+          : step.section === "core" ? (step.phys < 12 ? 1 : 2)
+          : step.section === "coda" ? 3
+          : step.section === "lmhead" ? 4 : -1);
 
+      // ── LEFT SHELF: Persistent KV Cache (kvRows = 4 if shareKV else totalBlocks) ──
+      for (let r = 0; r < kvRows; r++) {
+        const y = kvy(r);
+        const isCurR = curKvRow === r;
+        const isDoneR = curKvRow > r || step.section === "lmhead";
+
+        for (let t = 0; t < nTok; t++) {
+          const isPrior = t < range.start;
+          const isAct = t >= range.start && t <= range.end;
+          const lx = colX(leftCX, t);
+          const kvFilled = isPrior || (isAct && (isDoneR || isCurR));
+          if (kvFilled) {
+            const d = isCurR ? 18 : 11;
+            queueSolidBlock(lx, y, -10 + d * 0.5, cellW, Math.max(11, kvRowH - 8), d, {
+              rgb: isCurR ? PAL.accentA : PAL.stone,
+              accent: isCurR,
+              alpha: isCurR ? 0.96 : 0.85,
+              hitMeta: {
+                type: "info",
+                title: `KV Cache · ${kvLabels[r]} · t${t}「${tokens[t].text}」`,
+                shape: `单块 [6层, B, 8, 1, 128] · 全模型 [${kvLayers}层, B, 8, T=${range.tTotal}, 128]`,
+                role: state.shareKV && (r === 1 || r === 2)
+                  ? `共享 KV 槽位：Core 第 1~${K} 轮复用并覆写此处的 K/V，显存不再随循环数线性膨胀。`
+                  : `持久保存该位置在对应 6 层的历史 K/V 向量；同一深度的新 token 沿水平方向读取所有历史位置。`
+              }
+            });
+          }
+          if (isCurR && t === focusT && t > 0) {
+            queueArchLine([[colX(leftCX, 0), y, 12], [lx, y, 12]], {
+              rgb: PAL.accentA, alpha: 0.92, width: 2.0, arrow: true, pulse: true, speed: 0.36
+            });
+          }
+        }
+      }
+
+      // ── RIGHT SHELF & CENTER DEPTH RULER: Block AttnRes (always totalBlocks) ──
+      const rulerStride = totalBlocks >= 10 ? 3 : 2;
       for (let b = 0; b < totalBlocks; b++) {
         const y = by(b);
         const isCurB = step.blockIdx === b;
         const isDoneB = step.blockIdx > b || step.section === "lmhead";
+        const farFromCur = Math.abs(b - step.blockIdx) >= 2;
+        const showRuler = isCurB
+          || (b === 0 && farFromCur)
+          || (b === totalBlocks - 1 && farFromCur)
+          || (b >= 2 && b <= totalBlocks - 3 && b % rulerStride === 0 && farFromCur);
 
-        // Center Aisle Depth Ruler (shared by BOTH shelves!)
-        if (isCurB || b === 0 || b === totalBlocks - 1 || b % 2 === 1) {
+        if (showRuler) {
           queueCleanLabel(0, y, 0, bLabels[b], {
             rgb: isCurB ? PAL.ink : PAL.mutedInk, bold: isCurB, pill: isCurB
           });
         }
 
-        // Active Row Bridge across the center aisle linking Left KV <-> Right Block Summary
-        if (isCurB) {
-          queueArchLine([[leftCX + wallW * 0.5 + 4, y, 6], [rightCX - wallW * 0.5 - 4, y, 6]], {
+        if (isCurB && curKvRow >= 0 && curKvRow < kvRows) {
+          queueArchLine([[leftCX + wallW * 0.5 + 4, kvy(curKvRow), 6], [rightCX - wallW * 0.5 - 4, y, 6]], {
             rgb: PAL.ink, alpha: 0.55, width: 1.5, dashed: true, pulse: true, speed: 0.34
           });
         }
 
         for (let t = 0; t < nTok; t++) {
-          const isPrior = t < range.start;
           const isAct = t >= range.start && t <= range.end;
-
-          // ── LEFT SHELF: Persistent 48-Layer KV Cache (ONLY filled/active cells protrude!) ──
-          const lx = colX(leftCX, t);
-          const kvFilled = isPrior || (isAct && (isDoneB || isCurB));
-          if (kvFilled) {
-            const d = isCurB ? 18 : 11;
-            queueSolidBlock(lx, y, -10 + d * 0.5, cellW, Math.max(11, rowH - 7), d, {
-              rgb: isCurB ? PAL.accentA : PAL.stone,
-              accent: isCurB,
-              alpha: isCurB ? 0.96 : 0.85,
-              hitMeta: {
-                type: "info",
-                title: `KV Cache · ${bLabels[b]} · t${t}「${tokens[t].text}」`,
-                shape: `单块 [6层, B, 8, 1, 128] · 全模型 [${12 + 12 * K}层, B, 8, T=${range.tTotal}, 128]`,
-                role: `持久保存该位置在对应 6 层的历史 K/V 向量；同一深度的新 token 沿水平方向读取所有历史位置。`
-              }
-            });
-          }
-
-          // Horizontal Causal Attention Rail on the active Block row of Left KV Shelf!
-          if (isCurB && t === focusT && t > 0) {
-            queueArchLine([[colX(leftCX, 0), y, 12], [lx, y, 12]], {
-              rgb: PAL.accentA, alpha: 0.92, width: 2.0, arrow: true, pulse: true, speed: 0.36
-            });
-          }
-
-          // ── RIGHT SHELF: Ephemeral Block AttnRes Summaries (ONLY active batch columns & done/cur rows!) ──
           const rx = colX(rightCX, t);
           if (isAct && (isDoneB || isCurB)) {
             const d = isCurB ? 18 : 11;
-            queueSolidBlock(rx, y, -10 + d * 0.5, cellW, Math.max(11, rowH - 7), d, {
+            queueSolidBlock(rx, y, -10 + d * 0.5, cellW, Math.max(10, rowH - 7), d, {
               rgb: isCurB ? PAL.accentB : PAL.accentBLt,
               accent: isCurB,
               alpha: 0.96,
@@ -2584,7 +3010,6 @@
             });
           }
 
-          // Single clean vertical AttnRes depth arc on the focused active token column of Right Shelf!
           if (isCurB && isAct && t === focusT && b > 0) {
             queueArchLine([[rx, by(0), 12], [rx, (by(0) + y) * 0.5, 36], [rx, y, 12]], {
               rgb: PAL.accentB, alpha: 0.88, width: 1.8, curved: true, arrow: true, pulse: true, speed: 0.34
@@ -2593,19 +3018,24 @@
         }
       }
 
-      // Clean Token Axis Labels directly along the floor front of BOTH Left & Right Shelves
+      const tokStride = nTok <= 7 ? 1 : (nTok <= 9 ? 2 : 3);
       for (let t = 0; t < nTok; t++) {
+        const showTok = tokStride === 1
+          || t === focusT
+          || (t === 0 && Math.abs(t - focusT) >= 2)
+          || (t === nTok - 1 && Math.abs(t - focusT) >= 2)
+          || (t > 0 && t < nTok - 1 && t % tokStride === 0 && Math.abs(t - focusT) >= 2 && (nTok - 1 - t) >= 2);
+        if (!showTok) continue;
         const isAct = t >= range.start && t <= range.end;
         queueCleanLabel(colX(leftCX, t), floorY - 4, 28, `t${t}`, { rgb: PAL.ink, pill: false, oy: 10 });
         queueCleanLabel(colX(rightCX, t), floorY - 4, 28, `t${t}`, { rgb: isAct ? PAL.accentB : PAL.mutedInk, bold: isAct, pill: false, oy: 10 });
       }
 
-      // Two completely separated, non-overlapping Wing Titles
-      queueCleanLabel(leftCX, floorY + wallH + 22, -10, `KV Cache (${12 + 12 * K}L · Persistent)`, {
+      queueCleanLabel(leftCX, floorY + wallH + 22, -10, `KV Cache (${kvLayers}L · ${state.shareKV ? "Shared" : "Per-Pass"})`, {
         sub: `[B, 8, T=${range.tTotal}, 128]`, rgb: PAL.accentA, bold: true, oy: -12
       });
       queueCleanLabel(rightCX, floorY + wallH + 22, -10, `Block AttnRes (Per-Step)`, {
-        sub: `[N, B, ${range.sIn}, 2304]`, rgb: PAL.accentB, bold: true, oy: -12
+        sub: `[${totalBlocks}, B, ${range.sIn}, 2304]`, rgb: PAL.accentB, bold: true, oy: -12
       });
     }
 
@@ -2648,15 +3078,19 @@
       hitTargets = [];
 
       if (state.scene === "overview") buildSceneOverview(timeline, step, tokens, range);
-      else if (state.scene === "layer") buildSceneLayer(timeline, step, tokens, range);
-      else if (state.scene === "rmsnorm") buildSceneRMSNorm(timeline, step, tokens, range);
-      else if (state.scene === "multihead") buildSceneMultiHead(timeline, step, tokens, range);
+      else if (state.scene === "layer") buildSceneLayer(timeline, step, tokens, range, dt);
+      else if (state.scene === "rmsnorm") buildSceneRMSNorm(timeline, step, tokens, range, dt);
+      else if (state.scene === "multihead") buildSceneMultiHead(timeline, step, tokens, range, dt);
       else if (state.scene === "moe") buildSceneMoE(timeline, step, tokens, range, dt);
       else buildSceneSpaceTime(timeline, step, tokens, range);
 
       ctx.save();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = rgba(PAL.paper, 1);
+      // Soft museum-studio radial backdrop so matte ceramic blocks lift cleanly off the paper
+      const grad = ctx.createRadialGradient(viewW * 0.5, viewH * 0.42, 40, viewW * 0.5, viewH * 0.52, Math.max(viewW, viewH) * 0.72);
+      grad.addColorStop(0, rgba(PAL.isLight ? mixRgb(PAL.paper, [255, 255, 255], 0.55) : mixRgb(PAL.paper, [255, 255, 255], 0.045), 1));
+      grad.addColorStop(1, rgba(PAL.isLight ? mixRgb(PAL.paper, PAL.stone, 0.25) : PAL.paper, 1));
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, viewW, viewH);
 
       drawQueue.sort((a, b) => b.depth - a.depth);
@@ -2668,48 +3102,141 @@
       requestAnimationFrame(renderCanvasFrame);
     }
 
+    function executeHitAction(meta) {
+      if (!meta) return;
+      state.selectedHit = { ...meta, role: meta.role || meta.body };
+      state.lastInspKey = "";
+      if (meta.type === "goto" && meta.scene) {
+        if (meta.stepIdx !== undefined) {
+          state.playing = false;
+          state.stepIdx = meta.stepIdx;
+        }
+        if (meta.rmsSlot) state.rmsSlot = meta.rmsSlot;
+        hideTooltipNow();
+        switchScene(meta.scene);
+        return;
+      }
+      if (meta.type === "token") {
+        state.focusToken = state.focusToken === meta.id ? -1 : meta.id;
+        syncUI();
+        return;
+      }
+      if (meta.type === "gqa") {
+        state.focusGqaGroup = state.focusGqaGroup === meta.id ? -1 : meta.id;
+        syncUI();
+        return;
+      }
+      hideTooltipNow();
+      renderInspectorCard();
+    }
+
+    function hideTooltipNow() {
+      tooltip.style.display = "none";
+      state.hoveredHit = null;
+      state.lastTooltipKey = "";
+      wrap.style.cursor = state.dragging ? "grabbing" : "grab";
+      renderInspectorCard();
+    }
+
     function updateHoverTooltip() {
-      if (state.dragging || state.mouseX < 0) {
-        tooltip.style.display = "none"; state.hoveredHit = null; return;
+      if ((state.dragging && state.dragMoved) || state.mouseX < 0) {
+        if (tooltip.style.display !== "none" || state.hoveredHit) hideTooltipNow();
+        return;
       }
-      let best = null, bestDist = 9999;
-      for (let i = hitTargets.length - 1; i >= 0; i--) {
+      if (state.dragging) return;
+
+      // Exact front-to-back painter-order 2D polygon picking (smallest depth = visually topmost block wins!)
+      let best = null;
+      let bestDepth = Infinity;
+      for (let i = 0; i < hitTargets.length; i++) {
         const h = hitTargets[i];
-        const d = Math.hypot(state.mouseX - h.sx, state.mouseY - h.sy);
-        if (d <= h.r && d < bestDist) { bestDist = d; best = h; }
+        if (h.depth >= bestDepth) continue;
+        if (state.mouseX < h.minX - 1 || state.mouseX > h.maxX + 1 || state.mouseY < h.minY - 1 || state.mouseY > h.maxY + 1) continue;
+        if (h.polys && h.polys.some(q => pointInPoly(state.mouseX, state.mouseY, q))) {
+          bestDepth = h.depth;
+          best = h;
+        }
       }
-      state.hoveredHit = best;
+      // Gentle 7px fallback for razor-thin tiles (e.g. 3px flat mask squares)
+      if (!best) {
+        let bestDist = 7;
+        for (let i = 0; i < hitTargets.length; i++) {
+          const h = hitTargets[i];
+          const d = Math.hypot(state.mouseX - h.sx, state.mouseY - h.sy);
+          if (d <= bestDist) { bestDist = d; best = h; }
+        }
+      }
+
       if (best && best.meta) {
+        state.hoveredHit = best;
         const m = best.meta;
-        const shapeLine = m.shape ? `<div class="font-mono text-[var(--ui-fg)] bg-[var(--ui-content)] border border-[var(--ui-card-border)] rounded px-1.5 py-0.5 my-1 break-words"><span class="text-[var(--ui-muted)]">尺寸 </span>${m.shape}</div>` : "";
-        const roleText = m.role || m.body || "";
-        const clickHint = m.type === "goto" ? "点击进入视图" : m.type === "layer" ? "点击定位到此层" : m.type === "token" ? "点击聚焦此位置" : m.type === "gqa" ? "点击独显此头组" : "点击固定详情";
-        tooltip.style.display = "block";
-        tooltip.innerHTML = `
-          <div class="font-semibold text-[var(--ui-fg)]">${m.title}</div>
-          ${shapeLine}
-          <div class="text-[var(--ui-muted)] leading-snug">${roleText}</div>
-          <div class="text-[var(--ui-muted)] opacity-75 mt-1 pt-1 border-t border-[var(--ui-card-border)]">${clickHint}</div>
-        `;
-        tooltip.style.left = Math.min(viewW - 332, Math.max(12, state.mouseX + 14)) + "px";
-        tooltip.style.top = Math.min(viewH - 138, Math.max(12, state.mouseY - 12)) + "px";
+        const tipKey = `${state.scene}|${best.hitKey || m.title}`;
+        if (tipKey !== state.lastTooltipKey) {
+          state.lastTooltipKey = tipKey;
+          const shapeLine = m.shape ? `<div class="font-mono text-[var(--ui-fg)] bg-[var(--ui-subtle)] border border-[var(--ui-card-border)] rounded-md px-2 py-1 my-1.5 break-words"><span class="text-[var(--ui-muted)]">尺寸 </span>${m.shape}</div>` : "";
+          const roleText = m.role || m.body || "";
+          tooltip.innerHTML = `
+            <div class="font-semibold text-[var(--ui-fg)] leading-snug">${m.title}</div>
+            ${shapeLine}
+            <div class="text-[var(--ui-muted)] leading-relaxed">${roleText}</div>
+          `;
+          tooltip.style.display = "block";
+          const tipW = 296;
+          const tipH = Math.max(96, tooltip.offsetHeight || 132);
+          const isWidePlate = (best.maxX - best.minX) > 130;
+          const anchorRightX = isWidePlate ? (state.mouseX + 12) : (best.rx + 10);
+          const anchorLeftX = isWidePlate ? (state.mouseX - tipW - 12) : (best.lx - tipW - 10);
+          const preferRight = anchorRightX + tipW <= viewW - 10;
+          const tx = preferRight ? Math.max(12, anchorRightX) : Math.max(12, anchorLeftX);
+          const ty = Math.min(viewH - tipH - 12, Math.max(12, (isWidePlate ? state.mouseY : best.sy) - 24));
+          tooltip.style.left = Math.round(tx) + "px";
+          tooltip.style.top = Math.round(ty) + "px";
+        } else {
+          tooltip.style.display = "block";
+        }
         wrap.style.cursor = "pointer";
+        renderInspectorCard();
+      } else if (state.hoveredHit || tooltip.style.display !== "none") {
+        hideTooltipNow();
       } else {
-        tooltip.style.display = "none";
         wrap.style.cursor = state.dragging ? "grabbing" : "grab";
       }
     }
 
     function renderInspectorCard() {
+      const pinned = state.selectedHit;
+      const active = pinned || (state.hoveredHit && state.hoveredHit.meta ? state.hoveredHit.meta : null);
+      const key = (pinned ? "P:" : "H:") + (active ? `${active.title}|${active.shape || ""}|${active.type || ""}` : "NONE");
+      if (key === state.lastInspKey) return;
+      state.lastInspKey = key;
+
       const card = document.getElementById("inspector-card");
-      if (!state.selectedHit) {
-        card.className = "hidden";
+      const titleEl = document.getElementById("insp-title");
+      const tagEl = document.getElementById("insp-state-tag");
+      const closeBtn = document.getElementById("btn-close-insp");
+      const emptyEl = document.getElementById("insp-empty");
+      const contentEl = document.getElementById("insp-content");
+
+      if (!active) {
+        card.classList.remove("pinned");
+        titleEl.textContent = "3D 模块检视";
+        tagEl.textContent = "悬停预览";
+        tagEl.className = "tag text-xs";
+        closeBtn.classList.add("hidden");
+        emptyEl.classList.remove("hidden");
+        contentEl.classList.add("hidden");
         return;
       }
-      card.className = "panel p-3.5 space-y-2 border-[var(--ui-fg)]";
-      document.getElementById("insp-title").innerHTML = state.selectedHit.title;
-      document.getElementById("insp-shape").innerHTML = state.selectedHit.shape || "—";
-      document.getElementById("insp-role").innerHTML = state.selectedHit.role || state.selectedHit.body || "";
+
+      card.classList.toggle("pinned", !!pinned);
+      titleEl.innerHTML = active.title;
+      tagEl.textContent = pinned ? "已固定" : "实时预览";
+      tagEl.className = pinned ? "tag accent-b text-xs" : "tag accent-a text-xs";
+      closeBtn.classList.toggle("hidden", !pinned);
+      emptyEl.classList.add("hidden");
+      contentEl.classList.remove("hidden");
+      document.getElementById("insp-shape").innerHTML = active.shape || "—";
+      document.getElementById("insp-role").innerHTML = active.role || active.body || "";
     }
 
     // =========================================================================
@@ -2724,21 +3251,31 @@
       if (state.focusToken >= tokens.length) state.focusToken = -1;
       const range = getActiveTokenRange(tokens);
       const logicalTotal = 12 + 12 * K;
+      const kvLayers = state.shareKV ? 24 : logicalTotal;
+      const isP2 = step.section === "core" && step.pass >= 2;
 
       const activeB = (3.4 + (K - 1) * 1.0).toFixed(1);
-      document.getElementById("hdr-active").textContent = `24 层 · Core ${K}×（共 ${logicalTotal} 层前向）· 激活 ~${activeB}B / 26.4B`;
+      document.getElementById("hdr-active").textContent = `24 层 · Core ${K}×（${logicalTotal} 层前向）· 激活 ~${activeB}B / 26.4B${state.shareKV ? " · 共享 KV 24L" : ""}`;
+
       const scrubber = document.getElementById("step-scrubber");
-      scrubber.max = timeline.length - 1;
+      const maxS = timeline.length - 1;
+      scrubber.max = maxS;
       scrubber.value = state.stepIdx;
-      document.getElementById("step-label").textContent = `${state.stepIdx} / ${timeline.length - 1}`;
-      document.getElementById("btn-play").textContent = state.playing ? "暂停" : "播放";
+      const pct = maxS > 0 ? ((state.stepIdx / maxS) * 100).toFixed(1) : "0";
+      const fillCol = isP2 ? rgba(PAL.accentB, 0.92) : rgba(PAL.accentA, 0.92);
+      scrubber.style.background = `linear-gradient(to right, ${fillCol} 0%, ${fillCol} ${pct}%, var(--ui-border) ${pct}%, var(--ui-border) 100%)`;
+
+      document.getElementById("step-label").textContent = `${state.stepIdx} / ${maxS}`;
+      document.getElementById("btn-play").innerHTML = state.playing
+        ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><rect x="1.5" y="1.5" width="2.5" height="7" rx="0.6"/><rect x="6" y="1.5" width="2.5" height="7" rx="0.6"/></svg><span>暂停</span>`
+        : `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2.2 1.6L8.4 5L2.2 8.4V1.6Z"/></svg><span>播放</span>`;
 
       const qJumps = [{ lbl: "Pre", s: 1, act: step.section === "prelude" }];
       for (let p = 1; p <= K; p++) qJumps.push({ lbl: `P${p}`, s: 7 + (p - 1) * 12, act: step.section === "core" && step.pass === p });
       qJumps.push({ lbl: "Coda", s: 7 + 12 * K, act: step.section === "coda" });
-      qJumps.push({ lbl: "Out", s: timeline.length - 1, act: step.section === "lmhead" });
+      qJumps.push({ lbl: "Out", s: maxS, act: step.section === "lmhead" });
       document.getElementById("quick-jumps").innerHTML = qJumps.map(j => `
-        <button class="ctrl-btn ${j.act ? "primary" : ""}" data-jump="${j.s}" style="padding: 4px 8px;">${j.lbl}</button>
+        <button class="seg-item ${j.act ? "active" : ""}" data-jump="${j.s}" style="padding: 0 7px;">${j.lbl}</button>
       `).join("");
 
       document.querySelectorAll("#scene-selector .scene-tab").forEach(b => b.classList.toggle("active", b.dataset.scene === state.scene));
@@ -2746,29 +3283,31 @@
       document.querySelectorAll("#scenario-group .seg-item").forEach(b => b.classList.toggle("active", b.dataset.scenario === state.scenario));
       document.querySelectorAll("#loop-group .seg-item").forEach(b => b.classList.toggle("active", Number(b.dataset.k) === state.K));
 
+      const stageDot = document.getElementById("hud-stage-dot");
+      if (stageDot) stageDot.style.background = isP2 ? rgba(PAL.accentB, 1) : rgba(PAL.accentA, 1);
       document.getElementById("hud-stage-pill").textContent = stageName(step);
       document.getElementById("hud-tensor-x").textContent = `X [B, ${range.sIn}, 2304]`;
 
       const curLName = step.phys !== null ? `L${step.phys}` : "L0–L23";
       document.getElementById("nav-layer-btn").textContent = `单层内部 (${curLName})`;
 
-      // Compact Architectural Origin Mini-Map + 3-Level Path Breadcrumb
+      // Compact Architectural Origin Mini-Map + Quiet Clickable Text Breadcrumb
       const mm = document.getElementById("hud-minimap");
       const unfoldBar = document.getElementById("hud-unfold-bar");
       const cA = rgba(PAL.accentA, 1);
       const cB = rgba(PAL.accentB, 1);
       const cM = rgba(PAL.mutedInk, 0.35);
       const cBorder = rgba(PAL.mutedInk, 0.7);
+      const sep = `<span class="text-[var(--ui-muted)] opacity-50">›</span>`;
 
       if (state.scene === "overview") {
         const preA = step.section === "prelude";
         const b2A = step.section === "core" && step.phys < 12;
         const b3A = step.section === "core" && step.phys >= 12;
         const codaA = step.section === "coda";
-        const isP2 = step.section === "core" && step.pass >= 2;
         const coreC = isP2 ? cB : cA;
         const cSolid = rgba(PAL.ink, 0.72);
-        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.className = "shrink-0 flex items-center pr-2.5 border-r border-[var(--ui-card-border)]";
         mm.innerHTML = `
           <svg width="52" height="30" viewBox="0 0 52 30" aria-hidden="true">
             <rect x="8"  y="2"    width="36" height="4.5" rx="1" fill="${rgba(PAL.accentA, step.section === "core" ? 0.55 : 0.28)}"/>
@@ -2780,8 +3319,7 @@
             <rect x="8"  y="23.5" width="36" height="4.5" rx="1" fill="${rgba(PAL.accentB, step.idx >= 7 ? 0.55 : 0.28)}"/>
           </svg>
         `;
-        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
-        unfoldBar.innerHTML = `<span class="text-[var(--ui-muted)]">Overview · Prelude → Core ×${K} → Coda</span>`;
+        unfoldBar.innerHTML = `<span class="text-[var(--ui-muted)]">Prelude → Core ×${K} → Coda</span>`;
       } else if (state.scene === "layer" || state.scene === "rmsnorm" || state.scene === "multihead" || state.scene === "moe") {
         const isWholeLayer = state.scene === "layer";
         const isNorm = state.scene === "rmsnorm";
@@ -2789,7 +3327,7 @@
         const isMoe = state.scene === "moe";
         const activeTowerIdx = step.section === "prelude" ? 0 : step.section === "coda" ? 3 : (step.phys !== null && step.phys >= 12 ? 2 : 1);
         const tx = [3, 12, 21, 30][activeTowerIdx];
-        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.className = "shrink-0 flex items-center pr-2.5 border-r border-[var(--ui-card-border)]";
         mm.innerHTML = `
           <svg width="84" height="30" viewBox="0 0 84 30" aria-hidden="true">
             <rect x="3"  y="7" width="6" height="16" rx="1" fill="${cM}"/>
@@ -2804,18 +3342,14 @@
             <rect x="68" y="5" width="14" height="20" rx="2" fill="${isWholeLayer || isMoe  ? cA : "none"}" stroke="${isWholeLayer || isMoe  ? cA : cBorder}" stroke-width="1.2"/>
           </svg>
         `;
-        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
         if (isWholeLayer) {
-          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">← Overview</button><span class="text-[var(--ui-muted)]">▸ ${curLName} 单层内部 ▸</span><button class="tok-btn" data-goto-scene="rmsnorm">RMSNorm →</button><button class="tok-btn" data-goto-scene="multihead">① Attention →</button><button class="tok-btn" data-goto-scene="moe">② MoE →</button>`;
-        } else if (isNorm) {
-          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><span class="text-[var(--ui-muted)]">▸ RMSNorm</span><button class="tok-btn" data-goto-scene="multihead">① Attention →</button>`;
-        } else if (isAttn) {
-          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><button class="tok-btn" data-goto-scene="rmsnorm">← RMSNorm</button><span class="text-[var(--ui-muted)]">▸ ① Attention</span><button class="tok-btn" data-goto-scene="moe">② MoE →</button>`;
+          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<span class="text-[var(--ui-fg)] font-medium">单层内部 (${curLName})</span>`;
         } else {
-          unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">Overview</button><button class="tok-btn" data-goto-scene="layer">← 单层内部 (${curLName})</button><button class="tok-btn" data-goto-scene="multihead">← ① Attention</button><span class="text-[var(--ui-muted)]">▸ ② MoE</span>`;
+          const leafName = isNorm ? "RMSNorm" : isAttn ? "① GQA Attention" : "② MoE";
+          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<button class="crumb-link" data-goto-scene="layer">单层内部 (${curLName})</button>${sep}<span class="text-[var(--ui-fg)] font-medium">${leafName}</span>`;
         }
       } else {
-        mm.className = "shrink-0 flex items-center pr-2 border-r border-[var(--ui-border)]";
+        mm.className = "shrink-0 flex items-center pr-2.5 border-r border-[var(--ui-card-border)]";
         mm.innerHTML = `
           <svg width="52" height="30" viewBox="0 0 52 30" aria-hidden="true">
             <rect x="8"  y="2"  width="36" height="6" rx="1.2" fill="${cA}"/>
@@ -2826,8 +3360,7 @@
             <rect x="8"  y="22" width="36" height="6" rx="1.2" fill="${cB}"/>
           </svg>
         `;
-        unfoldBar.className = "flex flex-wrap items-center gap-1.5 text-xs";
-        unfoldBar.innerHTML = `<button class="tok-btn" data-goto-scene="overview">← Overview</button><span class="text-[var(--ui-muted)]">▸ KV Cache &amp; Block AttnRes（${logicalTotal} 层）</span>`;
+        unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<span class="text-[var(--ui-fg)] font-medium">KV Cache (${kvLayers}L) &amp; Block AttnRes</span>`;
       }
 
       // Scene-specific minimal 2-item color key
@@ -2850,21 +3383,24 @@
         <button class="tok-btn ${state.focusToken === -1 ? "active" : ""}" data-focus-tok="-1">All (${range.sIn})</button>
       ` + tokens.map((t, i) => {
         const inR = i >= range.start && i <= range.end;
+        const extraCls = t.kind === "draft" ? "draft-tok" : "";
         return `
-          <button class="tok-btn ${state.focusToken === i ? "active" : ""} ${!inR ? "opacity-60" : ""}" data-focus-tok="${i}">
-            <span class="font-mono">t${i}</span>
+          <button class="tok-btn ${state.focusToken === i ? "active" : ""} ${extraCls} ${!inR ? "opacity-55" : ""}" data-focus-tok="${i}">
+            <span class="font-mono opacity-65">t${i}</span>
             <span class="font-mono">${escapeHtml(t.text)}</span>
-            ${t.kind === "draft" ? `<span>draft</span>` : t.kind === "output" ? `<span>out</span>` : ""}
+            ${t.kind === "draft" ? `<span class="text-[var(--ui-accent-b)]">draft</span>` : t.kind === "output" ? `<span class="text-[var(--ui-accent-a)]">out</span>` : ""}
           </button>
         `;
       }).join("");
 
       const isFullNow = state.forceFullAttn !== null && state.scene === "multihead" ? state.forceFullAttn : step.isFull;
       document.getElementById("stat-layer").textContent = step.phys !== null ? `L${step.phys} (${step.logical}/${logicalTotal})` : stageName(step);
-      document.getElementById("stat-attn").textContent = step.kind === "layer" ? (isFullNow ? "Full + Conv" : "SWA-1024 + Conv") : "—";
-      document.getElementById("stat-gate").textContent = (step.section === "core" && step.pass >= 2) ? `ON · B0..B${step.blockIdx - 1}` : `OFF`;
+      document.getElementById("stat-attn").textContent = step.kind === "layer" ? (isFullNow ? "Full 1M + Conv" : "SWA-1024 + Conv") : "—";
+      document.getElementById("stat-gate").textContent = isP2 ? `ON · B0..B${step.blockIdx - 1}` : `OFF`;
       document.getElementById("stat-quant").textContent = `${step.quant} · Top-8/128`;
-      document.getElementById("panel-phase-badge").textContent = stageName(step);
+      const phaseBadge = document.getElementById("panel-phase-badge");
+      phaseBadge.textContent = stageName(step);
+      phaseBadge.className = `tag font-mono ${isP2 ? "accent-b" : "accent-a"}`;
 
       renderInspectorCard();
       renderSideBreakdown(step, tokens, range, logicalTotal);
@@ -2874,7 +3410,7 @@
     function renderSceneSubcontrols(step, range) {
       const box = document.getElementById("scene-subcontrols");
       if (state.scene === "rmsnorm") {
-        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
             <span class="font-medium text-[var(--ui-muted)]">位置</span>
@@ -2895,10 +3431,10 @@
         const isFull = state.forceFullAttn !== null ? state.forceFullAttn : step.isFull;
         let gBtns = `<button class="seg-item ${state.focusGqaGroup === -1 ? "active" : ""}" data-gqa="-1">All</button>`;
         for (let g = 0; g < 8; g++) gBtns += `<button class="seg-item ${state.focusGqaGroup === g ? "active" : ""}" data-gqa="${g}">G${g}</button>`;
-        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-medium text-[var(--ui-muted)]">GQA</span>
+            <span class="font-medium text-[var(--ui-muted)]">GQA 组</span>
             <div class="seg">${gBtns}</div>
           </div>
           <div class="seg">
@@ -2913,12 +3449,24 @@
         for (let p = 1; p <= state.K; p++) {
           pBtns += `<button class="seg-item ${step.section === "core" && curPass === p ? "active" : ""}" data-jump="${7 + (p - 1) * 12 + (phys - 6)}">Pass ${p}</button>`;
         }
-        box.className = "flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[var(--ui-card-border)] text-xs";
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-mono font-medium text-[var(--ui-muted)]">L${phys}</span>
+            <span class="font-mono font-medium text-[var(--ui-muted)]">L${phys} 跨轮路由</span>
             <div class="seg">${pBtns}</div>
           </div>
+        `;
+      } else if (state.scene === "spacetime") {
+        box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
+        box.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="font-medium text-[var(--ui-muted)]">Core KV 策略</span>
+            <div class="seg">
+              <button class="seg-item ${!state.shareKV ? "active" : ""}" data-share-kv="0">独立 Per-Pass (${12 + 12 * state.K}L)</button>
+              <button class="seg-item ${state.shareKV ? "active" : ""}" data-share-kv="1">共享 loop_share_cache (24L)</button>
+            </div>
+          </div>
+          <span class="font-mono text-[var(--ui-muted)]">T=${range.tTotal} · S=${range.sIn}</span>
         `;
       } else {
         box.className = "hidden";
@@ -2931,6 +3479,7 @@
       const dHead = document.getElementById("detail-heading");
       const dTag = document.getElementById("detail-tag");
       const dBody = document.getElementById("detail-body");
+      const kvLayers = state.shareKV ? 24 : logicalTotal;
 
       if (state.scene === "overview") {
         titleEl.textContent = "Overview";
@@ -2983,15 +3532,19 @@
         titleEl.textContent = `单层内部 (L${phys})`;
         dHead.textContent = "Layer Sublayers";
         dTag.textContent = isP2 ? `Pass ${step.pass} · Gate ON` : `L${phys}`;
-        dBody.innerHTML = `
-          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-fg)]">
-            <div>1. RMSNorm${isP2 ? " + Rank-64 Gate" : ""}</div>
-            <div>2. ① GQA Attention (${isFull ? "Full 1M" : "SWA-1024"}) + Skip</div>
-            <div>3. RMSNorm${isP2 ? " + Rank-64 Gate" : ""}</div>
-            <div>4. ② MoE (Top-8/128 · ${phys >= 20 ? "MXFP8" : "NVFP4"}) + Skip</div>
-            <div>5. Residual → Block AttnRes (<i>b</i><sub>n</sub> += <i>f</i><sub>${phys}</sub>(<i>h</i><sub>${phys}</sub>))</div>
+        const rows = [
+          `RMSNorm${isP2 ? " + Rank-64 Gate" : ""}`,
+          `① GQA Attention (${isFull ? "Full 1M" : "SWA-1024"}) + Skip`,
+          `RMSNorm${isP2 ? " + Rank-64 Gate" : ""}`,
+          `② MoE (Top-8/128 · ${phys >= 20 ? "MXFP8" : "NVFP4"}) + Skip`,
+          `Residual → Block AttnRes (<i>b</i><sub>n</sub> += <i>f</i><sub>${phys}</sub>(<i>h</i><sub>${phys}</sub>))`
+        ];
+        dBody.innerHTML = `<div class="space-y-1 font-mono text-[var(--ui-fg)]">${rows.map((txt, idx) => `
+          <div class="step-row ${isFull && idx === 1 ? "hl" : ""}">
+            <span class="step-num">${idx + 1}</span>
+            <span class="leading-snug">${txt}</span>
           </div>
-        `;
+        `).join("")}</div>`;
       } else if (state.scene === "rmsnorm") {
         const phys = step.phys !== null ? step.phys : 9;
         titleEl.textContent = `RMSNorm (L${phys} · ${state.rmsSlot === "attn" ? "Pre-Attn" : "Pre-MoE"})`;
@@ -3024,10 +3577,15 @@
               </mrow>
             </math>
           </div>
-          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-muted)]">
-            <div><b class="text-[var(--ui-fg)]">Input / Output</b>: [B, ${range.sIn}, 2304]</div>
-            <div><b class="text-[var(--ui-fg)]">RMS scalar</b>: [B, ${range.sIn}, 1] (逐 token 独立)</div>
-            <div><b class="text-[var(--ui-fg)]">Weight γ</b>: [2304] (无均值减法 · 无偏置 β)</div>
+          <div class="stat-grid">
+            <div class="stat-cell">
+              <div class="text-xs text-[var(--ui-muted)]">Input / Output</div>
+              <div class="font-mono font-semibold text-[var(--ui-fg)] mt-0.5">[B, ${range.sIn}, 2304]</div>
+            </div>
+            <div class="stat-cell">
+              <div class="text-xs text-[var(--ui-muted)]">RMS Scalar / γ</div>
+              <div class="font-mono font-semibold text-[var(--ui-fg)] mt-0.5">[B, ${range.sIn}, 1] · [2304]</div>
+            </div>
           </div>
         `;
       } else if (state.scene === "multihead") {
@@ -3035,15 +3593,19 @@
         titleEl.textContent = "GQA Attention";
         dHead.textContent = "Attention Sublayer";
         dTag.textContent = isFull ? "Full 1M" : "SWA-1024";
-        dBody.innerHTML = `
-          <div class="inset p-2.5 font-mono space-y-1 text-[var(--ui-fg)]">
-            <div>1. Short-Conv (conv_state)</div>
-            <div>2. GQA 24Q : 8KV (<i>d</i><sub>h</sub> = 128)</div>
-            <div>3. RelPos bias + t0 Sink</div>
-            <div>4. 5× SWA-1024 + 1× Full / block</div>
-            <div>5. Output Gate + <i>W</i><sub>o</sub> (3072 → 2304)</div>
+        const rows = [
+          `Short-Conv (conv_state)`,
+          `GQA 24Q : 8KV (<i>d</i><sub>h</sub> = 128)`,
+          `RelPos bias + t0 Sink`,
+          `5× SWA-1024 + 1× Full / block`,
+          `Output Gate + <i>W</i><sub>o</sub> (3072 → 2304)`
+        ];
+        dBody.innerHTML = `<div class="space-y-1 font-mono text-[var(--ui-fg)]">${rows.map((txt, idx) => `
+          <div class="step-row ${idx === 1 ? "hl" : ""}">
+            <span class="step-num">${idx + 1}</span>
+            <span class="leading-snug">${txt}</span>
           </div>
-        `;
+        `).join("")}</div>`;
       } else if (state.scene === "moe") {
         const phys = step.phys !== null ? step.phys : 10;
         const curPass = step.section === "core" ? step.pass : 1;
@@ -3059,13 +3621,13 @@
         dTag.textContent = overlap !== null ? `${overlap}/8 overlap` : (phys >= 20 ? "MXFP8" : "NVFP4");
         dBody.innerHTML = `
           <div class="space-y-1.5">
-            ${top8.map(item => `
+            ${top8.map((item, idx) => `
               <div class="flex items-center gap-2 font-mono">
-                <span class="w-16 text-[var(--ui-fg)] font-medium">E#${item.id}</span>
-                <div class="flex-1 h-2.5 rounded-sm bg-[var(--ui-content)] border border-[var(--ui-card-border)] overflow-hidden">
-                  <div class="h-full" style="width: ${Math.min(100, Math.round(item.w * 280))}%; background: ${rgba(PAL.accentA, 0.85)};"></div>
+                <span class="w-14 text-[var(--ui-fg)] font-medium">E#${item.id}</span>
+                <div class="flex-1 h-2 rounded-full bg-[var(--ui-subtle)] overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, Math.round(item.w * 280))}%; background: ${idx === 0 ? rgba(PAL.accentB, 0.9) : rgba(PAL.accentA, 0.85)};"></div>
                 </div>
-                <span class="w-10 text-right text-[var(--ui-muted)]">${Math.round(item.w * 100)}%</span>
+                <span class="w-9 text-right tabular-nums text-[var(--ui-muted)]">${Math.round(item.w * 100)}%</span>
               </div>
             `).join("")}
           </div>
@@ -3073,15 +3635,23 @@
       } else {
         titleEl.textContent = "KV Cache & Block AttnRes";
         dHead.textContent = "Tensor Shapes";
-        dTag.textContent = `${logicalTotal}L · T=${range.tTotal}`;
+        dTag.textContent = `${kvLayers}L · T=${range.tTotal}`;
         dBody.innerHTML = `
-          <div class="inset p-2.5 space-y-1">
-            <div class="font-semibold text-[var(--ui-fg)]">KV Cache (Persistent)</div>
-            <div class="font-mono text-[var(--ui-code-fg)]">[${logicalTotal}, B, 8, T=${range.tTotal}, 128]</div>
-          </div>
-          <div class="inset p-2.5 space-y-1">
-            <div class="font-semibold text-[var(--ui-fg)]">Block AttnRes (Per-Step)</div>
-            <div class="font-mono text-[var(--ui-code-fg)]">[N, B, S=${range.sIn}, 2304]</div>
+          <div class="stat-grid">
+            <div class="stat-cell" style="grid-column: span 2 / span 2; border-right: none;">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-[var(--ui-accent-a)]">KV Cache (${state.shareKV ? "Shared" : "Per-Pass"} · Persistent)</span>
+                <span class="font-mono text-xs text-[var(--ui-muted)]">${kvLayers}L</span>
+              </div>
+              <div class="font-mono text-xs font-semibold text-[var(--ui-code-fg)] mt-1">[${kvLayers}, B, 8, T=${range.tTotal}, 128]</div>
+            </div>
+            <div class="stat-cell" style="grid-column: span 2 / span 2; border-right: none; border-bottom: none;">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-medium text-[var(--ui-accent-b)]">Block AttnRes (Per-Step)</span>
+                <span class="font-mono text-xs text-[var(--ui-muted)]">${2 + 2 * state.K} Blocks</span>
+              </div>
+              <div class="font-mono text-xs font-semibold text-[var(--ui-code-fg)] mt-1">[${2 + 2 * state.K}, B, S=${range.sIn}, 2304]</div>
+            </div>
           </div>
         `;
       }
@@ -3092,20 +3662,22 @@
       const outObj = sc.outputs[Math.min(state.generated, sc.outputs.length - 1)];
       let key = "prelude";
       if (step.section === "embed" || step.section === "prelude") key = "prelude";
-      else if (step.section === "core") key = "pass" + Math.min(4, step.pass);
-      else key = state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass4";
+      else if (step.section === "core") key = "pass" + Math.min(5, step.pass);
+      else key = state.K === 1 ? "pass1" : state.K === 2 ? "pass2" : state.K === 3 ? "coda" : "pass" + Math.min(5, state.K);
 
       const bars = outObj.stages[key] || outObj.stages.coda;
       document.getElementById("coda-badge").textContent = stageName(step);
       document.getElementById("coda-bars").innerHTML = bars.map(([tok, p], i) => `
-        <div class="flex items-center gap-2 text-xs">
-          <span class="font-mono font-medium w-20 truncate text-right text-[var(--ui-fg)]">${escapeHtml(tok)}</span>
-          <div class="flex-1 h-3 rounded-sm bg-[var(--ui-content)] border border-[var(--ui-card-border)] overflow-hidden">
-            <div class="h-full transition-all duration-300" style="width: ${Math.round(p * 100)}%; background: ${i === 0 ? rgba(PAL.accentA, 0.9) : rgba(PAL.mutedInk, 0.30)};"></div>
+        <div class="flex items-center gap-2.5 text-xs">
+          <span class="font-mono ${i === 0 ? "font-semibold text-[var(--ui-fg)]" : "text-[var(--ui-muted)]"} w-20 truncate text-right">${escapeHtml(tok)}</span>
+          <div class="flex-1 h-2 rounded-full bg-[var(--ui-subtle)] overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-300" style="width: ${Math.max(2, Math.round(p * 100))}%; background: ${i === 0 ? rgba(PAL.accentA, 0.92) : rgba(PAL.mutedInk, 0.28)};"></div>
           </div>
           <span class="font-mono tabular-nums w-9 text-right ${i === 0 ? "font-semibold text-[var(--ui-fg)]" : "text-[var(--ui-muted)]"}">${Math.round(p * 100)}%</span>
         </div>
       `).join("");
+      const noteEl = document.getElementById("coda-note");
+      if (noteEl) noteEl.textContent = outObj.note || "";
     }
 
     function escapeHtml(s) {
@@ -3119,6 +3691,8 @@
       state.scene = sceneKey;
       state.previewScene = null;
       state.selectedHit = null;
+      hideTooltipNow();
+      state.lastInspKey = "";
       state.targetCam = { ...SCENE_PRESETS[sceneKey] };
       if (sceneKey !== "multihead") state.forceFullAttn = null;
       syncUI();
@@ -3126,6 +3700,7 @@
 
     document.getElementById("btn-close-insp").addEventListener("click", () => {
       state.selectedHit = null;
+      state.lastInspKey = "";
       renderInspectorCard();
     });
 
@@ -3188,9 +3763,9 @@
     document.getElementById("step-scrubber").addEventListener("input", (e) => {
       state.playing = false; state.stepIdx = Number(e.target.value); syncUI();
     });
-    document.getElementById("btn-zoom-in").addEventListener("click", () => { state.targetCam.dist = Math.max(660, state.targetCam.dist - 120); });
-    document.getElementById("btn-zoom-out").addEventListener("click", () => { state.targetCam.dist = Math.min(1680, state.targetCam.dist + 120); });
-    document.getElementById("btn-cam-reset").addEventListener("click", () => { state.targetCam = { ...SCENE_PRESETS[state.scene] }; });
+    document.getElementById("btn-zoom-in").addEventListener("click", () => { hideTooltipNow(); state.targetCam.dist = Math.max(660, state.targetCam.dist - 120); });
+    document.getElementById("btn-zoom-out").addEventListener("click", () => { hideTooltipNow(); state.targetCam.dist = Math.min(1680, state.targetCam.dist + 120); });
+    document.getElementById("btn-cam-reset").addEventListener("click", () => { hideTooltipNow(); state.targetCam = { ...SCENE_PRESETS[state.scene] }; });
 
     document.addEventListener("click", (e) => {
       const goScene = e.target.closest("[data-goto-scene]");
@@ -3206,21 +3781,32 @@
       const rSlot = e.target.closest("[data-rms-slot]");
       if (rSlot) { state.rmsSlot = rSlot.dataset.rmsSlot; syncUI(); return; }
       const rScale = e.target.closest("[data-rms-scale]");
-      if (rScale) { state.rmsScale = Number(rScale.dataset.rmsScale); syncUI(); }
+      if (rScale) { state.rmsScale = Number(rScale.dataset.rmsScale); syncUI(); return; }
+      const sKv = e.target.closest("[data-share-kv]");
+      if (sKv) { state.shareKV = sKv.dataset.shareKv === "1"; syncUI(); }
     });
 
     let downPos = { x: 0, y: 0 };
+    let downHit = null;
     wrap.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".hud-chip")) return;
       wrap.setPointerCapture(e.pointerId);
       state.dragging = true;
+      state.dragMoved = false;
       state.dragMode = (e.button === 2 || e.shiftKey) ? "pan" : "orbit";
       state.lastMouseX = e.clientX; state.lastMouseY = e.clientY;
       downPos = { x: e.clientX, y: e.clientY };
+      downHit = state.hoveredHit;
     });
     wrap.addEventListener("pointermove", (e) => {
       const rect = wrap.getBoundingClientRect();
       state.mouseX = e.clientX - rect.left; state.mouseY = e.clientY - rect.top;
       if (!state.dragging) return;
+      if (!state.dragMoved && Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y) >= 4) {
+        state.dragMoved = true;
+        hideTooltipNow();
+      }
+      if (!state.dragMoved) return;
       const dx = e.clientX - state.lastMouseX, dy = e.clientY - state.lastMouseY;
       state.lastMouseX = e.clientX; state.lastMouseY = e.clientY;
       if (state.dragMode === "pan") {
@@ -3233,25 +3819,24 @@
       }
     });
     wrap.addEventListener("pointerup", (e) => {
+      if (!state.dragging) return;
       const moved = Math.hypot(e.clientX - downPos.x, e.clientY - downPos.y);
+      const clickHit = downHit || state.hoveredHit;
       state.dragging = false;
-      if (moved < 5 && state.hoveredHit && state.hoveredHit.meta) {
-        const meta = state.hoveredHit.meta;
-        state.selectedHit = { title: meta.title, shape: meta.shape, role: meta.role || meta.body };
-        if (meta.type === "layer" && meta.stepIdx !== undefined) { state.playing = false; state.stepIdx = meta.stepIdx; syncUI(); }
-        else if (meta.type === "token") { state.focusToken = state.focusToken === meta.id ? -1 : meta.id; syncUI(); }
-        else if (meta.type === "gqa") { state.focusGqaGroup = state.focusGqaGroup === meta.id ? -1 : meta.id; syncUI(); }
-        else if (meta.type === "goto" && meta.scene) {
-          if (meta.rmsSlot) state.rmsSlot = meta.rmsSlot;
-          switchScene(meta.scene);
-        }
-        else { renderInspectorCard(); }
+      state.dragMoved = false;
+      downHit = null;
+      if (moved < 5 && clickHit && clickHit.meta) {
+        executeHitAction(clickHit.meta);
       }
     });
-    wrap.addEventListener("pointerleave", () => { state.mouseX = -999; state.mouseY = -999; tooltip.style.display = "none"; });
+    wrap.addEventListener("pointerleave", () => {
+      state.mouseX = -999; state.mouseY = -999;
+      hideTooltipNow();
+    });
     wrap.addEventListener("contextmenu", (e) => e.preventDefault());
     wrap.addEventListener("wheel", (e) => {
       e.preventDefault();
+      if (tooltip.style.display !== "none") hideTooltipNow();
       state.targetCam.dist = Math.max(660, Math.min(1680, state.targetCam.dist + e.deltaY * 0.7));
     }, { passive: false });
 
@@ -3270,6 +3855,9 @@
     });
 
     window.addEventListener("resize", resizeCanvas);
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(() => resizeCanvas()).observe(wrap);
+    }
     window.addEventListener("themechange", () => { refreshPalette(); syncUI(); });
     if (window.matchMedia) {
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { refreshPalette(); syncUI(); });
