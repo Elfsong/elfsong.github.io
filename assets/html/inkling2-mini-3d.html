@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inkling 2 Mini · 3D 架构图解</title>
+  <title>Inkling 2 Mini · 3D Architecture</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     :root {
@@ -45,7 +45,7 @@
     body {
       background: var(--ui-bg);
       color: var(--ui-fg);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
       margin: 0;
       padding: 0;
       font-feature-settings: "tnum" 1;
@@ -350,8 +350,12 @@
       #canvas-wrap {
         height: auto;
         flex: 1 1 0%;
-        min-height: 440px;
+        min-height: 360px;
       }
+      /* Fill the whole viewport on wide screens: no page scroll, panels flex to fit */
+      .app-shell { height: 100vh; height: 100dvh; }
+      .app-main { flex: 1 1 0%; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+      .app-side { min-height: 0; overflow-y: auto; scrollbar-width: thin; }
     }
     #canvas-wrap:active { cursor: grabbing; }
     #stage-canvas {
@@ -423,10 +427,10 @@
   </style>
 </head>
 <body class="antialiased">
-  <div class="max-w-[1480px] mx-auto px-4 py-3 space-y-3">
+  <div class="app-shell w-full px-4 py-3 flex flex-col gap-3">
 
     <!-- Unified Architectural Studio Header (Balanced Full-Width Bands) -->
-    <header class="panel overflow-hidden">
+    <header class="panel overflow-hidden shrink-0">
       <!-- Band 1: Brand (Left) + Live Telemetry (Flush Right) -->
       <div class="px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-2.5 min-w-0">
@@ -441,13 +445,13 @@
           </div>
           <h1 class="text-sm font-semibold tracking-tight text-[var(--ui-fg)]">Inkling 2 Mini</h1>
         </div>
-        <span class="text-xs font-mono text-[var(--ui-muted)] tabular-nums" id="hdr-active">24 层 · Core 3×（共 48 层前向）· 激活 ~5.4B / 26.4B</span>
+        <span class="text-xs font-mono text-[var(--ui-muted)] tabular-nums" id="hdr-active">24 layers · Core 3× (48-layer forward) · active ~5.4B / 26.4B</span>
       </div>
 
       <!-- Band 2: Global Controls (Evenly Distributed Across Full Width) -->
       <div class="px-4 py-2 border-t border-[var(--ui-card-border)] flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <div class="flex items-center gap-2">
-          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">推理阶段</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">Inference</span>
           <div class="seg" id="exec-group">
             <button class="seg-item active" data-exec="prefill">Prefill</button>
             <button class="seg-item" data-exec="decode">Decode</button>
@@ -456,7 +460,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">Core 循环</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">Core loops</span>
           <div class="seg" id="loop-group">
             <button class="seg-item" data-k="1">1×</button>
             <button class="seg-item" data-k="2">2×</button>
@@ -467,11 +471,11 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">示例场景</span>
+          <span class="text-xs text-[var(--ui-muted)] whitespace-nowrap">Example</span>
           <div class="seg" id="scenario-group">
-            <button class="seg-item active" data-scenario="math" title="示例输入：计算 17 × 13 =">数学计算</button>
-            <button class="seg-item" data-scenario="code" title="示例输入：def fib(n): return fib(n-1) + fib(n-2) #bug:">代码排错</button>
-            <button class="seg-item" data-scenario="coref" title="示例输入：Alice 把金钥匙给了 Bob 随后 他 打开了">指代消解</button>
+            <button class="seg-item active" data-scenario="math" title="Example input: Compute 17 × 13 =">Arithmetic</button>
+            <button class="seg-item" data-scenario="code" title="Example input: def fib(n): return fib(n-1) + fib(n-2) #bug:">Code bug</button>
+            <button class="seg-item" data-scenario="coref" title="Example input: Alice gave the gold key to Bob, then he opened the">Coreference</button>
           </div>
         </div>
       </div>
@@ -488,7 +492,7 @@
         <div class="nav-cluster">
           <button class="scene-tab" data-scene="layer">
             <span class="kbd-num">2</span>
-            <span class="text-xs font-semibold" id="nav-layer-btn">单层内部 (L9)</span>
+            <span class="text-xs font-semibold" id="nav-layer-btn">Inside a layer (L9)</span>
           </button>
           <span class="nav-sep">›</span>
           <button class="scene-tab" data-scene="rmsnorm">
@@ -517,24 +521,24 @@
     </header>
 
     <!-- Main Stage + Aligned Equal-Height Spec Column -->
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-3.5 xl:items-stretch">
+    <div class="app-main grid grid-cols-1 xl:grid-cols-12 gap-3.5 xl:items-stretch">
 
       <!-- Left: 3D Stage (8 cols, stretches cleanly to exact height of right column on xl+) -->
-      <section class="xl:col-span-8 panel overflow-hidden flex flex-col">
+      <section class="xl:col-span-8 xl:min-h-0 panel overflow-hidden flex flex-col">
         <!-- Flush Top Playback & Timeline Bar -->
         <div class="px-3.5 py-2.5 border-b border-[var(--ui-card-border)] space-y-2 shrink-0">
           <div class="flex flex-col lg:flex-row lg:items-center gap-2.5">
             <div class="flex items-center gap-2 shrink-0">
               <div class="transport-pill">
-                <button id="btn-prev" class="ctrl-btn icon-only" title="上一步 (←)" aria-label="上一步">
+                <button id="btn-prev" class="ctrl-btn icon-only" title="Previous step (←)" aria-label="Previous step">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.8 2.5L4.3 6L7.8 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <button id="btn-play" class="ctrl-btn primary min-w-[64px]" title="播放 / 暂停 (Space)">播放</button>
-                <button id="btn-next" class="ctrl-btn icon-only" title="下一步 (→)" aria-label="下一步">
+                <button id="btn-play" class="ctrl-btn primary min-w-[64px]" title="Play / pause (Space)">Play</button>
+                <button id="btn-next" class="ctrl-btn icon-only" title="Next step (→)" aria-label="Next step">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.2 2.5L7.7 6L4.2 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
-              <button id="btn-autoreg" class="ctrl-btn" title="向后自回归生成 1 个新 token">+1 Token</button>
+              <button id="btn-autoreg" class="ctrl-btn" title="Generate one more token autoregressively">+1 Token</button>
             </div>
 
             <div class="flex-1 flex items-center gap-2.5 min-w-[140px]">
@@ -573,10 +577,10 @@
 
             <!-- Top-Right Compact Camera Controls -->
             <div class="hud-chip absolute top-3 right-3 p-0.5 rounded-lg flex items-center">
-              <button id="btn-zoom-in" class="seg-item px-2" title="放大">+</button>
-              <button id="btn-zoom-out" class="seg-item px-2" title="缩小">−</button>
+              <button id="btn-zoom-in" class="seg-item px-2" title="Zoom in">+</button>
+              <button id="btn-zoom-out" class="seg-item px-2" title="Zoom out">−</button>
               <span class="w-px h-3.5 bg-[var(--ui-border)] mx-0.5"></span>
-              <button id="btn-cam-reset" class="seg-item px-2" title="重置视角 (R)">重置</button>
+              <button id="btn-cam-reset" class="seg-item px-2" title="Reset view (R)">Reset</button>
             </div>
 
             <!-- Bottom-Left Minimal 2-Swatch Legend -->
@@ -601,7 +605,7 @@
       </section>
 
       <!-- Right: Calm Architectural Spec Column (4 cols) -->
-      <aside class="xl:col-span-4 flex flex-col gap-3">
+      <aside class="app-side xl:col-span-4 flex flex-col gap-3">
 
         <!-- Card 1: Telemetry & Active Stage Specs -->
         <div class="panel p-3.5 space-y-2.5">
@@ -634,17 +638,17 @@
         <div id="inspector-card" class="panel p-3.5 flex flex-col gap-2 inspector-accent xl:h-[148px]">
           <div class="flex items-center justify-between gap-2 shrink-0">
             <div class="flex items-center gap-1.5 min-w-0">
-              <h2 id="insp-title" class="text-xs font-semibold text-[var(--ui-fg)] truncate">3D 模块检视</h2>
-              <span id="insp-state-tag" class="tag text-xs">悬停预览</span>
+              <h2 id="insp-title" class="text-xs font-semibold text-[var(--ui-fg)] truncate">3D Inspector</h2>
+              <span id="insp-state-tag" class="tag text-xs">Hover preview</span>
             </div>
-            <button id="btn-close-insp" class="hidden text-xs text-[var(--ui-muted)] hover:text-[var(--ui-fg)] px-1.5 py-0.5 rounded hover:bg-[var(--ui-subtle)] cursor-pointer shrink-0" title="取消固定">取消固定</button>
+            <button id="btn-close-insp" class="hidden text-xs text-[var(--ui-muted)] hover:text-[var(--ui-fg)] px-1.5 py-0.5 rounded hover:bg-[var(--ui-subtle)] cursor-pointer shrink-0" title="Unpin">Unpin</button>
           </div>
           <div id="insp-empty" class="text-xs text-[var(--ui-muted)] leading-relaxed flex-1 flex items-center">
-            悬停画布中任意 3D 模块可实时预览其功能与张量尺寸，点击可下钻或固定在此处。
+            Hover over any 3D block on the canvas to preview its role and tensor shape. Click to drill down or pin it here.
           </div>
           <div id="insp-content" class="hidden space-y-1.5 flex-1 min-h-0 overflow-y-auto">
             <div class="inset px-2.5 py-1.5 font-mono text-xs text-[var(--ui-fg)] break-words">
-              <span class="text-[var(--ui-muted)]">尺寸 </span><span id="insp-shape">—</span>
+              <span class="text-[var(--ui-muted)]">Shape </span><span id="insp-shape">—</span>
             </div>
             <p id="insp-role" class="text-xs text-[var(--ui-muted)] leading-relaxed m-0"></p>
           </div>
@@ -672,8 +676,8 @@
       </aside>
     </div>
 
-    <footer class="text-xs text-[var(--ui-muted)] flex flex-wrap items-center justify-between gap-2 px-1 pb-1 opacity-80">
-      <span>1–6 切换视图 · ←/→ 单步 · Space 播放 · R 重置 · 拖拽旋转 · Shift 平移 · 滚轮缩放</span>
+    <footer class="shrink-0 text-xs text-[var(--ui-muted)] flex flex-wrap items-center justify-between gap-2 px-1 pb-1 opacity-80">
+      <span>1–6 switch view · ←/→ step · Space play · R reset · drag to rotate · Shift to pan · scroll to zoom</span>
       <span class="font-mono">Inkling 2 Mini / TML-d24-varloop-research (simulated weights)</span>
     </footer>
   </div>
@@ -684,11 +688,11 @@
     // =========================================================================
     const SCENARIOS = {
       math: {
-        prompt: ["计算", "17", "×", "13", "="],
+        prompt: ["Compute", "17", "×", "13", "="],
         outputs: [
           {
             tok: "221",
-            note: "Pass 1 估算量级 (~210)；Pass 2 隐式拆解 17×10+17×3；Pass 3 进位收敛锁定 221。",
+            note: "Pass 1 estimates the magnitude (~210); Pass 2 implicitly splits it into 17×10 + 17×3; Pass 3 resolves the carry and locks in 221.",
             attn: [0.07, 0.32, 0.17, 0.34, 0.10],
             stages: {
               prelude: [["200", 0.34], ["210", 0.25], ["221", 0.18], ["191", 0.12]],
@@ -701,17 +705,17 @@
             }
           },
           {
-            tok: "。",
-            note: "已输出完整结果 221，Core 确认语义闭合后由 Coda 输出句号。",
+            tok: ".",
+            note: "The full result 221 is out; once the Core confirms the sentence is complete, the Coda emits a period.",
             attn: [0.06, 0.12, 0.08, 0.12, 0.22, 0.40],
             stages: {
-              prelude: [["。", 0.44], ["\\n", 0.27], ["（", 0.15], ["，", 0.08]],
-              pass1:   [["。", 0.63], ["\\n", 0.20], ["（", 0.09], ["，", 0.04]],
-              pass2:   [["。", 0.82], ["\\n", 0.11], ["（", 0.04], ["，", 0.02]],
-              pass3:   [["。", 0.93], ["\\n", 0.04], ["（", 0.02], ["，", 0.01]],
-              pass4:   [["。", 0.95], ["\\n", 0.03], ["（", 0.01], ["，", 0.01]],
-              pass5:   [["。", 0.95], ["\\n", 0.03], ["（", 0.01], ["，", 0.01]],
-              coda:    [["。", 0.94], ["\\n", 0.04], ["（", 0.01], ["，", 0.01]]
+              prelude: [[".", 0.44], ["\\n", 0.27], ["(", 0.15], [",", 0.08]],
+              pass1:   [[".", 0.63], ["\\n", 0.20], ["(", 0.09], [",", 0.04]],
+              pass2:   [[".", 0.82], ["\\n", 0.11], ["(", 0.04], [",", 0.02]],
+              pass3:   [[".", 0.93], ["\\n", 0.04], ["(", 0.02], [",", 0.01]],
+              pass4:   [[".", 0.95], ["\\n", 0.03], ["(", 0.01], [",", 0.01]],
+              pass5:   [[".", 0.95], ["\\n", 0.03], ["(", 0.01], [",", 0.01]],
+              coda:    [[".", 0.94], ["\\n", 0.04], ["(", 0.01], [",", 0.01]]
             }
           }
         ]
@@ -721,7 +725,7 @@
         outputs: [
           {
             tok: "missing",
-            note: "SWA 捕获局部递归调用，Full Attn 回看 def fib(n):，Pass 2–3 定位缺少终止分支。",
+            note: "SWA picks up the local recursive calls, Full Attn looks back at def fib(n):, and Passes 2–3 pin down the missing termination branch.",
             attn: [0.06, 0.24, 0.13, 0.20, 0.05, 0.18, 0.14],
             stages: {
               prelude: [["slow", 0.34], ["infinite", 0.26], ["missing", 0.22], ["syntax", 0.10]],
@@ -735,7 +739,7 @@
           },
           {
             tok: "base_case",
-            note: "延续 missing，Pass 2/3 对齐常见递归诊断术语输出 base_case。",
+            note: "Following missing, Passes 2/3 align with the usual recursion diagnosis and output base_case.",
             attn: [0.04, 0.15, 0.10, 0.19, 0.04, 0.17, 0.09, 0.22],
             stages: {
               prelude: [["return", 0.31], ["base_case", 0.30], ["check", 0.19], ["if", 0.12]],
@@ -750,34 +754,34 @@
         ]
       },
       coref: {
-        prompt: ["Alice", "把金钥匙给了", "Bob", "随后", "他", "打开了"],
+        prompt: ["Alice", "gave the gold key to", "Bob", "then", "he", "opened the"],
         outputs: [
           {
-            tok: "保险箱",
-            note: "Pass 1 偏向高频搭配「门」；Pass 2 经 Full Attn 绑定「他→Bob」与「金钥匙」；Pass 3 收敛至「保险箱」。",
+            tok: "safe",
+            note: "Pass 1 leans toward the frequent collocation “door”; Pass 2 uses Full Attn to bind “he → Bob” and “gold key”; Pass 3 converges on “safe”.",
             attn: [0.08, 0.36, 0.18, 0.07, 0.17, 0.14],
             stages: {
-              prelude: [["门", 0.43], ["盒子", 0.22], ["保险箱", 0.17], ["窗户", 0.10]],
-              pass1:   [["门", 0.37], ["保险箱", 0.35], ["盒子", 0.16], ["锁", 0.07]],
-              pass2:   [["保险箱", 0.69], ["门", 0.18], ["宝箱", 0.08], ["盒子", 0.03]],
-              pass3:   [["保险箱", 0.88], ["宝箱", 0.06], ["门", 0.04], ["盒子", 0.01]],
-              pass4:   [["保险箱", 0.91], ["宝箱", 0.05], ["门", 0.03], ["盒子", 0.01]],
-              pass5:   [["保险箱", 0.92], ["宝箱", 0.04], ["门", 0.03], ["盒子", 0.01]],
-              coda:    [["保险箱", 0.90], ["宝箱", 0.05], ["门", 0.04], ["盒子", 0.01]]
+              prelude: [["door", 0.43], ["box", 0.22], ["safe", 0.17], ["window", 0.10]],
+              pass1:   [["door", 0.37], ["safe", 0.35], ["box", 0.16], ["lock", 0.07]],
+              pass2:   [["safe", 0.69], ["door", 0.18], ["chest", 0.08], ["box", 0.03]],
+              pass3:   [["safe", 0.88], ["chest", 0.06], ["door", 0.04], ["box", 0.01]],
+              pass4:   [["safe", 0.91], ["chest", 0.05], ["door", 0.03], ["box", 0.01]],
+              pass5:   [["safe", 0.92], ["chest", 0.04], ["door", 0.03], ["box", 0.01]],
+              coda:    [["safe", 0.90], ["chest", 0.05], ["door", 0.04], ["box", 0.01]]
             }
           },
           {
-            tok: "。",
-            note: "事件语义闭环，输出句号。",
+            tok: ".",
+            note: "The event is complete, so it emits a period.",
             attn: [0.06, 0.15, 0.10, 0.05, 0.12, 0.20, 0.32],
             stages: {
-              prelude: [["。", 0.48], ["，", 0.31], ["的", 0.11], ["里面", 0.06]],
-              pass1:   [["。", 0.65], ["，", 0.22], ["里面", 0.08], ["的", 0.03]],
-              pass2:   [["。", 0.81], ["，", 0.12], ["里面", 0.04], ["！", 0.02]],
-              pass3:   [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]],
-              pass4:   [["。", 0.93], ["，", 0.04], ["！", 0.02], ["里面", 0.01]],
-              pass5:   [["。", 0.93], ["，", 0.04], ["！", 0.02], ["里面", 0.01]],
-              coda:    [["。", 0.91], ["，", 0.05], ["！", 0.02], ["里面", 0.02]]
+              prelude: [[".", 0.48], [",", 0.31], ["with", 0.11], ["inside", 0.06]],
+              pass1:   [[".", 0.65], [",", 0.22], ["inside", 0.08], ["with", 0.03]],
+              pass2:   [[".", 0.81], [",", 0.12], ["inside", 0.04], ["!", 0.02]],
+              pass3:   [[".", 0.91], [",", 0.05], ["!", 0.02], ["inside", 0.02]],
+              pass4:   [[".", 0.93], [",", 0.04], ["!", 0.02], ["inside", 0.01]],
+              pass5:   [[".", 0.93], [",", 0.04], ["!", 0.02], ["inside", 0.01]],
+              coda:    [[".", 0.91], [",", 0.05], ["!", 0.02], ["inside", 0.02]]
             }
           }
         ]
@@ -1101,7 +1105,7 @@
           // Ground zone slightly warmer/deeper than sky above horizon
           ctx.fillStyle = rgba(PAL.stone, PAL.isLight ? 0.24 : 0.16);
           ctx.fillRect(0, hy, viewW, viewH - hy);
-          // Crisp architectural horizon hairline + small "HORIZON / 地平线" marker at far right
+          // Crisp architectural horizon hairline + small "HORIZON" marker at far right
           ctx.strokeStyle = rgba(PAL.hairline, PAL.isLight ? 0.92 : 0.72);
           ctx.lineWidth = 1.0;
           ctx.setLineDash([6, 4]);
@@ -1566,10 +1570,10 @@
         const attnKind = isFullL ? "Full Attn (1M)" : "SWA-1024";
         const quantKind = physL >= 20 ? "MXFP8" : "NVFP4";
         const stageRole = sectionName === "Prelude"
-          ? `仅运行 1 次，编码输入初始表示；内部依次做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`
+          ? `Runs once to encode the initial input representation; each layer does ${attnKind} then Top-8/128 MoE (${quantKind}).`
           : sectionName === "Core"
-            ? `循环核心层（共享权重跑 ${K} 轮）；内部依次做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`
-            : `仅运行 1 次，将隐藏状态解码回词表预测表示；内部做 ${attnKind} 与 Top-8/128 MoE（${quantKind}）。`;
+            ? `Looped core layers (shared weights, ${K} passes); each layer does ${attnKind} then Top-8/128 MoE (${quantKind}).`
+            : `Runs once to decode the hidden state back into a vocabulary prediction; each layer does ${attnKind} and Top-8/128 MoE (${quantKind}).`;
         const hitMeta = {
           type: "goto",
           scene: "layer",
@@ -1691,11 +1695,11 @@
           shadowY: floorY,
           hitMeta: {
             type: "token", id: i,
-            title: `输入向量 t${i}「${tokens[i].text}」`,
-            shape: `单位置 [1, 2304] · 本步整批 [B, ${range.sIn}, 2304]`,
+            title: `Input vector t${i} “${tokens[i].text}”`,
+            shape: `One position [1, 2304] · this step [B, ${range.sIn}, 2304]`,
             role: inBatch
-              ? `本步送入 L0 的输入嵌入向量，多个位置打包为连续张量并行计算。`
-              : `历史上下文 token，其 KV 已缓存在后排，本步无需重算。`
+              ? `Input embedding fed into L0 this step; all positions are packed into one tensor and computed in parallel.`
+              : `Earlier context token; its KV is already cached in the back row, so nothing is recomputed this step.`
           }
         });
       }
@@ -1777,9 +1781,9 @@
         edgeAlpha: dimPipe ? 0.34 : 0.82,
         hitMeta: {
           type: "info",
-          title: `Rank-64 Tanh Gate（${isP2 ? `Pass ${step.pass} 开启` : "Pass 1 关闭"}）`,
-          shape: `[B, ${range.sIn}, 4608] → 64 维瓶颈 → [B, ${range.sIn}, 2304]`,
-          role: `Pass ≥ 2 时开启：读取前排 Block AttnRes 摘要，按通道调节送入下一轮 Core 的 Q/K/V 与 MoE 输入。`
+          title: `Rank-64 Tanh Gate (${isP2 ? `on in Pass ${step.pass}` : "off in Pass 1"})`,
+          shape: `[B, ${range.sIn}, 4608] → 64-d bottleneck → [B, ${range.sIn}, 2304]`,
+          role: `Active when Pass ≥ 2: reads the Block AttnRes summaries in the front row and modulates, per channel, the Q/K/V and MoE inputs of the next Core pass.`
         }
       });
 
@@ -1821,8 +1825,8 @@
           hitMeta: {
             type: "goto", scene: "spacetime",
             title: `Block AttnRes · B${b}`,
-            shape: `[B, ${range.sIn}, 2304]（仅当前前向存活）`,
-            role: `把对应 6 层块内的残差输出求和存成 1 份摘要 <i>b</i><sub>${b}</sub>，供更深层按深度回看，输出 token 后释放。`
+            shape: `[B, ${range.sIn}, 2304] (lives only for this forward pass)`,
+            role: `Sums the residual outputs of its 6-layer block into one summary <i>b</i><sub>${b}</sub> that deeper layers can look back at; freed once the token is emitted.`
           }
         });
       }
@@ -1846,8 +1850,8 @@
           hitMeta: {
             type: "goto", scene: "spacetime",
             title: `Shared Core KV Cache (loop_share_cache)`,
-            shape: `KV [12层共享, B, 8, T=${range.tTotal}, 128]（全模型 24 层 KV）`,
-            role: `开启 loop_share_cache 后，Core 全部 ${K} 轮循环共用同一份 12 层 KV Cache（后轮覆写前轮），大幅节省长上下文显存。`
+            shape: `KV [12 shared layers, B, 8, T=${range.tTotal}, 128] (24 KV layers in total)`,
+            role: `With loop_share_cache on, all ${K} Core passes share one 12-layer KV Cache (later passes overwrite earlier ones), saving a lot of long-context memory.`
           }
         });
         if (isCore && !prevLayer) {
@@ -1876,8 +1880,8 @@
             hitMeta: {
               type: "goto", scene: "spacetime",
               title: `Pass ${p} KV + Conv Cache`,
-              shape: `KV [12层, B, 8, T=${range.tTotal}, 128] + conv_state`,
-              role: `保存 Core 第 ${p} 轮全部 12 层的历史 K/V 与短卷积状态；与其它轮次严格隔离，跨生成步持久保留。`
+              shape: `KV [12 layers, B, 8, T=${range.tTotal}, 128] + conv_state`,
+              role: `Holds the past K/V and short-conv state of all 12 layers in Core pass ${p}; strictly isolated from other passes and kept across generation steps.`
             }
           });
           if (curP && !prevLayer) {
@@ -1938,17 +1942,17 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `LM Head · 候选「${tok}」(${Math.round(p * 100)}%)`,
-            shape: `[B, 1, 2304] → [B, 1, Vocab]（BF16/FP32）`,
-            role: `将末位 token 的最终隐藏状态投影到词表维，经 Softmax 采样输出下一个 token。`
+            title: `LM Head · candidate “${tok}” (${Math.round(p * 100)}%)`,
+            shape: `[B, 1, 2304] → [B, 1, Vocab] (BF16/FP32)`,
+            role: `Projects the last token's final hidden state onto the vocabulary; Softmax sampling picks the next token.`
           }
         });
       });
-      queueCleanLabel(248, floorY - 4, 66, `Output「${probs[0][0]}」`, {
+      queueCleanLabel(248, floorY - 4, 66, `Output “${probs[0][0]}”`, {
         sub: `${Math.round(probs[0][1] * 100)}%`, bold: !dimPipe, rgb: dimPipe ? PAL.mutedInk : PAL.accentA, oy: 12
       });
 
-      // Minimal pointer tag on the highlighted layer when hovering 单层内部 / Attention / MoE
+      // Minimal pointer tag on the highlighted layer when hovering Inside a layer / Attention / MoE
       if (prevLayer) {
         let sx = -58, sIdx = 0, lh = 16, lw = 48, lz = 106;
         if (hlLayer < 6) { sx = -176; sIdx = hlLayer; lh = 14; lw = 46; lz = 102; }
@@ -1958,7 +1962,7 @@
         const cy = floorY + lh * 0.5 + sIdx * (lh + 2);
         const lx = (prev === "layer" || prev === "rmsnorm") ? sx : (sx + (prev === "multihead" ? -lw * 0.25 : lw * 0.25));
         const tagText = prev === "layer"
-          ? `L${hlLayer} · 单层内部`
+          ? `L${hlLayer} · inside`
           : prev === "rmsnorm"
             ? `L${hlLayer} · RMSNorm`
             : `L${hlLayer} · ${prev === "multihead" ? "① GQA Attention" : "② MoE"}`;
@@ -2025,9 +2029,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "token", id: i,
-            title: `层输入 X · 位置 t${i}「${tokens[i].text}」`,
-            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
-            role: `上一层（或 Embedding）传来的隐藏状态，作为本层 L${phys} 的输入。`
+            title: `Layer input X · position t${i} “${tokens[i].text}”`,
+            shape: `One position [1, 2304] · full batch [B, ${range.sIn}, 2304]`,
+            role: `Hidden state from the previous layer (or the Embedding), used as the input to L${phys}.`
           }
         });
       }
@@ -2047,9 +2051,9 @@
         shadowY: floorY,
         hitMeta: {
           type: "goto", scene: "rmsnorm", rmsSlot: "attn",
-          title: "RMSNorm（Attention 前归一化）",
+          title: "RMSNorm (pre-Attention)",
           shape: `[B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
-          role: `按均方根缩放每个位置的隐藏状态向量，稳定进入 Q/K/V 投影前的数值分布。`
+          role: `Scales each position's hidden vector by its root mean square, stabilising values before the Q/K/V projections.`
         }
       });
       queueCleanLabel(-190, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 18 });
@@ -2061,9 +2065,9 @@
           alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
           hitMeta: {
             type: "info",
-            title: `Rank-64 Gate（Pre-Attention · Pass ${step.pass}）`,
-            shape: `[B, ${range.sIn}, 4608] → 64 维 → [B, ${range.sIn}, 2304]`,
-            role: `将前排 Block AttnRes 跨块摘要与当前隐状态做双路 tanh 门控融合，调制送入 Q/K/V 的输入。`
+            title: `Rank-64 Gate (Pre-Attention · Pass ${step.pass})`,
+            shape: `[B, ${range.sIn}, 4608] → 64-d → [B, ${range.sIn}, 2304]`,
+            role: `Fuses the cross-block Block AttnRes summaries with the current hidden state through a two-way tanh gate, modulating the input to Q/K/V.`
           }
         });
         queueCleanLabel(-190, floorY + 60 + g1H, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -24, ox: -16, leader: true });
@@ -2083,9 +2087,9 @@
       const attnEdgeRgb = attnDim ? dimEdge : (prevAttn || isFull ? mixRgb(PAL.accentA, PAL.ink, 0.35) : PAL.accentA);
       const attnMeta = {
         type: "goto", scene: "multihead",
-        title: `① GQA Attention（L${phys} · ${isFull ? "Full 1M" : "SWA-1024"}）`,
+        title: `① GQA Attention (L${phys} · ${isFull ? "Full 1M" : "SWA-1024"})`,
         shape: `[B, ${range.sIn}, 2304] → 24Q:8KV (<i>d</i><sub>h</sub>=128) → [B, ${range.sIn}, 2304]`,
-        role: `本层前半段：先过 Short-Conv，再与历史 KV Cache 做 ${isFull ? "Full Attn (1M) 全局注意力" : "SWA-1024 局部窗口注意力"} 交换上下文。`
+        role: `First half of the layer: Short-Conv, then ${isFull ? "Full Attn (1M) global attention" : "SWA-1024 sliding-window attention"} over the KV Cache to mix in context.`
       };
       queueSolidBlock(-88, floorY + 30 + attnLift, 0, 92, 60, 76, {
         rgb: attnBaseRgb,
@@ -2138,9 +2142,9 @@
           shadowY: s === 0 ? floorY : undefined,
           hitMeta: {
             type: "goto", scene: "spacetime",
-            title: `KV + Conv Cache · L${blockStartL + s}（Pass ${curPass}${isCurSlot ? " · 正在写入" : isDoneSlot ? " · 已写入" : " · 待写入"}）`,
-            shape: `单层 K/V 各 [B, 8, T=${range.tTotal}, 128] + conv_state`,
-            role: `持久保存 L${blockStartL + s} 在第 ${curPass} 轮的历史 K/V 与短卷积状态，供 GQA Attention 读取。`
+            title: `KV + Conv Cache · L${blockStartL + s} (Pass ${curPass}${isCurSlot ? " · writing" : isDoneSlot ? " · written" : " · pending"})`,
+            shape: `Per layer: K and V each [B, 8, T=${range.tTotal}, 128] + conv_state`,
+            role: `Persistently stores the past K/V and short-conv state of L${blockStartL + s} in pass ${curPass}, read by GQA Attention.`
           }
         });
       }
@@ -2168,9 +2172,9 @@
         shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: "残差相加（+）",
+          title: "Residual add (+)",
           shape: `[B, ${range.sIn}, 2304] + [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
-          role: `将层输入 X 与 GQA Attention 的输出逐元素相加，保留主干信号并把增量送往下一半层。`
+          role: `Adds the layer input X to the GQA Attention output element-wise, keeping the main signal and passing the update to the second half.`
         }
       });
       queueCleanLabel(0, mainY, 11, "+", { bold: true, rgb: hasPrev ? PAL.mutedInk : PAL.ink, pill: false });
@@ -2189,9 +2193,9 @@
         shadowY: floorY,
         hitMeta: {
           type: "goto", scene: "rmsnorm", rmsSlot: "moe",
-          title: "RMSNorm（MoE 前归一化）",
+          title: "RMSNorm (pre-MoE)",
           shape: `[B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
-          role: `对融合了上下文的隐藏状态做均方根归一化，准备送入 MoE Router 与专家网络。`
+          role: `RMS-normalises the context-mixed hidden state before it goes to the MoE Router and experts.`
         }
       });
       queueCleanLabel(54, floorY - 4, 42, "RMSNorm", { rgb: prevNorm ? PAL.accentA : PAL.mutedInk, bold: prevNorm, oy: 14 });
@@ -2203,9 +2207,9 @@
           alpha: (hasPrev && !prevMem) ? 0.58 : 0.99,
           hitMeta: {
             type: "info",
-            title: `Rank-64 Gate（Pre-MoE · Pass ${step.pass}）`,
-            shape: `[B, ${range.sIn}, 4608] → 64 维 → [B, ${range.sIn}, 2304]`,
-            role: `将 Block AttnRes 摘要门控注入 MoE 输入，使同一物理层在不同循环轮次激活不同专家组合。`
+            title: `Rank-64 Gate (Pre-MoE · Pass ${step.pass})`,
+            shape: `[B, ${range.sIn}, 4608] → 64-d → [B, ${range.sIn}, 2304]`,
+            role: `Gates the Block AttnRes summaries into the MoE input, so the same physical layer activates different experts in different passes.`
           }
         });
         queueCleanLabel(54, floorY + 60 + g2H, 0, "Gate", { rgb: (hasPrev && !prevMem) ? PAL.mutedInk : PAL.accentB, bold: true, oy: -40, ox: -24, leader: true });
@@ -2233,9 +2237,9 @@
       }
       const moeMeta = {
         type: "goto", scene: "moe",
-        title: `② MoE（L${phys} · Pass ${curPass} · ${isFp8 ? "MXFP8" : "NVFP4"}）`,
-        shape: `[B, ${range.sIn}, 2304] → Top-8 / 128 专家 → [B, ${range.sIn}, 2304]`,
-        role: `本层后半段：t${refTok} 激活 Exp #${liveTop8.slice(0, 4).map(x => x.id).join(", #")} 等 8 个专家并加权求和。`
+        title: `② MoE (L${phys} · Pass ${curPass} · ${isFp8 ? "MXFP8" : "NVFP4"})`,
+        shape: `[B, ${range.sIn}, 2304] → Top-8 / 128 experts → [B, ${range.sIn}, 2304]`,
+        role: `Second half of the layer: t${refTok} activates 8 experts (Exp #${liveTop8.slice(0, 4).map(x => x.id).join(", #")}, …) and takes their weighted sum.`
       };
       queueSolidBlock(134, floorY + 30 + moeLift, 0, 92, 60, 76, {
         rgb: moeBaseRgb,
@@ -2263,9 +2267,9 @@
           edgeAlpha: moeDim ? 0.32 : 0.88,
           hitMeta: {
             type: "goto", scene: "moe",
-            title: `② MoE · Expert #${exp.id}（${Math.round(exp.w * 100)}%）`,
+            title: `② MoE · Expert #${exp.id} (${Math.round(exp.w * 100)}%)`,
             shape: `L${phys} · Pass ${curPass} · ${isFp8 ? "MXFP8" : "NVFP4"}`,
-            role: `当前步 Top-8 激活专家之一${isShared ? "（多 token 共同命中）" : ""}；点击进入 128 专家完整视图。`
+            role: `One of this step's Top-8 experts${isShared ? " (hit by several tokens)" : ""}; click to open the full 128-expert view.`
           }
         });
       }
@@ -2290,9 +2294,9 @@
         shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: "残差相加（+）",
+          title: "Residual add (+)",
           shape: `[B, ${range.sIn}, 2304] + [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
-          role: `将 Attention 后的隐状态与 MoE 输出逐元素相加，得到本层 L${phys} 的最终输出 X'。`
+          role: `Adds the post-Attention hidden state to the MoE output element-wise, giving the final output X' of L${phys}.`
         }
       });
       queueCleanLabel(214, mainY, 11, "+", { bold: true, rgb: hasPrev ? PAL.mutedInk : PAL.ink, pill: false });
@@ -2315,9 +2319,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "token", id: i,
-            title: `层输出 X' · 位置 t${i}「${tokens[i].text}」`,
-            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
-            role: `本层 L${phys} 计算完成后的隐藏状态，送往下一层 ${phys < 23 ? "L" + (phys + 1) : "LM Head"}。`
+            title: `Layer output X' · position t${i} “${tokens[i].text}”`,
+            shape: `One position [1, 2304] · full batch [B, ${range.sIn}, 2304]`,
+            role: `Hidden state after L${phys}, sent on to ${phys < 23 ? "L" + (phys + 1) : "the LM Head"}.`
           }
         });
       }
@@ -2344,9 +2348,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "goto", scene: "spacetime",
-            title: `Block AttnRes · B${curBlockIdx} 槽 ${s + 1}/6（L${lId}${isCurS ? " · 本层累加中" : isDoneS ? " · 已累加" : " · 待到达"}）`,
-            shape: `[B, ${range.sIn}, 2304]（6 层求和 → B${curBlockIdx}）`,
-            role: `把 L${lId} 产生的残差 <i>f</i><sub>${lId}</sub>(<i>h</i><sub>${lId}</sub>) 累加进当前 6 层块摘要 B${curBlockIdx}，满 6 层后供后续块跨层读取。`
+            title: `Block AttnRes · B${curBlockIdx} slot ${s + 1}/6 (L${lId}${isCurS ? " · accumulating" : isDoneS ? " · added" : " · not reached"})`,
+            shape: `[B, ${range.sIn}, 2304] (sum of 6 layers → B${curBlockIdx})`,
+            role: `Adds the residual <i>f</i><sub>${lId}</sub>(<i>h</i><sub>${lId}</sub>) from L${lId} into the summary B${curBlockIdx} of the current 6-layer block; once all 6 layers are in, later blocks can read it.`
           }
         });
       }
@@ -2358,7 +2362,7 @@
       queueArchLine([[214, floorY + 17, 11], [214, floorY + 8, 11], [214, floorY + 8, 118], [166, floorY + 8, 118]], {
         rgb: memDim ? PAL.hairline : PAL.accentB, alpha: memDim ? 0.20 : 0.85, width: 1.5, dashed: true, arrow: true, pulse: !memDim
       });
-      queueCleanLabel(20, floorY - 4, 146, `Block AttnRes · B${curBlockIdx} (${posInBlock + 1}/6 累加)`, {
+      queueCleanLabel(20, floorY - 4, 146, `Block AttnRes · B${curBlockIdx} (${posInBlock + 1}/6 summed)`, {
         rgb: prevMem ? PAL.accentB : PAL.mutedInk, bold: prevMem, oy: 12
       });
     }
@@ -2418,16 +2422,16 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `输入通道 x[${chIds[i]}]（t${focusT}「${focusTok.text}」）`,
-            shape: `单标量 · 整层输入 [B, ${range.sIn}, 2304]`,
-            role: `当前通道值 x = ${v > 0 ? "+" : ""}${v.toFixed(2)}（${scale}× 幅度），直接送入平方均值与归一化分支。`
+            title: `Input channel x[${chIds[i]}] (t${focusT} “${focusTok.text}”)`,
+            shape: `Scalar · full layer input [B, ${range.sIn}, 2304]`,
+            role: `Channel value x = ${v > 0 ? "+" : ""}${v.toFixed(2)} (${scale}× amplitude), fed straight into the mean-square and normalisation branches.`
           }
         });
         queueArchLine([[-229, floorY + 10, z], [-145, floorY + 10, z]], {
           rgb: PAL.accentA, alpha: 0.45, width: 1.1, arrow: true
         });
       }
-      queueCleanLabel(-244, floorY - 4, 122, `Input x (t${focusT}「${focusTok.text}」)`, {
+      queueCleanLabel(-244, floorY - 4, 122, `Input x (t${focusT} “${focusTok.text}”)`, {
         sub: `[B, ${range.sIn}, 2304] · ${scale}×`, bold: true, oy: 12
       });
 
@@ -2443,9 +2447,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `平方项 x[${chIds[i]}]²`,
-            shape: `单通道平方 · 整批 [B, ${range.sIn}, 2304]`,
-            role: `x² = ${sq.toFixed(2)}（全部非负）；RMSNorm 不减均值 μ，直接对 2304 个通道平方求平均。`
+            title: `Square x[${chIds[i]}]²`,
+            shape: `One squared channel · full batch [B, ${range.sIn}, 2304]`,
+            role: `x² = ${sq.toFixed(2)} (always non-negative); RMSNorm does not subtract the mean μ, it simply averages the squares of all 2304 channels.`
           }
         });
         queueArchLine([[-117, floorY + Math.min(20, h * 0.6), z], [-84, floorY + 16, 0]], {
@@ -2465,9 +2469,9 @@
         shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: `RMS(x) 标量 · t${focusT}「${focusTok.text}」`,
-          shape: `单位置标量 [1] · 整批 [B, ${range.sIn}, 1]`,
-          role: `√(mean(x²) + ε) = ${rms.toFixed(2)}；仅由当前 token 自身 2304 维算出，不与其他 token 混合。`
+          title: `RMS(x) scalar · t${focusT} “${focusTok.text}”`,
+          shape: `One scalar per position [1] · full batch [B, ${range.sIn}, 1]`,
+          role: `√(mean(x²) + ε) = ${rms.toFixed(2)}; computed only from this token's own 2304 dims, never mixed with other tokens.`
         }
       });
       const otherToks = [];
@@ -2483,14 +2487,14 @@
           shadowY: floorY,
           hitMeta: {
             type: "token", id: tIdx,
-            title: `RMS(x) 标量 · t${tIdx}「${tokens[tIdx].text}」`,
-            shape: `独立标量 [1]（属于 [B, ${range.sIn}, 1]）`,
-            role: `t${tIdx} 自己独立的 RMS = ${oRms.toFixed(2)}；点击切换到该 token 查看其通道归一化过程。`
+            title: `RMS(x) scalar · t${tIdx} “${tokens[tIdx].text}”`,
+            shape: `Independent scalar [1] (part of [B, ${range.sIn}, 1])`,
+            role: `t${tIdx} has its own RMS = ${oRms.toFixed(2)}; click to switch to this token and see its channels normalised.`
           }
         });
       });
       queueCleanLabel(-66, floorY + rmsH + 22, 0, `RMS(x) = ${rms.toFixed(2)}`, {
-        sub: `[B, ${range.sIn}, 1] · 无均值减法`, rgb: PAL.accentB, bold: true, oy: -28
+        sub: `[B, ${range.sIn}, 1] · no mean subtraction`, rgb: PAL.accentB, bold: true, oy: -28
       });
 
       queueArchLine([[-244, floorY + 116, -98], [-244, floorY + 124, -98], [54, floorY + 124, -98], [54, floorY + 54, -98]], {
@@ -2518,9 +2522,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `归一化通道 x̂[${chIds[i]}]`,
-            shape: `单标量 · 整层 [B, ${range.sIn}, 2304]`,
-            role: `x / RMS = ${xVals[i].toFixed(2)} / ${rms.toFixed(2)} = ${nv > 0 ? "+" : ""}${nv.toFixed(2)}；无论输入放大几倍，此处高度完全不变！`
+            title: `Normalised channel x̂[${chIds[i]}]`,
+            shape: `Scalar · full layer [B, ${range.sIn}, 2304]`,
+            role: `x / RMS = ${xVals[i].toFixed(2)} / ${rms.toFixed(2)} = ${nv > 0 ? "+" : ""}${nv.toFixed(2)}; however much the input is scaled up, this height stays exactly the same.`
           }
         });
         queueArchLine([[69, floorY + 12, z], [146, floorY + 12, z]], {
@@ -2543,9 +2547,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `可学习缩放权重 γ[${chIds[i]}]`,
-            shape: `1D 参数向量 [2304]（BF16/FP32，所有 token 共享）`,
-            role: `训练学到的逐通道增益 γ = ${g.toFixed(2)}，用于恢复各特征通道所需的表达幅度（无偏置 β）。`
+            title: `Learnable scale γ[${chIds[i]}]`,
+            shape: `1D parameter vector [2304] (BF16/FP32, shared by all tokens)`,
+            role: `Learned per-channel gain γ = ${g.toFixed(2)} that restores the amplitude each feature channel needs (no bias β).`
           }
         });
         queueArchLine([[171, floorY + 12, z], [226, floorY + 12, z]], {
@@ -2564,9 +2568,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "info",
-            title: `输出通道 y[${chIds[i]}]`,
-            shape: `单标量 · 整层输出 [B, ${range.sIn}, 2304]`,
-            role: `y = x̂ × γ = ${normVals[i].toFixed(2)} × ${g.toFixed(2)} = ${yv > 0 ? "+" : ""}${yv.toFixed(2)}，直接送入 ${nextTarget}。`
+            title: `Output channel y[${chIds[i]}]`,
+            shape: `Scalar · full layer output [B, ${range.sIn}, 2304]`,
+            role: `y = x̂ × γ = ${normVals[i].toFixed(2)} × ${g.toFixed(2)} = ${yv > 0 ? "+" : ""}${yv.toFixed(2)}, sent straight into ${nextTarget}.`
           }
         });
       }
@@ -2602,9 +2606,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "token", id: i,
-            title: `输入隐状态 X · t${i}「${tokens[i].text}」`,
-            shape: `单位置 [1, 2304] · 整批 [B, ${range.sIn}, 2304]`,
-            role: `先经过因果短卷积（Short-Conv）提取局部邻近特征，再线性投影出 Q、K、V。`
+            title: `Input hidden state X · t${i} “${tokens[i].text}”`,
+            shape: `One position [1, 2304] · full batch [B, ${range.sIn}, 2304]`,
+            role: `First passes through a causal short convolution (Short-Conv) for local features, then is linearly projected into Q, K and V.`
           }
         });
       }
@@ -2626,9 +2630,9 @@
           shadowY: floorY,
           hitMeta: {
             type: "gqa", id: g,
-            title: `共享 KV 头 #${g}（<i>d</i><sub>h</sub> = 128）`,
-            shape: `K/V 各 [B, 1, T=${range.tTotal}, 128]（全层共 8 个 KV 头）`,
-            role: `由上方 Q${g * 3}、Q${g * 3 + 1}、Q${g * 3 + 2} 三个 Query 头共用，把 KV 显存压缩为 MHA 的 1/3。`
+            title: `Shared KV head #${g} (<i>d</i><sub>h</sub> = 128)`,
+            shape: `K and V each [B, 1, T=${range.tTotal}, 128] (8 KV heads per layer)`,
+            role: `Shared by the three Query heads above (Q${g * 3}, Q${g * 3 + 1}, Q${g * 3 + 2}), cutting KV memory to 1/3 of MHA.`
           }
         });
 
@@ -2641,9 +2645,9 @@
             alpha: isSel ? 0.95 : 0.30,
             hitMeta: {
               type: "gqa", id: g,
-              title: `Query 头 Q${g * 3 + q}（第 ${g} 组）`,
-              shape: `[B, 1, ${range.sIn}, 128]（全层 24 头 = 3072 维）`,
-              role: `与下方共享的 KV${g} 做点积并叠加相对位置偏置，计算当前位置的注意力分布。`
+              title: `Query head Q${g * 3 + q} (group ${g})`,
+              shape: `[B, 1, ${range.sIn}, 128] (24 heads per layer = 3072 dims)`,
+              role: `Dot product with the shared KV${g} below plus a relative position bias gives this position's attention distribution.`
             }
           });
         }
@@ -2682,9 +2686,9 @@
               rgb: PAL.ceramic, alpha: 0.25, edgeAlpha: 0.28, lw: 0.6,
               hitMeta: {
                 type: "info",
-                title: `因果掩码屏蔽（t${r} ✕ t${c}）`,
-                shape: `Mask = −∞（Softmax 后权重为 0）`,
-                role: `屏蔽未来位置，确保位置 t${r} 只能看到自己和之前的上下文，不能偷看 t${c}。`
+                title: `Causal mask (t${r} ✕ t${c})`,
+                shape: `Mask = −∞ (weight 0 after Softmax)`,
+                role: `Masks future positions so t${r} only sees itself and earlier context and cannot peek at t${c}.`
               }
             });
           } else {
@@ -2703,13 +2707,13 @@
               shadowY: floorY,
               hitMeta: {
                 type: "info",
-                title: `注意力权重（t${r}「${tokens[r].text}」→ t${c}「${tokens[c].text}」）`,
-                shape: `单格标量 · 整层矩阵 [B, 24, ${range.sIn}, T=${range.tTotal}]`,
+                title: `Attention weight (t${r} “${tokens[r].text}” → t${c} “${tokens[c].text}”)`,
+                shape: `One cell · full matrix [B, 24, ${range.sIn}, T=${range.tTotal}]`,
                 role: isSink
-                  ? `t0 位置的 Attention Sink 锚点（配相对位置偏置），吸收多余注意力以稳定 1M 长上下文。`
+                  ? `The Attention Sink at t0 (with relative position bias) absorbs excess attention to keep the 1M context stable.`
                   : outWin
-                    ? `超出 SWA-1024 局部窗口被截断；切到 Full 1M 可恢复远距关注。`
-                    : `经 Softmax 后的因果注意力权重，决定 t${r} 从 t${c} 的 Value 向量中聚合多少信息。`
+                    ? `Cut off by the SWA-1024 window; switch to Full 1M to restore long-range attention.`
+                    : `Causal attention weight after Softmax: how much t${r} pulls from t${c}'s Value vector.`
               }
             });
           }
@@ -2727,9 +2731,9 @@
         rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: `Output Gate + <i>W</i><sub>o</sub> 输出投影`,
+          title: `Output Gate + <i>W</i><sub>o</sub> output projection`,
           shape: `[B, ${range.sIn}, 24×128 = 3072] → [B, ${range.sIn}, 2304]`,
-          role: `把 24 个注意力头的 128 维结果拼接为 3072 维，经 Output Gate 调制后投影回模型隐藏维 2304。`
+          role: `Concatenates the 128-d outputs of the 24 heads into 3072 dims, modulates them with the Output Gate and projects back to the 2304-d hidden size.`
         }
       });
       queueCleanLabel(244, floorY + 104, 0, "Concat → Output Proj", { sub: "3072 → 2304", bold: true, oy: -10 });
@@ -2773,9 +2777,9 @@
           rgb: PAL.accentA, accent: true, shadowY: floorY,
           hitMeta: {
             type: "token", id: tIdx,
-            title: `隐状态向量 <i>h</i><sub>${tIdx}</sub>（位置 t${tIdx}「${tokens[tIdx].text}」）`,
-            shape: `单位置 [1, 2304] · 整批 [B, ${activeIndices.length}, 2304]`,
-            role: `经过本层 Attention、残差相加与 RMSNorm 后的上下文隐状态，按位置独立送入 Router 选专家。`
+            title: `Hidden vector <i>h</i><sub>${tIdx}</sub> (position t${tIdx} “${tokens[tIdx].text}”)`,
+            shape: `One position [1, 2304] · full batch [B, ${activeIndices.length}, 2304]`,
+            role: `Context-aware hidden state after this layer's Attention, residual add and RMSNorm; each position goes to the Router independently.`
           }
         });
         queueArchLine([[-240, floorY + 18, z], [-208, floorY + 18, z]], { rgb: PAL.accentA, alpha: 0.72, width: 1.4, arrow: true });
@@ -2787,9 +2791,9 @@
         rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: `MoE Router（BF16）`,
-          shape: `权重 [2304, 128] · 路由分数 [B, ${activeIndices.length}, 128] → Top-8`,
-          role: `对每个位置的 2304 维隐状态给 128 个专家打分，只选权重最高的 8 个并做归一化。`
+          title: `MoE Router (BF16)`,
+          shape: `Weights [2304, 128] · router scores [B, ${activeIndices.length}, 128] → Top-8`,
+          role: `Scores all 128 experts from each position's 2304-d hidden state, keeps the top 8 and normalises their weights.`
         }
       });
       queueCleanLabel(-194, floorY + 64, 0, "Router", { sub: "Top-8 / 128", bold: true, oy: -10 });
@@ -2828,11 +2832,11 @@
           lw: hits ? 1.0 : 0.65,
           hitMeta: {
             type: "info",
-            title: `Expert #${e}（${isFp8 ? "MXFP8" : "NVFP4"}）`,
-            shape: `单专家 FFN：[1, 2304] → [1, 2304]（共 128 个）`,
+            title: `Expert #${e} (${isFp8 ? "MXFP8" : "NVFP4"})`,
+            shape: `Single expert FFN: [1, 2304] → [1, 2304] (128 in total)`,
             role: hits
-              ? `本轮已激活：由 ${hits.map(x => `t${x.tokIdx}「${tokens[x.tokIdx].text}」(${Math.round(x.w * 100)}%)`).join("、")} 命中并计算特征变换。`
-              : (wasPrev ? `上一轮（Pass ${curPass - 1}）曾激活、本轮已切走，体现同层跨轮动态路由。` : `本步未被选中，不参与矩阵计算以节省算力。`)
+              ? `Active this pass: selected by ${hits.map(x => `t${x.tokIdx} “${tokens[x.tokIdx].text}” (${Math.round(x.w * 100)}%)`).join(", ")}, which it transforms.`
+              : (wasPrev ? `Active in the previous pass (Pass ${curPass - 1}) but dropped in this one: dynamic routing across passes of the same layer.` : `Not selected this step, so it skips the matmuls and saves compute.`)
           }
         });
 
@@ -2858,9 +2862,9 @@
         rgb: PAL.stone, edgeRgb: PAL.ink, edgeAlpha: 0.45, shadowY: floorY,
         hitMeta: {
           type: "info",
-          title: `Top-8 加权汇总`,
+          title: `Top-8 weighted sum`,
           shape: `8 × [B, ${range.sIn}, 2304] → [B, ${range.sIn}, 2304]`,
-          role: `把每个位置激活的 8 个专家输出按路由权重 ∑ <i>g</i><sub>i</sub> · Expert<sub>i</sub>(<i>x</i>) 加权相加，输出给残差相加。`
+          role: `Adds each position's 8 expert outputs weighted by the router, ∑ <i>g</i><sub>i</sub> · Expert<sub>i</sub>(<i>x</i>), and passes the result to the residual add.`
         }
       });
       queueCleanLabel(228, floorY + 76, 0, "Weighted Sum", { sub: `[B,${range.sIn},2304]`, bold: true, oy: -10 });
@@ -2893,20 +2897,20 @@
         rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: kvRows, shadowY: floorY, depthBias: 1500,
         hitMeta: {
           type: "info",
-          title: state.shareKV ? `KV Cache 缓存墙（共享模式 · 24 层）` : `KV Cache 缓存墙（独立模式 · ${kvLayers} 层）`,
-          shape: `[${kvLayers}层, B, 8 KV头, T=${range.tTotal}, 128]`,
+          title: state.shareKV ? `KV Cache wall (shared · 24 layers)` : `KV Cache wall (per-pass · ${kvLayers} layers)`,
+          shape: `[${kvLayers} layers, B, 8 KV heads, T=${range.tTotal}, 128]`,
           role: state.shareKV
-            ? `开启 loop_share_cache：Core 全部 ${K} 轮复用同一组 12 层 KV Cache（后轮覆写前轮），总 KV 显存锁定在 24 层。`
-            : `跨 Decode 生成步持久保留全部历史 token 的 K/V；每一行对应 6 层块，各循环轮次严格隔离。`
+            ? `loop_share_cache on: all ${K} Core passes reuse one 12-layer KV Cache (later passes overwrite earlier ones), so total KV memory stays at 24 layers.`
+            : `Keeps the K/V of every past token across Decode steps; each row is a 6-layer block, and loop passes are strictly isolated.`
         }
       });
       queueSolidBlock(rightCX, floorY + wallH * 0.5, -14, wallW, wallH, 8, {
         rgb: PAL.ceramic, edgeRgb: PAL.hairline, seams: totalBlocks, shadowY: floorY, depthBias: 1500,
         hitMeta: {
           type: "info",
-          title: `Block AttnRes 摘要墙（本步临时 · ${totalBlocks} 块）`,
-          shape: `[${totalBlocks}块, B, S=${range.sIn}, 2304]`,
-          role: `仅存当前步活跃 token 在各 6 层块的残差汇总，供深层按深度注意力回看，步末输出新 token 后清空。`
+          title: `Block AttnRes summary wall (this step only · ${totalBlocks} blocks)`,
+          shape: `[${totalBlocks} blocks, B, S=${range.sIn}, 2304]`,
+          role: `Holds only this step's per-block residual summaries for the active tokens, for deeper layers to attend back over depth; cleared once the new token is emitted.`
         }
       });
 
@@ -2922,7 +2926,7 @@
       for (let p = 1; p <= K; p++) bLabels.push(`B${1 + (p - 1) * 2} P${p}`, `B${2 + (p - 1) * 2} P${p}`);
       bLabels.push(`B${totalBlocks - 1} Coda`);
       const kvLabels = state.shareKV
-        ? ["Pre L0–5", `Core L6–11 (P1..${K} 共享)`, `Core L12–17 (P1..${K} 共享)`, "Coda L18–23"]
+        ? ["Pre L0–5", `Core L6–11 (P1..${K} shared)`, `Core L12–17 (P1..${K} shared)`, "Coda L18–23"]
         : bLabels;
 
       const focusT = (state.focusToken >= 0 && state.focusToken < nTok) ? state.focusToken : range.end;
@@ -2952,11 +2956,11 @@
               alpha: isCurR ? 0.96 : 0.85,
               hitMeta: {
                 type: "info",
-                title: `KV Cache · ${kvLabels[r]} · t${t}「${tokens[t].text}」`,
-                shape: `单块 [6层, B, 8, 1, 128] · 全模型 [${kvLayers}层, B, 8, T=${range.tTotal}, 128]`,
+                title: `KV Cache · ${kvLabels[r]} · t${t} “${tokens[t].text}”`,
+                shape: `One block [6 layers, B, 8, 1, 128] · whole model [${kvLayers} layers, B, 8, T=${range.tTotal}, 128]`,
                 role: state.shareKV && (r === 1 || r === 2)
-                  ? `共享 KV 槽位：Core 第 1~${K} 轮复用并覆写此处的 K/V，显存不再随循环数线性膨胀。`
-                  : `持久保存该位置在对应 6 层的历史 K/V 向量；同一深度的新 token 沿水平方向读取所有历史位置。`
+                  ? `Shared KV slot: Core passes 1–${K} reuse and overwrite the K/V here, so memory no longer grows linearly with the loop count.`
+                  : `Keeps this position's K/V for these 6 layers; a new token at the same depth reads across all past positions horizontally.`
               }
             });
           }
@@ -3003,9 +3007,9 @@
               alpha: 0.96,
               hitMeta: {
                 type: "token", id: t,
-                title: `Block AttnRes · ${bLabels[b]} · t${t}「${tokens[t].text}」`,
-                shape: `单块 [B, 1, 2304] · 全深度 [${totalBlocks}块, B, S=${range.sIn}, 2304]`,
-                role: `汇总该位置在当前 6 层块的残差输出，沿垂直深度供后续层回看，本次前向结束即释放。`
+                title: `Block AttnRes · ${bLabels[b]} · t${t} “${tokens[t].text}”`,
+                shape: `One block [B, 1, 2304] · full depth [${totalBlocks} blocks, B, S=${range.sIn}, 2304]`,
+                role: `Summarises this position's residual outputs in this 6-layer block for later layers to look back at vertically; freed at the end of the forward pass.`
               }
             });
           }
@@ -3173,7 +3177,7 @@
         const tipKey = `${state.scene}|${best.hitKey || m.title}`;
         if (tipKey !== state.lastTooltipKey) {
           state.lastTooltipKey = tipKey;
-          const shapeLine = m.shape ? `<div class="font-mono text-[var(--ui-fg)] bg-[var(--ui-subtle)] border border-[var(--ui-card-border)] rounded-md px-2 py-1 my-1.5 break-words"><span class="text-[var(--ui-muted)]">尺寸 </span>${m.shape}</div>` : "";
+          const shapeLine = m.shape ? `<div class="font-mono text-[var(--ui-fg)] bg-[var(--ui-subtle)] border border-[var(--ui-card-border)] rounded-md px-2 py-1 my-1.5 break-words"><span class="text-[var(--ui-muted)]">Shape </span>${m.shape}</div>` : "";
           const roleText = m.role || m.body || "";
           tooltip.innerHTML = `
             <div class="font-semibold text-[var(--ui-fg)] leading-snug">${m.title}</div>
@@ -3219,8 +3223,8 @@
 
       if (!active) {
         card.classList.remove("pinned");
-        titleEl.textContent = "3D 模块检视";
-        tagEl.textContent = "悬停预览";
+        titleEl.textContent = "3D Inspector";
+        tagEl.textContent = "Hover preview";
         tagEl.className = "tag text-xs";
         closeBtn.classList.add("hidden");
         emptyEl.classList.remove("hidden");
@@ -3230,7 +3234,7 @@
 
       card.classList.toggle("pinned", !!pinned);
       titleEl.innerHTML = active.title;
-      tagEl.textContent = pinned ? "已固定" : "实时预览";
+      tagEl.textContent = pinned ? "Pinned" : "Live preview";
       tagEl.className = pinned ? "tag accent-b text-xs" : "tag accent-a text-xs";
       closeBtn.classList.toggle("hidden", !pinned);
       emptyEl.classList.add("hidden");
@@ -3255,7 +3259,7 @@
       const isP2 = step.section === "core" && step.pass >= 2;
 
       const activeB = (3.4 + (K - 1) * 1.0).toFixed(1);
-      document.getElementById("hdr-active").textContent = `24 层 · Core ${K}×（${logicalTotal} 层前向）· 激活 ~${activeB}B / 26.4B${state.shareKV ? " · 共享 KV 24L" : ""}`;
+      document.getElementById("hdr-active").textContent = `24 layers · Core ${K}× (${logicalTotal}-layer forward) · active ~${activeB}B / 26.4B${state.shareKV ? " · shared KV 24L" : ""}`;
 
       const scrubber = document.getElementById("step-scrubber");
       const maxS = timeline.length - 1;
@@ -3267,8 +3271,8 @@
 
       document.getElementById("step-label").textContent = `${state.stepIdx} / ${maxS}`;
       document.getElementById("btn-play").innerHTML = state.playing
-        ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><rect x="1.5" y="1.5" width="2.5" height="7" rx="0.6"/><rect x="6" y="1.5" width="2.5" height="7" rx="0.6"/></svg><span>暂停</span>`
-        : `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2.2 1.6L8.4 5L2.2 8.4V1.6Z"/></svg><span>播放</span>`;
+        ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><rect x="1.5" y="1.5" width="2.5" height="7" rx="0.6"/><rect x="6" y="1.5" width="2.5" height="7" rx="0.6"/></svg><span>Pause</span>`
+        : `<svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2.2 1.6L8.4 5L2.2 8.4V1.6Z"/></svg><span>Play</span>`;
 
       const qJumps = [{ lbl: "Pre", s: 1, act: step.section === "prelude" }];
       for (let p = 1; p <= K; p++) qJumps.push({ lbl: `P${p}`, s: 7 + (p - 1) * 12, act: step.section === "core" && step.pass === p });
@@ -3289,7 +3293,7 @@
       document.getElementById("hud-tensor-x").textContent = `X [B, ${range.sIn}, 2304]`;
 
       const curLName = step.phys !== null ? `L${step.phys}` : "L0–L23";
-      document.getElementById("nav-layer-btn").textContent = `单层内部 (${curLName})`;
+      document.getElementById("nav-layer-btn").textContent = `Inside a layer (${curLName})`;
 
       // Compact Architectural Origin Mini-Map + Quiet Clickable Text Breadcrumb
       const mm = document.getElementById("hud-minimap");
@@ -3343,10 +3347,10 @@
           </svg>
         `;
         if (isWholeLayer) {
-          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<span class="text-[var(--ui-fg)] font-medium">单层内部 (${curLName})</span>`;
+          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<span class="text-[var(--ui-fg)] font-medium">Inside a layer (${curLName})</span>`;
         } else {
           const leafName = isNorm ? "RMSNorm" : isAttn ? "① GQA Attention" : "② MoE";
-          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<button class="crumb-link" data-goto-scene="layer">单层内部 (${curLName})</button>${sep}<span class="text-[var(--ui-fg)] font-medium">${leafName}</span>`;
+          unfoldBar.innerHTML = `<button class="crumb-link" data-goto-scene="overview">Overview</button>${sep}<button class="crumb-link" data-goto-scene="layer">Inside a layer (${curLName})</button>${sep}<span class="text-[var(--ui-fg)] font-medium">${leafName}</span>`;
         }
       } else {
         mm.className = "shrink-0 flex items-center pr-2.5 border-r border-[var(--ui-card-border)]";
@@ -3413,17 +3417,17 @@
         box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-medium text-[var(--ui-muted)]">位置</span>
+            <span class="font-medium text-[var(--ui-muted)]">Position</span>
             <div class="seg">
               <button class="seg-item ${state.rmsSlot === "attn" ? "active" : ""}" data-rms-slot="attn">Pre-Attention</button>
               <button class="seg-item ${state.rmsSlot === "moe" ? "active" : ""}" data-rms-slot="moe">Pre-MoE</button>
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-medium text-[var(--ui-muted)]">输入幅度测试</span>
+            <span class="font-medium text-[var(--ui-muted)]">Input amplitude</span>
             <div class="seg">
               <button class="seg-item ${state.rmsScale === 1 ? "active" : ""}" data-rms-scale="1">1×</button>
-              <button class="seg-item ${state.rmsScale === 3 ? "active" : ""}" data-rms-scale="3">3× 尖峰</button>
+              <button class="seg-item ${state.rmsScale === 3 ? "active" : ""}" data-rms-scale="3">3× spike</button>
             </div>
           </div>
         `;
@@ -3434,7 +3438,7 @@
         box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-medium text-[var(--ui-muted)]">GQA 组</span>
+            <span class="font-medium text-[var(--ui-muted)]">GQA group</span>
             <div class="seg">${gBtns}</div>
           </div>
           <div class="seg">
@@ -3452,7 +3456,7 @@
         box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-mono font-medium text-[var(--ui-muted)]">L${phys} 跨轮路由</span>
+            <span class="font-mono font-medium text-[var(--ui-muted)]">L${phys} routing per pass</span>
             <div class="seg">${pBtns}</div>
           </div>
         `;
@@ -3460,10 +3464,10 @@
         box.className = "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--ui-card-border)] text-xs";
         box.innerHTML = `
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-medium text-[var(--ui-muted)]">Core KV 策略</span>
+            <span class="font-medium text-[var(--ui-muted)]">Core KV policy</span>
             <div class="seg">
-              <button class="seg-item ${!state.shareKV ? "active" : ""}" data-share-kv="0">独立 Per-Pass (${12 + 12 * state.K}L)</button>
-              <button class="seg-item ${state.shareKV ? "active" : ""}" data-share-kv="1">共享 loop_share_cache (24L)</button>
+              <button class="seg-item ${!state.shareKV ? "active" : ""}" data-share-kv="0">Per-pass (${12 + 12 * state.K}L)</button>
+              <button class="seg-item ${state.shareKV ? "active" : ""}" data-share-kv="1">Shared loop_share_cache (24L)</button>
             </div>
           </div>
           <span class="font-mono text-[var(--ui-muted)]">T=${range.tTotal} · S=${range.sIn}</span>
@@ -3529,7 +3533,7 @@
         const phys = step.phys !== null ? step.phys : 9;
         const isFull = step.kind === "layer" ? step.isFull : (phys === 5 || phys === 11 || phys === 17 || phys === 23);
         const isP2 = step.section === "core" && step.pass >= 2;
-        titleEl.textContent = `单层内部 (L${phys})`;
+        titleEl.textContent = `Inside a layer (L${phys})`;
         dHead.textContent = "Layer Sublayers";
         dTag.textContent = isP2 ? `Pass ${step.pass} · Gate ON` : `L${phys}`;
         const rows = [
@@ -3617,7 +3621,7 @@
         const overlap = prev8 ? top8.filter(x => prev8.has(x.id)).length : null;
 
         titleEl.textContent = "MoE (Top-8 / 128)";
-        dHead.textContent = `t${refTok}「${tokens[refTok].text}」Top-8 (L${phys} · P${curPass})`;
+        dHead.textContent = `t${refTok} “${tokens[refTok].text}” Top-8 (L${phys} · P${curPass})`;
         dTag.textContent = overlap !== null ? `${overlap}/8 overlap` : (phys >= 20 ? "MXFP8" : "NVFP4");
         dBody.innerHTML = `
           <div class="space-y-1.5">

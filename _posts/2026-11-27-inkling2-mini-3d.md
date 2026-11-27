@@ -1,115 +1,115 @@
 ---
 layout: post
-title: 把 Inkling 2 Mini 拆开看
+title: Taking Inkling 2 Mini Apart
 date: 2026-11-27 00:00:00+0800
-description: 一个可以拖拽、单步播放的 3D 架构图解：24 层物理层如何靠循环 Core 跑出 48 层前向。
+description: An interactive 3D walkthrough you can rotate and step through, showing how 24 physical layers run a 48-layer forward pass by looping the Core.
 tags: code
 categories: academia
 related_posts: false
 featured: false
 ---
 
-读架构图的时候，我总觉得二维方框图少了点什么：张量的形状、哪些东西跨步保留、哪些东西用完就扔，都要靠脑补。于是我做了一个可以交互的 3D 图解，把 Inkling 2 Mini 的一次前向从 Embedding 一直走到 LM Head，每一步都能停下来看。
+Whenever I read an architecture diagram, the flat boxes leave something out. Tensor shapes, what is kept across steps and what is thrown away after use all have to be filled in by imagination. So I built an interactive 3D walkthrough that follows one forward pass of Inkling 2 Mini from the Embedding all the way to the LM Head, and lets you stop at every step.
 
-下面嵌入的就是这个图解。画布可以拖拽旋转、滚轮缩放，点击任意方块会显示它的张量尺寸和作用。窗口较窄时建议[单独打开全屏版本]({{ '/assets/html/inkling2-mini-3d.html' | relative_url }})。
+The walkthrough is embedded below. Drag to rotate the canvas, scroll to zoom, and click any block to see its tensor shape and what it does. On a narrow window, [open the full-screen version]({{ '/assets/html/inkling2-mini-3d.html' | relative_url }}) instead.
 
-<iframe src="{{ '/assets/html/inkling2-mini-3d.html' | relative_url }}" title="Inkling 2 Mini 3D 架构图解" width="100%" height="1500" loading="lazy" style="border: 1px solid var(--global-divider-color); border-radius: 8px;"></iframe>
+<iframe src="{{ '/assets/html/inkling2-mini-3d.html' | relative_url }}" title="Inkling 2 Mini 3D architecture walkthrough" width="100%" height="1500" loading="lazy" style="border: 1px solid var(--global-divider-color); border-radius: 8px;"></iframe>
 
-快捷键：`1`–`6` 切换视图，`←` / `→` 单步，`Space` 播放，`R` 重置视角。
+Shortcuts: `1`–`6` switch views, `←` / `→` step, `Space` plays, `R` resets the camera.
 
-> 图解里的权重、专家命中和候选词概率都是模拟数据，用来说明机制，不是真实模型的输出。
+> The weights, expert hits and candidate-token probabilities in the walkthrough are simulated. They illustrate the mechanism and are not outputs of the real model.
 
-## 整体结构：Prelude → Core ×K → Coda
+## Overall structure: Prelude → Core ×K → Coda
 
-模型只有 24 个物理层，隐藏维度 2304，分成三段：
+The model has only 24 physical layers with a hidden size of 2304, split into three segments:
 
-| 段落 | 物理层 | 运行次数 | 作用 |
+| Segment | Physical layers | Runs | Role |
 | :--- | :--- | :--- | :--- |
-| Prelude | L0–L5 | 1 次 | 编码输入的初始表示 |
-| Core | L6–L17 | K 次（共享权重） | 循环推理的主体 |
-| Coda | L18–L23 | 1 次 | 把隐藏状态解码回词表预测表示 |
+| Prelude | L0–L5 | once | Encodes the initial representation of the input |
+| Core | L6–L17 | K times (shared weights) | The body of the looped reasoning |
+| Coda | L18–L23 | once | Decodes the hidden state back into a vocabulary prediction |
 
-Core 的 12 层用同一套权重反复跑 K 轮。K = 3 时，一次前向实际经过 6 + 12 × 3 + 6 = **48 层**。顶部的「Core 循环」可以在 1× 到 4× 之间切换，看同一组物理层如何被重复利用。
+The 12 Core layers run K times with the same weights. With K = 3, one forward pass goes through 6 + 12 × 3 + 6 = **48 layers**. The "Core loops" control at the top switches between 1× and 5×, so you can watch the same physical layers being reused.
 
-因为 MoE 每个位置只激活少数专家，26.4B 的总参数里，一次前向真正参与计算的约为 3.4B，每多循环一轮再增加约 1.0B，K = 3 时约 5.4B。
+Because the MoE activates only a few experts per position, only about 3.4B of the 26.4B total parameters take part in a forward pass. Each extra loop adds roughly 1.0B, so K = 3 comes to about 5.4B.
 
-## 单层内部
+## Inside a layer
 
-在 Overview 里点任意一层，可以进入「单层内部」视图。每层按固定顺序做五件事：
+Click any layer in the Overview to open the "Inside a layer" view. Every layer does the same five things in order:
 
-1. RMSNorm（Pass ≥ 2 时叠加 Rank-64 Gate）
-2. GQA Attention，加残差
-3. RMSNorm（Pass ≥ 2 时叠加 Rank-64 Gate）
-4. MoE，加残差
-5. 把本层残差累加进当前块的 Block AttnRes 摘要
+1. RMSNorm (with the Rank-64 Gate on top when Pass ≥ 2)
+2. GQA Attention, plus the residual
+3. RMSNorm (with the Rank-64 Gate on top when Pass ≥ 2)
+4. MoE, plus the residual
+5. Add this layer's residual into the current block's Block AttnRes summary
 
 ### RMSNorm
 
-RMSNorm 不减均值，只用每个位置自己 2304 个通道的均方根做缩放，再乘上可学习的逐通道增益 γ，没有偏置。图解里可以把输入幅度放大几倍，归一化后的柱子高度完全不变，这一点比看公式直观得多。每个 token 的 RMS 是独立算的，不会和其他 token 混在一起。
+RMSNorm does not subtract the mean. It scales each position by the root mean square of its own 2304 channels, then multiplies by a learnable per-channel gain γ, with no bias. In the walkthrough you can blow the input up by a few times and the normalised bars stay exactly the same height, which makes the point far better than the formula does. Each token's RMS is computed on its own and never mixed with other tokens.
 
-### GQA Attention：24 个 Query 头共享 8 个 KV 头
+### GQA Attention: 24 Query heads share 8 KV heads
 
-输入先经过一个因果短卷积（Short-Conv）提取局部特征，再投影出 Q、K、V。24 个 Query 头每 3 个共用 1 个 KV 头，每头 128 维，所以 KV Cache 的显存只有普通多头注意力的 1/3。24 个头的输出拼成 3072 维，经 Output Gate 调制后投影回 2304 维。
+The input first goes through a causal short convolution (Short-Conv) for local features, then is projected into Q, K and V. Every 3 of the 24 Query heads share one KV head, each head is 128-dimensional, so the KV Cache takes only 1/3 of the memory of standard multi-head attention. The 24 head outputs are concatenated into 3072 dimensions, modulated by an Output Gate and projected back to 2304.
 
-注意力的范围按层交替：
+The attention range alternates across layers:
 
-- 大多数层用 **SWA-1024**，只看最近 1024 个位置的滑动窗口；
-- 每个 6 层块的最后一层（L5、L11、L17、L23）用 **Full Attention**，可以回看完整的 1M 上下文。
+- Most layers use **SWA-1024**, a sliding window over the most recent 1024 positions.
+- The last layer of each 6-layer block (L5, L11, L17, L23) uses **Full Attention** and can look back over the whole 1M context.
 
-t0 位置还充当 Attention Sink，配合相对位置偏置吸收多余的注意力，让长上下文更稳定。在 Attention 视图里可以强制切换 SWA 和 Full，看注意力矩阵里哪些格子被窗口截断。
+Position t0 also acts as an Attention Sink. Together with a relative position bias it absorbs excess attention, which keeps long contexts stable. In the Attention view you can force SWA or Full and see which cells of the attention matrix the window cuts off.
 
-### MoE：128 个专家里选 8 个
+### MoE: 8 out of 128 experts
 
-每个位置的隐藏状态由 Router 给 128 个专家打分，只取分数最高的 8 个计算并加权求和：
+For each position, the Router scores all 128 experts from the hidden state, keeps the top 8 and takes their weighted sum:
 
 $$
 y = \sum_{i \in \text{Top-8}} g_i \cdot \text{Expert}_i(x)
 $$
 
-精度也是分层的：Router 保持 BF16，大多数层的专家用 NVFP4，靠近输出的 L20–L23 用 MXFP8，LM Head 用 BF16/FP32。
+Precision is layered as well: the Router stays in BF16, most experts use NVFP4, the experts in L20–L23 near the output use MXFP8, and the LM Head uses BF16/FP32.
 
-MoE 视图里最有意思的一点是，同一个物理层在不同循环轮次会选中不同的专家组合。图解用另一种颜色标出「上一轮激活、这一轮被切走」的专家，可以直接看到这种跨轮的动态路由。
+The most interesting thing in the MoE view is that the same physical layer picks different experts in different loop passes. The walkthrough marks experts that were active in the previous pass but dropped in this one with a separate colour, so this cross-pass dynamic routing is visible directly.
 
-## 循环为什么不是简单重复
+## Why the loop is not plain repetition
 
-如果 Core 每一轮看到的输入结构都一样，共享权重的循环很容易退化成重复计算。这里有两个机制让每一轮各不相同。
+If every Core pass saw input with the same structure, a shared-weight loop could easily collapse into repeating the same computation. Two mechanisms make each pass different.
 
-**Block AttnRes。** 每 6 层构成一个块，块内各层的残差输出求和，存成一份摘要 $$b_n$$，更深的层可以按深度回看这些摘要。
+**Block AttnRes.** Every 6 layers form a block. The residual outputs of the layers in a block are summed into a summary $$b_n$$, and deeper layers can look back at these summaries along the depth axis.
 
-**Rank-64 Gate。** 从第 2 轮开始，门控读取前面的 Block AttnRes 摘要 $$m$$，经过一个 64 维瓶颈后，按通道调节送入 Attention 和 MoE 的输入 $$x$$：
+**Rank-64 Gate.** From the second pass on, the gate reads the earlier Block AttnRes summaries $$m$$ and, through a 64-dimensional bottleneck, modulates per channel the input $$x$$ that goes into Attention and MoE:
 
 $$
 y = \bigl(1 - \tanh(W_f h)\bigr) \odot x + \tanh(W_g h) \odot m
 $$
 
-也就是说，后面的轮次并不是从头再算一遍，而是带着前面轮次的摘要重新进入同一组层，于是 Router 会选出不同的专家。
+So later passes do not start from scratch. They re-enter the same layers carrying summaries of the earlier passes, and the Router ends up choosing different experts.
 
-## 两种记忆：持久的和临时的
+## Two kinds of memory: persistent and temporary
 
-「KV Cache & Block AttnRes」视图把两面墙并排放在一起，区别很清楚：
+The "KV Cache & Block AttnRes" view puts the two walls side by side, which makes the difference clear:
 
 | | KV Cache | Block AttnRes |
 | :--- | :--- | :--- |
-| 生命周期 | 跨生成步持久保留 | 只在当前前向存活，输出 token 后释放 |
-| 读取方向 | 水平：新 token 读同一深度上所有历史位置 | 垂直：深层回看浅层块的摘要 |
-| 规模 | 12 + 12K 层，每层 8 个 KV 头 | 2 + 2K 块，每块一份 2304 维摘要 |
+| Lifetime | Kept across generation steps | Lives only for the current forward pass, freed once the token is emitted |
+| Read direction | Horizontal: a new token reads every past position at the same depth | Vertical: deeper layers look back at summaries of shallower blocks |
+| Size | 12 + 12K layers, 8 KV heads each | 2 + 2K blocks, one 2304-d summary each |
 
-Core 的每一轮都有自己独立的 KV Cache，轮次之间严格隔离。所以循环次数越多，KV 的层数也跟着线性增加，这是循环共享权重省下参数之后要付的显存代价。
+Each Core pass has its own KV Cache, strictly isolated from the others. So the number of KV layers grows linearly with the loop count. That is the memory price paid for the parameters the shared-weight loop saves.
 
-## 三种推理阶段
+## Three inference modes
 
-顶部的「推理阶段」对应三种前向方式，主要区别是一步送进去多少个位置：
+The "Inference" control at the top selects one of three kinds of forward pass. They differ mainly in how many positions go in per step:
 
-- **Prefill**：整段提示词一次并行算完，同时写满 KV Cache。
-- **Decode**：每步只算最新的 1 个 token，历史位置直接读缓存。
-- **DSpark**：在最新 token 后面多带两个草稿 token 一起前向，一步里并行处理三个位置。
+- **Prefill**: the whole prompt is computed in parallel in one go, filling the KV Cache at the same time.
+- **Decode**: each step computes only the newest token and reads earlier positions from the cache.
+- **DSpark**: two draft tokens ride along after the newest token, so one step processes three positions in parallel.
 
-## Coda-Lens：每一轮在想什么
+## Coda-Lens: what each pass is thinking
 
-右侧的 Coda-Lens 面板把各个阶段的隐藏状态直接解码成候选词分布，可以看到答案是怎么一轮一轮收敛的。图解里准备了三个例子：
+The Coda-Lens panel on the right decodes the hidden state at each stage straight into a candidate-token distribution, so you can see the answer converge pass by pass. The walkthrough comes with three examples:
 
-- **17×13**：第 1 轮只估出量级（约 210），第 2 轮隐式拆成 17×10 + 17×3，第 3 轮处理进位，锁定 221。
-- **代码**：滑动窗口注意力抓住局部的递归调用，Full Attention 回看 `def fib(n):`，第 2、3 轮定位到缺少终止分支，输出 `missing base_case`。
-- **指代**：第 1 轮偏向高频搭配「门」，第 2 轮通过 Full Attention 把「他」绑定到 Bob 和「金钥匙」，第 3 轮收敛到「保险箱」。
+- **17×13**: Pass 1 only gets the magnitude (about 210), Pass 2 implicitly splits it into 17×10 + 17×3, and Pass 3 resolves the carry and locks in 221.
+- **Code**: sliding-window attention picks up the local recursive call, Full Attention looks back at `def fib(n):`, and Passes 2 and 3 find the missing termination branch, producing `missing base_case`.
+- **Coreference**: Pass 1 leans toward the frequent collocation "door", Pass 2 uses Full Attention to bind "he" to Bob and the "gold key", and Pass 3 converges on "safe".
 
-把「Core 循环」调成 1× 再看这三个例子，能很直观地感受到循环轮数对应的是多想几步。
+Set "Core loops" to 1× and run the three examples again. It makes it very clear that more loop passes mean thinking a few more steps.
