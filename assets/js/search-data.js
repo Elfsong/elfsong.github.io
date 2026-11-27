@@ -51,11 +51,11 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-把-inkling-2-mini-拆开看",
+        },{id: "post-taking-inkling-2-mini-apart",
       
-        title: "把 Inkling 2 Mini 拆开看",
+        title: "Taking Inkling 2 Mini Apart",
       
-      description: "一个可以拖拽、单步播放的 3D 架构图解：24 层物理层如何靠循环 Core 跑出 48 层前向。",
+      description: "An interactive 3D walkthrough you can rotate and step through, showing how 24 physical layers run a 48-layer forward pass by looping the Core.",
       section: "Posts",
       handler: () => {
         
