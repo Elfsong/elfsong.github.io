@@ -1,7 +1,7 @@
 ---
 ---
 {%- comment -%} Flags used by the filter row on the publications page. {%- endcomment -%}
-{%- assign ccf_a_venues = 'NeurIPS,ICML,ACL,AAAI,ICSE,TOSEM,WWW' | split: ',' -%}
+{%- assign ccf_a_venues = 'NeurIPS,ICML,ICLR,ACL,AAAI,ICSE,TOSEM,WWW' | split: ',' -%}
 {%- assign pub_ccf_a = false -%}
 {%- if ccf_a_venues contains entry.abbr -%}
   {%- assign pub_ccf_a = true -%}
