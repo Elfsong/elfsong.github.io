@@ -1,6 +1,35 @@
 ---
 ---
-<div class="publication-row{% unless site.enable_publication_thumbnails %} publication-no-thumbnail{% endunless %}">
+{%- comment -%} Flags used by the filter row on the publications page. {%- endcomment -%}
+{%- assign ccf_a_venues = 'NeurIPS,ICML,ACL,AAAI,ICSE,TOSEM,WWW' | split: ',' -%}
+{%- assign pub_ccf_a = false -%}
+{%- if ccf_a_venues contains entry.abbr -%}
+  {%- assign pub_ccf_a = true -%}
+{%- endif -%}
+{%- assign pub_first = false -%}
+{%- assign pub_corr = false -%}
+{%- for author in entry.author_array -%}
+  {%- assign flag_last_name = author.last | regex_replace: '[*∗†‡§¶‖&^]', '' -%}
+  {%- if site.scholar.last_name contains flag_last_name -%}
+    {%- if site.scholar.first_name contains author.first -%}
+      {%- if forloop.first -%}
+        {%- assign pub_first = true -%}
+      {%- endif -%}
+      {%- if author.last contains '*' -%}
+        {%- assign pub_first = true -%}
+      {%- endif -%}
+      {%- if author.last contains '†' -%}
+        {%- assign pub_corr = true -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+<div
+  class="publication-row{% unless site.enable_publication_thumbnails %} publication-no-thumbnail{% endunless %}"
+  data-ccf-a="{{ pub_ccf_a }}"
+  data-first="{{ pub_first }}"
+  data-corr="{{ pub_corr }}"
+>
   {% if site.enable_publication_thumbnails %}
     <div class="publication-thumbnail abbr">
       {%- if entry.abbr -%}
